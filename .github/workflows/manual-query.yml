@@ -68,6 +68,7 @@ jobs:
         id: query
         run: |
           python nju_electric_query.py \
+            --cookie-file /tmp/cookie.json \
             -d ./database \
             -c 24 \
             ${{ steps.rooms.outputs.room_ids }} \
@@ -113,9 +114,30 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "## Manual Query Summary" >> $GITHUB_STEP_SUMMARY
+          ROOM_IDS="${{ steps.rooms.outputs.room_ids }}"
+          TOTAL=$(echo "$ROOM_IDS" | wc -w | tr -d ' ')
+          SUCCESS=${{ steps.query.outputs.success_count }}
+          FAILED=${{ steps.query.outputs.failed_count }}
+          
+          echo "## 🔍 Manual Query Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Rooms queried**: ${{ steps.rooms.outputs.room_ids }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Success**: ${{ steps.query.outputs.success_count }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Failed**: ${{ steps.query.outputs.failed_count }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Total Rooms | $TOTAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Success | $SUCCESS |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Failed | $FAILED |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "$TOTAL" -le 10 ]; then
+            echo "**Rooms**: \`$ROOM_IDS\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Rooms**: $TOTAL rooms queried (see logs for details)" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "**Status**: ✅ All queries completed successfully" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Status**: ⚠️ Some queries failed - check logs for details" >> $GITHUB_STEP_SUMMARY
+          fi

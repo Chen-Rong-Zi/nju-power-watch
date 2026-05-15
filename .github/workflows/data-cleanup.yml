@@ -80,9 +80,19 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "## Cleanup Summary" >> $GITHUB_STEP_SUMMARY
+          MODE="${{ github.event.inputs.dry_run == 'true' && '🔍 Dry Run' || '⚙️ Production' }}"
+          ARCHIVED=${{ steps.cleanup.outputs.archived_count }}
+          
+          echo "## 🗂️ Data Cleanup Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Months archived**: ${{ steps.cleanup.outputs.archived_count }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Retention period**: 365 days" >> $GITHUB_STEP_SUMMARY
-          echo "- **Daily files retention**: 30 days" >> $GITHUB_STEP_SUMMARY
-          echo "- **Mode**: ${{ github.event.inputs.dry_run == 'true' && 'Dry run' || 'Production' }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Months Archived | $ARCHIVED |" >> $GITHUB_STEP_SUMMARY
+          echo "| Archive Retention | 365 days |" >> $GITHUB_STEP_SUMMARY
+          echo "| Daily Files Retention | 30 days |" >> $GITHUB_STEP_SUMMARY
+          echo "| Mode | $MODE |" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Status**: ✅ Cleanup completed successfully" >> $GITHUB_STEP_SUMMARY
+          fi

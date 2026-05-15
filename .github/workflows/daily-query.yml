@@ -60,10 +60,9 @@ jobs:
       
       - name: Query electricity data
         id: query
-        env:
-          QUERY_DATE: ${{ github.event.inputs.force_run == 'true' && '' || '--skip-existing' }}
         run: |
           python nju_electric_query.py \
+            --cookie-file /tmp/cookie.json \
             -d ./database \
             -c 24 \
             ${{ steps.rooms.outputs.room_ids }} \
@@ -138,9 +137,21 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "## Query Summary" >> $GITHUB_STEP_SUMMARY
+          TOTAL=$(echo ${{ steps.rooms.outputs.room_ids }} | wc -w | tr -d ' ')
+          SUCCESS=${{ steps.query.outputs.success_count }}
+          FAILED=${{ steps.query.outputs.failed_count }}
+          
+          echo "## 📊 Daily Query Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Total rooms queried**: $(echo ${{ steps.rooms.outputs.room_ids }} | wc -w)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Success**: ${{ steps.query.outputs.success_count }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Failed**: ${{ steps.query.outputs.failed_count }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Total Rooms | $TOTAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ Success | $SUCCESS |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ Failed | $FAILED |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "**Status**: ✅ All queries completed successfully" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Status**: ⚠️ Some queries failed - check logs for details" >> $GITHUB_STEP_SUMMARY
+          fi

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 南京大学电费查询脚本 (异步版本)
-用法: python3 nju_electric_query.py [-d 输出目录] 宿舍ID1 宿舍ID2 ...
-示例: python3 nju_electric_query.py -d ./database 53463 53464 53465
+用法: python3 nju_electric_query.py [--cookie-file COOKIE_FILE] [-d 输出目录] 宿舍ID1 宿舍ID2 ...
+示例: python3 nju_electric_query.py --cookie-file /tmp/cookie.json -d ./database 53463 53464 53465
 """
 
 import asyncio
@@ -19,7 +19,7 @@ from urllib.parse import urljoin
 from typing import Optional
 
 # 默认 Cookie 文件路径
-DEFAULT_COOKIE_FILE = "./epay.nju.edu.cn_json_1778821830826.json"
+DEFAULT_COOKIE_FILE = "/tmp/cookie.json"
 
 # 重试配置
 MAX_RETRIES = 3
@@ -61,20 +61,6 @@ def load_cookies_from_file(filepath: str) -> dict:
         sys.exit(1)
 
 
-def load_config():
-    """加载配置"""
-    if os.path.exists(DEFAULT_COOKIE_FILE):
-        return load_cookies_from_file(DEFAULT_COOKIE_FILE)
-    else:
-        print(f"错误: 默认 Cookie 文件不存在: {DEFAULT_COOKIE_FILE}")
-        print("请更新脚本中的 DEFAULT_COOKIE_FILE 路径")
-        sys.exit(1)
-
-
-# 加载 Cookie
-COOKIES = load_config()
-
-
 def parse_html(html: str) -> dict:
     """解析 HTML 页面，提取电费信息"""
     result = {}
@@ -112,14 +98,14 @@ class QueryError:
     UNKNOWN = "未知错误"
 
 
-async def query_single_with_retry(session: aiohttp.ClientSession, room_id: str, show_retry: bool = True) -> dict:
+async def query_single_with_retry(session: aiohttp.ClientSession, room_id: str, cookies: dict, show_retry: bool = True) -> dict:
     """带重试的异步查询单个宿舍电费"""
     url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
     last_error = None
 
     for attempt in range(MAX_RETRIES):
         try:
-            async with session.get(url, cookies=COOKIES, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=30)) as response:
+            async with session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=30)) as response:
                 if response.status == 404:
                     last_error = {"id": room_id, "error": QueryError.NOT_FOUND, "error_type": "not_found", "success": False}
                     break
@@ -178,11 +164,12 @@ async def query_single_with_retry(session: aiohttp.ClientSession, room_id: str, 
     return last_error or {"id": room_id, "error": QueryError.UNKNOWN, "error_type": "unknown", "success": False}
 
 
-async def query_batch(room_ids: list[str], output_dir: Optional[Path] = None, show_progress: bool = True, max_concurrent: int = DEFAULT_CONCURRENCY):
+async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[Path] = None, show_progress: bool = True, max_concurrent: int = DEFAULT_CONCURRENCY):
     """异步批量查询 - 流式处理，内存友好
 
     Args:
         room_ids: 宿舍ID列表
+        cookies: Cookie字典
         output_dir: 输出目录
         show_progress: 是否显示进度
         max_concurrent: 最大并发数
@@ -201,7 +188,7 @@ async def query_batch(room_ids: list[str], output_dir: Optional[Path] = None, sh
     # 包装查询函数，使用信号量控制并发
     async def limited_query(session, room_id):
         async with semaphore:
-            return await query_single_with_retry(session, room_id, show_progress)
+            return await query_single_with_retry(session, room_id, cookies, show_progress)
 
     connector = aiohttp.TCPConnector(limit=max_concurrent)
     async with aiohttp.ClientSession(connector=connector) as session:
@@ -354,12 +341,23 @@ def main():
     parser = argparse.ArgumentParser(description="南京大学电费查询工具")
     parser.add_argument("-d", "--dir", type=str, help="输出目录", default=None)
     parser.add_argument("-c", "--concurrency", type=int, help=f"最大并发数 (默认{DEFAULT_CONCURRENCY})", default=DEFAULT_CONCURRENCY)
+    parser.add_argument("--cookie-file", type=str, help="Cookie JSON文件路径", default=DEFAULT_COOKIE_FILE)
     parser.add_argument("room_ids", nargs="+", help="宿舍ID列表")
     args = parser.parse_args()
 
     room_ids = args.room_ids
     output_dir = Path(args.dir) if args.dir else None
     max_concurrent = args.concurrency
+    cookie_file = args.cookie_file
+
+    # 加载 Cookie
+    if not os.path.exists(cookie_file):
+        print(f"错误: Cookie 文件不存在: {cookie_file}")
+        print(f"请使用 --cookie-file 参数指定有效的 cookie 文件路径")
+        sys.exit(1)
+    
+    cookies = load_cookies_from_file(cookie_file)
+    print(f"✓ 已加载 Cookie 文件: {cookie_file}")
 
     if output_dir and output_dir.exists():
         if not output_dir.is_dir():
@@ -373,7 +371,7 @@ def main():
     print("-" * 50)
 
     start_time = time.time()
-    summary = asyncio.run(query_batch(room_ids, output_dir, max_concurrent=max_concurrent))
+    summary = asyncio.run(query_batch(room_ids, cookies, output_dir, max_concurrent=max_concurrent))
     elapsed = time.time() - start_time
 
     print("=" * 50)
@@ -406,6 +404,7 @@ def main():
         for error_type, count in error_count.items():
             msg = error_messages.get(error_type, error_type)
             print(f"  {msg}: {count}个")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

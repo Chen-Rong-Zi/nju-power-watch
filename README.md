@@ -57,11 +57,14 @@ This project automates the collection, processing, and aggregation of electricit
    # Install dependencies
    pip install -r requirements.txt
    
+   # Export cookie to file
+   echo '[{"name":"JSESSIONID","value":"your-value","domain":"epay.nju.edu.cn"}]' > /tmp/cookie.json
+   
    # Test cookie validation
    python scripts/validate_cookie.py /tmp/cookie.json
    
    # Run manual query
-   python nju_electric_query.py -d ./database 53463
+   python nju_electric_query.py --cookie-file /tmp/cookie.json -d ./database 53463
    ```
 
 4. **Enable GitHub Actions**:
