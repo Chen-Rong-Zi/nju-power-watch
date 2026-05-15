@@ -7,6 +7,7 @@
 
 import asyncio
 import aiohttp
+import aiofiles
 import argparse
 import json
 import os
@@ -39,11 +40,12 @@ HEADERS = {
 base_url = "https://epay.nju.edu.cn"
 
 
-def load_cookies_from_file(filepath: str) -> dict:
+async def load_cookies_from_file(filepath: str) -> dict:
     """从浏览器导出的 JSON 文件加载 cookie"""
     try:
-        with open(filepath, "r", encoding="utf-8") as f:
-            cookies_list = json.load(f)
+        async with aiofiles.open(filepath, "r", encoding="utf-8") as f:
+            content = await f.read()
+            cookies_list = json.loads(content)
 
         cookies = {}
         for cookie in cookies_list:
@@ -225,7 +227,7 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
                 if result["success"]:
                     succeeded += 1
                     if output_dir:
-                        save_result(result, output_dir, quiet=False)
+                        await save_result(result, output_dir, quiet=False)
                     building = result.get("楼栋", "未知")
                     room = result.get("房间", "未知")
                     power = result.get("剩余电量", "未知")
@@ -275,7 +277,7 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
     }
 
 
-def save_result(result: dict, output_dir: Path, quiet: bool = False):
+async def save_result(result: dict, output_dir: Path, quiet: bool = False):
     """保存结果到文件，格式: {校区}/{楼栋}/{房间}-{房间id}/{日期}.json"""
     try:
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -288,24 +290,20 @@ def save_result(result: dict, output_dir: Path, quiet: bool = False):
             print(f"\n错误: 无法创建目录 {output_dir}: {e}")
         return False
 
-    # 提取路径信息
     campus = result.get("校区", "未知校区")
     building = result.get("楼栋", "未知楼栋")
     room = result.get("房间", "未知房间")
     room_id = result.get("id", result.get("宿舍ID", ""))
 
-    # 清理路径中的非法字符
     campus = re.sub(r'[<>:"/\\|?*]', '_', campus)
     building = re.sub(r'[<>:"/\\|?*]', '_', building)
     room = re.sub(r'[<>:"/\\|?*]', '_', room)
 
-    # 构建路径: {校区}/{楼栋}/{房间}-{房间id}/{日期}.json
     dir_path = output_dir / campus / building / f"{room}-{room_id}"
     date_str = datetime.now().strftime("%Y%m%d")
     filename = f"{date_str}.json"
     filepath = dir_path / filename
 
-    # 创建目录
     try:
         dir_path.mkdir(parents=True, exist_ok=True)
     except PermissionError:
@@ -317,15 +315,14 @@ def save_result(result: dict, output_dir: Path, quiet: bool = False):
             print(f"\n错误: 无法创建目录 {dir_path}: {e}")
         return False
 
-    # 检查文件是否已存在
     if filepath.exists():
         if not quiet:
             print(f"\n警告: 文件 {filepath} 已存在，跳过保存")
         return False
 
     try:
-        with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(result, f, ensure_ascii=False, indent=2)
+        async with aiofiles.open(filepath, "w", encoding="utf-8") as f:
+            await f.write(json.dumps(result, ensure_ascii=False, indent=2))
         return True
     except PermissionError:
         if not quiet:
@@ -337,7 +334,7 @@ def save_result(result: dict, output_dir: Path, quiet: bool = False):
         return False
 
 
-def main():
+async def async_main():
     parser = argparse.ArgumentParser(description="南京大学电费查询工具")
     parser.add_argument("-d", "--dir", type=str, help="输出目录", default=None)
     parser.add_argument("-c", "--concurrency", type=int, help=f"最大并发数 (默认{DEFAULT_CONCURRENCY})", default=DEFAULT_CONCURRENCY)
@@ -350,13 +347,12 @@ def main():
     max_concurrent = args.concurrency
     cookie_file = args.cookie_file
 
-    # 加载 Cookie
     if not os.path.exists(cookie_file):
         print(f"错误: Cookie 文件不存在: {cookie_file}")
         print(f"请使用 --cookie-file 参数指定有效的 cookie 文件路径")
         sys.exit(1)
     
-    cookies = load_cookies_from_file(cookie_file)
+    cookies = await load_cookies_from_file(cookie_file)
     print(f"✓ 已加载 Cookie 文件: {cookie_file}")
 
     if output_dir and output_dir.exists():
@@ -371,7 +367,7 @@ def main():
     print("-" * 50)
 
     start_time = time.time()
-    summary = asyncio.run(query_batch(room_ids, cookies, output_dir, max_concurrent=max_concurrent))
+    summary = await query_batch(room_ids, cookies, output_dir, max_concurrent=max_concurrent)
     elapsed = time.time() - start_time
 
     print("=" * 50)
@@ -406,6 +402,10 @@ def main():
             print(f"  {msg}: {count}个")
         if summary['failed'] >= summary['succeeded']:
             sys.exit(1)
+
+
+def main():
+    asyncio.run(async_main())
 
 
 if __name__ == "__main__":
