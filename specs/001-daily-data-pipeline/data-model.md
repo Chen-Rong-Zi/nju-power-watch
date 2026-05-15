@@ -1,0 +1,266 @@
+# Data Model: Daily Data Pipeline
+
+**Feature**: 001-daily-data-pipeline  
+**Date**: 2026-05-15  
+**Purpose**: Define data entities, relationships, and validation rules
+
+## Overview
+
+The data model supports a file-based storage system for electricity consumption data, with daily snapshots, monthly archives, and aggregated summaries for frontend consumption.
+
+## Entities
+
+### 1. Daily Electricity Record
+
+**Purpose**: Snapshot of electricity data for one room on one specific date
+
+**File Path Pattern**: `database/{campus}/{building}/{room}-{id}/{YYYYMMDD}.json`
+
+**Schema**:
+```json
+{
+  "id": "53463",
+  "校区": "仙林校区",
+  "楼栋": "19幢",
+  "房间": "19栋第16层1613",
+  "宿舍ID": "53463",
+  "学号": "",
+  "剩余电量": "125.50度",
+  "timestamp": "2026-05-15T02:00:00Z",
+  "success": true
+}
+```
+
+**Fields**:
+| Field | Type | Required | Description | Validation |
+|-------|------|----------|-------------|------------|
+| id | string | Yes | Room ID (numeric string) | Non-empty, digits only |
+| 校区 | string | Yes | Campus name | Non-empty |
+| 楼栋 | string | Yes | Building name | Non-empty |
+| 房间 | string | Yes | Room name | Non-empty |
+| 宿舍ID | string | Yes | Dormitory ID (same as id) | Non-empty, matches id |
+| 学号 | string | No | Student ID (if applicable) | May be empty |
+| 剩余电量 | string | Yes | Remaining electricity in 度 | Format: "{number}度", number > 0 |
+| timestamp | string | Yes | ISO 8601 timestamp of query | Valid ISO 8601 format |
+| success | boolean | Yes | Query success flag | Must be true for valid record |
+
+**Validation Rules**:
+- `success` must be `true` for file to be written
+- `剩余电量` must parse to positive float
+- File must not exist (no overwrites for same date)
+- All required fields must be present
+
+**Lifecycle**:
+1. Created by `nju_electric_query.py` during daily run
+2. Read by `aggregate_data.py` for summary generation
+3. Archived by `cleanup_archives.py` after 30 days
+4. Deleted after extraction from monthly archive (optional)
+
+---
+
+### 2. Monthly Archive
+
+**Purpose**: Compressed collection of daily records for one calendar month
+
+**File Path Pattern**: `database/archives/{YYYY-MM}.tar.gz`
+
+**Contents**:
+```
+2026-05.tar.gz
+├── 仙林校区/
+│   └── 19幢/
+│       └── 19栋第16层1613-53463/
+│           ├── 20260501.json
+│           ├── 20260502.json
+│           └── ...
+└── manifest.json
+```
+
+**Manifest Schema**:
+```json
+{
+  "archive_month": "2026-05",
+  "created_at": "2026-06-01T00:00:00Z",
+  "total_files": 500,
+  "total_rooms": 50,
+  "checksum": "sha256:abc123..."
+}
+```
+
+**Fields**:
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| archive_month | string | Yes | Month in YYYY-MM format |
+| created_at | string | Yes | Archive creation timestamp |
+| total_files | integer | Yes | Number of JSON files archived |
+| total_rooms | integer | Yes | Number of unique rooms |
+| checksum | string | Yes | SHA256 checksum of archive |
+
+**Validation Rules**:
+- Archive must contain at least one file
+- All files must match expected date range
+- Checksum must verify successfully
+- Archive must be extractable without errors
+
+**Lifecycle**:
+1. Created by `cleanup_archives.py` at end of month
+2. Verified immediately after creation
+3. Deleted after 365 days (configurable)
+
+---
+
+### 3. Aggregated Summary
+
+**Purpose**: Pre-computed statistics for all rooms, optimized for frontend loading
+
+**File Path**: `database/summary.json`
+
+**Schema**:
+```json
+{
+  "generated_at": "2026-05-15T02:05:00Z",
+  "total_rooms": 50,
+  "query_success_rate": 0.98,
+  "rooms": {
+    "53463": {
+      "campus": "仙林校区",
+      "building": "19幢",
+      "room": "19栋第16层1613",
+      "current_balance": 125.50,
+      "avg_7d": 128.30,
+      "avg_30d": 130.45,
+      "trend_30d": -0.15,
+      "min_30d": 120.00,
+      "max_30d": 135.20,
+      "last_updated": "2026-05-15T02:00:00Z"
+    }
+  }
+}
+```
+
+**Fields**:
+| Field | Type | Required | Description | Validation |
+|-------|------|----------|-------------|------------|
+| generated_at | string | Yes | Summary generation timestamp | Valid ISO 8601 |
+| total_rooms | integer | Yes | Number of rooms in summary | >= 0 |
+| query_success_rate | float | Yes | Percentage of successful queries | 0.0 to 1.0 |
+| rooms | object | Yes | Map of room_id to room summary | Non-empty |
+| current_balance | float | Yes | Current electricity balance | >= 0.0 |
+| avg_7d | float | Yes | 7-day average balance | >= 0.0 |
+| avg_30d | float | Yes | 30-day average balance | >= 0.0 |
+| trend_30d | float | Yes | 30-day trend (slope) | Any float |
+| min_30d | float | Yes | Minimum balance in 30 days | >= 0.0 |
+| max_30d | float | Yes | Maximum balance in 30 days | >= 0.0 |
+| last_updated | string | Yes | Last query timestamp | Valid ISO 8601 |
+
+**Validation Rules**:
+- File size must be under 500KB
+- All room IDs must be valid
+- Timestamps must be within 24 hours
+- Statistics must be consistent (min <= current <= max)
+
+**Lifecycle**:
+1. Generated by `aggregate_data.py` after successful daily run
+2. Read by static frontend for visualization
+3. Updated incrementally on each run
+
+---
+
+### 4. Room Configuration
+
+**Purpose**: List of room IDs to query daily
+
+**File Path**: `config/room_ids.txt`
+
+**Format**:
+```
+# Room IDs for daily query
+# One ID per line, comments start with #
+53463
+53464
+53465
+```
+
+**Validation Rules**:
+- One room ID per line
+- Comments start with #
+- Empty lines ignored
+- Room IDs must be numeric strings
+
+**Lifecycle**:
+1. Created manually or by `list_room_ids.py`
+2. Read by GitHub Actions workflow
+3. Updated when rooms are added/removed
+
+---
+
+### 5. Workflow Run Log
+
+**Purpose**: Record of each workflow execution
+
+**File Path**: `logs/query_runs/{YYYY-MM-DD}.log`
+
+**Format**:
+```
+2026-05-15 02:00:00 INFO  Starting daily query run
+2026-05-15 02:00:05 INFO  Validating cookie...
+2026-05-15 02:00:06 INFO  Cookie valid
+2026-05-15 02:00:07 INFO  Querying 50 rooms with concurrency=24
+2026-05-15 02:02:34 INFO  [50/50] Success: 49, Failed: 1
+2026-05-15 02:02:34 ERROR Room 53500: Authentication failed
+2026-05-15 02:02:34 ERROR Batch failed, rolling back...
+2026-05-15 02:02:35 INFO  Rollback complete
+2026-05-15 02:02:35 INFO  Run failed: 1/50 rooms failed
+```
+
+**Fields**:
+| Field | Type | Description |
+|-------|------|-------------|
+| timestamp | datetime | Log entry timestamp |
+| level | string | INFO, WARNING, ERROR |
+| message | string | Log message |
+
+**Validation Rules**:
+- Must be valid log format
+- Must include start/end timestamps
+- Must record success/failure counts
+
+---
+
+## Relationships
+
+```
+Room Configuration ──generates──> Daily Records
+                                        │
+                                        ├──aggregated by──> Summary
+                                        │
+                                        └──archived to──> Monthly Archive
+
+Workflow Log ──tracks──> Daily Records generation
+```
+
+## Data Flow
+
+1. **Collection**: `config/room_ids.txt` → `nju_electric_query.py` → Daily Records
+2. **Aggregation**: Daily Records → `aggregate_data.py` → `summary.json`
+3. **Archival**: Daily Records (30+ days old) → `cleanup_archives.py` → Monthly Archives
+4. **Cleanup**: Monthly Archives (365+ days old) → Deleted
+5. **Frontend**: `summary.json` → Static Frontend → User visualization
+
+## Data Integrity
+
+### Atomic Operations
+- Daily writes: All rooms written atomically or none
+- Rollback: Partial writes removed on failure
+- Archive: Files archived only after verification
+
+### Validation Points
+- **Ingestion**: Cookie validation before batch query
+- **Storage**: JSON schema validation before write
+- **Aggregation**: Data completeness check before summary generation
+- **Archival**: Archive integrity verification before deletion
+
+### Error Handling
+- Missing data: Logged, included in summary with null values
+- Invalid data: Rejected, batch rolled back
+- Corrupt archives: Logged, deleted, regenerated from source (if available)

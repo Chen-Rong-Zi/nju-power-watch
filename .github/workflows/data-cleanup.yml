@@ -1,0 +1,88 @@
+name: Monthly Data Cleanup
+
+on:
+  schedule:
+    - cron: '0 3 1 * *'  # First day of month at 3 AM UTC
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (show what would be done without making changes)'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  cleanup-archives:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    concurrency:
+      group: data-cleanup
+      cancel-in-progress: false
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run cleanup
+        id: cleanup
+        run: |
+          DRY_RUN_FLAG=""
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            DRY_RUN_FLAG="--dry-run"
+          fi
+          
+          python scripts/cleanup_archives.py \
+            --database ./database \
+            --archive-dir ./database/archives \
+            --days-to-keep 30 \
+            --archive-retention 365 \
+            $DRY_RUN_FLAG \
+            2>&1 | tee cleanup_output.log
+          
+          # Extract counts
+          ARCHIVED=$(grep -oP '(\d+) months archived' cleanup_output.log | grep -oP '\d+' || echo "0")
+          echo "archived_count=$ARCHIVED" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push changes
+        if: success() && github.event.inputs.dry_run != 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Add archive files
+          git add database/archives/ || true
+          
+          # Check if there are changes
+          if git diff --staged --quiet; then
+            echo "No archives to commit"
+          else
+            git commit -m "chore: archive data for previous month"
+            git push
+          fi
+      
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Cleanup Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Months archived**: ${{ steps.cleanup.outputs.archived_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Retention period**: 365 days" >> $GITHUB_STEP_SUMMARY
+          echo "- **Daily files retention**: 30 days" >> $GITHUB_STEP_SUMMARY
+          echo "- **Mode**: ${{ github.event.inputs.dry_run == 'true' && 'Dry run' || 'Production' }}" >> $GITHUB_STEP_SUMMARY

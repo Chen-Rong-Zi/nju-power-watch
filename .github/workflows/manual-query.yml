@@ -1,0 +1,121 @@
+name: Manual Electricity Query
+
+on:
+  workflow_dispatch:
+    inputs:
+      room_ids:
+        description: 'Room IDs to query (space-separated, leave empty to use config/room_ids.txt)'
+        required: false
+        default: ''
+      skip_existing:
+        description: 'Skip rooms that already have data for today'
+        required: false
+        default: 'true'
+        type: boolean
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  query-electricity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    
+    concurrency:
+      group: manual-query-${{ github.run_id }}
+      cancel-in-progress: true
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Create cookie file
+        env:
+          EPAY_COOKIE: ${{ secrets.EPAY_COOKIE }}
+        run: |
+          echo "$EPAY_COOKIE" > /tmp/cookie.json
+      
+      - name: Validate cookie
+        run: |
+          python scripts/validate_cookie.py /tmp/cookie.json
+      
+      - name: Determine room IDs
+        id: rooms
+        run: |
+          if [ -n "${{ github.event.inputs.room_ids }}" ]; then
+            ROOM_IDS="${{ github.event.inputs.room_ids }}"
+          else
+            ROOM_IDS=$(cat config/room_ids.txt | grep -v '^#' | grep -v '^$' | tr '\n' ' ')
+          fi
+          
+          echo "room_ids=$ROOM_IDS" >> $GITHUB_OUTPUT
+          echo "Room IDs to query: $ROOM_IDS"
+      
+      - name: Query electricity data
+        id: query
+        run: |
+          python nju_electric_query.py \
+            -d ./database \
+            -c 24 \
+            ${{ steps.rooms.outputs.room_ids }} \
+            2>&1 | tee query_output.log
+          
+          SUCCESS=$(grep -oP '成功: \K\d+' query_output.log || echo "0")
+          FAILED=$(grep -oP '失败: \K\d+' query_output.log || echo "0")
+          
+          echo "success_count=$SUCCESS" >> $GITHUB_OUTPUT
+          echo "failed_count=$FAILED" >> $GITHUB_OUTPUT
+          
+          if [ "$FAILED" -gt 0 ]; then
+            echo "::warning::$FAILED rooms failed to query"
+          fi
+      
+      - name: Rollback on complete failure
+        if: failure() && steps.query.outputs.success_count == '0'
+        run: |
+          python scripts/rollback_failed_run.py -d ./database
+      
+      - name: Generate aggregated summary
+        if: success()
+        run: |
+          python scripts/aggregate_data.py \
+            --database ./database \
+            --output ./database/summary.json
+      
+      - name: Commit and push results
+        if: success()
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          git add database/ || true
+          
+          if git diff --staged --quiet; then
+            echo "No new data to commit"
+          else
+            git commit -m "chore: manual query - $(date +%Y-%m-%d-%H%M%S)"
+            git push
+          fi
+      
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Manual Query Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Rooms queried**: ${{ steps.rooms.outputs.room_ids }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Success**: ${{ steps.query.outputs.success_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Failed**: ${{ steps.query.outputs.failed_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY

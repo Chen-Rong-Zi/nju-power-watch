@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "summary.schema.json",
+  "title": "Aggregated Summary",
+  "description": "Pre-computed statistics for all rooms, optimized for frontend loading",
+  "type": "object",
+  "required": ["generated_at", "total_rooms", "query_success_rate", "rooms"],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Summary generation timestamp"
+    },
+    "total_rooms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of rooms in summary"
+    },
+    "query_success_rate": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Percentage of successful queries (0.0 to 1.0)"
+    },
+    "rooms": {
+      "type": "object",
+      "description": "Map of room_id to room summary",
+      "additionalProperties": {
+        "$ref": "#/definitions/room_summary"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "room_summary": {
+      "type": "object",
+      "required": [
+        "campus",
+        "building",
+        "room",
+        "current_balance",
+        "avg_7d",
+        "avg_30d",
+        "trend_30d",
+        "min_30d",
+        "max_30d",
+        "last_updated"
+      ],
+      "properties": {
+        "campus": {
+          "type": "string",
+          "description": "Campus name"
+        },
+        "building": {
+          "type": "string",
+          "description": "Building name"
+        },
+        "room": {
+          "type": "string",
+          "description": "Room name"
+        },
+        "current_balance": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "Current electricity balance"
+        },
+        "avg_7d": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "7-day average balance"
+        },
+        "avg_30d": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "30-day average balance"
+        },
+        "trend_30d": {
+          "type": "number",
+          "description": "30-day trend (slope)"
+        },
+        "min_30d": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "Minimum balance in 30 days"
+        },
+        "max_30d": {
+          "type": "number",
+          "minimum": 0.0,
+          "description": "Maximum balance in 30 days"
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last query timestamp"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
