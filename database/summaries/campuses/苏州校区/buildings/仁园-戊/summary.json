@@ -1,0 +1,777 @@
+{
+  "building": "仁园-戊",
+  "campus": "苏州校区",
+  "total_rooms": 154,
+  "rooms": {
+    "59210": {
+      "room_name": "戊611",
+      "current_balance": 217.01,
+      "last_updated": "20260515"
+    },
+    "36015": {
+      "room_name": "戊511",
+      "current_balance": 41.0,
+      "last_updated": "20260515"
+    },
+    "62695": {
+      "room_name": "戊608",
+      "current_balance": 23.01,
+      "last_updated": "20260515"
+    },
+    "53303": {
+      "room_name": "戊311",
+      "current_balance": 94.31,
+      "last_updated": "20260515"
+    },
+    "74222": {
+      "room_name": "戊206",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "44827": {
+      "room_name": "戊309",
+      "current_balance": 490.87,
+      "last_updated": "20260515"
+    },
+    "53265": {
+      "room_name": "戊402",
+      "current_balance": 132.3,
+      "last_updated": "20260515"
+    },
+    "60058": {
+      "room_name": "戊610",
+      "current_balance": 91.22,
+      "last_updated": "20260515"
+    },
+    "59691": {
+      "room_name": "戊606",
+      "current_balance": 109.47,
+      "last_updated": "20260515"
+    },
+    "43789": {
+      "room_name": "戊502",
+      "current_balance": 369.4,
+      "last_updated": "20260515"
+    },
+    "63135": {
+      "room_name": "戊408",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "37248": {
+      "room_name": "戊308",
+      "current_balance": 36.49,
+      "last_updated": "20260515"
+    },
+    "53305": {
+      "room_name": "戊311",
+      "current_balance": 94.31,
+      "last_updated": "20260515"
+    },
+    "74010": {
+      "room_name": "戊410",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "47037": {
+      "room_name": "戊206",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "51379": {
+      "room_name": "戊407",
+      "current_balance": 449.13,
+      "last_updated": "20260515"
+    },
+    "70593": {
+      "room_name": "戊404",
+      "current_balance": 114.35,
+      "last_updated": "20260515"
+    },
+    "54306": {
+      "room_name": "戊406",
+      "current_balance": 63.21,
+      "last_updated": "20260515"
+    },
+    "47036": {
+      "room_name": "戊204",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "53435": {
+      "room_name": "戊402",
+      "current_balance": 132.3,
+      "last_updated": "20260515"
+    },
+    "57562": {
+      "room_name": "戊407",
+      "current_balance": 449.13,
+      "last_updated": "20260515"
+    },
+    "24403": {
+      "room_name": "戊305",
+      "current_balance": 82.92,
+      "last_updated": "20260515"
+    },
+    "44428": {
+      "room_name": "戊510",
+      "current_balance": 68.56,
+      "last_updated": "20260515"
+    },
+    "53912": {
+      "room_name": "戊410",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "54665": {
+      "room_name": "戊413",
+      "current_balance": 15.09,
+      "last_updated": "20260515"
+    },
+    "54055": {
+      "room_name": "戊311",
+      "current_balance": 94.31,
+      "last_updated": "20260515"
+    },
+    "30299": {
+      "room_name": "戊307",
+      "current_balance": 191.72,
+      "last_updated": "20260515"
+    },
+    "59228": {
+      "room_name": "戊412",
+      "current_balance": 598.03,
+      "last_updated": "20260515"
+    },
+    "23398": {
+      "room_name": "戊303",
+      "current_balance": 372.56,
+      "last_updated": "20260515"
+    },
+    "43937": {
+      "room_name": "戊305",
+      "current_balance": 82.92,
+      "last_updated": "20260515"
+    },
+    "26954": {
+      "room_name": "戊307",
+      "current_balance": 191.72,
+      "last_updated": "20260515"
+    },
+    "62573": {
+      "room_name": "戊512",
+      "current_balance": 24.8,
+      "last_updated": "20260515"
+    },
+    "58243": {
+      "room_name": "戊509",
+      "current_balance": 195.42,
+      "last_updated": "20260515"
+    },
+    "48222": {
+      "room_name": "戊603",
+      "current_balance": 24.4,
+      "last_updated": "20260515"
+    },
+    "70671": {
+      "room_name": "戊613",
+      "current_balance": 39.32,
+      "last_updated": "20260515"
+    },
+    "61359": {
+      "room_name": "戊509",
+      "current_balance": 195.42,
+      "last_updated": "20260515"
+    },
+    "27119": {
+      "room_name": "戊304",
+      "current_balance": 263.66,
+      "last_updated": "20260515"
+    },
+    "52961": {
+      "room_name": "戊401",
+      "current_balance": 130.76,
+      "last_updated": "20260515"
+    },
+    "44429": {
+      "room_name": "戊510",
+      "current_balance": 68.56,
+      "last_updated": "20260515"
+    },
+    "60110": {
+      "room_name": "戊607",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "72506": {
+      "room_name": "戊601",
+      "current_balance": 34.43,
+      "last_updated": "20260515"
+    },
+    "68987": {
+      "room_name": "戊506",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "92402": {
+      "room_name": "戊514",
+      "current_balance": 40.98,
+      "last_updated": "20260515"
+    },
+    "60141": {
+      "room_name": "戊412",
+      "current_balance": 598.03,
+      "last_updated": "20260515"
+    },
+    "26081": {
+      "room_name": "戊406",
+      "current_balance": 63.17,
+      "last_updated": "20260515"
+    },
+    "59385": {
+      "room_name": "戊611",
+      "current_balance": 217.01,
+      "last_updated": "20260515"
+    },
+    "25955": {
+      "room_name": "戊405",
+      "current_balance": 38.96,
+      "last_updated": "20260515"
+    },
+    "30389": {
+      "room_name": "戊306",
+      "current_balance": 4.31,
+      "last_updated": "20260515"
+    },
+    "57313": {
+      "room_name": "戊511",
+      "current_balance": 41.0,
+      "last_updated": "20260515"
+    },
+    "59607": {
+      "room_name": "戊605",
+      "current_balance": 273.84,
+      "last_updated": "20260515"
+    },
+    "43950": {
+      "room_name": "戊310",
+      "current_balance": 79.13,
+      "last_updated": "20260515"
+    },
+    "60470": {
+      "room_name": "戊403",
+      "current_balance": 273.92,
+      "last_updated": "20260515"
+    },
+    "41648": {
+      "room_name": "戊307",
+      "current_balance": 191.72,
+      "last_updated": "20260515"
+    },
+    "61573": {
+      "room_name": "戊601",
+      "current_balance": 34.43,
+      "last_updated": "20260515"
+    },
+    "43186": {
+      "room_name": "戊609",
+      "current_balance": 267.84,
+      "last_updated": "20260515"
+    },
+    "58273": {
+      "room_name": "戊413",
+      "current_balance": 15.08,
+      "last_updated": "20260515"
+    },
+    "37932": {
+      "room_name": "戊404",
+      "current_balance": 114.32,
+      "last_updated": "20260515"
+    },
+    "58268": {
+      "room_name": "戊512",
+      "current_balance": 24.8,
+      "last_updated": "20260515"
+    },
+    "23413": {
+      "room_name": "戊302",
+      "current_balance": 14.95,
+      "last_updated": "20260515"
+    },
+    "57836": {
+      "room_name": "戊401",
+      "current_balance": 130.76,
+      "last_updated": "20260515"
+    },
+    "59424": {
+      "room_name": "戊610",
+      "current_balance": 91.22,
+      "last_updated": "20260515"
+    },
+    "69406": {
+      "room_name": "戊409",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "23491": {
+      "room_name": "戊301",
+      "current_balance": 47.6,
+      "last_updated": "20260515"
+    },
+    "72386": {
+      "room_name": "戊405",
+      "current_balance": 39.06,
+      "last_updated": "20260515"
+    },
+    "54687": {
+      "room_name": "戊602",
+      "current_balance": 97.55,
+      "last_updated": "20260515"
+    },
+    "62407": {
+      "room_name": "戊614",
+      "current_balance": 43.9,
+      "last_updated": "20260515"
+    },
+    "23656": {
+      "room_name": "戊303",
+      "current_balance": 372.56,
+      "last_updated": "20260515"
+    },
+    "59517": {
+      "room_name": "戊514",
+      "current_balance": 40.99,
+      "last_updated": "20260515"
+    },
+    "59341": {
+      "room_name": "戊409",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "59730": {
+      "room_name": "戊610",
+      "current_balance": 91.22,
+      "last_updated": "20260515"
+    },
+    "23399": {
+      "room_name": "戊302",
+      "current_balance": 14.95,
+      "last_updated": "20260515"
+    },
+    "59413": {
+      "room_name": "戊614",
+      "current_balance": 43.9,
+      "last_updated": "20260515"
+    },
+    "53304": {
+      "room_name": "戊406",
+      "current_balance": 63.21,
+      "last_updated": "20260515"
+    },
+    "26258": {
+      "room_name": "戊305",
+      "current_balance": 82.92,
+      "last_updated": "20260515"
+    },
+    "71223": {
+      "room_name": "戊411",
+      "current_balance": 13.09,
+      "last_updated": "20260515"
+    },
+    "68301": {
+      "room_name": "戊413",
+      "current_balance": 15.08,
+      "last_updated": "20260515"
+    },
+    "43018": {
+      "room_name": "戊310",
+      "current_balance": 79.13,
+      "last_updated": "20260515"
+    },
+    "33432": {
+      "room_name": "戊308",
+      "current_balance": 36.49,
+      "last_updated": "20260515"
+    },
+    "16587": {
+      "room_name": "戊408",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "59083": {
+      "room_name": "戊411",
+      "current_balance": 13.07,
+      "last_updated": "20260515"
+    },
+    "50579": {
+      "room_name": "戊512",
+      "current_balance": 24.8,
+      "last_updated": "20260515"
+    },
+    "53381": {
+      "room_name": "戊505",
+      "current_balance": 104.61,
+      "last_updated": "20260515"
+    },
+    "39825": {
+      "room_name": "戊302",
+      "current_balance": 14.95,
+      "last_updated": "20260515"
+    },
+    "63013": {
+      "room_name": "戊602",
+      "current_balance": 97.55,
+      "last_updated": "20260515"
+    },
+    "60196": {
+      "room_name": "戊603",
+      "current_balance": 24.4,
+      "last_updated": "20260515"
+    },
+    "61025": {
+      "room_name": "戊611",
+      "current_balance": 217.01,
+      "last_updated": "20260515"
+    },
+    "58104": {
+      "room_name": "戊603",
+      "current_balance": 24.4,
+      "last_updated": "20260515"
+    },
+    "95363": {
+      "room_name": "戊407",
+      "current_balance": 449.13,
+      "last_updated": "20260515"
+    },
+    "34374": {
+      "room_name": "戊405",
+      "current_balance": 38.96,
+      "last_updated": "20260515"
+    },
+    "53452": {
+      "room_name": "戊402",
+      "current_balance": 132.3,
+      "last_updated": "20260515"
+    },
+    "53465": {
+      "room_name": "戊504",
+      "current_balance": 441.73,
+      "last_updated": "20260515"
+    },
+    "59540": {
+      "room_name": "戊609",
+      "current_balance": 267.85,
+      "last_updated": "20260515"
+    },
+    "64917": {
+      "room_name": "戊604",
+      "current_balance": 342.33,
+      "last_updated": "20260515"
+    },
+    "59010": {
+      "room_name": "戊613",
+      "current_balance": 39.31,
+      "last_updated": "20260515"
+    },
+    "59026": {
+      "room_name": "戊613",
+      "current_balance": 39.31,
+      "last_updated": "20260515"
+    },
+    "39824": {
+      "room_name": "戊302",
+      "current_balance": 15.08,
+      "last_updated": "20260515"
+    },
+    "23697": {
+      "room_name": "戊304",
+      "current_balance": 263.66,
+      "last_updated": "20260515"
+    },
+    "67890": {
+      "room_name": "戊409",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "59729": {
+      "room_name": "戊610",
+      "current_balance": 91.22,
+      "last_updated": "20260515"
+    },
+    "95626": {
+      "room_name": "戊505",
+      "current_balance": 104.61,
+      "last_updated": "20260515"
+    },
+    "59546": {
+      "room_name": "戊609",
+      "current_balance": 267.85,
+      "last_updated": "20260515"
+    },
+    "47681": {
+      "room_name": "戊503",
+      "current_balance": 326.19,
+      "last_updated": "20260515"
+    },
+    "51563": {
+      "room_name": "戊406",
+      "current_balance": 63.21,
+      "last_updated": "20260515"
+    },
+    "45169": {
+      "room_name": "戊510",
+      "current_balance": 68.56,
+      "last_updated": "20260515"
+    },
+    "68965": {
+      "room_name": "戊506",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "54684": {
+      "room_name": "戊601",
+      "current_balance": 34.43,
+      "last_updated": "20260515"
+    },
+    "58824": {
+      "room_name": "戊608",
+      "current_balance": 23.0,
+      "last_updated": "20260515"
+    },
+    "92663": {
+      "room_name": "戊602",
+      "current_balance": 97.54,
+      "last_updated": "20260515"
+    },
+    "53259": {
+      "room_name": "戊404",
+      "current_balance": 114.35,
+      "last_updated": "20260515"
+    },
+    "59466": {
+      "room_name": "戊612",
+      "current_balance": 300.15,
+      "last_updated": "20260515"
+    },
+    "43976": {
+      "room_name": "戊309",
+      "current_balance": 490.87,
+      "last_updated": "20260515"
+    },
+    "39047": {
+      "room_name": "戊502",
+      "current_balance": 369.4,
+      "last_updated": "20260515"
+    },
+    "51647": {
+      "room_name": "戊504",
+      "current_balance": 441.73,
+      "last_updated": "20260515"
+    },
+    "37875": {
+      "room_name": "戊501",
+      "current_balance": 62.81,
+      "last_updated": "20260515"
+    },
+    "59697": {
+      "room_name": "戊513",
+      "current_balance": 15.67,
+      "last_updated": "20260515"
+    },
+    "61916": {
+      "room_name": "戊606",
+      "current_balance": 109.47,
+      "last_updated": "20260515"
+    },
+    "53446": {
+      "room_name": "戊401",
+      "current_balance": 130.76,
+      "last_updated": "20260515"
+    },
+    "26579": {
+      "room_name": "戊410",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "39238": {
+      "room_name": "戊306",
+      "current_balance": 4.31,
+      "last_updated": "20260515"
+    },
+    "74415": {
+      "room_name": "戊411",
+      "current_balance": 13.07,
+      "last_updated": "20260515"
+    },
+    "59256": {
+      "room_name": "戊605",
+      "current_balance": 273.84,
+      "last_updated": "20260515"
+    },
+    "59307": {
+      "room_name": "戊604",
+      "current_balance": 342.33,
+      "last_updated": "20260515"
+    },
+    "28140": {
+      "room_name": "戊306",
+      "current_balance": 4.31,
+      "last_updated": "20260515"
+    },
+    "61934": {
+      "room_name": "戊606",
+      "current_balance": 109.47,
+      "last_updated": "20260515"
+    },
+    "23389": {
+      "room_name": "戊303",
+      "current_balance": 372.56,
+      "last_updated": "20260515"
+    },
+    "59621": {
+      "room_name": "戊602",
+      "current_balance": 97.54,
+      "last_updated": "20260515"
+    },
+    "54940": {
+      "room_name": "戊514",
+      "current_balance": 40.99,
+      "last_updated": "20260515"
+    },
+    "43097": {
+      "room_name": "戊403",
+      "current_balance": 273.92,
+      "last_updated": "20260515"
+    },
+    "61347": {
+      "room_name": "戊509",
+      "current_balance": 195.42,
+      "last_updated": "20260515"
+    },
+    "69893": {
+      "room_name": "戊607",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "60309": {
+      "room_name": "戊513",
+      "current_balance": 15.69,
+      "last_updated": "20260515"
+    },
+    "53291": {
+      "room_name": "戊408",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "59308": {
+      "room_name": "戊604",
+      "current_balance": 342.33,
+      "last_updated": "20260515"
+    },
+    "62024": {
+      "room_name": "戊605",
+      "current_balance": 273.84,
+      "last_updated": "20260515"
+    },
+    "63599": {
+      "room_name": "戊409",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "59306": {
+      "room_name": "戊604",
+      "current_balance": 342.33,
+      "last_updated": "20260515"
+    },
+    "68224": {
+      "room_name": "戊408",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "54570": {
+      "room_name": "戊310",
+      "current_balance": 79.21,
+      "last_updated": "20260515"
+    },
+    "62495": {
+      "room_name": "戊609",
+      "current_balance": 267.86,
+      "last_updated": "20260515"
+    },
+    "39415": {
+      "room_name": "戊308",
+      "current_balance": 36.49,
+      "last_updated": "20260515"
+    },
+    "59064": {
+      "room_name": "戊607",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "71762": {
+      "room_name": "戊612",
+      "current_balance": 300.15,
+      "last_updated": "20260515"
+    },
+    "56143": {
+      "room_name": "戊405",
+      "current_balance": 39.06,
+      "last_updated": "20260515"
+    },
+    "43040": {
+      "room_name": "戊309",
+      "current_balance": 490.87,
+      "last_updated": "20260515"
+    },
+    "66320": {
+      "room_name": "戊612",
+      "current_balance": 300.15,
+      "last_updated": "20260515"
+    },
+    "93752": {
+      "room_name": "戊408",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "24760": {
+      "room_name": "戊501",
+      "current_balance": 62.81,
+      "last_updated": "20260515"
+    },
+    "23468": {
+      "room_name": "戊301",
+      "current_balance": 47.6,
+      "last_updated": "20260515"
+    },
+    "59606": {
+      "room_name": "戊608",
+      "current_balance": 23.0,
+      "last_updated": "20260515"
+    },
+    "62804": {
+      "room_name": "戊606",
+      "current_balance": 109.47,
+      "last_updated": "20260515"
+    },
+    "60530": {
+      "room_name": "戊604",
+      "current_balance": 342.33,
+      "last_updated": "20260515"
+    },
+    "68966": {
+      "room_name": "戊411",
+      "current_balance": 13.07,
+      "last_updated": "20260515"
+    },
+    "34498": {
+      "room_name": "戊304",
+      "current_balance": 263.66,
+      "last_updated": "20260515"
+    },
+    "63928": {
+      "room_name": "戊614",
+      "current_balance": 43.9,
+      "last_updated": "20260515"
+    }
+  }
+}

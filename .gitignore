@@ -26,9 +26,20 @@ ENV/
 env/
 
 # Project-specific
-database/
-logs/
-*.log
+# Persist summaries in Git, but ignore raw daily data
+database/仙林校区/
+database/鼓楼校区/
+database/浦口校区/
+database/苏州校区/
+database/archives/
+logs/query_runs/
+
+# Keep summaries (this is the data we commit)
+!database/summaries/
+
+# Only ignore temporary database files
+database/*.tmp
+database/*.temp
 
 # Temporary files
 *.tmp

@@ -1,0 +1,2332 @@
+{
+  "building": "13栋宿舍",
+  "campus": "浦口校区",
+  "total_rooms": 465,
+  "rooms": {
+    "47801": {
+      "room_name": "308",
+      "current_balance": 330.2,
+      "last_updated": "20260515"
+    },
+    "21437": {
+      "room_name": "212",
+      "current_balance": 139.1,
+      "last_updated": "20260515"
+    },
+    "17121": {
+      "room_name": "515",
+      "current_balance": 167.3,
+      "last_updated": "20260515"
+    },
+    "27208": {
+      "room_name": "602",
+      "current_balance": 39.9,
+      "last_updated": "20260515"
+    },
+    "39536": {
+      "room_name": "211",
+      "current_balance": 27.9,
+      "last_updated": "20260515"
+    },
+    "91292": {
+      "room_name": "609",
+      "current_balance": 67.9,
+      "last_updated": "20260515"
+    },
+    "88474": {
+      "room_name": "224",
+      "current_balance": 29.3,
+      "last_updated": "20260515"
+    },
+    "37216": {
+      "room_name": "412",
+      "current_balance": 129.0,
+      "last_updated": "20260515"
+    },
+    "16583": {
+      "room_name": "213",
+      "current_balance": 111.8,
+      "last_updated": "20260515"
+    },
+    "89012": {
+      "room_name": "605",
+      "current_balance": 29.3,
+      "last_updated": "20260515"
+    },
+    "26384": {
+      "room_name": "511",
+      "current_balance": 328.4,
+      "last_updated": "20260515"
+    },
+    "88800": {
+      "room_name": "106",
+      "current_balance": 17.5,
+      "last_updated": "20260515"
+    },
+    "25904": {
+      "room_name": "508",
+      "current_balance": 15.1,
+      "last_updated": "20260515"
+    },
+    "89657": {
+      "room_name": "407",
+      "current_balance": 18.5,
+      "last_updated": "20260515"
+    },
+    "58722": {
+      "room_name": "326",
+      "current_balance": 28.3,
+      "last_updated": "20260515"
+    },
+    "58295": {
+      "room_name": "320",
+      "current_balance": 5.2,
+      "last_updated": "20260515"
+    },
+    "26314": {
+      "room_name": "307",
+      "current_balance": 119.8,
+      "last_updated": "20260515"
+    },
+    "40351": {
+      "room_name": "323",
+      "current_balance": 3.3,
+      "last_updated": "20260515"
+    },
+    "26080": {
+      "room_name": "420",
+      "current_balance": 134.2,
+      "last_updated": "20260515"
+    },
+    "22921": {
+      "room_name": "407",
+      "current_balance": 18.5,
+      "last_updated": "20260515"
+    },
+    "24535": {
+      "room_name": "418",
+      "current_balance": 50.1,
+      "last_updated": "20260515"
+    },
+    "26381": {
+      "room_name": "109",
+      "current_balance": 32.6,
+      "last_updated": "20260515"
+    },
+    "95971": {
+      "room_name": "616",
+      "current_balance": 48.1,
+      "last_updated": "20260515"
+    },
+    "18450": {
+      "room_name": "621",
+      "current_balance": 102.1,
+      "last_updated": "20260515"
+    },
+    "25912": {
+      "room_name": "522",
+      "current_balance": 183.6,
+      "last_updated": "20260515"
+    },
+    "26438": {
+      "room_name": "517",
+      "current_balance": 138.2,
+      "last_updated": "20260515"
+    },
+    "23787": {
+      "room_name": "418",
+      "current_balance": 50.1,
+      "last_updated": "20260515"
+    },
+    "89041": {
+      "room_name": "216",
+      "current_balance": 165.6,
+      "last_updated": "20260515"
+    },
+    "92002": {
+      "room_name": "204",
+      "current_balance": 74.6,
+      "last_updated": "20260515"
+    },
+    "25965": {
+      "room_name": "110",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "43422": {
+      "room_name": "219",
+      "current_balance": 18.6,
+      "last_updated": "20260515"
+    },
+    "88801": {
+      "room_name": "106",
+      "current_balance": 17.5,
+      "last_updated": "20260515"
+    },
+    "50161": {
+      "room_name": "315",
+      "current_balance": 45.1,
+      "last_updated": "20260515"
+    },
+    "20034": {
+      "room_name": "410",
+      "current_balance": 69.9,
+      "last_updated": "20260515"
+    },
+    "84486": {
+      "room_name": "406",
+      "current_balance": 189.1,
+      "last_updated": "20260515"
+    },
+    "73268": {
+      "room_name": "616",
+      "current_balance": 48.1,
+      "last_updated": "20260515"
+    },
+    "27999": {
+      "room_name": "304",
+      "current_balance": 67.7,
+      "last_updated": "20260515"
+    },
+    "50126": {
+      "room_name": "402",
+      "current_balance": 306.7,
+      "last_updated": "20260515"
+    },
+    "92628": {
+      "room_name": "211",
+      "current_balance": 27.9,
+      "last_updated": "20260515"
+    },
+    "26371": {
+      "room_name": "609",
+      "current_balance": 67.9,
+      "last_updated": "20260515"
+    },
+    "27082": {
+      "room_name": "516",
+      "current_balance": 31.8,
+      "last_updated": "20260515"
+    },
+    "26348": {
+      "room_name": "513",
+      "current_balance": 108.3,
+      "last_updated": "20260515"
+    },
+    "31062": {
+      "room_name": "618",
+      "current_balance": 27.1,
+      "last_updated": "20260515"
+    },
+    "25088": {
+      "room_name": "413",
+      "current_balance": 174.4,
+      "last_updated": "20260515"
+    },
+    "21942": {
+      "room_name": "220",
+      "current_balance": 72.7,
+      "last_updated": "20260515"
+    },
+    "89505": {
+      "room_name": "108",
+      "current_balance": 140.0,
+      "last_updated": "20260515"
+    },
+    "90282": {
+      "room_name": "212",
+      "current_balance": 139.1,
+      "last_updated": "20260515"
+    },
+    "97745": {
+      "room_name": "220",
+      "current_balance": 72.7,
+      "last_updated": "20260515"
+    },
+    "92373": {
+      "room_name": "608",
+      "current_balance": 116.8,
+      "last_updated": "20260515"
+    },
+    "89524": {
+      "room_name": "221",
+      "current_balance": 23.3,
+      "last_updated": "20260515"
+    },
+    "90436": {
+      "room_name": "221",
+      "current_balance": 23.3,
+      "last_updated": "20260515"
+    },
+    "11984": {
+      "room_name": "209",
+      "current_balance": 6.9,
+      "last_updated": "20260515"
+    },
+    "49904": {
+      "room_name": "317",
+      "current_balance": 18.9,
+      "last_updated": "20260515"
+    },
+    "28001": {
+      "room_name": "512",
+      "current_balance": 1.7,
+      "last_updated": "20260515"
+    },
+    "74833": {
+      "room_name": "310",
+      "current_balance": 94.9,
+      "last_updated": "20260515"
+    },
+    "92504": {
+      "room_name": "405",
+      "current_balance": 110.0,
+      "last_updated": "20260515"
+    },
+    "25767": {
+      "room_name": "413",
+      "current_balance": 174.4,
+      "last_updated": "20260515"
+    },
+    "90126": {
+      "room_name": "106",
+      "current_balance": 17.5,
+      "last_updated": "20260515"
+    },
+    "26023": {
+      "room_name": "121",
+      "current_balance": 68.9,
+      "last_updated": "20260515"
+    },
+    "27123": {
+      "room_name": "518",
+      "current_balance": 80.9,
+      "last_updated": "20260515"
+    },
+    "37339": {
+      "room_name": "514",
+      "current_balance": 16.6,
+      "last_updated": "20260515"
+    },
+    "25752": {
+      "room_name": "505",
+      "current_balance": 85.7,
+      "last_updated": "20260515"
+    },
+    "22443": {
+      "room_name": "424",
+      "current_balance": 129.3,
+      "last_updated": "20260515"
+    },
+    "39514": {
+      "room_name": "210",
+      "current_balance": 77.3,
+      "last_updated": "20260515"
+    },
+    "63436": {
+      "room_name": "201",
+      "current_balance": 23.9,
+      "last_updated": "20260515"
+    },
+    "19014": {
+      "room_name": "428",
+      "current_balance": 34.2,
+      "last_updated": "20260515"
+    },
+    "89360": {
+      "room_name": "628",
+      "current_balance": 21.2,
+      "last_updated": "20260515"
+    },
+    "68343": {
+      "room_name": "316",
+      "current_balance": 91.2,
+      "last_updated": "20260515"
+    },
+    "27197": {
+      "room_name": "506",
+      "current_balance": 153.3,
+      "last_updated": "20260515"
+    },
+    "57868": {
+      "room_name": "307",
+      "current_balance": 119.8,
+      "last_updated": "20260515"
+    },
+    "27988": {
+      "room_name": "423",
+      "current_balance": 39.4,
+      "last_updated": "20260515"
+    },
+    "35099": {
+      "room_name": "504",
+      "current_balance": 0.5,
+      "last_updated": "20260515"
+    },
+    "88814": {
+      "room_name": "206",
+      "current_balance": 31.0,
+      "last_updated": "20260515"
+    },
+    "49817": {
+      "room_name": "614",
+      "current_balance": 296.7,
+      "last_updated": "20260515"
+    },
+    "74623": {
+      "room_name": "612",
+      "current_balance": 88.8,
+      "last_updated": "20260515"
+    },
+    "26347": {
+      "room_name": "614",
+      "current_balance": 296.7,
+      "last_updated": "20260515"
+    },
+    "89449": {
+      "room_name": "627",
+      "current_balance": 12.5,
+      "last_updated": "20260515"
+    },
+    "25792": {
+      "room_name": "411",
+      "current_balance": 26.7,
+      "last_updated": "20260515"
+    },
+    "91161": {
+      "room_name": "409",
+      "current_balance": 71.3,
+      "last_updated": "20260515"
+    },
+    "92156": {
+      "room_name": "213",
+      "current_balance": 111.8,
+      "last_updated": "20260515"
+    },
+    "77267": {
+      "room_name": "610",
+      "current_balance": 43.8,
+      "last_updated": "20260515"
+    },
+    "89582": {
+      "room_name": "201",
+      "current_balance": 23.9,
+      "last_updated": "20260515"
+    },
+    "82069": {
+      "room_name": "613",
+      "current_balance": 97.6,
+      "last_updated": "20260515"
+    },
+    "33846": {
+      "room_name": "406",
+      "current_balance": 189.1,
+      "last_updated": "20260515"
+    },
+    "93800": {
+      "room_name": "105",
+      "current_balance": 32.3,
+      "last_updated": "20260515"
+    },
+    "25728": {
+      "room_name": "118",
+      "current_balance": 21.6,
+      "last_updated": "20260515"
+    },
+    "89288": {
+      "room_name": "406",
+      "current_balance": 189.1,
+      "last_updated": "20260515"
+    },
+    "51438": {
+      "room_name": "316",
+      "current_balance": 91.2,
+      "last_updated": "20260515"
+    },
+    "82313": {
+      "room_name": "216",
+      "current_balance": 165.6,
+      "last_updated": "20260515"
+    },
+    "62548": {
+      "room_name": "407",
+      "current_balance": 18.5,
+      "last_updated": "20260515"
+    },
+    "26071": {
+      "room_name": "615",
+      "current_balance": 401.4,
+      "last_updated": "20260515"
+    },
+    "25972": {
+      "room_name": "512",
+      "current_balance": 1.7,
+      "last_updated": "20260515"
+    },
+    "41577": {
+      "room_name": "617",
+      "current_balance": 303.8,
+      "last_updated": "20260515"
+    },
+    "26120": {
+      "room_name": "301",
+      "current_balance": 10.9,
+      "last_updated": "20260515"
+    },
+    "39202": {
+      "room_name": "105",
+      "current_balance": 32.3,
+      "last_updated": "20260515"
+    },
+    "27386": {
+      "room_name": "619",
+      "current_balance": 76.9,
+      "last_updated": "20260515"
+    },
+    "37500": {
+      "room_name": "419",
+      "current_balance": 14.5,
+      "last_updated": "20260515"
+    },
+    "27223": {
+      "room_name": "519",
+      "current_balance": 9.5,
+      "last_updated": "20260515"
+    },
+    "88948": {
+      "room_name": "606",
+      "current_balance": 9.3,
+      "last_updated": "20260515"
+    },
+    "19027": {
+      "room_name": "503",
+      "current_balance": 151.9,
+      "last_updated": "20260515"
+    },
+    "19718": {
+      "room_name": "502",
+      "current_balance": 70.2,
+      "last_updated": "20260515"
+    },
+    "88015": {
+      "room_name": "520",
+      "current_balance": 3.6,
+      "last_updated": "20260515"
+    },
+    "25932": {
+      "room_name": "120",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "26229": {
+      "room_name": "412",
+      "current_balance": 129.0,
+      "last_updated": "20260515"
+    },
+    "25840": {
+      "room_name": "305",
+      "current_balance": 61.6,
+      "last_updated": "20260515"
+    },
+    "70718": {
+      "room_name": "320",
+      "current_balance": 5.2,
+      "last_updated": "20260515"
+    },
+    "16396": {
+      "room_name": "416",
+      "current_balance": 163.4,
+      "last_updated": "20260515"
+    },
+    "37507": {
+      "room_name": "419",
+      "current_balance": 14.5,
+      "last_updated": "20260515"
+    },
+    "19822": {
+      "room_name": "208",
+      "current_balance": 49.2,
+      "last_updated": "20260515"
+    },
+    "50623": {
+      "room_name": "321",
+      "current_balance": 114.9,
+      "last_updated": "20260515"
+    },
+    "26063": {
+      "room_name": "415",
+      "current_balance": 166.3,
+      "last_updated": "20260515"
+    },
+    "26649": {
+      "room_name": "527",
+      "current_balance": 105.1,
+      "last_updated": "20260515"
+    },
+    "25705": {
+      "room_name": "416",
+      "current_balance": 163.4,
+      "last_updated": "20260515"
+    },
+    "35979": {
+      "room_name": "401",
+      "current_balance": 230.3,
+      "last_updated": "20260515"
+    },
+    "94374": {
+      "room_name": "209",
+      "current_balance": 6.9,
+      "last_updated": "20260515"
+    },
+    "26328": {
+      "room_name": "502",
+      "current_balance": 70.2,
+      "last_updated": "20260515"
+    },
+    "61005": {
+      "room_name": "325",
+      "current_balance": 292.5,
+      "last_updated": "20260515"
+    },
+    "95172": {
+      "room_name": "628",
+      "current_balance": 21.2,
+      "last_updated": "20260515"
+    },
+    "26067": {
+      "room_name": "621",
+      "current_balance": 102.1,
+      "last_updated": "20260515"
+    },
+    "27207": {
+      "room_name": "603",
+      "current_balance": 404.7,
+      "last_updated": "20260515"
+    },
+    "91110": {
+      "room_name": "206",
+      "current_balance": 31.0,
+      "last_updated": "20260515"
+    },
+    "23476": {
+      "room_name": "106",
+      "current_balance": 17.5,
+      "last_updated": "20260515"
+    },
+    "66577": {
+      "room_name": "216",
+      "current_balance": 165.6,
+      "last_updated": "20260515"
+    },
+    "94779": {
+      "room_name": "510",
+      "current_balance": 15.3,
+      "last_updated": "20260515"
+    },
+    "26695": {
+      "room_name": "302",
+      "current_balance": 70.9,
+      "last_updated": "20260515"
+    },
+    "50131": {
+      "room_name": "226",
+      "current_balance": 3.9,
+      "last_updated": "20260515"
+    },
+    "70514": {
+      "room_name": "221",
+      "current_balance": 23.3,
+      "last_updated": "20260515"
+    },
+    "34891": {
+      "room_name": "318",
+      "current_balance": 130.0,
+      "last_updated": "20260515"
+    },
+    "26273": {
+      "room_name": "610",
+      "current_balance": 43.8,
+      "last_updated": "20260515"
+    },
+    "26394": {
+      "room_name": "507",
+      "current_balance": 246.9,
+      "last_updated": "20260515"
+    },
+    "50443": {
+      "room_name": "324",
+      "current_balance": 51.1,
+      "last_updated": "20260515"
+    },
+    "74302": {
+      "room_name": "611",
+      "current_balance": 113.9,
+      "last_updated": "20260515"
+    },
+    "25923": {
+      "room_name": "114",
+      "current_balance": 473.3,
+      "last_updated": "20260515"
+    },
+    "89700": {
+      "room_name": "213",
+      "current_balance": 111.8,
+      "last_updated": "20260515"
+    },
+    "25872": {
+      "room_name": "128",
+      "current_balance": 39.5,
+      "last_updated": "20260515"
+    },
+    "27004": {
+      "room_name": "526",
+      "current_balance": 76.8,
+      "last_updated": "20260515"
+    },
+    "41050": {
+      "room_name": "221",
+      "current_balance": 23.3,
+      "last_updated": "20260515"
+    },
+    "89362": {
+      "room_name": "405",
+      "current_balance": 110.0,
+      "last_updated": "20260515"
+    },
+    "26810": {
+      "room_name": "323",
+      "current_balance": 3.3,
+      "last_updated": "20260515"
+    },
+    "91681": {
+      "room_name": "207",
+      "current_balance": 31.5,
+      "last_updated": "20260515"
+    },
+    "78220": {
+      "room_name": "409",
+      "current_balance": 71.3,
+      "last_updated": "20260515"
+    },
+    "88655": {
+      "room_name": "204",
+      "current_balance": 74.6,
+      "last_updated": "20260515"
+    },
+    "41613": {
+      "room_name": "509",
+      "current_balance": 289.5,
+      "last_updated": "20260515"
+    },
+    "47613": {
+      "room_name": "213",
+      "current_balance": 111.8,
+      "last_updated": "20260515"
+    },
+    "21762": {
+      "room_name": "212",
+      "current_balance": 139.1,
+      "last_updated": "20260515"
+    },
+    "66576": {
+      "room_name": "216",
+      "current_balance": 165.6,
+      "last_updated": "20260515"
+    },
+    "35543": {
+      "room_name": "622",
+      "current_balance": 38.4,
+      "last_updated": "20260515"
+    },
+    "25831": {
+      "room_name": "126",
+      "current_balance": 76.3,
+      "last_updated": "20260515"
+    },
+    "27244": {
+      "room_name": "515",
+      "current_balance": 167.3,
+      "last_updated": "20260515"
+    },
+    "72666": {
+      "room_name": "613",
+      "current_balance": 97.6,
+      "last_updated": "20260515"
+    },
+    "26843": {
+      "room_name": "508",
+      "current_balance": 15.1,
+      "last_updated": "20260515"
+    },
+    "35038": {
+      "room_name": "619",
+      "current_balance": 76.9,
+      "last_updated": "20260515"
+    },
+    "31557": {
+      "room_name": "316",
+      "current_balance": 91.2,
+      "last_updated": "20260515"
+    },
+    "25415": {
+      "room_name": "426",
+      "current_balance": 114.8,
+      "last_updated": "20260515"
+    },
+    "89430": {
+      "room_name": "404",
+      "current_balance": 176.2,
+      "last_updated": "20260515"
+    },
+    "26809": {
+      "room_name": "115",
+      "current_balance": 172.0,
+      "last_updated": "20260515"
+    },
+    "89773": {
+      "room_name": "617",
+      "current_balance": 303.8,
+      "last_updated": "20260515"
+    },
+    "49899": {
+      "room_name": "401",
+      "current_balance": 230.3,
+      "last_updated": "20260515"
+    },
+    "60270": {
+      "room_name": "319",
+      "current_balance": 22.4,
+      "last_updated": "20260515"
+    },
+    "26022": {
+      "room_name": "511",
+      "current_balance": 328.4,
+      "last_updated": "20260515"
+    },
+    "89464": {
+      "room_name": "618",
+      "current_balance": 27.1,
+      "last_updated": "20260515"
+    },
+    "25837": {
+      "room_name": "225",
+      "current_balance": 47.7,
+      "last_updated": "20260515"
+    },
+    "22303": {
+      "room_name": "604",
+      "current_balance": 86.0,
+      "last_updated": "20260515"
+    },
+    "26392": {
+      "room_name": "116",
+      "current_balance": 10.3,
+      "last_updated": "20260515"
+    },
+    "50137": {
+      "room_name": "322",
+      "current_balance": 2.4,
+      "last_updated": "20260515"
+    },
+    "25783": {
+      "room_name": "228",
+      "current_balance": 71.5,
+      "last_updated": "20260515"
+    },
+    "91923": {
+      "room_name": "222",
+      "current_balance": 146.7,
+      "last_updated": "20260515"
+    },
+    "92666": {
+      "room_name": "620",
+      "current_balance": 150.4,
+      "last_updated": "20260515"
+    },
+    "14185": {
+      "room_name": "201",
+      "current_balance": 23.9,
+      "last_updated": "20260515"
+    },
+    "41037": {
+      "room_name": "622",
+      "current_balance": 38.4,
+      "last_updated": "20260515"
+    },
+    "23056": {
+      "room_name": "404",
+      "current_balance": 176.2,
+      "last_updated": "20260515"
+    },
+    "89120": {
+      "room_name": "623",
+      "current_balance": 15.1,
+      "last_updated": "20260515"
+    },
+    "91139": {
+      "room_name": "626",
+      "current_balance": 178.2,
+      "last_updated": "20260515"
+    },
+    "37531": {
+      "room_name": "208",
+      "current_balance": 49.2,
+      "last_updated": "20260515"
+    },
+    "25959": {
+      "room_name": "118",
+      "current_balance": 21.6,
+      "last_updated": "20260515"
+    },
+    "35700": {
+      "room_name": "601",
+      "current_balance": 310.8,
+      "last_updated": "20260515"
+    },
+    "97302": {
+      "room_name": "202",
+      "current_balance": 108.8,
+      "last_updated": "20260515"
+    },
+    "89146": {
+      "room_name": "219",
+      "current_balance": 18.6,
+      "last_updated": "20260515"
+    },
+    "42925": {
+      "room_name": "613",
+      "current_balance": 97.6,
+      "last_updated": "20260515"
+    },
+    "25746": {
+      "room_name": "421",
+      "current_balance": 75.5,
+      "last_updated": "20260515"
+    },
+    "17057": {
+      "room_name": "117",
+      "current_balance": 21.0,
+      "last_updated": "20260515"
+    },
+    "25714": {
+      "room_name": "602",
+      "current_balance": 39.9,
+      "last_updated": "20260515"
+    },
+    "27462": {
+      "room_name": "324",
+      "current_balance": 51.1,
+      "last_updated": "20260515"
+    },
+    "89229": {
+      "room_name": "619",
+      "current_balance": 76.9,
+      "last_updated": "20260515"
+    },
+    "23253": {
+      "room_name": "117",
+      "current_balance": 21.0,
+      "last_updated": "20260515"
+    },
+    "26320": {
+      "room_name": "312",
+      "current_balance": 16.1,
+      "last_updated": "20260515"
+    },
+    "26422": {
+      "room_name": "122",
+      "current_balance": 114.8,
+      "last_updated": "20260515"
+    },
+    "85557": {
+      "room_name": "207",
+      "current_balance": 31.5,
+      "last_updated": "20260515"
+    },
+    "93701": {
+      "room_name": "115",
+      "current_balance": 173.1,
+      "last_updated": "20260515"
+    },
+    "87955": {
+      "room_name": "520",
+      "current_balance": 3.6,
+      "last_updated": "20260515"
+    },
+    "26583": {
+      "room_name": "309",
+      "current_balance": 303.5,
+      "last_updated": "20260515"
+    },
+    "25713": {
+      "room_name": "112",
+      "current_balance": 22.0,
+      "last_updated": "20260515"
+    },
+    "14375": {
+      "room_name": "205",
+      "current_balance": 83.9,
+      "last_updated": "20260515"
+    },
+    "25525": {
+      "room_name": "201",
+      "current_balance": 23.9,
+      "last_updated": "20260515"
+    },
+    "23006": {
+      "room_name": "206",
+      "current_balance": 31.0,
+      "last_updated": "20260515"
+    },
+    "43947": {
+      "room_name": "123",
+      "current_balance": 24.9,
+      "last_updated": "20260515"
+    },
+    "23125": {
+      "room_name": "406",
+      "current_balance": 189.1,
+      "last_updated": "20260515"
+    },
+    "91672": {
+      "room_name": "201",
+      "current_balance": 23.9,
+      "last_updated": "20260515"
+    },
+    "27220": {
+      "room_name": "513",
+      "current_balance": 108.3,
+      "last_updated": "20260515"
+    },
+    "27372": {
+      "room_name": "625",
+      "current_balance": 51.2,
+      "last_updated": "20260515"
+    },
+    "23059": {
+      "room_name": "402",
+      "current_balance": 306.7,
+      "last_updated": "20260515"
+    },
+    "58090": {
+      "room_name": "327",
+      "current_balance": 43.1,
+      "last_updated": "20260515"
+    },
+    "90395": {
+      "room_name": "208",
+      "current_balance": 49.2,
+      "last_updated": "20260515"
+    },
+    "78258": {
+      "room_name": "205",
+      "current_balance": 83.9,
+      "last_updated": "20260515"
+    },
+    "63419": {
+      "room_name": "403",
+      "current_balance": 48.9,
+      "last_updated": "20260515"
+    },
+    "28011": {
+      "room_name": "309",
+      "current_balance": 303.5,
+      "last_updated": "20260515"
+    },
+    "26028": {
+      "room_name": "523",
+      "current_balance": 2.9,
+      "last_updated": "20260515"
+    },
+    "77319": {
+      "room_name": "621",
+      "current_balance": 102.1,
+      "last_updated": "20260515"
+    },
+    "25967": {
+      "room_name": "302",
+      "current_balance": 70.9,
+      "last_updated": "20260515"
+    },
+    "64094": {
+      "room_name": "528",
+      "current_balance": 374.6,
+      "last_updated": "20260515"
+    },
+    "24340": {
+      "room_name": "401",
+      "current_balance": 230.3,
+      "last_updated": "20260515"
+    },
+    "23969": {
+      "room_name": "116",
+      "current_balance": 10.3,
+      "last_updated": "20260515"
+    },
+    "90918": {
+      "room_name": "605",
+      "current_balance": 29.3,
+      "last_updated": "20260515"
+    },
+    "63281": {
+      "room_name": "413",
+      "current_balance": 174.4,
+      "last_updated": "20260515"
+    },
+    "38178": {
+      "room_name": "620",
+      "current_balance": 150.4,
+      "last_updated": "20260515"
+    },
+    "89628": {
+      "room_name": "407",
+      "current_balance": 18.5,
+      "last_updated": "20260515"
+    },
+    "30837": {
+      "room_name": "428",
+      "current_balance": 34.2,
+      "last_updated": "20260515"
+    },
+    "90057": {
+      "room_name": "108",
+      "current_balance": 140.0,
+      "last_updated": "20260515"
+    },
+    "25954": {
+      "room_name": "310",
+      "current_balance": 94.9,
+      "last_updated": "20260515"
+    },
+    "37863": {
+      "room_name": "128",
+      "current_balance": 39.5,
+      "last_updated": "20260515"
+    },
+    "34267": {
+      "room_name": "501",
+      "current_balance": 52.0,
+      "last_updated": "20260515"
+    },
+    "89147": {
+      "room_name": "219",
+      "current_balance": 18.6,
+      "last_updated": "20260515"
+    },
+    "39659": {
+      "room_name": "327",
+      "current_balance": 43.1,
+      "last_updated": "20260515"
+    },
+    "28167": {
+      "room_name": "510",
+      "current_balance": 15.3,
+      "last_updated": "20260515"
+    },
+    "27976": {
+      "room_name": "608",
+      "current_balance": 116.8,
+      "last_updated": "20260515"
+    },
+    "26283": {
+      "room_name": "427",
+      "current_balance": 37.2,
+      "last_updated": "20260515"
+    },
+    "89796": {
+      "room_name": "217",
+      "current_balance": 18.8,
+      "last_updated": "20260515"
+    },
+    "39624": {
+      "room_name": "314",
+      "current_balance": 18.1,
+      "last_updated": "20260515"
+    },
+    "25970": {
+      "room_name": "110",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "26026": {
+      "room_name": "604",
+      "current_balance": 86.0,
+      "last_updated": "20260515"
+    },
+    "13778": {
+      "room_name": "217",
+      "current_balance": 18.8,
+      "last_updated": "20260515"
+    },
+    "43124": {
+      "room_name": "201",
+      "current_balance": 23.9,
+      "last_updated": "20260515"
+    },
+    "26015": {
+      "room_name": "618",
+      "current_balance": 27.1,
+      "last_updated": "20260515"
+    },
+    "25734": {
+      "room_name": "503",
+      "current_balance": 151.9,
+      "last_updated": "20260515"
+    },
+    "72951": {
+      "room_name": "611",
+      "current_balance": 113.9,
+      "last_updated": "20260515"
+    },
+    "59987": {
+      "room_name": "226",
+      "current_balance": 3.9,
+      "last_updated": "20260515"
+    },
+    "32397": {
+      "room_name": "522",
+      "current_balance": 183.6,
+      "last_updated": "20260515"
+    },
+    "40360": {
+      "room_name": "328",
+      "current_balance": 17.0,
+      "last_updated": "20260515"
+    },
+    "25827": {
+      "room_name": "517",
+      "current_balance": 138.2,
+      "last_updated": "20260515"
+    },
+    "25951": {
+      "room_name": "518",
+      "current_balance": 80.9,
+      "last_updated": "20260515"
+    },
+    "16965": {
+      "room_name": "520",
+      "current_balance": 2.6,
+      "last_updated": "20260515"
+    },
+    "26307": {
+      "room_name": "312",
+      "current_balance": 16.1,
+      "last_updated": "20260515"
+    },
+    "90743": {
+      "room_name": "203",
+      "current_balance": 52.4,
+      "last_updated": "20260515"
+    },
+    "89544": {
+      "room_name": "104",
+      "current_balance": 98.0,
+      "last_updated": "20260515"
+    },
+    "26893": {
+      "room_name": "507",
+      "current_balance": 246.9,
+      "last_updated": "20260515"
+    },
+    "27997": {
+      "room_name": "314",
+      "current_balance": 18.1,
+      "last_updated": "20260515"
+    },
+    "91109": {
+      "room_name": "202",
+      "current_balance": 108.8,
+      "last_updated": "20260515"
+    },
+    "91309": {
+      "room_name": "625",
+      "current_balance": 51.2,
+      "last_updated": "20260515"
+    },
+    "89775": {
+      "room_name": "606",
+      "current_balance": 9.3,
+      "last_updated": "20260515"
+    },
+    "39722": {
+      "room_name": "623",
+      "current_balance": 15.1,
+      "last_updated": "20260515"
+    },
+    "30660": {
+      "room_name": "324",
+      "current_balance": 51.1,
+      "last_updated": "20260515"
+    },
+    "25741": {
+      "room_name": "617",
+      "current_balance": 303.8,
+      "last_updated": "20260515"
+    },
+    "40211": {
+      "room_name": "223",
+      "current_balance": 30.8,
+      "last_updated": "20260515"
+    },
+    "67032": {
+      "room_name": "408",
+      "current_balance": 270.7,
+      "last_updated": "20260515"
+    },
+    "74116": {
+      "room_name": "123",
+      "current_balance": 24.9,
+      "last_updated": "20260515"
+    },
+    "22695": {
+      "room_name": "427",
+      "current_balance": 37.2,
+      "last_updated": "20260515"
+    },
+    "23659": {
+      "room_name": "527",
+      "current_balance": 105.1,
+      "last_updated": "20260515"
+    },
+    "36152": {
+      "room_name": "319",
+      "current_balance": 22.4,
+      "last_updated": "20260515"
+    },
+    "23976": {
+      "room_name": "308",
+      "current_balance": 330.2,
+      "last_updated": "20260515"
+    },
+    "14588": {
+      "room_name": "224",
+      "current_balance": 29.3,
+      "last_updated": "20260515"
+    },
+    "26166": {
+      "room_name": "520",
+      "current_balance": 2.6,
+      "last_updated": "20260515"
+    },
+    "25005": {
+      "room_name": "108",
+      "current_balance": 140.0,
+      "last_updated": "20260515"
+    },
+    "27226": {
+      "room_name": "605",
+      "current_balance": 29.3,
+      "last_updated": "20260515"
+    },
+    "35500": {
+      "room_name": "626",
+      "current_balance": 178.2,
+      "last_updated": "20260515"
+    },
+    "25736": {
+      "room_name": "218",
+      "current_balance": 101.2,
+      "last_updated": "20260515"
+    },
+    "89696": {
+      "room_name": "211",
+      "current_balance": 27.9,
+      "last_updated": "20260515"
+    },
+    "88352": {
+      "room_name": "410",
+      "current_balance": 69.9,
+      "last_updated": "20260515"
+    },
+    "49887": {
+      "room_name": "328",
+      "current_balance": 17.0,
+      "last_updated": "20260515"
+    },
+    "97119": {
+      "room_name": "514",
+      "current_balance": 16.6,
+      "last_updated": "20260515"
+    },
+    "88799": {
+      "room_name": "222",
+      "current_balance": 146.7,
+      "last_updated": "20260515"
+    },
+    "39910": {
+      "room_name": "220",
+      "current_balance": 72.7,
+      "last_updated": "20260515"
+    },
+    "91728": {
+      "room_name": "408",
+      "current_balance": 270.7,
+      "last_updated": "20260515"
+    },
+    "31024": {
+      "room_name": "327",
+      "current_balance": 43.1,
+      "last_updated": "20260515"
+    },
+    "49889": {
+      "room_name": "315",
+      "current_balance": 45.1,
+      "last_updated": "20260515"
+    },
+    "77281": {
+      "room_name": "625",
+      "current_balance": 51.2,
+      "last_updated": "20260515"
+    },
+    "25806": {
+      "room_name": "111",
+      "current_balance": 23.4,
+      "last_updated": "20260515"
+    },
+    "11593": {
+      "room_name": "203",
+      "current_balance": 52.4,
+      "last_updated": "20260515"
+    },
+    "70569": {
+      "room_name": "119",
+      "current_balance": 135.1,
+      "last_updated": "20260515"
+    },
+    "88960": {
+      "room_name": "212",
+      "current_balance": 139.1,
+      "last_updated": "20260515"
+    },
+    "33411": {
+      "room_name": "414",
+      "current_balance": 59.9,
+      "last_updated": "20260515"
+    },
+    "19841": {
+      "room_name": "227",
+      "current_balance": 161.3,
+      "last_updated": "20260515"
+    },
+    "50642": {
+      "room_name": "323",
+      "current_balance": 3.3,
+      "last_updated": "20260515"
+    },
+    "25744": {
+      "room_name": "524",
+      "current_balance": 125.0,
+      "last_updated": "20260515"
+    },
+    "26443": {
+      "room_name": "105",
+      "current_balance": 32.3,
+      "last_updated": "20260515"
+    },
+    "21848": {
+      "room_name": "405",
+      "current_balance": 110.0,
+      "last_updated": "20260515"
+    },
+    "22384": {
+      "room_name": "313",
+      "current_balance": 15.8,
+      "last_updated": "20260515"
+    },
+    "31226": {
+      "room_name": "415",
+      "current_balance": 166.3,
+      "last_updated": "20260515"
+    },
+    "25789": {
+      "room_name": "603",
+      "current_balance": 404.7,
+      "last_updated": "20260515"
+    },
+    "23003": {
+      "room_name": "616",
+      "current_balance": 48.1,
+      "last_updated": "20260515"
+    },
+    "25822": {
+      "room_name": "501",
+      "current_balance": 52.0,
+      "last_updated": "20260515"
+    },
+    "93791": {
+      "room_name": "223",
+      "current_balance": 30.8,
+      "last_updated": "20260515"
+    },
+    "29567": {
+      "room_name": "425",
+      "current_balance": 334.0,
+      "last_updated": "20260515"
+    },
+    "51619": {
+      "room_name": "325",
+      "current_balance": 292.5,
+      "last_updated": "20260515"
+    },
+    "49907": {
+      "room_name": "317",
+      "current_balance": 18.9,
+      "last_updated": "20260515"
+    },
+    "25727": {
+      "room_name": "422",
+      "current_balance": 16.1,
+      "last_updated": "20260515"
+    },
+    "26236": {
+      "room_name": "609",
+      "current_balance": 67.9,
+      "last_updated": "20260515"
+    },
+    "89675": {
+      "room_name": "224",
+      "current_balance": 29.3,
+      "last_updated": "20260515"
+    },
+    "28114": {
+      "room_name": "615",
+      "current_balance": 401.4,
+      "last_updated": "20260515"
+    },
+    "25999": {
+      "room_name": "411",
+      "current_balance": 26.7,
+      "last_updated": "20260515"
+    },
+    "89945": {
+      "room_name": "208",
+      "current_balance": 49.2,
+      "last_updated": "20260515"
+    },
+    "90388": {
+      "room_name": "223",
+      "current_balance": 30.8,
+      "last_updated": "20260515"
+    },
+    "39213": {
+      "room_name": "203",
+      "current_balance": 52.4,
+      "last_updated": "20260515"
+    },
+    "24015": {
+      "room_name": "325",
+      "current_balance": 292.5,
+      "last_updated": "20260515"
+    },
+    "34244": {
+      "room_name": "303",
+      "current_balance": 503.7,
+      "last_updated": "20260515"
+    },
+    "89605": {
+      "room_name": "205",
+      "current_balance": 83.9,
+      "last_updated": "20260515"
+    },
+    "88785": {
+      "room_name": "408",
+      "current_balance": 270.7,
+      "last_updated": "20260515"
+    },
+    "50067": {
+      "room_name": "402",
+      "current_balance": 306.7,
+      "last_updated": "20260515"
+    },
+    "22885": {
+      "room_name": "326",
+      "current_balance": 28.3,
+      "last_updated": "20260515"
+    },
+    "48087": {
+      "room_name": "610",
+      "current_balance": 43.8,
+      "last_updated": "20260515"
+    },
+    "25945": {
+      "room_name": "526",
+      "current_balance": 76.8,
+      "last_updated": "20260515"
+    },
+    "66883": {
+      "room_name": "322",
+      "current_balance": 2.4,
+      "last_updated": "20260515"
+    },
+    "25729": {
+      "room_name": "601",
+      "current_balance": 310.8,
+      "last_updated": "20260515"
+    },
+    "25745": {
+      "room_name": "524",
+      "current_balance": 125.0,
+      "last_updated": "20260515"
+    },
+    "50335": {
+      "room_name": "403",
+      "current_balance": 48.9,
+      "last_updated": "20260515"
+    },
+    "27205": {
+      "room_name": "507",
+      "current_balance": 246.9,
+      "last_updated": "20260515"
+    },
+    "77278": {
+      "room_name": "220",
+      "current_balance": 72.7,
+      "last_updated": "20260515"
+    },
+    "93437": {
+      "room_name": "615",
+      "current_balance": 401.4,
+      "last_updated": "20260515"
+    },
+    "32039": {
+      "room_name": "624",
+      "current_balance": 127.7,
+      "last_updated": "20260515"
+    },
+    "49840": {
+      "room_name": "327",
+      "current_balance": 43.1,
+      "last_updated": "20260515"
+    },
+    "21786": {
+      "room_name": "108",
+      "current_balance": 140.0,
+      "last_updated": "20260515"
+    },
+    "49812": {
+      "room_name": "318",
+      "current_balance": 130.0,
+      "last_updated": "20260515"
+    },
+    "25793": {
+      "room_name": "606",
+      "current_balance": 9.3,
+      "last_updated": "20260515"
+    },
+    "50234": {
+      "room_name": "319",
+      "current_balance": 22.4,
+      "last_updated": "20260515"
+    },
+    "17846": {
+      "room_name": "304",
+      "current_balance": 67.7,
+      "last_updated": "20260515"
+    },
+    "32990": {
+      "room_name": "627",
+      "current_balance": 12.5,
+      "last_updated": "20260515"
+    },
+    "39099": {
+      "room_name": "402",
+      "current_balance": 306.7,
+      "last_updated": "20260515"
+    },
+    "25873": {
+      "room_name": "417",
+      "current_balance": 18.6,
+      "last_updated": "20260515"
+    },
+    "91507": {
+      "room_name": "220",
+      "current_balance": 72.7,
+      "last_updated": "20260515"
+    },
+    "50233": {
+      "room_name": "319",
+      "current_balance": 22.4,
+      "last_updated": "20260515"
+    },
+    "94177": {
+      "room_name": "104",
+      "current_balance": 98.0,
+      "last_updated": "20260515"
+    },
+    "77312": {
+      "room_name": "622",
+      "current_balance": 38.4,
+      "last_updated": "20260515"
+    },
+    "58495": {
+      "room_name": "326",
+      "current_balance": 28.3,
+      "last_updated": "20260515"
+    },
+    "68003": {
+      "room_name": "107",
+      "current_balance": 102.5,
+      "last_updated": "20260515"
+    },
+    "37368": {
+      "room_name": "121",
+      "current_balance": 68.9,
+      "last_updated": "20260515"
+    },
+    "85508": {
+      "room_name": "324",
+      "current_balance": 51.1,
+      "last_updated": "20260515"
+    },
+    "36329": {
+      "room_name": "301",
+      "current_balance": 10.9,
+      "last_updated": "20260515"
+    },
+    "91632": {
+      "room_name": "215",
+      "current_balance": 141.7,
+      "last_updated": "20260515"
+    },
+    "98673": {
+      "room_name": "612",
+      "current_balance": 88.8,
+      "last_updated": "20260515"
+    },
+    "49881": {
+      "room_name": "316",
+      "current_balance": 91.2,
+      "last_updated": "20260515"
+    },
+    "93768": {
+      "room_name": "618",
+      "current_balance": 27.1,
+      "last_updated": "20260515"
+    },
+    "35736": {
+      "room_name": "611",
+      "current_balance": 113.9,
+      "last_updated": "20260515"
+    },
+    "36483": {
+      "room_name": "421",
+      "current_balance": 75.5,
+      "last_updated": "20260515"
+    },
+    "91142": {
+      "room_name": "607",
+      "current_balance": 29.6,
+      "last_updated": "20260515"
+    },
+    "25782": {
+      "room_name": "413",
+      "current_balance": 174.4,
+      "last_updated": "20260515"
+    },
+    "26512": {
+      "room_name": "608",
+      "current_balance": 116.8,
+      "last_updated": "20260515"
+    },
+    "56498": {
+      "room_name": "422",
+      "current_balance": 16.1,
+      "last_updated": "20260515"
+    },
+    "25909": {
+      "room_name": "127",
+      "current_balance": 290.7,
+      "last_updated": "20260515"
+    },
+    "90684": {
+      "room_name": "610",
+      "current_balance": 43.8,
+      "last_updated": "20260515"
+    },
+    "26090": {
+      "room_name": "214",
+      "current_balance": 180.4,
+      "last_updated": "20260515"
+    },
+    "34066": {
+      "room_name": "313",
+      "current_balance": 15.8,
+      "last_updated": "20260515"
+    },
+    "35089": {
+      "room_name": "506",
+      "current_balance": 153.3,
+      "last_updated": "20260515"
+    },
+    "17889": {
+      "room_name": "311",
+      "current_balance": 2.1,
+      "last_updated": "20260515"
+    },
+    "89490": {
+      "room_name": "510",
+      "current_balance": 15.3,
+      "last_updated": "20260515"
+    },
+    "25725": {
+      "room_name": "303",
+      "current_balance": 503.7,
+      "last_updated": "20260515"
+    },
+    "34916": {
+      "room_name": "315",
+      "current_balance": 45.1,
+      "last_updated": "20260515"
+    },
+    "25275": {
+      "room_name": "516",
+      "current_balance": 31.8,
+      "last_updated": "20260515"
+    },
+    "25754": {
+      "room_name": "125",
+      "current_balance": 15.2,
+      "last_updated": "20260515"
+    },
+    "96702": {
+      "room_name": "214",
+      "current_balance": 180.4,
+      "last_updated": "20260515"
+    },
+    "89677": {
+      "room_name": "425",
+      "current_balance": 334.0,
+      "last_updated": "20260515"
+    },
+    "27863": {
+      "room_name": "125",
+      "current_balance": 15.2,
+      "last_updated": "20260515"
+    },
+    "22946": {
+      "room_name": "404",
+      "current_balance": 176.2,
+      "last_updated": "20260515"
+    },
+    "88351": {
+      "room_name": "215",
+      "current_balance": 141.7,
+      "last_updated": "20260515"
+    },
+    "25850": {
+      "room_name": "126",
+      "current_balance": 76.3,
+      "last_updated": "20260515"
+    },
+    "35483": {
+      "room_name": "409",
+      "current_balance": 71.3,
+      "last_updated": "20260515"
+    },
+    "35531": {
+      "room_name": "111",
+      "current_balance": 23.4,
+      "last_updated": "20260515"
+    },
+    "25802": {
+      "room_name": "218",
+      "current_balance": 101.2,
+      "last_updated": "20260515"
+    },
+    "26091": {
+      "room_name": "214",
+      "current_balance": 180.4,
+      "last_updated": "20260515"
+    },
+    "58492": {
+      "room_name": "323",
+      "current_balance": 3.3,
+      "last_updated": "20260515"
+    },
+    "21318": {
+      "room_name": "228",
+      "current_balance": 71.5,
+      "last_updated": "20260515"
+    },
+    "23967": {
+      "room_name": "321",
+      "current_balance": 114.9,
+      "last_updated": "20260515"
+    },
+    "79065": {
+      "room_name": "505",
+      "current_balance": 85.7,
+      "last_updated": "20260515"
+    },
+    "91182": {
+      "room_name": "410",
+      "current_balance": 69.9,
+      "last_updated": "20260515"
+    },
+    "40785": {
+      "room_name": "614",
+      "current_balance": 296.7,
+      "last_updated": "20260515"
+    },
+    "28112": {
+      "room_name": "119",
+      "current_balance": 135.1,
+      "last_updated": "20260515"
+    },
+    "89606": {
+      "room_name": "209",
+      "current_balance": 6.9,
+      "last_updated": "20260515"
+    },
+    "39158": {
+      "room_name": "420",
+      "current_balance": 134.2,
+      "last_updated": "20260515"
+    },
+    "38003": {
+      "room_name": "207",
+      "current_balance": 31.5,
+      "last_updated": "20260515"
+    },
+    "25726": {
+      "room_name": "523",
+      "current_balance": 2.9,
+      "last_updated": "20260515"
+    },
+    "92626": {
+      "room_name": "219",
+      "current_balance": 18.6,
+      "last_updated": "20260515"
+    },
+    "35395": {
+      "room_name": "113",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "35982": {
+      "room_name": "616",
+      "current_balance": 48.1,
+      "last_updated": "20260515"
+    },
+    "25984": {
+      "room_name": "528",
+      "current_balance": 374.6,
+      "last_updated": "20260515"
+    },
+    "89121": {
+      "room_name": "617",
+      "current_balance": 303.8,
+      "last_updated": "20260515"
+    },
+    "10963": {
+      "room_name": "206",
+      "current_balance": 31.0,
+      "last_updated": "20260515"
+    },
+    "29005": {
+      "room_name": "305",
+      "current_balance": 61.6,
+      "last_updated": "20260515"
+    },
+    "91680": {
+      "room_name": "425",
+      "current_balance": 334.0,
+      "last_updated": "20260515"
+    },
+    "72870": {
+      "room_name": "614",
+      "current_balance": 296.7,
+      "last_updated": "20260515"
+    },
+    "27221": {
+      "room_name": "606",
+      "current_balance": 9.3,
+      "last_updated": "20260515"
+    },
+    "89491": {
+      "room_name": "510",
+      "current_balance": 15.3,
+      "last_updated": "20260515"
+    },
+    "79322": {
+      "room_name": "624",
+      "current_balance": 127.7,
+      "last_updated": "20260515"
+    },
+    "30869": {
+      "room_name": "612",
+      "current_balance": 88.8,
+      "last_updated": "20260515"
+    },
+    "25758": {
+      "room_name": "607",
+      "current_balance": 29.6,
+      "last_updated": "20260515"
+    },
+    "26029": {
+      "room_name": "122",
+      "current_balance": 114.8,
+      "last_updated": "20260515"
+    },
+    "58099": {
+      "room_name": "401",
+      "current_balance": 230.3,
+      "last_updated": "20260515"
+    },
+    "41025": {
+      "room_name": "410",
+      "current_balance": 69.9,
+      "last_updated": "20260515"
+    },
+    "26000": {
+      "room_name": "210",
+      "current_balance": 77.3,
+      "last_updated": "20260515"
+    },
+    "23925": {
+      "room_name": "316",
+      "current_balance": 92.3,
+      "last_updated": "20260515"
+    },
+    "93513": {
+      "room_name": "619",
+      "current_balance": 76.9,
+      "last_updated": "20260515"
+    },
+    "38241": {
+      "room_name": "222",
+      "current_balance": 146.7,
+      "last_updated": "20260515"
+    },
+    "25820": {
+      "room_name": "306",
+      "current_balance": 667.5,
+      "last_updated": "20260515"
+    },
+    "32166": {
+      "room_name": "624",
+      "current_balance": 127.7,
+      "last_updated": "20260515"
+    },
+    "97972": {
+      "room_name": "624",
+      "current_balance": 127.7,
+      "last_updated": "20260515"
+    },
+    "94244": {
+      "room_name": "622",
+      "current_balance": 38.4,
+      "last_updated": "20260515"
+    },
+    "91340": {
+      "room_name": "627",
+      "current_balance": 12.5,
+      "last_updated": "20260515"
+    },
+    "90392": {
+      "room_name": "203",
+      "current_balance": 52.4,
+      "last_updated": "20260515"
+    },
+    "31707": {
+      "room_name": "628",
+      "current_balance": 21.2,
+      "last_updated": "20260515"
+    },
+    "25719": {
+      "room_name": "423",
+      "current_balance": 39.4,
+      "last_updated": "20260515"
+    },
+    "88409": {
+      "room_name": "608",
+      "current_balance": 116.8,
+      "last_updated": "20260515"
+    },
+    "20078": {
+      "room_name": "107",
+      "current_balance": 102.5,
+      "last_updated": "20260515"
+    },
+    "89044": {
+      "room_name": "626",
+      "current_balance": 178.2,
+      "last_updated": "20260515"
+    },
+    "11671": {
+      "room_name": "209",
+      "current_balance": 7.9,
+      "last_updated": "20260515"
+    },
+    "34292": {
+      "room_name": "417",
+      "current_balance": 18.6,
+      "last_updated": "20260515"
+    },
+    "22241": {
+      "room_name": "408",
+      "current_balance": 269.6,
+      "last_updated": "20260515"
+    },
+    "70712": {
+      "room_name": "305",
+      "current_balance": 61.6,
+      "last_updated": "20260515"
+    },
+    "20452": {
+      "room_name": "610",
+      "current_balance": 43.8,
+      "last_updated": "20260515"
+    },
+    "89093": {
+      "room_name": "623",
+      "current_balance": 15.1,
+      "last_updated": "20260515"
+    },
+    "93999": {
+      "room_name": "615",
+      "current_balance": 401.4,
+      "last_updated": "20260515"
+    },
+    "25941": {
+      "room_name": "124",
+      "current_balance": 132.9,
+      "last_updated": "20260515"
+    },
+    "26309": {
+      "room_name": "317",
+      "current_balance": 18.9,
+      "last_updated": "20260515"
+    },
+    "25768": {
+      "room_name": "605",
+      "current_balance": 29.3,
+      "last_updated": "20260515"
+    },
+    "25920": {
+      "room_name": "109",
+      "current_balance": 32.6,
+      "last_updated": "20260515"
+    },
+    "27319": {
+      "room_name": "510",
+      "current_balance": 15.3,
+      "last_updated": "20260515"
+    },
+    "35303": {
+      "room_name": "504",
+      "current_balance": 0.5,
+      "last_updated": "20260515"
+    },
+    "27993": {
+      "room_name": "120",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "57075": {
+      "room_name": "318",
+      "current_balance": 130.0,
+      "last_updated": "20260515"
+    },
+    "25957": {
+      "room_name": "424",
+      "current_balance": 129.3,
+      "last_updated": "20260515"
+    },
+    "89795": {
+      "room_name": "217",
+      "current_balance": 18.8,
+      "last_updated": "20260515"
+    },
+    "26550": {
+      "room_name": "112",
+      "current_balance": 22.0,
+      "last_updated": "20260515"
+    },
+    "37116": {
+      "room_name": "625",
+      "current_balance": 51.2,
+      "last_updated": "20260515"
+    },
+    "26936": {
+      "room_name": "525",
+      "current_balance": 101.8,
+      "last_updated": "20260515"
+    },
+    "36843": {
+      "room_name": "425",
+      "current_balance": 334.0,
+      "last_updated": "20260515"
+    },
+    "25977": {
+      "room_name": "227",
+      "current_balance": 161.3,
+      "last_updated": "20260515"
+    },
+    "23970": {
+      "room_name": "113",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "86963": {
+      "room_name": "509",
+      "current_balance": 289.5,
+      "last_updated": "20260515"
+    },
+    "36913": {
+      "room_name": "623",
+      "current_balance": 15.1,
+      "last_updated": "20260515"
+    },
+    "23032": {
+      "room_name": "326",
+      "current_balance": 28.3,
+      "last_updated": "20260515"
+    },
+    "49859": {
+      "room_name": "328",
+      "current_balance": 17.0,
+      "last_updated": "20260515"
+    },
+    "26293": {
+      "room_name": "519",
+      "current_balance": 9.5,
+      "last_updated": "20260515"
+    },
+    "27203": {
+      "room_name": "607",
+      "current_balance": 29.6,
+      "last_updated": "20260515"
+    },
+    "18203": {
+      "room_name": "405",
+      "current_balance": 110.0,
+      "last_updated": "20260515"
+    },
+    "25371": {
+      "room_name": "124",
+      "current_balance": 132.9,
+      "last_updated": "20260515"
+    },
+    "88918": {
+      "room_name": "621",
+      "current_balance": 102.1,
+      "last_updated": "20260515"
+    },
+    "89092": {
+      "room_name": "623",
+      "current_balance": 15.1,
+      "last_updated": "20260515"
+    },
+    "23002": {
+      "room_name": "409",
+      "current_balance": 71.3,
+      "last_updated": "20260515"
+    },
+    "25760": {
+      "room_name": "115",
+      "current_balance": 172.0,
+      "last_updated": "20260515"
+    },
+    "25698": {
+      "room_name": "311",
+      "current_balance": 2.1,
+      "last_updated": "20260515"
+    },
+    "35333": {
+      "room_name": "426",
+      "current_balance": 114.8,
+      "last_updated": "20260515"
+    },
+    "25816": {
+      "room_name": "509",
+      "current_balance": 289.5,
+      "last_updated": "20260515"
+    },
+    "26035": {
+      "room_name": "414",
+      "current_balance": 59.9,
+      "last_updated": "20260515"
+    },
+    "34434": {
+      "room_name": "626",
+      "current_balance": 178.2,
+      "last_updated": "20260515"
+    },
+    "90257": {
+      "room_name": "404",
+      "current_balance": 176.2,
+      "last_updated": "20260515"
+    },
+    "77197": {
+      "room_name": "609",
+      "current_balance": 67.9,
+      "last_updated": "20260515"
+    },
+    "32808": {
+      "room_name": "320",
+      "current_balance": 5.2,
+      "last_updated": "20260515"
+    },
+    "90280": {
+      "room_name": "620",
+      "current_balance": 150.4,
+      "last_updated": "20260515"
+    },
+    "37204": {
+      "room_name": "216",
+      "current_balance": 165.6,
+      "last_updated": "20260515"
+    },
+    "32807": {
+      "room_name": "226",
+      "current_balance": 3.9,
+      "last_updated": "20260515"
+    },
+    "37547": {
+      "room_name": "306",
+      "current_balance": 667.5,
+      "last_updated": "20260515"
+    },
+    "24602": {
+      "room_name": "225",
+      "current_balance": 47.7,
+      "last_updated": "20260515"
+    },
+    "35810": {
+      "room_name": "127",
+      "current_balance": 290.7,
+      "last_updated": "20260515"
+    },
+    "73685": {
+      "room_name": "616",
+      "current_balance": 48.1,
+      "last_updated": "20260515"
+    },
+    "36907": {
+      "room_name": "525",
+      "current_balance": 101.8,
+      "last_updated": "20260515"
+    },
+    "72686": {
+      "room_name": "421",
+      "current_balance": 75.5,
+      "last_updated": "20260515"
+    },
+    "12236": {
+      "room_name": "224",
+      "current_balance": 29.3,
+      "last_updated": "20260515"
+    },
+    "33555": {
+      "room_name": "325",
+      "current_balance": 292.5,
+      "last_updated": "20260515"
+    },
+    "26013": {
+      "room_name": "521",
+      "current_balance": 785.1,
+      "last_updated": "20260515"
+    }
+  }
+}

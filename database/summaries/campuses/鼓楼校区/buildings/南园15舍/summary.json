@@ -1,0 +1,22 @@
+{
+  "building": "南园15舍",
+  "campus": "鼓楼校区",
+  "total_rooms": 3,
+  "rooms": {
+    "85079": {
+      "room_name": "104房间",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "96402": {
+      "room_name": "416房间",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    },
+    "96037": {
+      "room_name": "106房间",
+      "current_balance": 0.0,
+      "last_updated": "20260515"
+    }
+  }
+}

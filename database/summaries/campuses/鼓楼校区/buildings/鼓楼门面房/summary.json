@@ -1,0 +1,42 @@
+{
+  "building": "鼓楼门面房",
+  "campus": "鼓楼校区",
+  "total_rooms": 7,
+  "rooms": {
+    "42133": {
+      "room_name": "电信营业厅",
+      "current_balance": 938.32,
+      "last_updated": "20260515"
+    },
+    "65191": {
+      "room_name": "松平美业",
+      "current_balance": 1196.72,
+      "last_updated": "20260515"
+    },
+    "33712": {
+      "room_name": "菜鸟驿站",
+      "current_balance": 333.11,
+      "last_updated": "20260515"
+    },
+    "37661": {
+      "room_name": "松平美业",
+      "current_balance": 1196.72,
+      "last_updated": "20260515"
+    },
+    "63870": {
+      "room_name": "寅春老卤面",
+      "current_balance": 3274.14,
+      "last_updated": "20260515"
+    },
+    "97173": {
+      "room_name": "松平美业",
+      "current_balance": 1196.72,
+      "last_updated": "20260515"
+    },
+    "39075": {
+      "room_name": "电信营业厅",
+      "current_balance": 938.32,
+      "last_updated": "20260515"
+    }
+  }
+}
