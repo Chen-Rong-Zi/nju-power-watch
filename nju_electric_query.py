@@ -404,7 +404,8 @@ def main():
         for error_type, count in error_count.items():
             msg = error_messages.get(error_type, error_type)
             print(f"  {msg}: {count}个")
-        sys.exit(1)
+        if summary['failed'] >= summary['succeeded']:
+            sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -70,7 +70,7 @@ jobs:
           python nju_electric_query.py \
             --cookie-file /tmp/cookie.json \
             -d ./database \
-            -c 24 \
+            -c 200 \
             ${{ steps.rooms.outputs.room_ids }} \
             2>&1 | tee query_output.log
           
@@ -89,26 +89,28 @@ jobs:
         run: |
           python scripts/rollback_failed_run.py -d ./database
       
-      - name: Generate aggregated summary
+      - name: Generate hierarchical aggregated summaries
         if: success()
         run: |
           python scripts/aggregate_data.py \
             --database ./database \
-            --output ./database/summary.json
+            --output ./database/summaries
       
-      - name: Commit and push results
+      - name: Commit and push summaries only
         if: success()
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
-          git add database/ || true
+          # Add only summaries (not raw daily data to save space)
+          git add database/summaries/ logs/ || true
           
           if git diff --staged --quiet; then
-            echo "No new data to commit"
+            echo "No new summaries to commit"
           else
             git commit -m "chore: manual query - $(date +%Y-%m-%d-%H%M%S)"
             git push
+            echo "✓ Summaries committed and pushed"
           fi
       
       - name: Summary

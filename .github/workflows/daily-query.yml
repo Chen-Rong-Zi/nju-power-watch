@@ -16,7 +16,7 @@ env:
 jobs:
   query-electricity:
     runs-on: ubuntu-latest
-    timeout-minutes: 120  # Increased for 60k queries
+    timeout-minutes: 35
     
     concurrency:
       group: daily-query
@@ -60,46 +60,20 @@ jobs:
       
       - name: Query electricity data
         id: query
-        env:
-          QUERY_DATE: ${{ github.event.inputs.force_run == 'true' && '' || '--skip-existing' }}
         run: |
-          START_TIME=$(date +%s)
-          
           python nju_electric_query.py \
+            --cookie-file /tmp/cookie.json \
             -d ./database \
-            -c 30 \
+            -c 200 \
             ${{ steps.rooms.outputs.room_ids }} \
             2>&1 | tee query_output.log
-          
-          END_TIME=$(date +%s)
-          DURATION=$((END_TIME - START_TIME))
           
           # Extract success/failure counts
           SUCCESS=$(grep -oP '成功: \K\d+' query_output.log || echo "0")
           FAILED=$(grep -oP '失败: \K\d+' query_output.log || echo "0")
-          TOTAL=$((SUCCESS + FAILED))
-          
-          # Calculate average time per query
-          if [ "$TOTAL" -gt 0 ]; then
-            AVG_TIME=$(echo "scale=2; $DURATION / $TOTAL" | bc)
-            SUCCESS_RATE=$(echo "scale=2; $SUCCESS * 100 / $TOTAL" | bc)
-          else
-            AVG_TIME=0
-            SUCCESS_RATE=0
-          fi
-          
+          echo "success_count=$SUCCESS" >> $GITHUB_OUTPUT
           echo "success_count=$SUCCESS" >> $GITHUB_OUTPUT
           echo "failed_count=$FAILED" >> $GITHUB_OUTPUT
-          echo "duration=$DURATION" >> $GITHUB_OUTPUT
-          echo "avg_time=$AVG_TIME" >> $GITHUB_OUTPUT
-          echo "success_rate=$SUCCESS_RATE" >> $GITHUB_OUTPUT
-          
-          echo ""
-          echo "📊 Performance Metrics:"
-          echo "  Total time: ${DURATION}s ($((DURATION / 60))m $((DURATION % 60))s)"
-          echo "  Success rate: ${SUCCESS_RATE}%"
-          echo "  Avg time/query: ${AVG_TIME}s"
-          echo "  Concurrency: 30"
           
           if [ "$FAILED" -gt 0 ]; then
             echo "::error::Query failed for $FAILED rooms"
@@ -112,28 +86,29 @@ jobs:
           python scripts/rollback_failed_run.py -d ./database
           echo "::warning::Query failed - partial results rolled back"
       
-      - name: Generate aggregated summary
+      - name: Generate hierarchical aggregated summaries
         if: success()
         run: |
           python scripts/aggregate_data.py \
             --database ./database \
-            --output ./database/summary.json
+            --output ./database/summaries
       
-      - name: Commit and push results
+      - name: Commit and push summaries only
         if: success()
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
-          # Add new data files
-          git add database/ || true
+          # Add only summaries (not raw daily data to save space)
+          git add database/summaries/ logs/ || true
           
           # Check if there are changes
           if git diff --staged --quiet; then
-            echo "No new data to commit"
+            echo "No new summaries to commit"
           else
-            git commit -m "chore: update electricity data for $(date +%Y-%m-%d)"
+            git commit -m "chore: update electricity summaries for $(date +%Y-%m-%d)"
             git push
+            echo "✓ Summaries committed and pushed"
           fi
       
       - name: Create log file
@@ -154,11 +129,8 @@ jobs:
             fi
           } > "$LOG_FILE"
           
-          git add "$LOG_FILE" || true
-          if ! git diff --staged --quiet; then
-            git commit -m "chore: add query log for $(date +%Y-%m-%d)"
-            git push
-          fi
+          # Logs will be committed together with summaries in previous step
+          echo "✓ Log file created: $LOG_FILE"
       
       - name: Summary
         if: always()
@@ -166,28 +138,13 @@ jobs:
           TOTAL=$(echo ${{ steps.rooms.outputs.room_ids }} | wc -w | tr -d ' ')
           SUCCESS=${{ steps.query.outputs.success_count }}
           FAILED=${{ steps.query.outputs.failed_count }}
-          DURATION=${{ steps.query.outputs.duration }}
-          AVG_TIME=${{ steps.query.outputs.avg_time }}
-          SUCCESS_RATE=${{ steps.query.outputs.success_rate }}
           
           echo "## 📊 Daily Query Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
           echo "| Total Rooms | $TOTAL |" >> $GITHUB_STEP_SUMMARY
           echo "| ✅ Success | $SUCCESS |" >> $GITHUB_STEP_SUMMARY
           echo "| ❌ Failed | $FAILED |" >> $GITHUB_STEP_SUMMARY
-          echo "| 📈 Success Rate | ${SUCCESS_RATE}% |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Performance" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
-          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| ⏱️ Total Time | ${DURATION}s ($((DURATION / 60))m $((DURATION % 60))s) |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🚀 Avg Time/Query | ${AVG_TIME}s |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🔀 Concurrency | 30 |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
           if [ "${{ job.status }}" == "success" ]; then
@@ -195,8 +152,3 @@ jobs:
           else
             echo "**Status**: ⚠️ Some queries failed - check logs for details" >> $GITHUB_STEP_SUMMARY
           fi
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "---" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "_💡 Tip: For 60k queries, estimated time is ~50 minutes at 30 concurrency_" >> $GITHUB_STEP_SUMMARY

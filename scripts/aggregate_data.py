@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 """
-Data aggregation script for electricity data.
-Generates summary JSON files for frontend consumption.
+Optimized hierarchical aggregation script using async IO.
+Generates lightweight summaries with date → balance mapping only.
 """
 import json
 import sys
 import logging
 from pathlib import Path
-from datetime import datetime, timedelta
-from typing import Optional, Dict, Any
-
-import pandas as pd
-import numpy as np
-
+from datetime import datetime
+from typing import Dict, Any, List
+from collections import defaultdict
+import asyncio
+import aiofiles
 
 # Configure logging
 logging.basicConfig(
@@ -22,200 +21,269 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def load_room_data(database_dir: str, room_id: str, days: int = 30) -> Optional[pd.DataFrame]:
+async def read_json_file(file_path: Path) -> Dict[str, Any]:
+    """Asynchronously read and parse JSON file."""
+    try:
+        async with aiofiles.open(file_path, 'r', encoding='utf-8') as f:
+            content = await f.read()
+            return json.loads(content)
+    except Exception as e:
+        logger.warning(f"Failed to read {file_path}: {e}")
+        return None
+
+
+async def write_json_file(file_path: Path, data: Dict[str, Any]) -> None:
+    """Asynchronously write JSON file."""
+    try:
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        async with aiofiles.open(file_path, 'w', encoding='utf-8') as f:
+            await f.write(json.dumps(data, ensure_ascii=False, indent=2))
+    except Exception as e:
+        logger.error(f"Failed to write {file_path}: {e}")
+
+
+async def process_room(room_dir: Path) -> Dict[str, Any]:
     """
-    Load last N days of data for a specific room.
-    
-    Args:
-        database_dir: Path to database directory
-        room_id: Room ID to load data for
-        days: Number of days to load (default: 30)
-    
-    Returns:
-        DataFrame with balance data, or None if no data found
+    Process a single room directory asynchronously.
+    Returns simplified data: date → balance mapping.
     """
-    database_path = Path(database_dir)
-    
-    # Find room directory
-    room_dirs = list(database_path.rglob(f"*-{room_id}"))
-    if not room_dirs:
-        logger.warning(f"No data found for room {room_id}")
+    # Extract room ID from directory name
+    dir_name = room_dir.name
+    parts = dir_name.rsplit('-', 1)
+    if len(parts) != 2 or not parts[1].isdigit():
         return None
     
-    room_dir = room_dirs[0]
+    room_id = parts[1]
+    room_name = parts[0]
     
-    # Load JSON files
-    records = []
-    cutoff_date = datetime.now() - timedelta(days=days)
+    # Get all JSON files in room directory
+    json_files = sorted(room_dir.glob("*.json"), key=lambda f: f.stem)
     
-    for json_file in sorted(room_dir.glob("*.json"), reverse=True):
-        try:
-            with open(json_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-            
-            # Skip failed queries
-            if not data.get('success', False):
-                continue
-            
-            # Parse date from filename
-            date_str = json_file.stem
-            record_date = datetime.strptime(date_str, "%Y%m%d")
-            
-            if record_date < cutoff_date:
-                break  # Files are sorted, can stop early
-            
-            # Extract balance
-            balance_str = data.get('剩余电量', '0度')
-            balance = float(balance_str.replace('度', ''))
-            
-            records.append({
-                'date': record_date,
-                'balance': balance,
-                'timestamp': data.get('timestamp'),
-                'campus': data.get('校区'),
-                'building': data.get('楼栋'),
-                'room': data.get('房间')
-            })
-        
-        except Exception as e:
-            logger.warning(f"Failed to load {json_file}: {e}")
+    if not json_files:
+        return None
+    
+    # Read all JSON files concurrently
+    tasks = [read_json_file(f) for f in json_files]
+    results = await asyncio.gather(*tasks)
+    
+    # Build date → balance mapping
+    balance_history = {}
+    campus = None
+    building = None
+    
+    for result in results:
+        if not result or not result.get('success', False):
             continue
+        
+        # Extract metadata from first successful result
+        if not campus:
+            campus = result.get('校区', 'Unknown')
+            building = result.get('楼栋', 'Unknown')
+        
+        # Extract balance
+        balance_str = result.get('剩余电量', '0度')
+        balance = float(balance_str.replace('度', ''))
+        
+        # Extract date from filename
+        json_file = json_files[results.index(result)]
+        date = json_file.stem  # YYYYMMDD
+        
+        balance_history[date] = balance
     
-    if not records:
+    if not balance_history:
         return None
     
-    df = pd.DataFrame(records)
-    df = df.sort_values('date', ascending=False)
-    
-    return df
-
-
-def compute_statistics(df: pd.DataFrame, room_id: str, database_dir: str) -> Optional[Dict[str, Any]]:
-    """
-    Compute statistics for a room.
-    
-    Args:
-        df: DataFrame with balance data
-        room_id: Room ID
-        database_dir: Database directory (for metadata extraction)
-    
-    Returns:
-        Dictionary with statistics, or None if insufficient data
-    """
-    if df is None or len(df) == 0:
-        return None
-    
-    # Current balance (most recent)
-    current_balance = df.iloc[0]['balance']
-    
-    # 7-day average
-    df_7d = df.head(7)
-    avg_7d = df_7d['balance'].mean()
-    
-    # 30-day statistics
-    avg_30d = df['balance'].mean()
-    min_30d = df['balance'].min()
-    max_30d = df['balance'].max()
-    
-    # Compute trend (linear regression slope)
-    if len(df) >= 2:
-        x = np.arange(len(df))
-        y = df['balance'].values
-        slope, _ = np.polyfit(x, y, 1)
-        trend_30d = float(slope)
-    else:
-        trend_30d = 0.0
-    
-    # Get metadata from most recent record
-    latest = df.iloc[0]
+    # Get latest balance
+    latest_date = max(balance_history.keys())
+    current_balance = balance_history[latest_date]
     
     return {
-        'campus': latest.get('campus', 'Unknown'),
-        'building': latest.get('building', 'Unknown'),
-        'room': latest.get('room', 'Unknown'),
-        'current_balance': round(current_balance, 2),
-        'avg_7d': round(avg_7d, 2),
-        'avg_30d': round(avg_30d, 2),
-        'trend_30d': round(trend_30d, 4),
-        'min_30d': round(min_30d, 2),
-        'max_30d': round(max_30d, 2),
-        'last_updated': latest.get('timestamp', datetime.now().isoformat())
+        'room_id': room_id,
+        'room_name': room_name,
+        'campus': campus,
+        'building': building,
+        'current_balance': current_balance,
+        'balance_history': balance_history,  # {date: balance}
+        'last_updated': latest_date
     }
 
 
-def generate_summary(database_dir: str, output_file: Optional[str] = None) -> Dict[str, Any]:
+async def process_all_rooms(database_dir: Path) -> List[Dict[str, Any]]:
     """
-    Generate aggregated summary for all rooms.
+    Process all rooms concurrently with controlled concurrency.
+    """
+    # Find all room directories
+    room_dirs = []
+    for campus_dir in database_dir.iterdir():
+        if not campus_dir.is_dir() or campus_dir.name in ('archives', 'summaries'):
+            continue
+        
+        for building_dir in campus_dir.iterdir():
+            if not building_dir.is_dir():
+                continue
+            
+            for room_dir in building_dir.iterdir():
+                if room_dir.is_dir() and '-' in room_dir.name:
+                    room_dirs.append(room_dir)
     
-    Args:
-        database_dir: Path to database directory
-        output_file: Optional path to write summary JSON
+    logger.info(f"Found {len(room_dirs)} room directories")
     
-    Returns:
-        Summary dictionary
+    # Process rooms with limited concurrency to avoid "too many open files"
+    semaphore = asyncio.Semaphore(100)  # Limit concurrent file operations
+    
+    async def process_with_limit(room_dir):
+        async with semaphore:
+            return await process_room(room_dir)
+    
+    # Process all rooms concurrently
+    tasks = [process_with_limit(room_dir) for room_dir in room_dirs]
+    results = await asyncio.gather(*tasks)
+    
+    # Filter out None results
+    return [r for r in results if r is not None]
+
+
+def organize_by_hierarchy(rooms_data: List[Dict[str, Any]]) -> Dict[str, Dict[str, Dict[str, Dict]]]:
+    """
+    Organize processed room data by hierarchy.
+    Returns: {campus: {building: {room_id: room_data}}}
+    """
+    hierarchy = defaultdict(lambda: defaultdict(dict))
+    
+    for room_data in rooms_data:
+        campus = room_data['campus']
+        building = room_data['building']
+        room_id = room_data['room_id']
+        
+        hierarchy[campus][building][room_id] = room_data
+    
+    return hierarchy
+
+
+async def generate_hierarchical_summaries(database_dir: str, output_dir: str) -> Dict[str, Any]:
+    """
+    Generate lightweight hierarchical summaries.
     """
     database_path = Path(database_dir)
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
     
-    # Find all unique room IDs
-    room_ids = set()
-    for json_file in database_path.rglob("*.json"):
-        # Room ID is in directory name (format: {room_name}-{room_id})
-        dir_name = json_file.parent.name
-        parts = dir_name.rsplit('-', 1)
-        if len(parts) == 2 and parts[1].isdigit():
-            room_ids.add(parts[1])
+    # Process all rooms concurrently
+    logger.info("Processing rooms...")
+    rooms_data = await process_all_rooms(database_path)
+    logger.info(f"Processed {len(rooms_data)} rooms successfully")
     
-    logger.info(f"Found {len(room_ids)} unique rooms")
+    # Organize by hierarchy
+    logger.info("Organizing by hierarchy...")
+    hierarchy = organize_by_hierarchy(rooms_data)
     
-    # Compute statistics for each room
-    rooms_stats = {}
-    success_count = 0
-    total_count = len(room_ids)
+    # Track statistics
+    all_campuses_stats = {}
+    total_rooms = len(rooms_data)
     
-    for room_id in sorted(room_ids):
-        df = load_room_data(database_dir, room_id)
-        stats = compute_statistics(df, room_id, database_dir)
+    # Semaphore for write operations
+    write_semaphore = asyncio.Semaphore(50)  # Limit concurrent writes
+    
+    async def write_with_limit(file_path: Path, data: Dict[str, Any]):
+        async with write_semaphore:
+            await write_json_file(file_path, data)
+    
+    # Prepare all write tasks
+    write_tasks = []
+    
+    # Generate summaries for each campus
+    for campus, buildings in hierarchy.items():
+        campus_dir = output_path / "campuses" / campus
+        campus_dir.mkdir(parents=True, exist_ok=True)
         
-        if stats:
-            rooms_stats[room_id] = stats
-            success_count += 1
+        campus_rooms_count = 0
+        buildings_stats = {}
+        
+        # Generate summaries for each building
+        for building, rooms in buildings.items():
+            building_dir = campus_dir / "buildings" / building
+            building_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Building summary: room_id → {room_name, current_balance, last_updated}
+            building_rooms = {}
+            for room_id, room_data in rooms.items():
+                building_rooms[room_id] = {
+                    'room_name': room_data['room_name'],
+                    'current_balance': room_data['current_balance'],
+                    'last_updated': room_data['last_updated']
+                }
+            
+            building_summary = {
+                'building': building,
+                'campus': campus,
+                'total_rooms': len(rooms),
+                'rooms': building_rooms
+            }
+            
+            # Write building summary
+            building_file = building_dir / "summary.json"
+            write_tasks.append(write_with_limit(building_file, building_summary))
+            
+            # Write individual room files
+            for room_id, room_data in rooms.items():
+                room_file = building_dir / "rooms" / f"{room_id}.json"
+                room_summary = {
+                    'room_id': room_id,
+                    'room_name': room_data['room_name'],
+                    'campus': campus,
+                    'building': building,
+                    'current_balance': room_data['current_balance'],
+                    'balance_history': room_data['balance_history'],
+                    'last_updated': room_data['last_updated']
+                }
+                write_tasks.append(write_with_limit(room_file, room_summary))
+            
+            buildings_stats[building] = {
+                'total_rooms': len(rooms),
+                'avg_balance': round(sum(r['current_balance'] for r in rooms.values()) / len(rooms), 2)
+            }
+            
+            campus_rooms_count += len(rooms)
+        
+        # Campus summary
+        campus_summary = {
+            'campus': campus,
+            'total_rooms': campus_rooms_count,
+            'buildings': buildings_stats
+        }
+        
+        campus_file = campus_dir / "summary.json"
+        write_tasks.append(write_with_limit(campus_file, campus_summary))
+        
+        all_campuses_stats[campus] = {
+            'total_rooms': campus_rooms_count,
+            'buildings_count': len(buildings)
+        }
     
-    # Calculate success rate
-    success_rate = success_count / total_count if total_count > 0 else 0.0
-    
-    # Build summary
-    summary = {
+    # Overview
+    overview = {
         'generated_at': datetime.now().isoformat(),
-        'total_rooms': len(rooms_stats),
-        'query_success_rate': round(success_rate, 2),
-        'rooms': rooms_stats
+        'total_rooms': total_rooms,
+        'campuses': all_campuses_stats
     }
     
-    logger.info(f"Generated summary for {len(rooms_stats)} rooms")
+    overview_file = output_path / "overview.json"
+    write_tasks.append(write_with_limit(overview_file, overview))
     
-    # Write to file if specified
-    if output_file:
-        output_path = Path(output_file)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(summary, f, ensure_ascii=False, indent=2)
-        
-        file_size = output_path.stat().st_size
-        logger.info(f"Summary written to {output_path} ({file_size} bytes)")
-        
-        # Validate file size
-        if file_size > 500 * 1024:  # 500KB
-            logger.warning(f"Summary file size ({file_size} bytes) exceeds 500KB limit")
+    # Execute all writes with controlled concurrency
+    logger.info(f"Writing {len(write_tasks)} files...")
+    await asyncio.gather(*write_tasks)
     
-    return summary
+    logger.info(f"✓ Generated summaries for {total_rooms} rooms")
+    
+    return overview
 
 
 def main():
-    """Main entry point for aggregation script."""
+    """Main entry point."""
     import argparse
     
-    parser = argparse.ArgumentParser(description="Generate aggregated summary from daily data")
+    parser = argparse.ArgumentParser(description="Generate hierarchical summaries with async IO")
     parser.add_argument(
         "--database", "-d",
         required=True,
@@ -223,17 +291,22 @@ def main():
     )
     parser.add_argument(
         "--output", "-o",
-        required=True,
-        help="Path to output summary JSON file"
+        default=None,
+        help="Path to output summaries directory (default: database/summaries/)"
     )
     args = parser.parse_args()
     
+    # Default output location
+    output_dir = args.output or str(Path(args.database) / "summaries")
+    
     try:
-        summary = generate_summary(args.database, args.output)
+        # Run async main
+        overview = asyncio.run(generate_hierarchical_summaries(args.database, output_dir))
         
-        file_size = Path(args.output).stat().st_size
-        print(f"✓ Summary generated: {summary['total_rooms']} rooms")
-        print(f"✓ Output: {args.output} ({file_size} bytes)")
+        print(f"✓ Hierarchical summaries generated:")
+        print(f"  Total rooms: {overview['total_rooms']}")
+        print(f"  Campuses: {len(overview['campuses'])}")
+        print(f"  Output: {output_dir}")
         sys.exit(0)
     
     except Exception as e:
