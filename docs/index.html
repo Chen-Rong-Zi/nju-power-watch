@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NJU Electricity Data Viewer</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NJU Electricity Data Viewer</h1>
+            <p class="subtitle">南京大学电费数据查询系统</p>
+        </header>
+
+        <main>
+            <!-- Search Section -->
+            <section class="search-section">
+                <h2>查找房间</h2>
+                
+                <div class="search-controls">
+                    <div class="control-group">
+                        <label for="campus-select">校区 Campus:</label>
+                        <select id="campus-select">
+                            <option value="">-- 请选择校区 --</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="building-select">楼栋 Building:</label>
+                        <select id="building-select" disabled>
+                            <option value="">-- 请先选择校区 --</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="room-select">房间 Room:</label>
+                        <select id="room-select" disabled>
+                            <option value="">-- 请先选择楼栋 --</option>
+                        </select>
+                        <input type="text" id="room-search" placeholder="搜索房间..." disabled>
+                    </div>
+                </div>
+
+                <div class="room-info" id="room-info" style="display: none;">
+                    <h3>房间信息</h3>
+                    <p><strong>校区:</strong> <span id="info-campus"></span></p>
+                    <p><strong>楼栋:</strong> <span id="info-building"></span></p>
+                    <p><strong>房间:</strong> <span id="info-room"></span></p>
+                    <p><strong>记录数:</strong> <span id="info-records"></span></p>
+                </div>
+            </section>
+
+            <!-- Chart Section -->
+            <section class="chart-section" id="chart-section" style="display: none;">
+                <h2>电费变化趋势</h2>
+                
+                <div class="chart-container">
+                    <canvas id="electricity-chart"></canvas>
+                </div>
+
+                <div class="chart-controls">
+                    <button id="btn-7d" class="btn active">最近7天</button>
+                    <button id="btn-30d" class="btn">最近30天</button>
+                    <button id="btn-all" class="btn">全部数据</button>
+                </div>
+
+                <div class="statistics">
+                    <div class="stat-card">
+                        <div class="stat-label">当前余额</div>
+                        <div class="stat-value" id="stat-current">--</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">日均消耗</div>
+                        <div class="stat-value" id="stat-avg">--</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">最低余额</div>
+                        <div class="stat-value" id="stat-min">--</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">最高余额</div>
+                        <div class="stat-value" id="stat-max">--</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading & Error -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>加载中...</p>
+            </div>
+
+            <div class="error" id="error" style="display: none;">
+                <p class="error-message" id="error-message"></p>
+            </div>
+        </main>
+
+        <footer>
+            <p>数据来源: NJU epay系统 | 自动更新: 每日 2:00 AM UTC</p>
+            <p><a href="https://github.com">GitHub Repository</a></p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -2,6 +2,10 @@
 
 Automated daily electricity data collection and analysis for Nanjing University dormitories.
 
+> **📈 Scale**: Supports **60,000+ daily queries**  
+> **💰 Cost**: **$0/month** with public repository  
+> **⚡ Performance**: ~1 hour for 60k queries at 30 concurrency
+
 ## Overview
 
 This project automates the collection, processing, and aggregation of electricity consumption data from the NJU epay system. It provides:
@@ -10,6 +14,7 @@ This project automates the collection, processing, and aggregation of electricit
 - **Data retention and archival** with 30-day rolling daily data and 365-day archives
 - **Pre-aggregated summaries** for fast frontend visualization
 - **Static architecture** - no backend server required
+- **High performance** - optimized for large-scale queries (60k+ rooms)
 
 ## Features
 
@@ -20,6 +25,46 @@ This project automates the collection, processing, and aggregation of electricit
 ✅ Pre-computed statistics for frontend  
 ✅ File-based JSON storage  
 ✅ GitHub Actions automation  
+✅ **Optimized for 60,000+ queries** with configurable concurrency  
+✅ **Free unlimited usage** with public repository  
+
+## Large-Scale Deployment
+
+### GitHub Actions - Free Unlimited Usage
+
+**Key Insight**: GitHub Actions is **free and unlimited** for public repositories!
+
+| Repository Type | Free Minutes/Month | Actual Cost |
+|----------------|-------------------|-------------|
+| **Public** | **∞ Unlimited** | **$0** ✅ |
+| Private (Free) | 2,000 | ~$258/month 💸 |
+| Private (Pro) | 3,000 | ~$252/month 💸 |
+
+**Recommendation**: Make repository **public** for free unlimited usage.
+
+### Concurrency Optimization
+
+For **60,000 queries**:
+
+```yaml
+# Recommended settings
+Concurrency: 30
+Timeout: 120 minutes
+Estimated time: ~50 minutes
+```
+
+See [docs/concurrency-analysis.md](docs/concurrency-analysis.md) for detailed analysis.
+
+### Performance Tuning
+
+```bash
+# Adjust concurrency based on your needs
+python nju_electric_query.py -c 30  # Recommended: 30
+python nju_electric_query.py -c 50  # Faster but higher risk
+python nju_electric_query.py -c 20  # Safer but slower
+```
+
+See [docs/github-actions-guide.md](docs/github-actions-guide.md) for long-term usage guide.
 
 ## Quick Start
 

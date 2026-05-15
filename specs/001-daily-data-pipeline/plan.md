@@ -15,9 +15,9 @@ Automate daily electricity data collection from NJU epay system using existing P
 **Testing**: pytest for Python scripts, integration tests for data pipeline  
 **Target Platform**: GitHub Actions (Linux runner), static file serving via GitHub Pages or local file system  
 **Project Type**: CLI tools + automation scripts (data acquisition and processing)  
-**Performance Goals**: <30 min for 500 rooms daily collection, <1s frontend summary load time, <10MB/month storage growth  
-**Constraints**: Cookie-based authentication (7-day validity), GitHub Actions free tier limits, university website rate limits (24 concurrent connections)  
-**Scale/Scope**: Up to 500 rooms, 12 months historical data retention, single repository admin
+**Performance Goals**: <2 hours for 60,000 rooms daily collection (30 concurrency), <1s frontend summary load time, <500KB summary file size  
+**Constraints**: Cookie-based authentication (7-day validity), GitHub Actions unlimited for public repos, university website rate limits (建议并发30)  
+**Scale/Scope**: **60,000 rooms**, 12 months historical data retention, single repository admin, **$0/month operational cost**
 
 ## Constitution Check
 

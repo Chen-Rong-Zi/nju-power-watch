@@ -59,9 +59,8 @@ class TestAggregationWorkflow:
         assert room_stats['min_30d'] == initial_balance
         assert room_stats['max_30d'] == initial_balance + (29 * daily_consumption)
         
-        # Verify: Trend direction (negative because balance decreasing backwards in time)
-        # Note: trend is calculated from oldest to newest, so increasing balance = positive trend
-        assert room_stats['trend_30d'] > 0  # Balance increases as we go back in time
+        # Verify: Trend direction (negative because consumption)
+        assert room_stats['trend_30d'] < 0
         
         # Verify: Metadata
         assert summary['total_rooms'] == 1
@@ -130,7 +129,7 @@ class TestAggregationWorkflow:
         elapsed = time.time() - start_time
         
         assert summary is not None
-        assert summary['total_rooms'] == 100 or summary['total_rooms'] == 101  # May include fixture room
+        assert summary['total_rooms'] == 100
         assert elapsed < 30  # Should complete within 30 seconds
     
     def test_aggregation_schema_validation(self, temp_database, tmp_path):

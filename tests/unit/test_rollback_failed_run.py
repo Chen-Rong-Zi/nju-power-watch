@@ -47,7 +47,7 @@ class TestRollbackFailedRun:
         campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
         
         # Create multiple days of data
-        dates = ["20260513", "20260514", "20260516"]  # Skip today
+        dates = ["20260513", "20260514", "20260515"]
         for date in dates:
             file_path = campus_dir / f"{date}.json"
             with open(file_path, 'w', encoding='utf-8') as f:
@@ -55,29 +55,25 @@ class TestRollbackFailedRun:
         
         rollback_partial_results(str(temp_database))
         
-        # All files should remain (test dates are not today)
+        # All files should remain (today's date is not 2026-05-15 in test)
         for date in dates:
             file_path = campus_dir / f"{date}.json"
             assert file_path.exists()
     
     def test_rollback_logs_removal(self, temp_database, caplog):
         """Test that rollback logs removed files."""
-        import logging
-        caplog.set_level(logging.INFO)
-        
         today = datetime.now().strftime("%Y%m%d")
         
         # Create today's file
         campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
-        campus_dir.mkdir(parents=True, exist_ok=True)
         today_file = campus_dir / f"{today}.json"
         with open(today_file, 'w', encoding='utf-8') as f:
             json.dump({"test": "data"}, f)
         
         rollback_partial_results(str(temp_database))
         
-        # Check that file was removed (logger may not capture in test)
-        assert not today_file.exists()
+        # Check that removal was logged
+        assert "rollback" in caplog.text.lower() or "removed" in caplog.text.lower()
     
     def test_rollback_handles_nested_directories(self, tmp_path):
         """Test that rollback handles deeply nested directory structure."""

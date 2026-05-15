@@ -106,10 +106,6 @@ class TestDailyWorkflow:
         
         # Today should be removed
         assert not today_file.exists()
-
-
-class TestDailyWorkflowLogs:
-    """Tests for workflow logging (non-async)."""
     
     def test_workflow_logs_execution(self, temp_database, tmp_path):
         """Test that workflow creates log files."""
