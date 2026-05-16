@@ -1,8 +1,9 @@
 #!/bin/bash
-# Quick test script for frontend validation
+# Quick test script for frontend validation (NEW DATA STRUCTURE)
 
 echo "======================================="
 echo "NJU Electricity Frontend Test"
+echo "  (Hierarchical Aggregation Structure)"
 echo "======================================="
 echo ""
 
@@ -12,9 +13,11 @@ if [ ! -d "docs" ]; then
     exit 1
 fi
 
-# Check if database directory exists
-if [ ! -d "database" ]; then
-    echo "❌ Error: database/ directory not found"
+# Check if database/summaries directory exists
+if [ ! -d "database/summaries" ]; then
+    echo "❌ Error: database/summaries/ directory not found"
+    echo ""
+    echo "Run: python scripts/aggregate_data.py"
     exit 1
 fi
 
@@ -35,63 +38,83 @@ if [ "$FILES_OK" = false ]; then
     exit 1
 fi
 
-# Check data files
+# Check summary files
 echo ""
-echo "Checking data files..."
+echo "Checking summary data files..."
 
-if [ -f "docs/data/index.json" ]; then
-    SIZE=$(stat -f%z "docs/data/index.json" 2>/dev/null || stat -c%s "docs/data/index.json" 2>/dev/null)
-    echo "  ✅ data/index.json ($SIZE bytes)"
+if [ -f "database/summaries/overview.json" ]; then
+    SIZE=$(stat -f%z "database/summaries/overview.json" 2>/dev/null || stat -c%s "database/summaries/overview.json" 2>/dev/null)
+    echo "  ✅ overview.json ($SIZE bytes)"
+    
+    # Show summary stats
+    if command -v jq &> /dev/null; then
+        TOTAL_ROOMS=$(cat "database/summaries/overview.json" | jq -r '.total_rooms')
+        CAMPUS_COUNT=$(cat "database/summaries/overview.json" | jq -r '.campuses | keys | length')
+        echo "     → $TOTAL_ROOMS rooms across $CAMPUS_COUNT campuses"
+    fi
 else
-    echo "  ❌ data/index.json (missing)"
+    echo "  ❌ overview.json (missing)"
     echo ""
-    echo "Run: python scripts/generate_index.py"
+    echo "Run: python scripts/aggregate_data.py"
     exit 1
 fi
 
-CAMPUS_COUNT=$(ls -1 docs/data/campus_*.json 2>/dev/null | wc -l)
+# Check campus directories
+CAMPUS_COUNT=$(find database/summaries/campuses -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l)
 if [ "$CAMPUS_COUNT" -gt 0 ]; then
-    echo "  ✅ Found $CAMPUS_COUNT campus data files"
+    echo "  ✅ Found $CAMPUS_COUNT campus summary directories"
 else
-    echo "  ❌ No campus data files found"
+    echo "  ❌ No campus summary directories found"
     echo ""
-    echo "Run: python scripts/generate_index.py"
+    echo "Run: python scripts/aggregate_data.py"
     exit 1
-fi
-
-# Check symlink
-echo ""
-echo "Checking database symlink..."
-
-if [ -L "docs/database" ]; then
-    echo "  ✅ docs/database -> ../database (symlink exists)"
-elif [ -d "docs/database" ]; then
-    echo "  ✅ docs/database (directory exists)"
-else
-    echo "  ⚠️  docs/database not found, creating symlink..."
-    cd docs && ln -s ../database database && cd ..
-    echo "  ✅ Symlink created"
 fi
 
 # Test sample data access
 echo ""
-echo "Testing data access..."
+echo "Testing sample data access..."
 
-SAMPLE_ROOM=$(find database -name "*.json" -type f | head -1)
-if [ -n "$SAMPLE_ROOM" ]; then
-    echo "  ✅ Found sample data: $SAMPLE_ROOM"
+SAMPLE_CAMPUS=$(find database/summaries/campuses -mindepth 1 -maxdepth 1 -type d | head -1 | xargs basename)
+if [ -n "$SAMPLE_CAMPUS" ]; then
+    echo "  ✅ Sample campus: $SAMPLE_CAMPUS"
     
-    # Try to read it
-    if command -v jq &> /dev/null; then
-        ROOM_INFO=$(cat "$SAMPLE_ROOM" | jq -r '.校区, .楼栋, .房间' 2>/dev/null)
-        if [ -n "$ROOM_INFO" ]; then
-            echo "     Campus: $(echo "$ROOM_INFO" | head -1)"
-            echo "     Building: $(echo "$ROOM_INFO" | head -2 | tail -1)"
-            echo "     Room: $(echo "$ROOM_INFO" | tail -1)"
+    # Check campus summary
+    CAMPUS_SUMMARY="database/summaries/campuses/$SAMPLE_CAMPUS/summary.json"
+    if [ -f "$CAMPUS_SUMMARY" ]; then
+        echo "  ✅ Campus summary exists"
+        
+        if command -v jq &> /dev/null; then
+            BUILDING_COUNT=$(cat "$CAMPUS_SUMMARY" | jq -r '.buildings | keys | length')
+            ROOM_COUNT=$(cat "$CAMPUS_SUMMARY" | jq -r '.total_rooms')
+            echo "     → $BUILDING_COUNT buildings, $ROOM_COUNT rooms"
         fi
     fi
-else
-    echo "  ⚠️  No data files found in database/"
+    
+    # Check sample building
+    SAMPLE_BUILDING=$(find "database/summaries/campuses/$SAMPLE_CAMPUS/buildings" -mindepth 1 -maxdepth 1 -type d | head -1 | xargs basename)
+    if [ -n "$SAMPLE_BUILDING" ]; then
+        echo "  ✅ Sample building: $SAMPLE_BUILDING"
+        
+        # Check building summary
+        BUILDING_SUMMARY="database/summaries/campuses/$SAMPLE_CAMPUS/buildings/$SAMPLE_BUILDING/summary.json"
+        if [ -f "$BUILDING_SUMMARY" ]; then
+            echo "  ✅ Building summary exists"
+            
+            # Check sample room
+            SAMPLE_ROOM=$(find "database/summaries/campuses/$SAMPLE_CAMPUS/buildings/$SAMPLE_BUILDING/rooms" -name "*.json" | head -1)
+            if [ -n "$SAMPLE_ROOM" ]; then
+                ROOM_ID=$(basename "$SAMPLE_ROOM" .json)
+                echo "  ✅ Sample room: $ROOM_ID"
+                
+                if command -v jq &> /dev/null; then
+                    ROOM_NAME=$(cat "$SAMPLE_ROOM" | jq -r '.room_name')
+                    CURRENT_BALANCE=$(cat "$SAMPLE_ROOM" | jq -r '.current_balance')
+                    HISTORY_DAYS=$(cat "$SAMPLE_ROOM" | jq -r '.balance_history | keys | length')
+                    echo "     → $ROOM_NAME: ${CURRENT_BALANCE}度 ($HISTORY_DAYS days history)"
+                fi
+            fi
+        fi
+    fi
 fi
 
 # Port check
@@ -117,6 +140,17 @@ echo ""
 echo "======================================="
 echo "Test Complete"
 echo "======================================="
+echo ""
+echo "Data structure: hierarchical aggregation"
+echo "  - database/summaries/overview.json"
+echo "  - database/summaries/campuses/{campus}/summary.json"
+echo "  - database/summaries/campuses/{campus}/buildings/{building}/summary.json"
+echo "  - database/summaries/campuses/{campus}/buildings/{building}/rooms/{id}.json"
+echo ""
+echo "Key features:"
+echo "  ✅ Complete balance history in each room file"
+echo "  ✅ Frontend calculates statistics dynamically"
+echo "  ✅ Predictive analysis possible with full history"
 echo ""
 echo "Next steps:"
 echo "1. Start local server: python scripts/serve_docs.py"

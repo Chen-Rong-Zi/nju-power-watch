@@ -1,34 +1,35 @@
 /**
  * NJU Electricity Data Viewer
- * Static frontend for viewing electricity data
+ * Adapted for hierarchical aggregation structure
  */
 
 // Global state
 const state = {
-    campuses: [],
+    overview: null,
     campusData: {},
-    currentRoom: null,
-    roomData: [],
+    buildingData: {},
+    roomData: null,
     chart: null
 };
 
-// API configuration
+// API configuration - using new summaries structure
 const API = {
-    // Use relative paths (works for both local and GitHub Pages)
-    baseUrl: './data',
+    baseUrl: './database/summaries',
     
-    indexUrl: function() {
-        return `${this.baseUrl}/index.json`;
+    overviewUrl: function() {
+        return `${this.baseUrl}/overview.json`;
     },
     
     campusUrl: function(campus) {
-        return `${this.baseUrl}/campus_${campus}.json`;
+        return `${this.baseUrl}/campuses/${campus}/summary.json`;
     },
     
-    roomDataUrl: function(roomPath) {
-        // Use relative path from docs directory
-        // roomPath is like: "仙林校区/19幢/19栋第16层1613-53463"
-        return `./database/${roomPath}`;
+    buildingUrl: function(campus, building) {
+        return `${this.baseUrl}/campuses/${campus}/buildings/${building}/summary.json`;
+    },
+    
+    roomUrl: function(campus, building, roomId) {
+        return `${this.baseUrl}/campuses/${campus}/buildings/${building}/rooms/${roomId}.json`;
     }
 };
 
@@ -60,17 +61,17 @@ function hideLoading() {
 }
 
 // Data loading functions
-async function loadIndex() {
+async function loadOverview() {
     try {
-        const response = await fetch(API.indexUrl());
-        if (!response.ok) throw new Error('Failed to load index');
+        const response = await fetch(API.overviewUrl());
+        if (!response.ok) throw new Error('Failed to load overview');
         
         const data = await response.json();
-        state.campuses = data.campuses;
+        state.overview = data;
         
-        populateCampusSelect();
+        populateCampusSelect(data.campuses);
     } catch (error) {
-        console.error('Error loading index:', error);
+        console.error('Error loading overview:', error);
         showError('无法加载数据索引，请刷新页面重试');
     }
 }
@@ -99,101 +100,155 @@ async function loadCampusData(campus) {
     }
 }
 
-async function loadRoomHistory(roomPath) {
+async function loadBuildingData(campus, building) {
+    const cacheKey = `${campus}/${building}`;
+    if (state.buildingData[cacheKey]) {
+        return state.buildingData[cacheKey];
+    }
+    
     try {
         showLoading();
         
-        // Get list of JSON files in room directory
-        // For static hosting, we need to read the directory listing
-        // Since we can't list directories, we'll need to parse dates from paths
+        const response = await fetch(API.buildingUrl(campus, building));
+        if (!response.ok) throw new Error('Failed to load building data');
         
-        // Alternative: Use pre-generated index or load data from summary.json
-        
-        // For now, let's load the most recent files by trying common dates
-        const roomData = [];
-        const today = new Date();
-        
-        // Try last 30 days
-        for (let i = 0; i < 30; i++) {
-            const date = new Date(today);
-            date.setDate(date.getDate() - i);
-            const dateStr = formatDateForFile(date);
-            
-            try {
-                const response = await fetch(`./database/${roomPath}/${dateStr}.json`);
-                if (response.ok) {
-                    const data = await response.json();
-                    roomData.push({
-                        date: date,
-                        dateStr: dateStr,
-                        data: data
-                    });
-                }
-            } catch (e) {
-                // File doesn't exist, skip
-            }
-        }
-        
-        // Sort by date (oldest first)
-        roomData.sort((a, b) => a.date - b.date);
+        const data = await response.json();
+        state.buildingData[cacheKey] = data;
         
         hideLoading();
-        return roomData;
+        return data;
     } catch (error) {
-        console.error('Error loading room history:', error);
+        console.error('Error loading building data:', error);
         hideLoading();
-        showError('无法加载房间历史数据');
-        return [];
+        showError(`无法加载 ${building} 的数据`);
+        return null;
     }
 }
 
+async function loadRoomData(campus, building, roomId) {
+    try {
+        showLoading();
+        
+        const response = await fetch(API.roomUrl(campus, building, roomId));
+        if (!response.ok) throw new Error('Failed to load room data');
+        
+        const data = await response.json();
+        
+        hideLoading();
+        return data;
+    } catch (error) {
+        console.error('Error loading room data:', error);
+        hideLoading();
+        showError('无法加载房间数据');
+        return null;
+    }
+}
+
+// Statistics calculation functions
+function calculateStats(balanceHistory) {
+    const dates = Object.keys(balanceHistory).sort();
+    const balances = dates.map(d => balanceHistory[d]);
+    
+    if (balances.length === 0) return null;
+    
+    const current = balances[balances.length - 1];
+    const min = Math.min(...balances);
+    const max = Math.max(...balances);
+    const avg = balances.reduce((a, b) => a + b, 0) / balances.length;
+    
+    // Calculate average daily consumption (last 7 days or all available)
+    let dailyConsumption = 0;
+    if (balances.length >= 2) {
+        const recentBalances = balances.slice(-Math.min(7, balances.length));
+        if (recentBalances.length >= 2) {
+            const consumption = recentBalances[0] - recentBalances[recentBalances.length - 1];
+            dailyConsumption = consumption / (recentBalances.length - 1);
+        }
+    }
+    
+    // Calculate trend (linear regression slope)
+    let trend = 0;
+    if (balances.length >= 2) {
+        const n = balances.length;
+        const avgX = (n - 1) / 2;
+        const avgY = avg;
+        
+        let numerator = 0;
+        let denominator = 0;
+        
+        for (let i = 0; i < n; i++) {
+            numerator += (i - avgX) * (balances[i] - avgY);
+            denominator += Math.pow(i - avgX, 2);
+        }
+        
+        trend = numerator / denominator;
+    }
+    
+    return {
+        current: current,
+        min: min,
+        max: max,
+        avg: avg,
+        dailyConsumption: Math.max(0, dailyConsumption),
+        trend: trend,
+        days: balances.length
+    };
+}
+
+function predictEmptyDate(currentBalance, dailyConsumption) {
+    if (dailyConsumption <= 0) {
+        return { daysUntilEmpty: Infinity, message: '用电量异常，无法预测' };
+    }
+    
+    const daysUntilEmpty = Math.floor(currentBalance / dailyConsumption);
+    const emptyDate = new Date();
+    emptyDate.setDate(emptyDate.getDate() + daysUntilEmpty);
+    
+    return {
+        daysUntilEmpty: daysUntilEmpty,
+        emptyDate: emptyDate.toISOString().split('T')[0],
+        message: `预计${daysUntilEmpty}天后余额不足`
+    };
+}
+
 // Helper functions
-function formatDateForFile(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}${month}${day}`;
-}
-
-function formatDateDisplay(date) {
-    return date.toLocaleDateString('zh-CN', {
-        month: 'short',
-        day: 'numeric'
-    });
-}
-
-function parseBalance(balanceStr) {
-    if (!balanceStr) return 0;
-    return parseFloat(balanceStr.replace('度', '')) || 0;
+function formatDateDisplay(dateStr) {
+    const year = dateStr.slice(0, 4);
+    const month = dateStr.slice(4, 6);
+    const day = dateStr.slice(6, 8);
+    return `${month}-${day}`;
 }
 
 // UI functions
-function populateCampusSelect() {
+function populateCampusSelect(campuses) {
     const select = $('campus-select');
     select.innerHTML = '<option value="">-- 请选择校区 --</option>';
     
-    state.campuses.forEach(campus => {
+    Object.keys(campuses).forEach(campus => {
         const option = document.createElement('option');
         option.value = campus;
         option.textContent = campus;
+        option.dataset.totalRooms = campuses[campus].total_rooms;
         select.appendChild(option);
     });
 }
 
-function populateBuildingSelect(buildings) {
+function populateBuildingSelect(campusData) {
     const select = $('building-select');
     select.innerHTML = '<option value="">-- 请选择楼栋 --</option>';
     select.disabled = false;
     
-    Object.keys(buildings).forEach(building => {
+    Object.keys(campusData.buildings).forEach(building => {
         const option = document.createElement('option');
         option.value = building;
-        option.textContent = building;
+        const info = campusData.buildings[building];
+        option.textContent = `${building} (${info.total_rooms}间)`;
+        option.dataset.totalRooms = info.total_rooms;
         select.appendChild(option);
     });
 }
 
-function populateRoomSelect(rooms) {
+function populateRoomSelect(buildingData) {
     const select = $('room-select');
     select.innerHTML = '<option value="">-- 请选择房间 --</option>';
     select.disabled = false;
@@ -202,44 +257,37 @@ function populateRoomSelect(rooms) {
     searchInput.disabled = false;
     searchInput.value = '';
     
-    rooms.forEach(room => {
+    Object.entries(buildingData.rooms).forEach(([roomId, roomInfo]) => {
         const option = document.createElement('option');
-        option.value = room.i; // room id
-        option.textContent = room.n; // room name
-        option.dataset.path = room.p; // path
-        option.dataset.records = room.r; // record count
-        option.dataset.name = room.n.toLowerCase();
+        option.value = roomId;
+        option.textContent = `${roomInfo.room_name} (${roomInfo.current_balance}度)`;
+        option.dataset.name = roomInfo.room_name.toLowerCase();
+        option.dataset.balance = roomInfo.current_balance;
         select.appendChild(option);
     });
 }
 
-function displayRoomInfo(roomId, roomPath) {
-    const option = $(`room-select`).querySelector(`option[value="${roomId}"]`);
+function displayRoomInfo(roomData) {
+    $('info-campus').textContent = roomData.campus;
+    $('info-building').textContent = roomData.building;
+    $('info-room').textContent = roomData.room_name;
+    $('info-records').textContent = Object.keys(roomData.balance_history).length;
     
-    if (option) {
-        $('info-campus').textContent = $('campus-select').value;
-        $('info-building').textContent = $('building-select').value;
-        $('info-room').textContent = option.textContent;
-        $('info-records').textContent = option.dataset.records;
-        
-        show('room-info');
-    }
+    show('room-info');
 }
 
 function updateChart(roomData, days = null) {
     const ctx = $('electricity-chart').getContext('2d');
     
-    // Filter data by days if specified
-    let filteredData = roomData;
-    if (days) {
-        const cutoff = new Date();
-        cutoff.setDate(cutoff.getDate() - days);
-        filteredData = roomData.filter(d => d.date >= cutoff);
+    const dates = Object.keys(roomData.balance_history).sort();
+    let filteredDates = dates;
+    
+    if (days && days < dates.length) {
+        filteredDates = dates.slice(-days);
     }
     
-    // Prepare chart data
-    const labels = filteredData.map(d => formatDateDisplay(d.date));
-    const balances = filteredData.map(d => parseBalance(d.data['剩余电量']));
+    const labels = filteredDates.map(d => formatDateDisplay(d));
+    const balances = filteredDates.map(d => roomData.balance_history[d]);
     
     // Destroy existing chart
     if (state.chart) {
@@ -294,23 +342,20 @@ function updateChart(roomData, days = null) {
         }
     });
     
-    // Update statistics
-    if (balances.length > 0) {
-        const current = balances[balances.length - 1];
-        const min = Math.min(...balances);
-        const max = Math.max(...balances);
-        const avg = balances.reduce((a, b) => a + b, 0) / balances.length;
+    // Calculate and display statistics
+    const stats = calculateStats(roomData.balance_history);
+    
+    if (stats) {
+        $('stat-current').textContent = `${stats.current.toFixed(1)} 度`;
+        $('stat-avg').textContent = `${stats.dailyConsumption.toFixed(1)} 度/天`;
+        $('stat-min').textContent = `${stats.min.toFixed(1)} 度`;
+        $('stat-max').textContent = `${stats.max.toFixed(1)} 度`;
         
-        // Calculate daily consumption
-        let dailyConsumption = 0;
-        if (balances.length >= 2) {
-            dailyConsumption = (balances[0] - balances[balances.length - 1]) / (balances.length - 1);
+        // Show prediction
+        const prediction = predictEmptyDate(stats.current, stats.dailyConsumption);
+        if (Number.isFinite(prediction.daysUntilEmpty)) {
+            $('stat-avg').title = prediction.message;
         }
-        
-        $('stat-current').textContent = `${current.toFixed(1)} 度`;
-        $('stat-avg').textContent = `${dailyConsumption.toFixed(1)} 度/天`;
-        $('stat-min').textContent = `${min.toFixed(1)} 度`;
-        $('stat-max').textContent = `${max.toFixed(1)} 度`;
     }
 }
 
@@ -335,7 +380,7 @@ async function onCampusChange() {
     }
 }
 
-function onBuildingChange() {
+async function onBuildingChange() {
     const building = this.value;
     const campus = $('campus-select').value;
     
@@ -348,35 +393,34 @@ function onBuildingChange() {
     
     if (!building || !campus) return;
     
-    const campusData = state.campusData[campus];
-    if (campusData && campusData[building]) {
-        populateRoomSelect(campusData[building]);
+    const buildingData = await loadBuildingData(campus, building);
+    if (buildingData) {
+        populateRoomSelect(buildingData);
     }
 }
 
 async function onRoomChange() {
     const roomId = this.value;
-    const option = this.selectedOptions[0];
     
-    if (!roomId || !option) {
+    if (!roomId) {
         hide('room-info');
         hide('chart-section');
         return;
     }
     
-    const roomPath = option.dataset.path;
-    const roomName = option.textContent;
+    const campus = $('campus-select').value;
+    const building = $('building-select').value;
     
-    // Display room info
-    displayRoomInfo(roomId, roomPath);
+    // Load room data
+    const roomData = await loadRoomData(campus, building, roomId);
     
-    // Load room history
-    const roomData = await loadRoomHistory(roomPath);
-    
-    if (roomData.length > 0) {
+    if (roomData) {
         state.roomData = roomData;
+        displayRoomInfo(roomData);
         show('chart-section');
-        updateChart(roomData, 30); // Show last 30 days by default
+        
+        // Default to showing all data
+        updateChart(roomData, null);
     } else {
         showError('该房间暂无历史数据');
         hide('chart-section');
@@ -389,7 +433,7 @@ function onRoomSearch() {
     
     for (let i = 0; i < options.length; i++) {
         const option = options[i];
-        if (option.value === '') continue; // Skip placeholder
+        if (option.value === '') continue;
         
         const name = option.dataset.name || '';
         option.style.display = name.includes(searchTerm) ? '' : 'none';
@@ -412,15 +456,15 @@ function onChartRangeClick(event) {
     else if (range === '30d') days = 30;
     // else 'all' -> days = null
     
-    if (state.roomData.length > 0) {
+    if (state.roomData) {
         updateChart(state.roomData, days);
     }
 }
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
-    // Load index
-    loadIndex();
+    // Load overview
+    loadOverview();
     
     // Event listeners
     $('campus-select').addEventListener('change', onCampusChange);

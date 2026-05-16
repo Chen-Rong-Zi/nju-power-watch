@@ -2,10 +2,6 @@
 
 Automated daily electricity data collection and analysis for Nanjing University dormitories.
 
-> **📈 Scale**: Supports **60,000+ daily queries**  
-> **💰 Cost**: **$0/month** with public repository  
-> **⚡ Performance**: ~1 hour for 60k queries at 30 concurrency
-
 ## Overview
 
 This project automates the collection, processing, and aggregation of electricity consumption data from the NJU epay system. It provides:
@@ -14,7 +10,6 @@ This project automates the collection, processing, and aggregation of electricit
 - **Data retention and archival** with 30-day rolling daily data and 365-day archives
 - **Pre-aggregated summaries** for fast frontend visualization
 - **Static architecture** - no backend server required
-- **High performance** - optimized for large-scale queries (60k+ rooms)
 
 ## Features
 
@@ -25,48 +20,63 @@ This project automates the collection, processing, and aggregation of electricit
 ✅ Pre-computed statistics for frontend  
 ✅ File-based JSON storage  
 ✅ GitHub Actions automation  
-✅ **Optimized for 60,000+ queries** with configurable concurrency  
-✅ **Free unlimited usage** with public repository  
+✅ **Data persistence via Git repository** - survives between workflow runs
 
-## Large-Scale Deployment
+## Important: Data Persistence
 
-### GitHub Actions - Free Unlimited Usage
+**How does data persist between GitHub Actions runs?**
 
-**Key Insight**: GitHub Actions is **free and unlimited** for public repositories!
+GitHub Actions每次运行都是全新环境，数据通过以下方式持久化：
 
-| Repository Type | Free Minutes/Month | Actual Cost |
-|----------------|-------------------|-------------|
-| **Public** | **∞ Unlimited** | **$0** ✅ |
-| Private (Free) | 2,000 | ~$258/month 💸 |
-| Private (Pro) | 3,000 | ~$252/month 💸 |
+1. **只提交聚合数据**: 原始数据不提交，只提交 `database/summaries/`
+2. **历史数据合并**: 每次运行加载旧的 summary，与新数据合并后提交
+3. **完整历史保留**: **每个房间的 JSON 包含所有查询过的日期及余额**（无时间限制）
+4. **节省空间**: Summary 比原始数据小 97%（~5.5MB/年 vs ~182MB/年）
 
-**Recommendation**: Make repository **public** for free unlimited usage.
-
-### Concurrency Optimization
-
-For **60,000 queries**:
-
-```yaml
-# Recommended settings
-Concurrency: 30
-Timeout: 120 minutes
-Estimated time: ~50 minutes
+**数据流**:
+```
+运行开始 → 检出仓库（包含完整历史 summary）
+       ↓
+查询新数据 → 写入原始 database/（临时）
+       ↓
+合并数据 → 加载旧 summary + 新数据 → 生成新 summary
+       ↓
+提交推送 → 只提交 summaries/（原始数据丢弃）
 ```
 
-See [docs/concurrency-analysis.md](docs/concurrency-analysis.md) for detailed analysis.
+**空间估算**（500个房间）:
+- 1年：~5.5MB
+- 2年：~11MB
+- 5年：~27.5MB
 
-### Performance Tuning
+详见：[docs/data-persistence.md](docs/data-persistence.md)
 
-```bash
-# Adjust concurrency based on your needs
-python nju_electric_query.py -c 30  # Recommended: 30
-python nju_electric_query.py -c 50  # Faster but higher risk
-python nju_electric_query.py -c 20  # Safer but slower
-```
-
-See [docs/github-actions-guide.md](docs/github-actions-guide.md) for long-term usage guide.
+**关键配置**:
+- ✅ `database/{校区}/` **被** `.gitignore` 忽略（原始数据不提交）
+- ✅ `database/summaries/` **不**被忽略（聚合数据提交）
+- ✅ 每个 summary 包含**完整历史数据**（所有查询过的日期）
 
 ## Quick Start
+
+### Test Frontend UI 🎨
+
+快速验证前端数据显示功能：
+
+```bash
+# 启动本地服务器
+python serve_frontend.py
+
+# 浏览器访问
+# http://localhost:8000/frontend/
+```
+
+**前端功能演示**：
+- ✅ 三级筛选：校区 → 楼栋 → 房间
+- ✅ 数据可视化：折线图显示电量变化趋势
+- ✅ 统计信息：当前余额、7日/30日平均、最高/最低值
+- ✅ 历史数据表格展示
+
+详见：[frontend/README.md](frontend/README.md)
 
 ### Prerequisites
 
@@ -142,7 +152,9 @@ Go to Actions → "Manual Electricity Query" → Run workflow
 ├── database/               # Data storage (git-ignored)
 │   ├── [campus]/[building]/[room-id]/[date].json  # Daily data
 │   ├── archives/           # Monthly archives
-│   └── summary.json        # Aggregated summary
+│   └── summaries/          # Hierarchical aggregated summaries
+│       ├── overview.json   # All campuses overview
+│       └── campuses/       # Campus → Building → Room hierarchy
 │
 ├── logs/
 │   └── query_runs/         # Workflow execution logs
@@ -170,11 +182,17 @@ cat database/仙林校区/19幢/19栋第16层1613-53463/$(date +%Y%m%d).json | j
 ### View Summary
 
 ```bash
-# View aggregated summary
-cat database/summary.json | jq
+# View overview (all campuses)
+cat database/summaries/overview.json | jq
+
+# View specific campus
+cat database/summaries/campuses/仙林校区/summary.json | jq
+
+# View specific building
+cat database/summaries/campuses/仙林校区/buildings/19幢/summary.json | jq
 
 # View specific room
-cat database/summary.json | jq '.rooms["53463"]'
+cat database/summaries/campuses/仙林校区/buildings/19幢/rooms/53463.json | jq
 ```
 
 ### Extract Archives
@@ -220,7 +238,24 @@ This project follows the **Data-Business Separation** principle:
 
 1. **Data Acquisition**: `nju_electric_query.py` (unchanged)
 2. **Data Processing**: `scripts/aggregate_data.py`, `scripts/cleanup_archives.py`
-3. **Presentation**: Static frontend consumes `summary.json` (future)
+3. **Presentation**: Static frontend consumes hierarchical summaries (future)
+
+**Data Flow**:
+```
+Daily Query → Raw JSON Files → Hierarchical Aggregation
+                                     ↓
+                            database/summaries/
+                            ├── overview.json (all campuses)
+                            └── campuses/
+                                └── {campus}/
+                                    ├── summary.json
+                                    └── buildings/
+                                        └── {building}/
+                                            ├── summary.json
+                                            └── rooms/{id}.json
+```
+
+See [docs/hierarchical-aggregation.md](docs/hierarchical-aggregation.md) for detailed usage.
 
 ## Monitoring
 
