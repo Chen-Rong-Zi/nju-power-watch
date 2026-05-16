@@ -14,6 +14,7 @@ This project automates the collection, processing, and aggregation of electricit
 ## Features
 
 ✅ Automated daily data collection at 2 AM UTC  
+✅ **Auto-login with captcha recognition** - no manual cookie updates needed  
 ✅ Atomic batch operations with rollback on failure  
 ✅ Cookie-based authentication with validation  
 ✅ Monthly data archiving (tar.gz)  
@@ -86,50 +87,58 @@ python serve_frontend.py
 
 ### Setup
 
-1. **Configure GitHub Secrets**:
-   - Go to repository Settings → Secrets → Actions
-   - Add secret `EPAY_COOKIE` with your cookie JSON
-   
-   ```json
-   [
-     {
-       "name": "JSESSIONID",
-       "value": "your-session-id",
-       "domain": "epay.nju.edu.cn"
-     }
-   ]
-   ```
+**GitHub Actions自动登录（推荐）**：
 
-2. **Configure room IDs**:
+每次查询前自动登录获取cookie，无需手动更新。
+
+1. **配置GitHub Secrets**:
+   - Go to repository Settings → Secrets → Actions
+   - Add the following 3 secrets:
+   
+   | Secret Name | Description | Example |
+   |------------|-------------|---------|
+   | `NJU_USERNAME` | 你的学号 | `201250000` |
+   | `NJU_PASSWORD` | 统一身份认证密码 | `your_password` |
+   | `YUNMA_TOKEN` | 云码API Token | `TA6djdhm0NC...` |
+   
+   **获取云码Token**: 注册 [zhuce.jfbym.com](https://zhuce.jfbym.com) → 用户中心 → Token
+
+2. **配置房间列表** (可选):
+   
    ```bash
-   # Edit config/room_ids.txt
-   echo "53463" >> config/room_ids.txt
+   # 编辑 config/room_ids.txt
+   echo "53463" > config/room_ids.txt
    echo "53464" >> config/room_ids.txt
    ```
 
-3. **Test locally**:
-   ```bash
-   # Install dependencies
-   pip install -r requirements.txt
-   
-   # Export cookie to file
-   echo '[{"name":"JSESSIONID","value":"your-value","domain":"epay.nju.edu.cn"}]' > /tmp/cookie.json
-   
-   # Test cookie validation
-   python scripts/validate_cookie.py /tmp/cookie.json
-   
-   # Run manual query
-   python nju_electric_query.py --cookie-file /tmp/cookie.json -d ./database 53463
-   ```
+3. **手动触发测试**:
+   - Go to Actions → Manual Electricity Query → Run workflow
+   - 查看运行日志确认自动登录成功
 
-4. **Enable GitHub Actions**:
-   - Workflows are already configured in `.github/workflows/`
-   - They will run automatically on schedule
-   - Or trigger manually via Actions tab
+**成本**: 云码验证码识别 ~0.01-0.03元/次，月成本 < 1元
 
-### Manual Trigger
+详见：[docs/github-actions-setup.md](docs/github-actions-setup.md)
 
-Go to Actions → "Manual Electricity Query" → Run workflow
+---
+
+**本地手动登录（备用）**:
+
+如果需要手动获取cookie：
+
+```bash
+# 安装依赖
+pip install -r requirements.txt
+
+# 配置登录信息
+echo "your_username" > /tmp/username
+echo "your_password" > /tmp/password
+echo "your_yunma_token" > /tmp/token
+
+# 自动登录
+python scripts/nju_auto_login.py
+
+# Cookie将保存到 /tmp/cookie.json
+```
 
 ## Project Structure
 
