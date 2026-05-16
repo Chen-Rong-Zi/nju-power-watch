@@ -61,18 +61,19 @@ async def load_existing_summaries(summaries_dir: Path) -> Dict[str, Dict[str, An
     
     logger.info("Loading existing summaries...")
     
-    # Find all room JSON files in summaries
-    tasks = []
-    room_files = []
+    room_files = list(summaries_dir.rglob("rooms/*.json"))
     
-    for room_file in summaries_dir.rglob("rooms/*.json"):
-        room_files.append(room_file)
-        tasks.append(read_json_file(room_file))
-    
-    if not tasks:
+    if not room_files:
         logger.info("No existing room summaries found")
         return existing_data
     
+    semaphore = asyncio.Semaphore(100)
+    
+    async def read_with_limit(file_path: Path):
+        async with semaphore:
+            return await read_json_file(file_path)
+    
+    tasks = [read_with_limit(f) for f in room_files]
     results = await asyncio.gather(*tasks)
     
     for room_file, result in zip(room_files, results):
@@ -83,12 +84,11 @@ async def load_existing_summaries(summaries_dir: Path) -> Dict[str, Dict[str, An
     return existing_data
 
 
-async def process_room(room_dir: Path) -> Dict[str, Any]:
+async def process_room(room_dir: Path, read_semaphore: asyncio.Semaphore) -> Dict[str, Any]:
     """
     Process a single room directory asynchronously.
     Returns simplified data: date → balance mapping.
     """
-    # Extract room ID from directory name
     dir_name = room_dir.name
     parts = dir_name.rsplit('-', 1)
     if len(parts) != 2 or not parts[1].isdigit():
@@ -97,44 +97,40 @@ async def process_room(room_dir: Path) -> Dict[str, Any]:
     room_id = parts[1]
     room_name = parts[0]
     
-    # Get all JSON files in room directory
     json_files = sorted(room_dir.glob("*.json"), key=lambda f: f.stem)
     
     if not json_files:
         return None
     
-    # Read all JSON files concurrently
-    tasks = [read_json_file(f) for f in json_files]
+    async def read_with_limit(f: Path):
+        async with read_semaphore:
+            return await read_json_file(f)
+    
+    tasks = [read_with_limit(f) for f in json_files]
     results = await asyncio.gather(*tasks)
     
-    # Build date → balance mapping
     balance_history = {}
     campus = None
     building = None
     
-    for result in results:
+    for idx, result in enumerate(results):
         if not result or not result.get('success', False):
             continue
         
-        # Extract metadata from first successful result
         if not campus:
             campus = result.get('校区', 'Unknown')
             building = result.get('楼栋', 'Unknown')
         
-        # Extract balance
         balance_str = result.get('剩余电量', '0度')
         balance = float(balance_str.replace('度', ''))
         
-        # Extract date from filename
-        json_file = json_files[results.index(result)]
-        date = json_file.stem  # YYYYMMDD
+        date = json_files[idx].stem
         
         balance_history[date] = balance
     
     if not balance_history:
         return None
     
-    # Get latest balance
     latest_date = max(balance_history.keys())
     current_balance = balance_history[latest_date]
     
@@ -144,7 +140,7 @@ async def process_room(room_dir: Path) -> Dict[str, Any]:
         'campus': campus,
         'building': building,
         'current_balance': current_balance,
-        'balance_history': balance_history,  # New data only
+        'balance_history': balance_history,
         'last_updated': latest_date
     }
 
@@ -153,7 +149,6 @@ async def process_all_rooms(database_dir: Path) -> List[Dict[str, Any]]:
     """
     Process all rooms concurrently with controlled concurrency.
     """
-    # Find all room directories
     room_dirs = []
     for campus_dir in database_dir.iterdir():
         if not campus_dir.is_dir() or campus_dir.name in ('archives', 'summaries'):
@@ -172,18 +167,16 @@ async def process_all_rooms(database_dir: Path) -> List[Dict[str, Any]]:
     if not room_dirs:
         return []
     
-    # Process rooms with limited concurrency to avoid "too many open files"
-    semaphore = asyncio.Semaphore(100)  # Limit concurrent file operations
+    read_semaphore = asyncio.Semaphore(100)
+    process_semaphore = asyncio.Semaphore(100)
     
     async def process_with_limit(room_dir):
-        async with semaphore:
-            return await process_room(room_dir)
+        async with process_semaphore:
+            return await process_room(room_dir, read_semaphore)
     
-    # Process all rooms concurrently
     tasks = [process_with_limit(room_dir) for room_dir in room_dirs]
     results = await asyncio.gather(*tasks)
     
-    # Filter out None results
     return [r for r in results if r is not None]
 
 
@@ -413,7 +406,7 @@ def main():
         print(f"✓ Hierarchical summaries generated:")
         print(f"  Total rooms: {overview['total_rooms']}")
         print(f"  Campuses: {len(overview['campuses'])}")
-        print(f"  Max history: {MAX_HISTORY_DAYS} days")
+        print(f"  History policy: keep_all")
         print(f"  Output: {output_dir}")
         sys.exit(0)
     
