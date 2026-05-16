@@ -69,7 +69,6 @@ jobs:
             ${{ steps.rooms.outputs.room_ids }} \
             2>&1 | tee query_output.log
           
-          # Extract success/failure counts
           SUCCESS=$(grep -oP '成功: \K\d+' query_output.log || echo "0")
           FAILED=$(grep -oP '失败: \K\d+' query_output.log || echo "0")
           echo "success_count=$SUCCESS" >> $GITHUB_OUTPUT
@@ -93,24 +92,6 @@ jobs:
             --database ./database \
             --output ./database/summaries
       
-      - name: Commit and push summaries only
-        if: success()
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          
-          # Add only summaries (not raw daily data to save space)
-          git add database/summaries/ logs/ || true
-          
-          # Check if there are changes
-          if git diff --staged --quiet; then
-            echo "No new summaries to commit"
-          else
-            git commit -m "chore: update electricity summaries for $(date +%Y-%m-%d)"
-            git push
-            echo "✓ Summaries committed and pushed"
-          fi
-      
       - name: Create log file
         if: always()
         run: |
@@ -129,8 +110,28 @@ jobs:
             fi
           } > "$LOG_FILE"
           
-          # Logs will be committed together with summaries in previous step
           echo "✓ Log file created: $LOG_FILE"
+      
+      - name: Commit and push summaries
+        if: success()
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          git add -f database/summaries/
+          
+          STAGED_FILES=$(git diff --staged --name-only)
+          if [ -z "$STAGED_FILES" ]; then
+            echo "No new summaries to commit"
+          else
+            echo "Files to commit:"
+            echo "$STAGED_FILES" | head -10
+            echo "... and $(echo "$STAGED_FILES" | wc -l) files total"
+            
+            git commit -m "chore: update electricity summaries for $(date +%Y-%m-%d)"
+            git push
+            echo "✓ Summaries committed and pushed"
+          fi
       
       - name: Summary
         if: always()
