@@ -71,6 +71,7 @@ jobs:
             --cookie-file /tmp/cookie.json \
             -d ./database \
             -c 200 \
+            -q \
             ${{ steps.rooms.outputs.room_ids }} \
             2>&1 | tee query_output.log
           

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 南京大学电费查询脚本 (异步版本)
-用法: python3 nju_electric_query.py [--cookie-file COOKIE_FILE] [-d 输出目录] 宿舍ID1 宿舍ID2 ...
+用法: python3 nju_electric_query.py [--cookie-file COOKIE_FILE] [-d 输出目录] [-q] 宿舍ID1 宿舍ID2 ...
 示例: python3 nju_electric_query.py --cookie-file /tmp/cookie.json -d ./database 53463 53464 53465
+      python3 nju_electric_query.py -q -d ./database 53463 53464  # 安静模式，减少输出
 """
 
 import asyncio
@@ -227,7 +228,7 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
                 if result["success"]:
                     succeeded += 1
                     if output_dir:
-                        await save_result(result, output_dir, quiet=False)
+                        await save_result(result, output_dir, quiet=not show_progress)
                     building = result.get("楼栋", "未知")
                     room = result.get("房间", "未知")
                     power = result.get("剩余电量", "未知")
@@ -339,6 +340,7 @@ async def async_main():
     parser.add_argument("-d", "--dir", type=str, help="输出目录", default=None)
     parser.add_argument("-c", "--concurrency", type=int, help=f"最大并发数 (默认{DEFAULT_CONCURRENCY})", default=DEFAULT_CONCURRENCY)
     parser.add_argument("--cookie-file", type=str, help="Cookie JSON文件路径", default=DEFAULT_COOKIE_FILE)
+    parser.add_argument("-q", "--quiet", action="store_true", help="安静模式，减少输出")
     parser.add_argument("room_ids", nargs="+", help="宿舍ID列表")
     args = parser.parse_args()
 
@@ -346,6 +348,7 @@ async def async_main():
     output_dir = Path(args.dir) if args.dir else None
     max_concurrent = args.concurrency
     cookie_file = args.cookie_file
+    show_progress = not args.quiet
 
     if not os.path.exists(cookie_file):
         print(f"错误: Cookie 文件不存在: {cookie_file}")
@@ -353,7 +356,8 @@ async def async_main():
         sys.exit(1)
     
     cookies = await load_cookies_from_file(cookie_file)
-    print(f"✓ 已加载 Cookie 文件: {cookie_file}")
+    if show_progress:
+        print(f"✓ 已加载 Cookie 文件: {cookie_file}")
 
     if output_dir and output_dir.exists():
         if not output_dir.is_dir():
@@ -363,43 +367,51 @@ async def async_main():
             print(f"错误: 没有权限写入目录 {output_dir}")
             sys.exit(1)
 
-    print(f"开始查询 {len(room_ids)} 个宿舍 (并发数: {max_concurrent})...")
-    print("-" * 50)
+    if show_progress:
+        print(f"开始查询 {len(room_ids)} 个宿舍 (并发数: {max_concurrent})...")
+        print("-" * 50)
 
     start_time = time.time()
-    summary = await query_batch(room_ids, cookies, output_dir, max_concurrent=max_concurrent)
+    summary = await query_batch(room_ids, cookies, output_dir, show_progress=show_progress, max_concurrent=max_concurrent)
     elapsed = time.time() - start_time
 
-    print("=" * 50)
-    print(f"查询完成!")
-    print(f"  总数: {summary['total']}")
-    print(f"  成功: {summary['succeeded']}")
-    print(f"  失败: {summary['failed']}")
-    print(f"  耗时: {elapsed:.2f}秒")
-    if output_dir:
-        print(f"  输出目录: {output_dir.absolute()}")
-    print("=" * 50)
+    if show_progress:
+        print("=" * 50)
+        print(f"查询完成!")
+        print(f"  总数: {summary['total']}")
+        print(f"  成功: {summary['succeeded']}")
+        print(f"  失败: {summary['failed']}")
+        print(f"  耗时: {elapsed:.2f}秒")
+        if output_dir:
+            print(f"  输出目录: {output_dir.absolute()}")
+        print("=" * 50)
+    else:
+        print(f"成功: {summary['succeeded']}")
+        print(f"失败: {summary['failed']}")
+        print(f"耗时: {elapsed:.2f}s")
+        print(f"完成: {summary['succeeded']}/{summary['total']} 成功, 失败 {summary['failed']}, 耗时 {elapsed:.2f}s")
 
     if summary['failed'] > 0:
-        print("\n--- 失败原因统计 ---")
-        error_count = {}
-        for detail in summary.get("failed_details", []):
-            error_type = detail.get("error_type", "unknown")
-            error_count[error_type] = error_count.get(error_type, 0) + 1
+        if show_progress:
+            print("\n--- 失败原因统计 ---")
+            error_count = {}
+            for detail in summary.get("failed_details", []):
+                error_type = detail.get("error_type", "unknown")
+                error_count[error_type] = error_count.get(error_type, 0) + 1
 
-        error_messages = {
-            "network_error": "网络错误: 无法连接到服务器",
-            "timeout": "请求超时: 服务器响应过慢",
-            "auth_failed": "认证失败: Cookie已过期，请更新认证信息",
-            "not_found": "资源不存在: 宿舍ID无效或已下架",
-            "http_error": "HTTP错误: 服务器内部错误",
-            "parse_error": "解析失败: 页面格式已更新",
-            "retry_exhausted": "重试次数耗尽",
-            "unknown": "未知错误",
-        }
-        for error_type, count in error_count.items():
-            msg = error_messages.get(error_type, error_type)
-            print(f"  {msg}: {count}个")
+            error_messages = {
+                "network_error": "网络错误: 无法连接到服务器",
+                "timeout": "请求超时: 服务器响应过慢",
+                "auth_failed": "认证失败: Cookie已过期，请更新认证信息",
+                "not_found": "资源不存在: 宿舍ID无效或已下架",
+                "http_error": "HTTP错误: 服务器内部错误",
+                "parse_error": "解析失败: 页面格式已更新",
+                "retry_exhausted": "重试次数耗尽",
+                "unknown": "未知错误",
+            }
+            for error_type, count in error_count.items():
+                msg = error_messages.get(error_type, error_type)
+                print(f"  {msg}: {count}个")
         if summary['failed'] >= summary['succeeded']:
             sys.exit(1)
 

@@ -65,13 +65,13 @@ jobs:
             --cookie-file /tmp/cookie.json \
             -d ./database \
             -c 200 \
+            -q \
             ${{ steps.rooms.outputs.room_ids }} \
             2>&1 | tee query_output.log
           
           # Extract success/failure counts
           SUCCESS=$(grep -oP '成功: \K\d+' query_output.log || echo "0")
           FAILED=$(grep -oP '失败: \K\d+' query_output.log || echo "0")
-          echo "success_count=$SUCCESS" >> $GITHUB_OUTPUT
           echo "success_count=$SUCCESS" >> $GITHUB_OUTPUT
           echo "failed_count=$FAILED" >> $GITHUB_OUTPUT
           
