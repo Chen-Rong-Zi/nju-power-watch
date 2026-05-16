@@ -3,45 +3,45 @@
   "campus": "鼓楼校区",
   "total_rooms": 8,
   "rooms": {
-    "66013": {
-      "room_name": "咖啡馆(二层)",
+    "64469": {
+      "room_name": "咖啡馆(一层中)",
       "current_balance": 0.0,
-      "last_updated": "20260515"
+      "last_updated": "20260516"
     },
     "10574": {
       "room_name": "机器人(一层东)",
-      "current_balance": 786.0,
-      "last_updated": "20260515"
-    },
-    "64450": {
-      "room_name": "咖啡馆(二层)",
-      "current_balance": 0.0,
-      "last_updated": "20260515"
+      "current_balance": 785.97,
+      "last_updated": "20260516"
     },
     "39638": {
       "room_name": "咖啡馆(一层中)",
       "current_balance": 0.0,
-      "last_updated": "20260515"
-    },
-    "39645": {
-      "room_name": "咖啡馆(二层)",
-      "current_balance": 0.0,
-      "last_updated": "20260515"
-    },
-    "64414": {
-      "room_name": "咖啡馆(二层)",
-      "current_balance": 0.0,
-      "last_updated": "20260515"
-    },
-    "64469": {
-      "room_name": "咖啡馆(一层中)",
-      "current_balance": 0.0,
-      "last_updated": "20260515"
+      "last_updated": "20260516"
     },
     "66012": {
       "room_name": "咖啡馆(一层中)",
       "current_balance": 0.0,
-      "last_updated": "20260515"
+      "last_updated": "20260516"
+    },
+    "66013": {
+      "room_name": "咖啡馆(二层)",
+      "current_balance": 0.0,
+      "last_updated": "20260516"
+    },
+    "64414": {
+      "room_name": "咖啡馆(二层)",
+      "current_balance": 0.0,
+      "last_updated": "20260516"
+    },
+    "64450": {
+      "room_name": "咖啡馆(二层)",
+      "current_balance": 0.0,
+      "last_updated": "20260516"
+    },
+    "39645": {
+      "room_name": "咖啡馆(二层)",
+      "current_balance": 0.0,
+      "last_updated": "20260516"
     }
   }
 }

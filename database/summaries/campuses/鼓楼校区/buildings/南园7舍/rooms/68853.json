@@ -3,9 +3,10 @@
   "room_name": "203",
   "campus": "鼓楼校区",
   "building": "南园7舍",
-  "current_balance": 48.11,
+  "current_balance": 48.0,
   "balance_history": {
-    "20260515": 48.11
+    "20260515": 48.11,
+    "20260516": 48.0
   },
-  "last_updated": "20260515"
+  "last_updated": "20260516"
 }

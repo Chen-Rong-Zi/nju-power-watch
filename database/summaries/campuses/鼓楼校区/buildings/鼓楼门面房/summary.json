@@ -3,40 +3,40 @@
   "campus": "鼓楼校区",
   "total_rooms": 7,
   "rooms": {
-    "42133": {
-      "room_name": "电信营业厅",
-      "current_balance": 938.32,
-      "last_updated": "20260515"
-    },
-    "65191": {
-      "room_name": "松平美业",
-      "current_balance": 1196.72,
-      "last_updated": "20260515"
-    },
     "33712": {
       "room_name": "菜鸟驿站",
-      "current_balance": 333.11,
-      "last_updated": "20260515"
+      "current_balance": 302.5,
+      "last_updated": "20260516"
     },
-    "37661": {
+    "97173": {
       "room_name": "松平美业",
-      "current_balance": 1196.72,
-      "last_updated": "20260515"
+      "current_balance": 1167.42,
+      "last_updated": "20260516"
     },
     "63870": {
       "room_name": "寅春老卤面",
       "current_balance": 3274.14,
-      "last_updated": "20260515"
+      "last_updated": "20260516"
     },
-    "97173": {
+    "42133": {
+      "room_name": "电信营业厅",
+      "current_balance": 937.57,
+      "last_updated": "20260516"
+    },
+    "65191": {
       "room_name": "松平美业",
-      "current_balance": 1196.72,
-      "last_updated": "20260515"
+      "current_balance": 1167.42,
+      "last_updated": "20260516"
+    },
+    "37661": {
+      "room_name": "松平美业",
+      "current_balance": 1167.42,
+      "last_updated": "20260516"
     },
     "39075": {
       "room_name": "电信营业厅",
-      "current_balance": 938.32,
-      "last_updated": "20260515"
+      "current_balance": 937.57,
+      "last_updated": "20260516"
     }
   }
 }

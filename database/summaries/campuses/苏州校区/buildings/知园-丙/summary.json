@@ -3,25 +3,25 @@
   "campus": "苏州校区",
   "total_rooms": 4,
   "rooms": {
-    "66713": {
-      "room_name": "丙204",
+    "65138": {
+      "room_name": "丙702",
       "current_balance": 0.0,
-      "last_updated": "20260515"
-    },
-    "66822": {
-      "room_name": "丙503",
-      "current_balance": 0.0,
-      "last_updated": "20260515"
+      "last_updated": "20260516"
     },
     "69569": {
       "room_name": "丙511",
       "current_balance": 0.0,
-      "last_updated": "20260515"
+      "last_updated": "20260516"
     },
-    "65138": {
-      "room_name": "丙702",
+    "66822": {
+      "room_name": "丙503",
       "current_balance": 0.0,
-      "last_updated": "20260515"
+      "last_updated": "20260516"
+    },
+    "66713": {
+      "room_name": "丙204",
+      "current_balance": 0.0,
+      "last_updated": "20260516"
     }
   }
 }
