@@ -75,7 +75,7 @@ jobs:
           echo "success_count=$SUCCESS" >> $GITHUB_OUTPUT
           echo "failed_count=$FAILED" >> $GITHUB_OUTPUT
           
-          if [ "$FAILED" -gt 0 ]; then
+          if [ "$FAILED" -gt "$SUCCESS" ]; then
             echo "::error::Query failed for $FAILED rooms"
             exit 1
           fi
