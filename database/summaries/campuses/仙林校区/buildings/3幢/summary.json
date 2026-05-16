@@ -1,7 +1,7 @@
 {
   "building": "3幢",
   "campus": "仙林校区",
-  "total_rooms": 33,
+  "total_rooms": 27,
   "rooms": {
     "98807": {
       "room_name": "3B116",
@@ -41,11 +41,6 @@
     "98819": {
       "room_name": "3B109",
       "current_balance": 20.04,
-      "last_updated": "20260516"
-    },
-    "99888": {
-      "room_name": "3A106",
-      "current_balance": 100.87,
       "last_updated": "20260516"
     },
     "98806": {
@@ -98,11 +93,6 @@
       "current_balance": 4.48,
       "last_updated": "20260516"
     },
-    "99602": {
-      "room_name": "3A113",
-      "current_balance": 60.57,
-      "last_updated": "20260516"
-    },
     "99011": {
       "room_name": "3B114",
       "current_balance": 45.62,
@@ -136,26 +126,6 @@
     "98863": {
       "room_name": "3B117",
       "current_balance": 4.61,
-      "last_updated": "20260516"
-    },
-    "98851": {
-      "room_name": "3B103",
-      "current_balance": 98.94,
-      "last_updated": "20260516"
-    },
-    "98972": {
-      "room_name": "3A107",
-      "current_balance": 93.01,
-      "last_updated": "20260516"
-    },
-    "99734": {
-      "room_name": "3B118",
-      "current_balance": 146.9,
-      "last_updated": "20260516"
-    },
-    "98823": {
-      "room_name": "3A105",
-      "current_balance": 171.16,
       "last_updated": "20260516"
     },
     "98892": {

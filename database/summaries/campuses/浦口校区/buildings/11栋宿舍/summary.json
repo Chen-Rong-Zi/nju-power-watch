@@ -1,13 +1,8 @@
 {
   "building": "11栋宿舍",
   "campus": "浦口校区",
-  "total_rooms": 32,
+  "total_rooms": 26,
   "rooms": {
-    "14816": {
-      "room_name": "2402",
-      "current_balance": 56.66,
-      "last_updated": "20260516"
-    },
     "37054": {
       "room_name": "2407",
       "current_balance": 170.63,
@@ -93,11 +88,6 @@
       "current_balance": 32.68,
       "last_updated": "20260516"
     },
-    "34564": {
-      "room_name": "1506",
-      "current_balance": 102.41,
-      "last_updated": "20260516"
-    },
     "13429": {
       "room_name": "1508",
       "current_balance": 182.92,
@@ -108,17 +98,7 @@
       "current_balance": 102.57,
       "last_updated": "20260516"
     },
-    "16145": {
-      "room_name": "1603",
-      "current_balance": 161.3,
-      "last_updated": "20260516"
-    },
     "25938": {
-      "room_name": "1603",
-      "current_balance": 161.3,
-      "last_updated": "20260516"
-    },
-    "14788": {
       "room_name": "1603",
       "current_balance": 161.3,
       "last_updated": "20260516"
@@ -143,11 +123,6 @@
       "current_balance": 116.79,
       "last_updated": "20260516"
     },
-    "14821": {
-      "room_name": "2402",
-      "current_balance": 56.66,
-      "last_updated": "20260516"
-    },
     "34403": {
       "room_name": "1406",
       "current_balance": 32.65,
@@ -156,11 +131,6 @@
     "37121": {
       "room_name": "2302",
       "current_balance": 137.35,
-      "last_updated": "20260516"
-    },
-    "22247": {
-      "room_name": "1603",
-      "current_balance": 161.3,
       "last_updated": "20260516"
     }
   }

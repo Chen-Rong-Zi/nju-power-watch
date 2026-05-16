@@ -1,66 +1,11 @@
 {
   "building": "陶园一栋",
   "campus": "鼓楼校区",
-  "total_rooms": 1194,
+  "total_rooms": 206,
   "rooms": {
-    "17284": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
     "46090": {
       "room_name": "陶园1栋第6层612房间",
       "current_balance": 167.14,
-      "last_updated": "20260516"
-    },
-    "22290": {
-      "room_name": "陶园1栋第6层609房间",
-      "current_balance": 281.24,
-      "last_updated": "20260516"
-    },
-    "44482": {
-      "room_name": "陶园1栋第2层217房间",
-      "current_balance": 67.02,
-      "last_updated": "20260516"
-    },
-    "74531": {
-      "room_name": "陶园1栋第12层1212房间",
-      "current_balance": 293.5,
-      "last_updated": "20260516"
-    },
-    "63512": {
-      "room_name": "陶园1栋第5层506房间",
-      "current_balance": 323.73,
-      "last_updated": "20260516"
-    },
-    "89948": {
-      "room_name": "陶园1栋第10层1007房间",
-      "current_balance": 314.41,
-      "last_updated": "20260516"
-    },
-    "55067": {
-      "room_name": "陶园1栋第11层1110房间",
-      "current_balance": 110.46,
-      "last_updated": "20260516"
-    },
-    "34942": {
-      "room_name": "陶园1栋第7层704房间",
-      "current_balance": 165.76,
-      "last_updated": "20260516"
-    },
-    "37643": {
-      "room_name": "陶园1栋第5层508房间",
-      "current_balance": 183.07,
-      "last_updated": "20260516"
-    },
-    "70689": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
-    "54873": {
-      "room_name": "陶园1栋第11层1105房间",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "59568": {
@@ -68,109 +13,14 @@
       "current_balance": 48.63,
       "last_updated": "20260516"
     },
-    "80370": {
-      "room_name": "陶园1栋第1层104房间",
-      "current_balance": 351.76,
-      "last_updated": "20260516"
-    },
     "16599": {
       "room_name": "陶园1栋第12层1203房间",
       "current_balance": 76.2,
       "last_updated": "20260516"
     },
-    "69034": {
-      "room_name": "陶园1栋第9层911房间",
-      "current_balance": 25.92,
-      "last_updated": "20260516"
-    },
-    "38125": {
-      "room_name": "陶园1栋第11层1110房间",
-      "current_balance": 110.46,
-      "last_updated": "20260516"
-    },
-    "37595": {
-      "room_name": "陶园1栋第3层308房间",
-      "current_balance": 339.98,
-      "last_updated": "20260516"
-    },
-    "43964": {
-      "room_name": "陶园1栋第2层210房间",
-      "current_balance": 157.79,
-      "last_updated": "20260516"
-    },
-    "22884": {
-      "room_name": "陶园1栋第6层608房间",
-      "current_balance": 381.67,
-      "last_updated": "20260516"
-    },
-    "94437": {
-      "room_name": "陶园1栋第10层1018房间",
-      "current_balance": 82.35,
-      "last_updated": "20260516"
-    },
-    "94131": {
-      "room_name": "陶园1栋第8层815房间",
-      "current_balance": 37.61,
-      "last_updated": "20260516"
-    },
-    "81360": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
-    "60139": {
-      "room_name": "陶园1栋第7层717房间",
-      "current_balance": 181.17,
-      "last_updated": "20260516"
-    },
-    "44468": {
-      "room_name": "陶园1栋第4层405房间",
-      "current_balance": 79.89,
-      "last_updated": "20260516"
-    },
-    "16699": {
-      "room_name": "陶园1栋第10层1015房间",
-      "current_balance": 99.86,
-      "last_updated": "20260516"
-    },
-    "51596": {
-      "room_name": "陶园1栋第9层901房间",
-      "current_balance": 75.53,
-      "last_updated": "20260516"
-    },
-    "80653": {
-      "room_name": "陶园1栋第9层910房间",
-      "current_balance": 88.49,
-      "last_updated": "20260516"
-    },
-    "36983": {
-      "room_name": "陶园1栋第6层606房间",
-      "current_balance": 103.25,
-      "last_updated": "20260516"
-    },
     "24046": {
       "room_name": "陶园1栋第1层111房间",
       "current_balance": 733.06,
-      "last_updated": "20260516"
-    },
-    "66958": {
-      "room_name": "陶园1栋第7层714房间",
-      "current_balance": 302.24,
-      "last_updated": "20260516"
-    },
-    "82287": {
-      "room_name": "陶园1栋第4层409房间",
-      "current_balance": 92.73,
-      "last_updated": "20260516"
-    },
-    "36883": {
-      "room_name": "陶园1栋第12层1211房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "48355": {
-      "room_name": "陶园1栋第9层913房间",
-      "current_balance": 134.54,
       "last_updated": "20260516"
     },
     "27454": {
@@ -183,124 +33,9 @@
       "current_balance": 126.63,
       "last_updated": "20260516"
     },
-    "74571": {
-      "room_name": "陶园1栋第12层1207房间",
-      "current_balance": 332.59,
-      "last_updated": "20260516"
-    },
-    "15569": {
-      "room_name": "陶园1栋第10层1018房间",
-      "current_balance": 82.35,
-      "last_updated": "20260516"
-    },
-    "85470": {
-      "room_name": "陶园1栋第4层409房间",
-      "current_balance": 92.73,
-      "last_updated": "20260516"
-    },
     "88643": {
       "room_name": "陶园1栋第1层110房间",
       "current_balance": 49.03,
-      "last_updated": "20260516"
-    },
-    "57738": {
-      "room_name": "陶园1栋第9层908房间",
-      "current_balance": 460.72,
-      "last_updated": "20260516"
-    },
-    "28369": {
-      "room_name": "陶园1栋第5层517房间",
-      "current_balance": 857.84,
-      "last_updated": "20260516"
-    },
-    "23021": {
-      "room_name": "陶园1栋第2层207房间",
-      "current_balance": 104.04,
-      "last_updated": "20260516"
-    },
-    "97328": {
-      "room_name": "陶园1栋第7层718房间",
-      "current_balance": 97.4,
-      "last_updated": "20260516"
-    },
-    "80750": {
-      "room_name": "陶园1栋第10层1012房间",
-      "current_balance": 15.46,
-      "last_updated": "20260516"
-    },
-    "29415": {
-      "room_name": "陶园1栋第7层705房间",
-      "current_balance": 111.59,
-      "last_updated": "20260516"
-    },
-    "45052": {
-      "room_name": "陶园1栋第2层216房间",
-      "current_balance": 233.37,
-      "last_updated": "20260516"
-    },
-    "79455": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
-    "78904": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
-    "80408": {
-      "room_name": "陶园1栋第9层903房间",
-      "current_balance": 177.65,
-      "last_updated": "20260516"
-    },
-    "25228": {
-      "room_name": "陶园1栋第6层603房间",
-      "current_balance": 23.19,
-      "last_updated": "20260516"
-    },
-    "99168": {
-      "room_name": "陶园1栋第12层1203房间",
-      "current_balance": 76.2,
-      "last_updated": "20260516"
-    },
-    "17262": {
-      "room_name": "陶园1栋第7层707房间",
-      "current_balance": 421.65,
-      "last_updated": "20260516"
-    },
-    "57679": {
-      "room_name": "陶园1栋第7层713房间",
-      "current_balance": 90.92,
-      "last_updated": "20260516"
-    },
-    "81110": {
-      "room_name": "陶园1栋第10层1013房间",
-      "current_balance": 156.91,
-      "last_updated": "20260516"
-    },
-    "95627": {
-      "room_name": "陶园1栋第6层605房间",
-      "current_balance": 118.6,
-      "last_updated": "20260516"
-    },
-    "88646": {
-      "room_name": "陶园1栋第1层110房间",
-      "current_balance": 49.03,
-      "last_updated": "20260516"
-    },
-    "63042": {
-      "room_name": "陶园1栋第2层214房间",
-      "current_balance": 43.51,
-      "last_updated": "20260516"
-    },
-    "79149": {
-      "room_name": "陶园1栋第4层410房间",
-      "current_balance": 361.75,
-      "last_updated": "20260516"
-    },
-    "55086": {
-      "room_name": "陶园1栋第12层1201房间",
-      "current_balance": 15.44,
       "last_updated": "20260516"
     },
     "66957": {
@@ -308,39 +43,9 @@
       "current_balance": 317.21,
       "last_updated": "20260516"
     },
-    "56396": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
-    "73784": {
-      "room_name": "陶园1栋第3层312房间",
-      "current_balance": 78.88,
-      "last_updated": "20260516"
-    },
-    "75804": {
-      "room_name": "陶园1栋第11层1109房间",
-      "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
-    "54715": {
-      "room_name": "陶园1栋第9层908房间",
-      "current_balance": 460.72,
-      "last_updated": "20260516"
-    },
     "73964": {
       "room_name": "陶园1栋第1层117房间",
       "current_balance": 128.71,
-      "last_updated": "20260516"
-    },
-    "98328": {
-      "room_name": "陶园1栋第3层305房间",
-      "current_balance": 79.55,
-      "last_updated": "20260516"
-    },
-    "80773": {
-      "room_name": "陶园1栋第12层1210房间",
-      "current_balance": 1682.73,
       "last_updated": "20260516"
     },
     "16352": {
@@ -348,29 +53,9 @@
       "current_balance": 54.55,
       "last_updated": "20260516"
     },
-    "38176": {
-      "room_name": "陶园1栋第3层306房间",
-      "current_balance": 145.73,
-      "last_updated": "20260516"
-    },
-    "82379": {
-      "room_name": "陶园1栋第4层411房间",
-      "current_balance": 686.14,
-      "last_updated": "20260516"
-    },
-    "81430": {
-      "room_name": "陶园1栋第9层909房间",
-      "current_balance": 31.6,
-      "last_updated": "20260516"
-    },
     "35541": {
       "room_name": "陶园1栋第6层601房间",
       "current_balance": 74.51,
-      "last_updated": "20260516"
-    },
-    "14209": {
-      "room_name": "陶园1栋第2层218房间",
-      "current_balance": 87.94,
       "last_updated": "20260516"
     },
     "38154": {
@@ -378,94 +63,9 @@
       "current_balance": 110.46,
       "last_updated": "20260516"
     },
-    "22550": {
-      "room_name": "陶园1栋第9层914房间",
-      "current_balance": 132.48,
-      "last_updated": "20260516"
-    },
-    "57346": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
-      "last_updated": "20260516"
-    },
-    "27640": {
-      "room_name": "陶园1栋第2层218房间",
-      "current_balance": 87.94,
-      "last_updated": "20260516"
-    },
-    "63830": {
-      "room_name": "陶园1栋第10层1013房间",
-      "current_balance": 156.91,
-      "last_updated": "20260516"
-    },
-    "58725": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
-    "80241": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "80536": {
-      "room_name": "陶园1栋第8层817房间",
-      "current_balance": 111.65,
-      "last_updated": "20260516"
-    },
-    "44201": {
-      "room_name": "陶园1栋第2层212房间",
-      "current_balance": 297.74,
-      "last_updated": "20260516"
-    },
-    "22873": {
-      "room_name": "陶园1栋第2层208房间",
-      "current_balance": 170.75,
-      "last_updated": "20260516"
-    },
-    "54530": {
-      "room_name": "陶园1栋第10层1017房间",
-      "current_balance": 132.89,
-      "last_updated": "20260516"
-    },
-    "33416": {
-      "room_name": "陶园1栋第8层817房间",
-      "current_balance": 111.65,
-      "last_updated": "20260516"
-    },
-    "56624": {
-      "room_name": "陶园1栋第10层1006房间",
-      "current_balance": 120.35,
-      "last_updated": "20260516"
-    },
-    "23247": {
-      "room_name": "陶园1栋第2层202房间",
-      "current_balance": 95.31,
-      "last_updated": "20260516"
-    },
     "30817": {
       "room_name": "陶园1栋第5层505房间",
       "current_balance": 41.57,
-      "last_updated": "20260516"
-    },
-    "81826": {
-      "room_name": "陶园1栋第4层410房间",
-      "current_balance": 361.75,
-      "last_updated": "20260516"
-    },
-    "37622": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
-    "96511": {
-      "room_name": "陶园1栋第12层1211房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "38939": {
-      "room_name": "陶园1栋第6层611房间",
-      "current_balance": 60.62,
       "last_updated": "20260516"
     },
     "14380": {
@@ -473,24 +73,9 @@
       "current_balance": 147.02,
       "last_updated": "20260516"
     },
-    "74262": {
-      "room_name": "陶园1栋第3层312房间",
-      "current_balance": 78.88,
-      "last_updated": "20260516"
-    },
-    "37826": {
-      "room_name": "陶园1栋第1层104房间",
-      "current_balance": 351.76,
-      "last_updated": "20260516"
-    },
     "16553": {
       "room_name": "陶园1栋第1层105房间",
       "current_balance": 44.1,
-      "last_updated": "20260516"
-    },
-    "43137": {
-      "room_name": "陶园1栋第3层318房间",
-      "current_balance": 139.59,
       "last_updated": "20260516"
     },
     "80587": {
@@ -498,54 +83,9 @@
       "current_balance": 109.67,
       "last_updated": "20260516"
     },
-    "42123": {
-      "room_name": "陶园1栋第4层405房间",
-      "current_balance": 79.89,
-      "last_updated": "20260516"
-    },
-    "19464": {
-      "room_name": "陶园1栋第9层915房间",
-      "current_balance": 60.22,
-      "last_updated": "20260516"
-    },
-    "16794": {
-      "room_name": "陶园1栋第10层1004房间",
-      "current_balance": 249.53,
-      "last_updated": "20260516"
-    },
-    "62011": {
-      "room_name": "陶园1栋第2层205房间",
-      "current_balance": 98.85,
-      "last_updated": "20260516"
-    },
     "55296": {
       "room_name": "陶园1栋第11层1105房间",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "81003": {
-      "room_name": "陶园1栋第9层907房间",
-      "current_balance": 99.55,
-      "last_updated": "20260516"
-    },
-    "72985": {
-      "room_name": "陶园1栋第3层305房间",
-      "current_balance": 79.55,
-      "last_updated": "20260516"
-    },
-    "66007": {
-      "room_name": "陶园1栋第7层710房间",
-      "current_balance": 332.41,
-      "last_updated": "20260516"
-    },
-    "22909": {
-      "room_name": "陶园1栋第8层817房间",
-      "current_balance": 111.65,
-      "last_updated": "20260516"
-    },
-    "83090": {
-      "room_name": "陶园1栋第4层409房间",
-      "current_balance": 92.73,
       "last_updated": "20260516"
     },
     "55810": {
@@ -558,34 +98,9 @@
       "current_balance": 100.25,
       "last_updated": "20260516"
     },
-    "59598": {
-      "room_name": "陶园1栋第9层911房间",
-      "current_balance": 25.92,
-      "last_updated": "20260516"
-    },
     "51711": {
       "room_name": "陶园1栋第10层1014房间",
       "current_balance": 283.74,
-      "last_updated": "20260516"
-    },
-    "55063": {
-      "room_name": "陶园1栋第10层1004房间",
-      "current_balance": 249.53,
-      "last_updated": "20260516"
-    },
-    "54553": {
-      "room_name": "陶园1栋第11层1104房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "70045": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
-    "52303": {
-      "room_name": "陶园1栋第7层716房间",
-      "current_balance": 165.93,
       "last_updated": "20260516"
     },
     "38013": {
@@ -598,64 +113,9 @@
       "current_balance": 181.21,
       "last_updated": "20260516"
     },
-    "81317": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
-      "last_updated": "20260516"
-    },
     "57625": {
       "room_name": "陶园1栋第11层1112房间",
       "current_balance": 321.82,
-      "last_updated": "20260516"
-    },
-    "69472": {
-      "room_name": "陶园1栋第7层704房间",
-      "current_balance": 165.76,
-      "last_updated": "20260516"
-    },
-    "57833": {
-      "room_name": "陶园1栋第9层908房间",
-      "current_balance": 460.72,
-      "last_updated": "20260516"
-    },
-    "37179": {
-      "room_name": "陶园1栋第5层501房间",
-      "current_balance": 9.69,
-      "last_updated": "20260516"
-    },
-    "30208": {
-      "room_name": "陶园1栋第6层609房间",
-      "current_balance": 281.24,
-      "last_updated": "20260516"
-    },
-    "47479": {
-      "room_name": "陶园1栋第4层409房间",
-      "current_balance": 92.73,
-      "last_updated": "20260516"
-    },
-    "13411": {
-      "room_name": "陶园1栋第3层316房间",
-      "current_balance": 181.21,
-      "last_updated": "20260516"
-    },
-    "82353": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "67953": {
-      "room_name": "陶园1栋第6层605房间",
-      "current_balance": 118.6,
-      "last_updated": "20260516"
-    },
-    "61519": {
-      "room_name": "陶园1栋第5层504房间",
-      "current_balance": 15.0,
-      "last_updated": "20260516"
-    },
-    "48386": {
-      "room_name": "陶园1栋第9层914房间",
-      "current_balance": 132.48,
       "last_updated": "20260516"
     },
     "65113": {
@@ -663,49 +123,9 @@
       "current_balance": 314.41,
       "last_updated": "20260516"
     },
-    "16222": {
-      "room_name": "陶园1栋第3层302房间",
-      "current_balance": 44.65,
-      "last_updated": "20260516"
-    },
-    "50273": {
-      "room_name": "陶园1栋第6层614房间",
-      "current_balance": 171.33,
-      "last_updated": "20260516"
-    },
     "56527": {
       "room_name": "陶园1栋第7层717房间",
       "current_balance": 181.17,
-      "last_updated": "20260516"
-    },
-    "46902": {
-      "room_name": "陶园1栋第2层207房间",
-      "current_balance": 104.04,
-      "last_updated": "20260516"
-    },
-    "19708": {
-      "room_name": "陶园1栋第11层1111房间",
-      "current_balance": 120.88,
-      "last_updated": "20260516"
-    },
-    "30710": {
-      "room_name": "陶园1栋第9层902房间",
-      "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
-    "63524": {
-      "room_name": "陶园1栋第7层714房间",
-      "current_balance": 302.24,
-      "last_updated": "20260516"
-    },
-    "17059": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "54533": {
-      "room_name": "陶园1栋第10层1012房间",
-      "current_balance": 15.46,
       "last_updated": "20260516"
     },
     "16926": {
@@ -713,164 +133,9 @@
       "current_balance": 1078.87,
       "last_updated": "20260516"
     },
-    "98690": {
-      "room_name": "陶园1栋第1层116房间",
-      "current_balance": 19.42,
-      "last_updated": "20260516"
-    },
-    "13554": {
-      "room_name": "陶园1栋第3层311房间",
-      "current_balance": 250.1,
-      "last_updated": "20260516"
-    },
-    "42832": {
-      "room_name": "陶园1栋第7层717房间",
-      "current_balance": 181.17,
-      "last_updated": "20260516"
-    },
-    "23322": {
-      "room_name": "陶园1栋第12层1204房间",
-      "current_balance": 64.19,
-      "last_updated": "20260516"
-    },
-    "97506": {
-      "room_name": "陶园1栋第4层413房间",
-      "current_balance": 33.03,
-      "last_updated": "20260516"
-    },
-    "17558": {
-      "room_name": "陶园1栋第12层1212房间",
-      "current_balance": 293.5,
-      "last_updated": "20260516"
-    },
-    "67026": {
-      "room_name": "陶园1栋第3层315房间",
-      "current_balance": 111.86,
-      "last_updated": "20260516"
-    },
-    "28758": {
-      "room_name": "陶园1栋第5层507房间",
-      "current_balance": 386.24,
-      "last_updated": "20260516"
-    },
-    "48010": {
-      "room_name": "陶园1栋第8层811房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "51537": {
-      "room_name": "陶园1栋第1层104房间",
-      "current_balance": 351.76,
-      "last_updated": "20260516"
-    },
-    "11679": {
-      "room_name": "陶园1栋第5层518房间",
-      "current_balance": 68.28,
-      "last_updated": "20260516"
-    },
-    "54496": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "46922": {
-      "room_name": "陶园1栋第2层207房间",
-      "current_balance": 104.04,
-      "last_updated": "20260516"
-    },
-    "41081": {
-      "room_name": "陶园1栋第7层717房间",
-      "current_balance": 181.17,
-      "last_updated": "20260516"
-    },
-    "27627": {
-      "room_name": "陶园1栋第12层1210房间",
-      "current_balance": 1682.73,
-      "last_updated": "20260516"
-    },
-    "42658": {
-      "room_name": "陶园1栋第7层718房间",
-      "current_balance": 97.4,
-      "last_updated": "20260516"
-    },
-    "63793": {
-      "room_name": "陶园1栋第4层417房间",
-      "current_balance": 121.51,
-      "last_updated": "20260516"
-    },
-    "80812": {
-      "room_name": "陶园1栋第10层1014房间",
-      "current_balance": 283.74,
-      "last_updated": "20260516"
-    },
-    "79151": {
-      "room_name": "陶园1栋第10层1013房间",
-      "current_balance": 156.91,
-      "last_updated": "20260516"
-    },
-    "98709": {
-      "room_name": "陶园1栋第1层116房间",
-      "current_balance": 19.42,
-      "last_updated": "20260516"
-    },
-    "30490": {
-      "room_name": "陶园1栋第8层818房间",
-      "current_balance": 65.07,
-      "last_updated": "20260516"
-    },
-    "57517": {
-      "room_name": "陶园1栋第12层1202房间",
-      "current_balance": 93.14,
-      "last_updated": "20260516"
-    },
-    "36361": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "54894": {
-      "room_name": "陶园1栋第9层910房间",
-      "current_balance": 88.49,
-      "last_updated": "20260516"
-    },
-    "74573": {
-      "room_name": "陶园1栋第12层1207房间",
-      "current_balance": 332.59,
-      "last_updated": "20260516"
-    },
-    "18745": {
-      "room_name": "陶园1栋第2层215房间",
-      "current_balance": 66.0,
-      "last_updated": "20260516"
-    },
-    "18628": {
-      "room_name": "陶园1栋第7层703房间",
-      "current_balance": 210.57,
-      "last_updated": "20260516"
-    },
     "42089": {
       "room_name": "0902",
       "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
-    "23005": {
-      "room_name": "陶园1栋第5层506房间",
-      "current_balance": 323.73,
-      "last_updated": "20260516"
-    },
-    "55090": {
-      "room_name": "陶园1栋第11层1109房间",
-      "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
-    "37621": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
-    "46411": {
-      "room_name": "陶园1栋第4层406房间",
-      "current_balance": 689.21,
       "last_updated": "20260516"
     },
     "97726": {
@@ -878,29 +143,9 @@
       "current_balance": 120.35,
       "last_updated": "20260516"
     },
-    "83523": {
-      "room_name": "陶园1栋第11层1109房间",
-      "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
-    "81383": {
-      "room_name": "陶园1栋第12层1209房间",
-      "current_balance": 304.79,
-      "last_updated": "20260516"
-    },
     "16598": {
       "room_name": "陶园1栋第8层817房间",
       "current_balance": 111.65,
-      "last_updated": "20260516"
-    },
-    "57664": {
-      "room_name": "陶园1栋第11层1107房间",
-      "current_balance": 21.31,
-      "last_updated": "20260516"
-    },
-    "69465": {
-      "room_name": "陶园1栋第9层909房间",
-      "current_balance": 31.6,
       "last_updated": "20260516"
     },
     "81483": {
@@ -908,64 +153,9 @@
       "current_balance": 19.42,
       "last_updated": "20260516"
     },
-    "82193": {
-      "room_name": "陶园1栋第9层902房间",
-      "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
     "44544": {
       "room_name": "陶园1栋第4层414房间",
       "current_balance": 137.31,
-      "last_updated": "20260516"
-    },
-    "63835": {
-      "room_name": "陶园1栋第10层1013房间",
-      "current_balance": 156.91,
-      "last_updated": "20260516"
-    },
-    "93407": {
-      "room_name": "陶园1栋第10层1017房间",
-      "current_balance": 132.89,
-      "last_updated": "20260516"
-    },
-    "34324": {
-      "room_name": "陶园1栋第10层1008房间",
-      "current_balance": 131.7,
-      "last_updated": "20260516"
-    },
-    "13256": {
-      "room_name": "陶园1栋第4层401房间",
-      "current_balance": 279.83,
-      "last_updated": "20260516"
-    },
-    "39468": {
-      "room_name": "陶园1栋第2层203房间",
-      "current_balance": 54.56,
-      "last_updated": "20260516"
-    },
-    "58477": {
-      "room_name": "陶园1栋第4层415房间",
-      "current_balance": 182.88,
-      "last_updated": "20260516"
-    },
-    "13125": {
-      "room_name": "陶园1栋第2层218房间",
-      "current_balance": 87.94,
-      "last_updated": "20260516"
-    },
-    "99044": {
-      "room_name": "陶园1栋第10层1001房间",
-      "current_balance": 32.84,
-      "last_updated": "20260516"
-    },
-    "29868": {
-      "room_name": "陶园1栋第10层1011房间",
-      "current_balance": 314.5,
-      "last_updated": "20260516"
-    },
-    "29239": {
-      "room_name": "陶园1栋第1层109房间",
-      "current_balance": 159.68,
       "last_updated": "20260516"
     },
     "61686": {
@@ -973,74 +163,14 @@
       "current_balance": 120.88,
       "last_updated": "20260516"
     },
-    "12999": {
-      "room_name": "陶园1栋第3层313房间",
-      "current_balance": 144.81,
-      "last_updated": "20260516"
-    },
-    "13084": {
-      "room_name": "陶园1栋第3层308房间",
-      "current_balance": 339.98,
-      "last_updated": "20260516"
-    },
-    "20188": {
-      "room_name": "陶园1栋第7层704房间",
-      "current_balance": 165.76,
-      "last_updated": "20260516"
-    },
-    "22603": {
-      "room_name": "陶园1栋第1层114房间",
-      "current_balance": 58.48,
-      "last_updated": "20260516"
-    },
-    "13529": {
-      "room_name": "陶园1栋第3层312房间",
-      "current_balance": 78.88,
-      "last_updated": "20260516"
-    },
     "82179": {
       "room_name": "陶园1栋第4层403房间",
       "current_balance": 48.15,
       "last_updated": "20260516"
     },
-    "61021": {
-      "room_name": "陶园1栋第9层916房间",
-      "current_balance": 193.0,
-      "last_updated": "20260516"
-    },
-    "30294": {
-      "room_name": "陶园1栋第2层210房间",
-      "current_balance": 157.79,
-      "last_updated": "20260516"
-    },
-    "74911": {
-      "room_name": "陶园1栋第11层1109房间",
-      "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
-    "58508": {
-      "room_name": "陶园1栋第2层214房间",
-      "current_balance": 43.51,
-      "last_updated": "20260516"
-    },
-    "23829": {
-      "room_name": "陶园1栋第6层606房间",
-      "current_balance": 103.25,
-      "last_updated": "20260516"
-    },
-    "54927": {
-      "room_name": "陶园1栋第11层1103房间",
-      "current_balance": 6.8,
-      "last_updated": "20260516"
-    },
     "68974": {
       "room_name": "0715",
       "current_balance": 271.74,
-      "last_updated": "20260516"
-    },
-    "74715": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
       "last_updated": "20260516"
     },
     "35270": {
@@ -1058,74 +188,9 @@
       "current_balance": 173.06,
       "last_updated": "20260516"
     },
-    "66767": {
-      "room_name": "陶园1栋第9层914房间",
-      "current_balance": 132.48,
-      "last_updated": "20260516"
-    },
-    "81823": {
-      "room_name": "陶园1栋第10层1007房间",
-      "current_balance": 314.41,
-      "last_updated": "20260516"
-    },
     "37249": {
       "room_name": "陶园1栋第3层303房间",
       "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
-    "95979": {
-      "room_name": "陶园1栋第5层511房间",
-      "current_balance": 110.74,
-      "last_updated": "20260516"
-    },
-    "24774": {
-      "room_name": "陶园1栋第5层518房间",
-      "current_balance": 68.28,
-      "last_updated": "20260516"
-    },
-    "16697": {
-      "room_name": "陶园1栋第12层1207房间",
-      "current_balance": 332.59,
-      "last_updated": "20260516"
-    },
-    "25985": {
-      "room_name": "陶园1栋第5层502房间",
-      "current_balance": 293.26,
-      "last_updated": "20260516"
-    },
-    "29088": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
-      "last_updated": "20260516"
-    },
-    "81343": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
-      "last_updated": "20260516"
-    },
-    "73860": {
-      "room_name": "陶园1栋第12层1209房间",
-      "current_balance": 304.79,
-      "last_updated": "20260516"
-    },
-    "23225": {
-      "room_name": "陶园1栋第5层506房间",
-      "current_balance": 323.73,
-      "last_updated": "20260516"
-    },
-    "63450": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "13085": {
-      "room_name": "陶园1栋第3层308房间",
-      "current_balance": 339.98,
-      "last_updated": "20260516"
-    },
-    "18896": {
-      "room_name": "陶园1栋第9层911房间",
-      "current_balance": 25.92,
       "last_updated": "20260516"
     },
     "54978": {
@@ -1143,84 +208,14 @@
       "current_balance": 6.8,
       "last_updated": "20260516"
     },
-    "17126": {
-      "room_name": "陶园1栋第9层909房间",
-      "current_balance": 31.6,
-      "last_updated": "20260516"
-    },
     "13207": {
       "room_name": "陶园1栋第3层313房间",
       "current_balance": 144.81,
       "last_updated": "20260516"
     },
-    "62731": {
-      "room_name": "陶园1栋第10层1018房间",
-      "current_balance": 82.35,
-      "last_updated": "20260516"
-    },
-    "24975": {
-      "room_name": "陶园1栋第6层608房间",
-      "current_balance": 381.67,
-      "last_updated": "20260516"
-    },
-    "81897": {
-      "room_name": "陶园1栋第8层814房间",
-      "current_balance": 213.37,
-      "last_updated": "20260516"
-    },
     "34664": {
       "room_name": "陶园1栋第11层1104房间",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "71840": {
-      "room_name": "陶园1栋第10层1010房间",
-      "current_balance": 357.76,
-      "last_updated": "20260516"
-    },
-    "96497": {
-      "room_name": "陶园1栋第12层1210房间",
-      "current_balance": 1682.73,
-      "last_updated": "20260516"
-    },
-    "35339": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "36893": {
-      "room_name": "陶园1栋第3层304房间",
-      "current_balance": 54.55,
-      "last_updated": "20260516"
-    },
-    "16931": {
-      "room_name": "陶园1栋第12层1210房间",
-      "current_balance": 1682.73,
-      "last_updated": "20260516"
-    },
-    "37629": {
-      "room_name": "陶园1栋第10层1014房间",
-      "current_balance": 283.74,
-      "last_updated": "20260516"
-    },
-    "61335": {
-      "room_name": "陶园1栋第3层308房间",
-      "current_balance": 339.98,
-      "last_updated": "20260516"
-    },
-    "30500": {
-      "room_name": "陶园1栋第1层111房间",
-      "current_balance": 733.06,
-      "last_updated": "20260516"
-    },
-    "43712": {
-      "room_name": "陶园1栋第1层104房间",
-      "current_balance": 351.76,
-      "last_updated": "20260516"
-    },
-    "42464": {
-      "room_name": "陶园1栋第9层918房间",
-      "current_balance": 1.03,
       "last_updated": "20260516"
     },
     "11688": {
@@ -1238,59 +233,9 @@
       "current_balance": 22.1,
       "last_updated": "20260516"
     },
-    "82452": {
-      "room_name": "陶园1栋第1层102房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "30101": {
-      "room_name": "陶园1栋第10层1009房间",
-      "current_balance": 111.38,
-      "last_updated": "20260516"
-    },
     "16802": {
       "room_name": "陶园1栋第6层613房间",
       "current_balance": 241.13,
-      "last_updated": "20260516"
-    },
-    "16233": {
-      "room_name": "陶园1栋第3层302房间",
-      "current_balance": 44.65,
-      "last_updated": "20260516"
-    },
-    "46429": {
-      "room_name": "陶园1栋第7层709房间",
-      "current_balance": 327.32,
-      "last_updated": "20260516"
-    },
-    "17233": {
-      "room_name": "陶园1栋第7层708房间",
-      "current_balance": 556.88,
-      "last_updated": "20260516"
-    },
-    "28449": {
-      "room_name": "陶园1栋第3层308房间",
-      "current_balance": 339.98,
-      "last_updated": "20260516"
-    },
-    "57945": {
-      "room_name": "陶园1栋第9层913房间",
-      "current_balance": 134.54,
-      "last_updated": "20260516"
-    },
-    "11832": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
-      "last_updated": "20260516"
-    },
-    "81414": {
-      "room_name": "陶园1栋第9层901房间",
-      "current_balance": 75.53,
-      "last_updated": "20260516"
-    },
-    "37351": {
-      "room_name": "陶园1栋第5层516房间",
-      "current_balance": 183.41,
       "last_updated": "20260516"
     },
     "73277": {
@@ -1298,84 +243,9 @@
       "current_balance": 293.5,
       "last_updated": "20260516"
     },
-    "22538": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
-      "last_updated": "20260516"
-    },
-    "73581": {
-      "room_name": "陶园1栋第3层314房间",
-      "current_balance": 22.1,
-      "last_updated": "20260516"
-    },
-    "14156": {
-      "room_name": "陶园1栋第3层307房间",
-      "current_balance": 68.96,
-      "last_updated": "20260516"
-    },
     "39041": {
       "room_name": "陶园1栋第8层813房间",
       "current_balance": 864.6,
-      "last_updated": "20260516"
-    },
-    "92963": {
-      "room_name": "陶园1栋第6层616房间",
-      "current_balance": 41.88,
-      "last_updated": "20260516"
-    },
-    "34410": {
-      "room_name": "陶园1栋第8层814房间",
-      "current_balance": 213.37,
-      "last_updated": "20260516"
-    },
-    "68515": {
-      "room_name": "陶园1栋第4层418房间",
-      "current_balance": 48.63,
-      "last_updated": "20260516"
-    },
-    "73287": {
-      "room_name": "陶园1栋第2层207房间",
-      "current_balance": 104.04,
-      "last_updated": "20260516"
-    },
-    "46733": {
-      "room_name": "陶园1栋第4层408房间",
-      "current_balance": 180.18,
-      "last_updated": "20260516"
-    },
-    "62386": {
-      "room_name": "陶园1栋第2层206房间",
-      "current_balance": 126.63,
-      "last_updated": "20260516"
-    },
-    "62075": {
-      "room_name": "陶园1栋第2层204房间",
-      "current_balance": 181.12,
-      "last_updated": "20260516"
-    },
-    "76660": {
-      "room_name": "陶园1栋第9层910房间",
-      "current_balance": 88.49,
-      "last_updated": "20260516"
-    },
-    "23492": {
-      "room_name": "陶园1栋第2层204房间",
-      "current_balance": 181.12,
-      "last_updated": "20260516"
-    },
-    "54633": {
-      "room_name": "陶园1栋第2层204房间",
-      "current_balance": 181.12,
-      "last_updated": "20260516"
-    },
-    "16250": {
-      "room_name": "陶园1栋第2层211房间",
-      "current_balance": 15.25,
-      "last_updated": "20260516"
-    },
-    "56678": {
-      "room_name": "陶园1栋第11层1108房间",
-      "current_balance": 100.3,
       "last_updated": "20260516"
     },
     "18330": {
@@ -1383,79 +253,14 @@
       "current_balance": 279.83,
       "last_updated": "20260516"
     },
-    "89131": {
-      "room_name": "陶园1栋第9层907房间",
-      "current_balance": 99.55,
-      "last_updated": "20260516"
-    },
-    "81044": {
-      "room_name": "陶园1栋第10层1012房间",
-      "current_balance": 15.46,
-      "last_updated": "20260516"
-    },
-    "44459": {
-      "room_name": "陶园1栋第4层405房间",
-      "current_balance": 79.89,
-      "last_updated": "20260516"
-    },
-    "22662": {
-      "room_name": "陶园1栋第1层102房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "25045": {
-      "room_name": "陶园1栋第9层911房间",
-      "current_balance": 25.92,
-      "last_updated": "20260516"
-    },
     "69471": {
       "room_name": "陶园1栋第11层1106房间",
       "current_balance": 118.41,
       "last_updated": "20260516"
     },
-    "18007": {
-      "room_name": "陶园1栋第5层502房间",
-      "current_balance": 293.26,
-      "last_updated": "20260516"
-    },
-    "34152": {
-      "room_name": "陶园1栋第12层1202房间",
-      "current_balance": 93.14,
-      "last_updated": "20260516"
-    },
-    "13121": {
-      "room_name": "陶园1栋第2层218房间",
-      "current_balance": 87.94,
-      "last_updated": "20260516"
-    },
-    "17295": {
-      "room_name": "陶园1栋第10层1009房间",
-      "current_balance": 111.38,
-      "last_updated": "20260516"
-    },
-    "16557": {
-      "room_name": "陶园1栋第4层407房间",
-      "current_balance": 28.69,
-      "last_updated": "20260516"
-    },
-    "54162": {
-      "room_name": "陶园1栋第12层1208房间",
-      "current_balance": 188.28,
-      "last_updated": "20260516"
-    },
-    "34423": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
     "92900": {
       "room_name": "陶园1栋第10层1013房间",
       "current_balance": 156.91,
-      "last_updated": "20260516"
-    },
-    "38054": {
-      "room_name": "陶园1栋第10层1001房间",
-      "current_balance": 32.84,
       "last_updated": "20260516"
     },
     "69588": {
@@ -1468,104 +273,14 @@
       "current_balance": 120.35,
       "last_updated": "20260516"
     },
-    "57184": {
-      "room_name": "陶园1栋第7层715房间",
-      "current_balance": 271.74,
-      "last_updated": "20260516"
-    },
-    "56718": {
-      "room_name": "陶园1栋第12层1203房间",
-      "current_balance": 76.2,
-      "last_updated": "20260516"
-    },
-    "27283": {
-      "room_name": "陶园1栋第5层515房间",
-      "current_balance": 278.65,
-      "last_updated": "20260516"
-    },
-    "52085": {
-      "room_name": "陶园1栋第2层202房间",
-      "current_balance": 95.31,
-      "last_updated": "20260516"
-    },
-    "34494": {
-      "room_name": "陶园1栋第12层1211房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "18813": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "71624": {
-      "room_name": "陶园1栋第11层1104房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "41489": {
-      "room_name": "陶园1栋第11层1112房间",
-      "current_balance": 321.82,
-      "last_updated": "20260516"
-    },
-    "80485": {
-      "room_name": "陶园1栋第10层1010房间",
-      "current_balance": 357.76,
-      "last_updated": "20260516"
-    },
-    "41084": {
-      "room_name": "陶园1栋第2层213房间",
-      "current_balance": 197.64,
-      "last_updated": "20260516"
-    },
-    "13169": {
-      "room_name": "陶园1栋第3层302房间",
-      "current_balance": 44.65,
-      "last_updated": "20260516"
-    },
     "82389": {
       "room_name": "陶园1栋第4层411房间",
       "current_balance": 686.14,
       "last_updated": "20260516"
     },
-    "31781": {
-      "room_name": "陶园1栋第7层708房间",
-      "current_balance": 556.88,
-      "last_updated": "20260516"
-    },
-    "27811": {
-      "room_name": "陶园1栋第7层711房间",
-      "current_balance": 76.75,
-      "last_updated": "20260516"
-    },
-    "55583": {
-      "room_name": "陶园1栋第12层1205房间",
-      "current_balance": 249.07,
-      "last_updated": "20260516"
-    },
-    "80445": {
-      "room_name": "陶园1栋第10层1015房间",
-      "current_balance": 99.86,
-      "last_updated": "20260516"
-    },
     "60719": {
       "room_name": "陶园1栋第8层801房间",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "66743": {
-      "room_name": "陶园1栋第9层914房间",
-      "current_balance": 132.48,
-      "last_updated": "20260516"
-    },
-    "37615": {
-      "room_name": "陶园1栋第3层311房间",
-      "current_balance": 250.1,
-      "last_updated": "20260516"
-    },
-    "81526": {
-      "room_name": "陶园1栋第9层908房间",
-      "current_balance": 460.72,
       "last_updated": "20260516"
     },
     "94999": {
@@ -1578,29 +293,9 @@
       "current_balance": 421.65,
       "last_updated": "20260516"
     },
-    "54692": {
-      "room_name": "陶园1栋第9层909房间",
-      "current_balance": 31.6,
-      "last_updated": "20260516"
-    },
     "27885": {
       "room_name": "陶园1栋第5层518房间",
       "current_balance": 68.28,
-      "last_updated": "20260516"
-    },
-    "56662": {
-      "room_name": "陶园1栋第2层217房间",
-      "current_balance": 67.02,
-      "last_updated": "20260516"
-    },
-    "40493": {
-      "room_name": "陶园1栋第5层501房间",
-      "current_balance": 9.69,
-      "last_updated": "20260516"
-    },
-    "63711": {
-      "room_name": "陶园1栋第6层614房间",
-      "current_balance": 171.33,
       "last_updated": "20260516"
     },
     "53425": {
@@ -1608,69 +303,9 @@
       "current_balance": 64.19,
       "last_updated": "20260516"
     },
-    "90626": {
-      "room_name": "陶园1栋第4层402房间",
-      "current_balance": 147.02,
-      "last_updated": "20260516"
-    },
-    "61472": {
-      "room_name": "陶园1栋第3层302房间",
-      "current_balance": 44.65,
-      "last_updated": "20260516"
-    },
-    "23409": {
-      "room_name": "陶园1栋第3层309房间",
-      "current_balance": 699.08,
-      "last_updated": "20260516"
-    },
-    "68675": {
-      "room_name": "陶园1栋第1层103房间",
-      "current_balance": 173.06,
-      "last_updated": "20260516"
-    },
-    "44617": {
-      "room_name": "陶园1栋第2层212房间",
-      "current_balance": 297.74,
-      "last_updated": "20260516"
-    },
-    "24279": {
-      "room_name": "陶园1栋第5层503房间",
-      "current_balance": 23.55,
-      "last_updated": "20260516"
-    },
-    "54023": {
-      "room_name": "陶园1栋第9层917房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "54906": {
-      "room_name": "陶园1栋第11层1103房间",
-      "current_balance": 6.8,
-      "last_updated": "20260516"
-    },
     "75513": {
       "room_name": "陶园1栋第7层706房间",
       "current_balance": 27.1,
-      "last_updated": "20260516"
-    },
-    "62280": {
-      "room_name": "陶园1栋第7层710房间",
-      "current_balance": 332.41,
-      "last_updated": "20260516"
-    },
-    "41024": {
-      "room_name": "陶园1栋第3层307房间",
-      "current_balance": 68.96,
-      "last_updated": "20260516"
-    },
-    "54614": {
-      "room_name": "陶园1栋第10层1007房间",
-      "current_balance": 314.41,
-      "last_updated": "20260516"
-    },
-    "18207": {
-      "room_name": "陶园1栋第1层108房间",
-      "current_balance": 567.58,
       "last_updated": "20260516"
     },
     "92914": {
@@ -1683,104 +318,9 @@
       "current_balance": 183.41,
       "last_updated": "20260516"
     },
-    "42046": {
-      "room_name": "陶园1栋第3层307房间",
-      "current_balance": 68.96,
-      "last_updated": "20260516"
-    },
-    "42800": {
-      "room_name": "陶园1栋第2层214房间",
-      "current_balance": 43.51,
-      "last_updated": "20260516"
-    },
-    "83498": {
-      "room_name": "陶园1栋第9层901房间",
-      "current_balance": 75.53,
-      "last_updated": "20260516"
-    },
-    "73279": {
-      "room_name": "陶园1栋第11层1110房间",
-      "current_balance": 110.46,
-      "last_updated": "20260516"
-    },
-    "41064": {
-      "room_name": "陶园1栋第2层217房间",
-      "current_balance": 67.02,
-      "last_updated": "20260516"
-    },
-    "84011": {
-      "room_name": "陶园1栋第4层410房间",
-      "current_balance": 361.75,
-      "last_updated": "20260516"
-    },
-    "37619": {
-      "room_name": "陶园1栋第10层1018房间",
-      "current_balance": 82.35,
-      "last_updated": "20260516"
-    },
-    "54186": {
-      "room_name": "陶园1栋第4层413房间",
-      "current_balance": 33.03,
-      "last_updated": "20260516"
-    },
-    "35545": {
-      "room_name": "陶园1栋第6层601房间",
-      "current_balance": 74.51,
-      "last_updated": "20260516"
-    },
-    "64839": {
-      "room_name": "陶园1栋第1层101房间",
-      "current_balance": 78.96,
-      "last_updated": "20260516"
-    },
-    "55962": {
-      "room_name": "陶园1栋第2层206房间",
-      "current_balance": 126.63,
-      "last_updated": "20260516"
-    },
-    "44164": {
-      "room_name": "陶园1栋第2层213房间",
-      "current_balance": 197.64,
-      "last_updated": "20260516"
-    },
-    "43625": {
-      "room_name": "陶园1栋第12层1204房间",
-      "current_balance": 64.19,
-      "last_updated": "20260516"
-    },
     "37827": {
       "room_name": "陶园1栋第9层915房间",
       "current_balance": 60.22,
-      "last_updated": "20260516"
-    },
-    "44764": {
-      "room_name": "陶园1栋第9层904房间",
-      "current_balance": 60.13,
-      "last_updated": "20260516"
-    },
-    "66983": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
-    "88135": {
-      "room_name": "陶园1栋第10层1017房间",
-      "current_balance": 132.89,
-      "last_updated": "20260516"
-    },
-    "29026": {
-      "room_name": "陶园1栋第6层608房间",
-      "current_balance": 381.67,
-      "last_updated": "20260516"
-    },
-    "23688": {
-      "room_name": "陶园1栋第9层902房间",
-      "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
-    "54416": {
-      "room_name": "陶园1栋第12层1203房间",
-      "current_balance": 76.2,
       "last_updated": "20260516"
     },
     "44412": {
@@ -1788,29 +328,9 @@
       "current_balance": 28.69,
       "last_updated": "20260516"
     },
-    "87630": {
-      "room_name": "陶园1栋第9层902房间",
-      "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
-    "83507": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
     "78897": {
       "room_name": "陶园1栋第10层1018房间",
       "current_balance": 82.35,
-      "last_updated": "20260516"
-    },
-    "84181": {
-      "room_name": "陶园1栋第3层310房间",
-      "current_balance": 203.95,
-      "last_updated": "20260516"
-    },
-    "69464": {
-      "room_name": "陶园1栋第9层909房间",
-      "current_balance": 31.6,
       "last_updated": "20260516"
     },
     "92406": {
@@ -1823,71 +343,6 @@
       "current_balance": 59.14,
       "last_updated": "20260516"
     },
-    "43429": {
-      "room_name": "陶园1栋第9层908房间",
-      "current_balance": 460.72,
-      "last_updated": "20260516"
-    },
-    "53754": {
-      "room_name": "陶园1栋第9层901房间",
-      "current_balance": 75.53,
-      "last_updated": "20260516"
-    },
-    "84439": {
-      "room_name": "陶园1栋第4层403房间",
-      "current_balance": 48.15,
-      "last_updated": "20260516"
-    },
-    "47217": {
-      "room_name": "陶园1栋第2层205房间",
-      "current_balance": 98.85,
-      "last_updated": "20260516"
-    },
-    "81784": {
-      "room_name": "陶园1栋第9层911房间",
-      "current_balance": 25.92,
-      "last_updated": "20260516"
-    },
-    "41622": {
-      "room_name": "陶园1栋第11层1109房间",
-      "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
-    "88397": {
-      "room_name": "陶园1栋第6层610房间",
-      "current_balance": 86.98,
-      "last_updated": "20260516"
-    },
-    "10243": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
-      "last_updated": "20260516"
-    },
-    "51629": {
-      "room_name": "陶园1栋第2层204房间",
-      "current_balance": 181.12,
-      "last_updated": "20260516"
-    },
-    "25962": {
-      "room_name": "陶园1栋第7层702房间",
-      "current_balance": 168.3,
-      "last_updated": "20260516"
-    },
-    "11644": {
-      "room_name": "陶园1栋第4层415房间",
-      "current_balance": 182.88,
-      "last_updated": "20260516"
-    },
-    "63994": {
-      "room_name": "陶园1栋第11层1110房间",
-      "current_balance": 110.46,
-      "last_updated": "20260516"
-    },
-    "65141": {
-      "room_name": "陶园1栋第3层309房间",
-      "current_balance": 699.08,
-      "last_updated": "20260516"
-    },
     "38208": {
       "room_name": "陶园1栋第3层302房间",
       "current_balance": 44.65,
@@ -1898,84 +353,9 @@
       "current_balance": 233.37,
       "last_updated": "20260516"
     },
-    "74572": {
-      "room_name": "陶园1栋第12层1207房间",
-      "current_balance": 332.59,
-      "last_updated": "20260516"
-    },
-    "84484": {
-      "room_name": "陶园1栋第9层903房间",
-      "current_balance": 177.65,
-      "last_updated": "20260516"
-    },
-    "44538": {
-      "room_name": "陶园1栋第4层405房间",
-      "current_balance": 79.89,
-      "last_updated": "20260516"
-    },
-    "49853": {
-      "room_name": "陶园1栋第9层914房间",
-      "current_balance": 132.48,
-      "last_updated": "20260516"
-    },
-    "20517": {
-      "room_name": "陶园1栋第9层914房间",
-      "current_balance": 132.48,
-      "last_updated": "20260516"
-    },
-    "46781": {
-      "room_name": "陶园1栋第11层1108房间",
-      "current_balance": 100.3,
-      "last_updated": "20260516"
-    },
-    "35686": {
-      "room_name": "陶园1栋第8层818房间",
-      "current_balance": 65.07,
-      "last_updated": "20260516"
-    },
-    "82195": {
-      "room_name": "陶园1栋第11层1108房间",
-      "current_balance": 100.3,
-      "last_updated": "20260516"
-    },
     "35688": {
       "room_name": "陶园1栋第8层814房间",
       "current_balance": 213.37,
-      "last_updated": "20260516"
-    },
-    "25724": {
-      "room_name": "陶园1栋第8层818房间",
-      "current_balance": 65.07,
-      "last_updated": "20260516"
-    },
-    "81462": {
-      "room_name": "陶园1栋第10层1018房间",
-      "current_balance": 82.35,
-      "last_updated": "20260516"
-    },
-    "54511": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
-    "57190": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "18367": {
-      "room_name": "陶园1栋第2层210房间",
-      "current_balance": 157.79,
-      "last_updated": "20260516"
-    },
-    "35680": {
-      "room_name": "陶园1栋第8层816房间",
-      "current_balance": 135.84,
-      "last_updated": "20260516"
-    },
-    "58172": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
       "last_updated": "20260516"
     },
     "14516": {
@@ -1983,79 +363,14 @@
       "current_balance": 556.88,
       "last_updated": "20260516"
     },
-    "92971": {
-      "room_name": "陶园1栋第1层106房间",
-      "current_balance": 173.26,
-      "last_updated": "20260516"
-    },
-    "63453": {
-      "room_name": "陶园1栋第3层304房间",
-      "current_balance": 54.55,
-      "last_updated": "20260516"
-    },
     "45581": {
       "room_name": "陶园1栋第4层405房间",
       "current_balance": 79.89,
       "last_updated": "20260516"
     },
-    "68992": {
-      "room_name": "陶园1栋第7层715房间",
-      "current_balance": 271.74,
-      "last_updated": "20260516"
-    },
-    "92677": {
-      "room_name": "陶园1栋第9层911房间",
-      "current_balance": 25.92,
-      "last_updated": "20260516"
-    },
-    "81251": {
-      "room_name": "陶园1栋第8层818房间",
-      "current_balance": 65.07,
-      "last_updated": "20260516"
-    },
-    "41062": {
-      "room_name": "陶园1栋第2层212房间",
-      "current_balance": 297.74,
-      "last_updated": "20260516"
-    },
-    "17781": {
-      "room_name": "陶园1栋第8层814房间",
-      "current_balance": 213.37,
-      "last_updated": "20260516"
-    },
-    "42097": {
-      "room_name": "陶园1栋第11层1108房间",
-      "current_balance": 100.3,
-      "last_updated": "20260516"
-    },
-    "16863": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
-      "last_updated": "20260516"
-    },
-    "51755": {
-      "room_name": "陶园1栋第9层916房间",
-      "current_balance": 193.0,
-      "last_updated": "20260516"
-    },
-    "74625": {
-      "room_name": "陶园1栋第3层314房间",
-      "current_balance": 22.1,
-      "last_updated": "20260516"
-    },
     "17743": {
       "room_name": "陶园1栋第9层910房间",
       "current_balance": 88.49,
-      "last_updated": "20260516"
-    },
-    "80927": {
-      "room_name": "陶园1栋第1层110房间",
-      "current_balance": 49.03,
-      "last_updated": "20260516"
-    },
-    "18410": {
-      "room_name": "陶园1栋第11层1103房间",
-      "current_balance": 6.8,
       "last_updated": "20260516"
     },
     "61529": {
@@ -2068,99 +383,9 @@
       "current_balance": 5.12,
       "last_updated": "20260516"
     },
-    "21941": {
-      "room_name": "陶园1栋第6层602房间",
-      "current_balance": 498.48,
-      "last_updated": "20260516"
-    },
-    "36878": {
-      "room_name": "陶园1栋第3层316房间",
-      "current_balance": 181.21,
-      "last_updated": "20260516"
-    },
-    "56169": {
-      "room_name": "陶园1栋第9层908房间",
-      "current_balance": 460.72,
-      "last_updated": "20260516"
-    },
-    "38226": {
-      "room_name": "陶园1栋第10层1007房间",
-      "current_balance": 314.41,
-      "last_updated": "20260516"
-    },
-    "84397": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "81914": {
-      "room_name": "陶园1栋第8层814房间",
-      "current_balance": 213.37,
-      "last_updated": "20260516"
-    },
-    "16757": {
-      "room_name": "陶园1栋第9层903房间",
-      "current_balance": 177.65,
-      "last_updated": "20260516"
-    },
-    "42839": {
-      "room_name": "陶园1栋第2层214房间",
-      "current_balance": 43.51,
-      "last_updated": "20260516"
-    },
-    "36443": {
-      "room_name": "陶园1栋第1层103房间",
-      "current_balance": 173.06,
-      "last_updated": "20260516"
-    },
     "62251": {
       "room_name": "陶园1栋第6层615房间",
       "current_balance": 89.04,
-      "last_updated": "20260516"
-    },
-    "42013": {
-      "room_name": "陶园1栋第5层503房间",
-      "current_balance": 23.55,
-      "last_updated": "20260516"
-    },
-    "61930": {
-      "room_name": "陶园1栋第9层907房间",
-      "current_balance": 99.55,
-      "last_updated": "20260516"
-    },
-    "16411": {
-      "room_name": "陶园1栋第1层108房间",
-      "current_balance": 567.58,
-      "last_updated": "20260516"
-    },
-    "67387": {
-      "room_name": "陶园1栋第7层716房间",
-      "current_balance": 165.93,
-      "last_updated": "20260516"
-    },
-    "81484": {
-      "room_name": "陶园1栋第1层116房间",
-      "current_balance": 19.42,
-      "last_updated": "20260516"
-    },
-    "54537": {
-      "room_name": "陶园1栋第9层903房间",
-      "current_balance": 177.65,
-      "last_updated": "20260516"
-    },
-    "16800": {
-      "room_name": "陶园1栋第10层1004房间",
-      "current_balance": 249.53,
-      "last_updated": "20260516"
-    },
-    "54498": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
-      "last_updated": "20260516"
-    },
-    "29021": {
-      "room_name": "陶园1栋第7层705房间",
-      "current_balance": 111.59,
       "last_updated": "20260516"
     },
     "30061": {
@@ -2168,129 +393,14 @@
       "current_balance": 65.07,
       "last_updated": "20260516"
     },
-    "74532": {
-      "room_name": "陶园1栋第12层1212房间",
-      "current_balance": 293.5,
-      "last_updated": "20260516"
-    },
-    "56056": {
-      "room_name": "陶园1栋第11层1112房间",
-      "current_balance": 321.82,
-      "last_updated": "20260516"
-    },
-    "13193": {
-      "room_name": "陶园1栋第1层112房间",
-      "current_balance": 101.05,
-      "last_updated": "20260516"
-    },
-    "16822": {
-      "room_name": "陶园1栋第6层613房间",
-      "current_balance": 241.13,
-      "last_updated": "20260516"
-    },
-    "30579": {
-      "room_name": "陶园1栋第10层1013房间",
-      "current_balance": 156.91,
-      "last_updated": "20260516"
-    },
-    "71209": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
-    "80602": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
     "24152": {
       "room_name": "陶园1栋第5层515房间",
       "current_balance": 278.65,
       "last_updated": "20260516"
     },
-    "39358": {
-      "room_name": "陶园1栋第7层703房间",
-      "current_balance": 210.57,
-      "last_updated": "20260516"
-    },
     "56699": {
       "room_name": "陶园1栋第11层1108房间",
       "current_balance": 100.3,
-      "last_updated": "20260516"
-    },
-    "42037": {
-      "room_name": "陶园1栋第10层1017房间",
-      "current_balance": 132.89,
-      "last_updated": "20260516"
-    },
-    "62180": {
-      "room_name": "陶园1栋第9层918房间",
-      "current_balance": 1.03,
-      "last_updated": "20260516"
-    },
-    "82354": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "19780": {
-      "room_name": "陶园1栋第5层517房间",
-      "current_balance": 857.84,
-      "last_updated": "20260516"
-    },
-    "81022": {
-      "room_name": "陶园1栋第10层1008房间",
-      "current_balance": 131.7,
-      "last_updated": "20260516"
-    },
-    "19522": {
-      "room_name": "陶园1栋第2层202房间",
-      "current_balance": 95.31,
-      "last_updated": "20260516"
-    },
-    "55412": {
-      "room_name": "陶园1栋第2层202房间",
-      "current_balance": 95.31,
-      "last_updated": "20260516"
-    },
-    "47525": {
-      "room_name": "陶园1栋第9层904房间",
-      "current_balance": 60.13,
-      "last_updated": "20260516"
-    },
-    "97545": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
-      "last_updated": "20260516"
-    },
-    "19238": {
-      "room_name": "陶园1栋第4层402房间",
-      "current_balance": 147.02,
-      "last_updated": "20260516"
-    },
-    "43650": {
-      "room_name": "陶园1栋第5层513房间",
-      "current_balance": 674.91,
-      "last_updated": "20260516"
-    },
-    "42824": {
-      "room_name": "陶园1栋第7层717房间",
-      "current_balance": 181.17,
-      "last_updated": "20260516"
-    },
-    "55417": {
-      "room_name": "陶园1栋第11层1112房间",
-      "current_balance": 321.82,
-      "last_updated": "20260516"
-    },
-    "44414": {
-      "room_name": "陶园1栋第4层413房间",
-      "current_balance": 33.03,
-      "last_updated": "20260516"
-    },
-    "16537": {
-      "room_name": "1006",
-      "current_balance": 120.35,
       "last_updated": "20260516"
     },
     "22872": {
@@ -2303,39 +413,9 @@
       "current_balance": 230.74,
       "last_updated": "20260516"
     },
-    "54495": {
-      "room_name": "陶园1栋第10层1011房间",
-      "current_balance": 314.5,
-      "last_updated": "20260516"
-    },
-    "21651": {
-      "room_name": "陶园1栋第9层915房间",
-      "current_balance": 60.22,
-      "last_updated": "20260516"
-    },
-    "16990": {
-      "room_name": "陶园1栋第11层1101房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "37949": {
-      "room_name": "陶园1栋第5层518房间",
-      "current_balance": 68.28,
-      "last_updated": "20260516"
-    },
-    "77725": {
-      "room_name": "陶园1栋第11层1110房间",
-      "current_balance": 110.46,
-      "last_updated": "20260516"
-    },
     "27996": {
       "room_name": "陶园1栋第6层611房间",
       "current_balance": 60.62,
-      "last_updated": "20260516"
-    },
-    "78981": {
-      "room_name": "陶园1栋第8层815房间",
-      "current_balance": 37.61,
       "last_updated": "20260516"
     },
     "84387": {
@@ -2343,34 +423,9 @@
       "current_balance": 304.79,
       "last_updated": "20260516"
     },
-    "21922": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
-    "22870": {
-      "room_name": "陶园1栋第2层208房间",
-      "current_balance": 170.75,
-      "last_updated": "20260516"
-    },
     "27702": {
       "room_name": "陶园1栋第10层1010房间",
       "current_balance": 357.76,
-      "last_updated": "20260516"
-    },
-    "21358": {
-      "room_name": "陶园1栋第4层403房间",
-      "current_balance": 48.15,
-      "last_updated": "20260516"
-    },
-    "53072": {
-      "room_name": "陶园1栋第5层514房间",
-      "current_balance": 176.92,
-      "last_updated": "20260516"
-    },
-    "93355": {
-      "room_name": "陶园1栋第10层1006房间",
-      "current_balance": 120.35,
       "last_updated": "20260516"
     },
     "59685": {
@@ -2378,39 +433,9 @@
       "current_balance": 171.33,
       "last_updated": "20260516"
     },
-    "44139": {
-      "room_name": "陶园1栋第2层213房间",
-      "current_balance": 197.64,
-      "last_updated": "20260516"
-    },
-    "44241": {
-      "room_name": "陶园1栋第4层407房间",
-      "current_balance": 28.69,
-      "last_updated": "20260516"
-    },
-    "29627": {
-      "room_name": "陶园1栋第10层1015房间",
-      "current_balance": 99.86,
-      "last_updated": "20260516"
-    },
-    "78521": {
-      "room_name": "陶园1栋第8层814房间",
-      "current_balance": 213.37,
-      "last_updated": "20260516"
-    },
     "44572": {
       "room_name": "陶园1栋第2层217房间",
       "current_balance": 67.02,
-      "last_updated": "20260516"
-    },
-    "54108": {
-      "room_name": "陶园1栋第11层1101房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "63206": {
-      "room_name": "陶园1栋第7层714房间",
-      "current_balance": 302.24,
       "last_updated": "20260516"
     },
     "55077": {
@@ -2418,94 +443,9 @@
       "current_balance": 15.44,
       "last_updated": "20260516"
     },
-    "79456": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
-    "17332": {
-      "room_name": "陶园1栋第12层1205房间",
-      "current_balance": 249.07,
-      "last_updated": "20260516"
-    },
-    "82101": {
-      "room_name": "陶园1栋第10层1009房间",
-      "current_balance": 111.38,
-      "last_updated": "20260516"
-    },
-    "78396": {
-      "room_name": "陶园1栋第10层1006房间",
-      "current_balance": 120.35,
-      "last_updated": "20260516"
-    },
-    "81814": {
-      "room_name": "陶园1栋第9层909房间",
-      "current_balance": 31.6,
-      "last_updated": "20260516"
-    },
-    "14943": {
-      "room_name": "陶园1栋第6层604房间",
-      "current_balance": 230.74,
-      "last_updated": "20260516"
-    },
-    "41269": {
-      "room_name": "陶园1栋第3层315房间",
-      "current_balance": 111.86,
-      "last_updated": "20260516"
-    },
-    "30366": {
-      "room_name": "陶园1栋第8层815房间",
-      "current_balance": 37.61,
-      "last_updated": "20260516"
-    },
-    "53924": {
-      "room_name": "陶园1栋第2层201房间",
-      "current_balance": 22.22,
-      "last_updated": "20260516"
-    },
-    "55197": {
-      "room_name": "陶园1栋第12层1202房间",
-      "current_balance": 93.14,
-      "last_updated": "20260516"
-    },
-    "19663": {
-      "room_name": "陶园1栋第5层514房间",
-      "current_balance": 176.92,
-      "last_updated": "20260516"
-    },
-    "16624": {
-      "room_name": "陶园1栋第11层1110房间",
-      "current_balance": 110.46,
-      "last_updated": "20260516"
-    },
-    "43482": {
-      "room_name": "陶园1栋第5层509房间",
-      "current_balance": 228.77,
-      "last_updated": "20260516"
-    },
-    "60855": {
-      "room_name": "陶园1栋第9层916房间",
-      "current_balance": 193.0,
-      "last_updated": "20260516"
-    },
-    "55081": {
-      "room_name": "陶园1栋第11层1110房间",
-      "current_balance": 110.46,
-      "last_updated": "20260516"
-    },
-    "17376": {
-      "room_name": "陶园1栋第3层311房间",
-      "current_balance": 250.1,
-      "last_updated": "20260516"
-    },
     "54030": {
       "room_name": "陶园1栋第9层913房间",
       "current_balance": 134.54,
-      "last_updated": "20260516"
-    },
-    "28781": {
-      "room_name": "陶园1栋第11层1108房间",
-      "current_balance": 100.3,
       "last_updated": "20260516"
     },
     "11013": {
@@ -2513,34 +453,9 @@
       "current_balance": 156.11,
       "last_updated": "20260516"
     },
-    "39357": {
-      "room_name": "陶园1栋第7层703房间",
-      "current_balance": 210.57,
-      "last_updated": "20260516"
-    },
-    "54659": {
-      "room_name": "陶园1栋第11层1102房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "38123": {
-      "room_name": "陶园1栋第3层309房间",
-      "current_balance": 699.08,
-      "last_updated": "20260516"
-    },
-    "66960": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
     "61396": {
       "room_name": "陶园1栋第9层918房间",
       "current_balance": 1.03,
-      "last_updated": "20260516"
-    },
-    "80446": {
-      "room_name": "陶园1栋第10层1015房间",
-      "current_balance": 99.86,
       "last_updated": "20260516"
     },
     "84213": {
@@ -2551,11 +466,6 @@
     "44223": {
       "room_name": "陶园1栋第4层408房间",
       "current_balance": 180.18,
-      "last_updated": "20260516"
-    },
-    "12655": {
-      "room_name": "陶园1栋第3层306房间",
-      "current_balance": 145.73,
       "last_updated": "20260516"
     },
     "54024": {
@@ -2573,29 +483,9 @@
       "current_balance": 103.25,
       "last_updated": "20260516"
     },
-    "66568": {
-      "room_name": "陶园1栋第2层201房间",
-      "current_balance": 22.22,
-      "last_updated": "20260516"
-    },
-    "41086": {
-      "room_name": "陶园1栋第2层215房间",
-      "current_balance": 66.0,
-      "last_updated": "20260516"
-    },
     "80808": {
       "room_name": "陶园1栋第11层1109房间",
       "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
-    "44413": {
-      "room_name": "陶园1栋第4层413房间",
-      "current_balance": 33.03,
-      "last_updated": "20260516"
-    },
-    "37844": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
       "last_updated": "20260516"
     },
     "37460": {
@@ -2603,59 +493,9 @@
       "current_balance": 164.56,
       "last_updated": "20260516"
     },
-    "13417": {
-      "room_name": "陶园1栋第3层314房间",
-      "current_balance": 22.1,
-      "last_updated": "20260516"
-    },
-    "21294": {
-      "room_name": "陶园1栋第2层206房间",
-      "current_balance": 126.63,
-      "last_updated": "20260516"
-    },
-    "57950": {
-      "room_name": "陶园1栋第10层1015房间",
-      "current_balance": 99.86,
-      "last_updated": "20260516"
-    },
     "16684": {
       "room_name": "陶园1栋第1层109房间",
       "current_balance": 159.68,
-      "last_updated": "20260516"
-    },
-    "19249": {
-      "room_name": "陶园1栋第12层1208房间",
-      "current_balance": 188.28,
-      "last_updated": "20260516"
-    },
-    "43748": {
-      "room_name": "陶园1栋第3层305房间",
-      "current_balance": 79.55,
-      "last_updated": "20260516"
-    },
-    "18598": {
-      "room_name": "陶园1栋第4层401房间",
-      "current_balance": 279.83,
-      "last_updated": "20260516"
-    },
-    "75636": {
-      "room_name": "陶园1栋第2层216房间",
-      "current_balance": 233.37,
-      "last_updated": "20260516"
-    },
-    "42717": {
-      "room_name": "陶园1栋第3层307房间",
-      "current_balance": 68.96,
-      "last_updated": "20260516"
-    },
-    "58815": {
-      "room_name": "陶园1栋第6层602房间",
-      "current_balance": 498.48,
-      "last_updated": "20260516"
-    },
-    "60031": {
-      "room_name": "陶园1栋第1层101房间",
-      "current_balance": 78.96,
       "last_updated": "20260516"
     },
     "44591": {
@@ -2663,199 +503,9 @@
       "current_balance": 107.65,
       "last_updated": "20260516"
     },
-    "14006": {
-      "room_name": "陶园1栋第11层1101房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "54504": {
-      "room_name": "陶园1栋第9层904房间",
-      "current_balance": 60.13,
-      "last_updated": "20260516"
-    },
-    "80364": {
-      "room_name": "陶园1栋第8层817房间",
-      "current_balance": 111.65,
-      "last_updated": "20260516"
-    },
-    "39632": {
-      "room_name": "陶园1栋第7层713房间",
-      "current_balance": 90.92,
-      "last_updated": "20260516"
-    },
-    "61034": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
-    "24387": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "72841": {
-      "room_name": "陶园1栋第6层612房间",
-      "current_balance": 167.14,
-      "last_updated": "20260516"
-    },
-    "79457": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
-    "91465": {
-      "room_name": "陶园1栋第10层1012房间",
-      "current_balance": 15.46,
-      "last_updated": "20260516"
-    },
-    "61883": {
-      "room_name": "陶园1栋第7层718房间",
-      "current_balance": 97.4,
-      "last_updated": "20260516"
-    },
-    "29000": {
-      "room_name": "陶园1栋第1层114房间",
-      "current_balance": 58.48,
-      "last_updated": "20260516"
-    },
-    "31744": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
-    "22874": {
-      "room_name": "陶园1栋第2层208房间",
-      "current_balance": 170.75,
-      "last_updated": "20260516"
-    },
-    "87883": {
-      "room_name": "陶园1栋第12层1210房间",
-      "current_balance": 1682.73,
-      "last_updated": "20260516"
-    },
-    "24275": {
-      "room_name": "陶园1栋第6层612房间",
-      "current_balance": 167.14,
-      "last_updated": "20260516"
-    },
-    "20507": {
-      "room_name": "陶园1栋第2层209房间",
-      "current_balance": 107.7,
-      "last_updated": "20260516"
-    },
-    "17820": {
-      "room_name": "陶园1栋第12层1209房间",
-      "current_balance": 304.79,
-      "last_updated": "20260516"
-    },
-    "36108": {
-      "room_name": "陶园1栋第10层1011房间",
-      "current_balance": 314.5,
-      "last_updated": "20260516"
-    },
-    "36879": {
-      "room_name": "陶园1栋第3层316房间",
-      "current_balance": 181.21,
-      "last_updated": "20260516"
-    },
     "74375": {
       "room_name": "陶园1栋第3层315房间",
       "current_balance": 111.86,
-      "last_updated": "20260516"
-    },
-    "74663": {
-      "room_name": "陶园1栋第12层1207房间",
-      "current_balance": 332.59,
-      "last_updated": "20260516"
-    },
-    "37602": {
-      "room_name": "陶园1栋第3层313房间",
-      "current_balance": 144.81,
-      "last_updated": "20260516"
-    },
-    "17828": {
-      "room_name": "陶园1栋第3层311房间",
-      "current_balance": 250.1,
-      "last_updated": "20260516"
-    },
-    "61569": {
-      "room_name": "陶园1栋第11层1107房间",
-      "current_balance": 21.31,
-      "last_updated": "20260516"
-    },
-    "61978": {
-      "room_name": "陶园1栋第10层1013房间",
-      "current_balance": 156.91,
-      "last_updated": "20260516"
-    },
-    "54284": {
-      "room_name": "陶园1栋第11层1104房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "52640": {
-      "room_name": "陶园1栋第2层208房间",
-      "current_balance": 170.75,
-      "last_updated": "20260516"
-    },
-    "79696": {
-      "room_name": "陶园1栋第12层1206房间",
-      "current_balance": 136.88,
-      "last_updated": "20260516"
-    },
-    "16909": {
-      "room_name": "陶园1栋第12层1210房间",
-      "current_balance": 1682.73,
-      "last_updated": "20260516"
-    },
-    "28939": {
-      "room_name": "陶园1栋第5层509房间",
-      "current_balance": 228.77,
-      "last_updated": "20260516"
-    },
-    "96872": {
-      "room_name": "陶园1栋第5层506房间",
-      "current_balance": 323.73,
-      "last_updated": "20260516"
-    },
-    "18260": {
-      "room_name": "陶园1栋第12层1209房间",
-      "current_balance": 304.79,
-      "last_updated": "20260516"
-    },
-    "68553": {
-      "room_name": "陶园1栋第11层1102房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "13717": {
-      "room_name": "陶园1栋第9层904房间",
-      "current_balance": 60.13,
-      "last_updated": "20260516"
-    },
-    "23028": {
-      "room_name": "陶园1栋第2层207房间",
-      "current_balance": 104.04,
-      "last_updated": "20260516"
-    },
-    "45077": {
-      "room_name": "陶园1栋第2层216房间",
-      "current_balance": 233.37,
-      "last_updated": "20260516"
-    },
-    "64486": {
-      "room_name": "陶园1栋第2层201房间",
-      "current_balance": 22.22,
-      "last_updated": "20260516"
-    },
-    "60725": {
-      "room_name": "陶园1栋第7层703房间",
-      "current_balance": 210.57,
-      "last_updated": "20260516"
-    },
-    "16421": {
-      "room_name": "陶园1栋第4层401房间",
-      "current_balance": 279.83,
       "last_updated": "20260516"
     },
     "87504": {
@@ -2863,94 +513,9 @@
       "current_balance": 139.59,
       "last_updated": "20260516"
     },
-    "54757": {
-      "room_name": "陶园1栋第10层1001房间",
-      "current_balance": 32.84,
-      "last_updated": "20260516"
-    },
-    "54502": {
-      "room_name": "陶园1栋第9层904房间",
-      "current_balance": 60.13,
-      "last_updated": "20260516"
-    },
-    "81021": {
-      "room_name": "陶园1栋第10层1004房间",
-      "current_balance": 249.53,
-      "last_updated": "20260516"
-    },
-    "30945": {
-      "room_name": "陶园1栋第8层816房间",
-      "current_balance": 135.84,
-      "last_updated": "20260516"
-    },
-    "16922": {
-      "room_name": "陶园1栋第10层1011房间",
-      "current_balance": 314.5,
-      "last_updated": "20260516"
-    },
-    "28859": {
-      "room_name": "陶园1栋第12层1202房间",
-      "current_balance": 93.14,
-      "last_updated": "20260516"
-    },
-    "16994": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
-    "64998": {
-      "room_name": "陶园1栋第4层418房间",
-      "current_balance": 48.63,
-      "last_updated": "20260516"
-    },
     "69606": {
       "room_name": "陶园1栋第7层713房间",
       "current_balance": 90.92,
-      "last_updated": "20260516"
-    },
-    "40108": {
-      "room_name": "陶园1栋第12层1210房间",
-      "current_balance": 1682.73,
-      "last_updated": "20260516"
-    },
-    "43631": {
-      "room_name": "陶园1栋第5层505房间",
-      "current_balance": 41.57,
-      "last_updated": "20260516"
-    },
-    "16585": {
-      "room_name": "陶园1栋第10层1012房间",
-      "current_balance": 15.46,
-      "last_updated": "20260516"
-    },
-    "37570": {
-      "room_name": "陶园1栋第3层306房间",
-      "current_balance": 145.73,
-      "last_updated": "20260516"
-    },
-    "42840": {
-      "room_name": "陶园1栋第2层214房间",
-      "current_balance": 43.51,
-      "last_updated": "20260516"
-    },
-    "30134": {
-      "room_name": "陶园1栋第6层618房间",
-      "current_balance": 167.51,
-      "last_updated": "20260516"
-    },
-    "84114": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "22998": {
-      "room_name": "陶园1栋第4层404房间",
-      "current_balance": 317.21,
-      "last_updated": "20260516"
-    },
-    "16845": {
-      "room_name": "陶园1栋第11层1104房间",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "36503": {
@@ -2958,39 +523,9 @@
       "current_balance": 107.7,
       "last_updated": "20260516"
     },
-    "91210": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
-    "11604": {
-      "room_name": "陶园1栋第9层901房间",
-      "current_balance": 75.53,
-      "last_updated": "20260516"
-    },
     "80398": {
       "room_name": "陶园1栋第10层1016房间",
       "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "11521": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
-    "15184": {
-      "room_name": "陶园1栋第11层1101房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "85541": {
-      "room_name": "陶园1栋第4层401房间",
-      "current_balance": 279.83,
-      "last_updated": "20260516"
-    },
-    "80726": {
-      "room_name": "陶园1栋第8层818房间",
-      "current_balance": 65.07,
       "last_updated": "20260516"
     },
     "18046": {
@@ -2998,39 +533,9 @@
       "current_balance": 15.0,
       "last_updated": "20260516"
     },
-    "17721": {
-      "room_name": "陶园1栋第6层612房间",
-      "current_balance": 167.14,
-      "last_updated": "20260516"
-    },
     "26934": {
       "room_name": "陶园1栋第1层108房间",
       "current_balance": 567.58,
-      "last_updated": "20260516"
-    },
-    "56728": {
-      "room_name": "陶园1栋第11层1108房间",
-      "current_balance": 100.3,
-      "last_updated": "20260516"
-    },
-    "22048": {
-      "room_name": "陶园1栋第2层209房间",
-      "current_balance": 107.7,
-      "last_updated": "20260516"
-    },
-    "24977": {
-      "room_name": "陶园1栋第4层417房间",
-      "current_balance": 121.51,
-      "last_updated": "20260516"
-    },
-    "55105": {
-      "room_name": "陶园1栋第11层1109房间",
-      "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
-    "35684": {
-      "room_name": "陶园1栋第8层815房间",
-      "current_balance": 37.61,
       "last_updated": "20260516"
     },
     "80889": {
@@ -3038,89 +543,9 @@
       "current_balance": 132.89,
       "last_updated": "20260516"
     },
-    "23004": {
-      "room_name": "陶园1栋第2层207房间",
-      "current_balance": 104.04,
-      "last_updated": "20260516"
-    },
-    "28456": {
-      "room_name": "陶园1栋第1层117房间",
-      "current_balance": 128.71,
-      "last_updated": "20260516"
-    },
-    "37853": {
-      "room_name": "陶园1栋第2层218房间",
-      "current_balance": 87.94,
-      "last_updated": "20260516"
-    },
-    "81339": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
-      "last_updated": "20260516"
-    },
-    "37836": {
-      "room_name": "陶园1栋第3层315房间",
-      "current_balance": 111.86,
-      "last_updated": "20260516"
-    },
-    "88100": {
-      "room_name": "陶园1栋第3层318房间",
-      "current_balance": 139.59,
-      "last_updated": "20260516"
-    },
-    "16789": {
-      "room_name": "陶园1栋第1层106房间",
-      "current_balance": 173.26,
-      "last_updated": "20260516"
-    },
-    "39339": {
-      "room_name": "陶园1栋第7层704房间",
-      "current_balance": 165.76,
-      "last_updated": "20260516"
-    },
-    "17358": {
-      "room_name": "陶园1栋第9层908房间",
-      "current_balance": 460.72,
-      "last_updated": "20260516"
-    },
-    "40056": {
-      "room_name": "陶园1栋第7层704房间",
-      "current_balance": 165.76,
-      "last_updated": "20260516"
-    },
-    "21727": {
-      "room_name": "陶园1栋第9层915房间",
-      "current_balance": 60.22,
-      "last_updated": "20260516"
-    },
-    "73216": {
-      "room_name": "陶园1栋第9层915房间",
-      "current_balance": 60.22,
-      "last_updated": "20260516"
-    },
-    "11623": {
-      "room_name": "陶园1栋第7层714房间",
-      "current_balance": 302.24,
-      "last_updated": "20260516"
-    },
-    "65435": {
-      "room_name": "陶园1栋第7层713房间",
-      "current_balance": 90.92,
-      "last_updated": "20260516"
-    },
-    "59399": {
-      "room_name": "陶园1栋第4层415房间",
-      "current_balance": 182.88,
-      "last_updated": "20260516"
-    },
     "17887": {
       "room_name": "0111",
       "current_balance": 733.06,
-      "last_updated": "20260516"
-    },
-    "58204": {
-      "room_name": "陶园1栋第11层1102房间",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "22616": {
@@ -3128,64 +553,9 @@
       "current_balance": 132.48,
       "last_updated": "20260516"
     },
-    "57514": {
-      "room_name": "陶园1栋第6层613房间",
-      "current_balance": 241.13,
-      "last_updated": "20260516"
-    },
-    "80795": {
-      "room_name": "陶园1栋第11层1107房间",
-      "current_balance": 21.31,
-      "last_updated": "20260516"
-    },
-    "62417": {
-      "room_name": "陶园1栋第2层205房间",
-      "current_balance": 98.85,
-      "last_updated": "20260516"
-    },
-    "94181": {
-      "room_name": "陶园1栋第6层608房间",
-      "current_balance": 381.67,
-      "last_updated": "20260516"
-    },
-    "63552": {
-      "room_name": "陶园1栋第9层907房间",
-      "current_balance": 99.55,
-      "last_updated": "20260516"
-    },
-    "42815": {
-      "room_name": "陶园1栋第2层215房间",
-      "current_balance": 66.0,
-      "last_updated": "20260516"
-    },
-    "20292": {
-      "room_name": "陶园1栋第1层103房间",
-      "current_balance": 173.06,
-      "last_updated": "20260516"
-    },
-    "55584": {
-      "room_name": "陶园1栋第12层1205房间",
-      "current_balance": 249.07,
-      "last_updated": "20260516"
-    },
     "47305": {
       "room_name": "陶园1栋第10层1001房间",
       "current_balance": 32.84,
-      "last_updated": "20260516"
-    },
-    "13123": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
-      "last_updated": "20260516"
-    },
-    "82377": {
-      "room_name": "陶园1栋第4层411房间",
-      "current_balance": 686.14,
-      "last_updated": "20260516"
-    },
-    "80531": {
-      "room_name": "陶园1栋第9层904房间",
-      "current_balance": 60.13,
       "last_updated": "20260516"
     },
     "61370": {
@@ -3193,49 +563,9 @@
       "current_balance": 78.96,
       "last_updated": "20260516"
     },
-    "48979": {
-      "room_name": "陶园1栋第2层208房间",
-      "current_balance": 170.75,
-      "last_updated": "20260516"
-    },
-    "31886": {
-      "room_name": "陶园1栋第5层511房间",
-      "current_balance": 110.74,
-      "last_updated": "20260516"
-    },
-    "43715": {
-      "room_name": "陶园1栋第2层206房间",
-      "current_balance": 126.63,
-      "last_updated": "20260516"
-    },
-    "30106": {
-      "room_name": "陶园1栋第9层901房间",
-      "current_balance": 75.53,
-      "last_updated": "20260516"
-    },
-    "12458": {
-      "room_name": "陶园1栋第3层316房间",
-      "current_balance": 181.21,
-      "last_updated": "20260516"
-    },
     "28736": {
       "room_name": "陶园1栋第9层916房间",
       "current_balance": 193.0,
-      "last_updated": "20260516"
-    },
-    "54672": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
-    "57560": {
-      "room_name": "陶园1栋第2层202房间",
-      "current_balance": 95.31,
-      "last_updated": "20260516"
-    },
-    "58659": {
-      "room_name": "陶园1栋第9层903房间",
-      "current_balance": 177.65,
       "last_updated": "20260516"
     },
     "25656": {
@@ -3243,49 +573,9 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "93579": {
-      "room_name": "陶园1栋第3层312房间",
-      "current_balance": 78.88,
-      "last_updated": "20260516"
-    },
-    "40485": {
-      "room_name": "陶园1栋第8层813房间",
-      "current_balance": 864.6,
-      "last_updated": "20260516"
-    },
-    "74451": {
-      "room_name": "陶园1栋第3层312房间",
-      "current_balance": 78.88,
-      "last_updated": "20260516"
-    },
     "42863": {
       "room_name": "陶园1栋第2层215房间",
       "current_balance": 66.0,
-      "last_updated": "20260516"
-    },
-    "56761": {
-      "room_name": "陶园1栋第11层1112房间",
-      "current_balance": 321.82,
-      "last_updated": "20260516"
-    },
-    "63482": {
-      "room_name": "陶园1栋第3层307房间",
-      "current_balance": 68.96,
-      "last_updated": "20260516"
-    },
-    "82593": {
-      "room_name": "陶园1栋第9层903房间",
-      "current_balance": 177.65,
-      "last_updated": "20260516"
-    },
-    "74002": {
-      "room_name": "陶园1栋第5层504房间",
-      "current_balance": 15.0,
-      "last_updated": "20260516"
-    },
-    "54749": {
-      "room_name": "陶园1栋第12层1203房间",
-      "current_balance": 76.2,
       "last_updated": "20260516"
     },
     "16581": {
@@ -3293,29 +583,9 @@
       "current_balance": 88.49,
       "last_updated": "20260516"
     },
-    "44418": {
-      "room_name": "陶园1栋第4层407房间",
-      "current_balance": 28.69,
-      "last_updated": "20260516"
-    },
-    "17120": {
-      "room_name": "陶园1栋第7层709房间",
-      "current_balance": 327.32,
-      "last_updated": "20260516"
-    },
-    "44199": {
-      "room_name": "陶园1栋第2层213房间",
-      "current_balance": 197.64,
-      "last_updated": "20260516"
-    },
     "54467": {
       "room_name": "陶园1栋第2层201房间",
       "current_balance": 22.22,
-      "last_updated": "20260516"
-    },
-    "58837": {
-      "room_name": "陶园1栋第2层208房间",
-      "current_balance": 170.75,
       "last_updated": "20260516"
     },
     "24331": {
@@ -3323,109 +593,9 @@
       "current_balance": 188.28,
       "last_updated": "20260516"
     },
-    "22201": {
-      "room_name": "陶园1栋第10层1009房间",
-      "current_balance": 111.38,
-      "last_updated": "20260516"
-    },
-    "44308": {
-      "room_name": "陶园1栋第4层406房间",
-      "current_balance": 689.21,
-      "last_updated": "20260516"
-    },
-    "42823": {
-      "room_name": "陶园1栋第2层216房间",
-      "current_balance": 233.37,
-      "last_updated": "20260516"
-    },
-    "74529": {
-      "room_name": "陶园1栋第6层613房间",
-      "current_balance": 241.13,
-      "last_updated": "20260516"
-    },
-    "74530": {
-      "room_name": "陶园1栋第12层1212房间",
-      "current_balance": 293.5,
-      "last_updated": "20260516"
-    },
-    "72505": {
-      "room_name": "陶园1栋第3层309房间",
-      "current_balance": 699.08,
-      "last_updated": "20260516"
-    },
-    "81504": {
-      "room_name": "陶园1栋第1层115房间",
-      "current_balance": 33.01,
-      "last_updated": "20260516"
-    },
-    "60138": {
-      "room_name": "陶园1栋第7层717房间",
-      "current_balance": 181.17,
-      "last_updated": "20260516"
-    },
     "16972": {
       "room_name": "陶园1栋第10层1003房间",
       "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "80977": {
-      "room_name": "陶园1栋第10层1001房间",
-      "current_balance": 32.84,
-      "last_updated": "20260516"
-    },
-    "53582": {
-      "room_name": "陶园1栋第12层1212房间",
-      "current_balance": 293.5,
-      "last_updated": "20260516"
-    },
-    "16384": {
-      "room_name": "陶园1栋第5层517房间",
-      "current_balance": 857.84,
-      "last_updated": "20260516"
-    },
-    "63629": {
-      "room_name": "陶园1栋第3层302房间",
-      "current_balance": 44.65,
-      "last_updated": "20260516"
-    },
-    "24027": {
-      "room_name": "陶园1栋第1层117房间",
-      "current_balance": 128.71,
-      "last_updated": "20260516"
-    },
-    "56419": {
-      "room_name": "陶园1栋第4层412房间",
-      "current_balance": 107.65,
-      "last_updated": "20260516"
-    },
-    "24958": {
-      "room_name": "陶园1栋第4层417房间",
-      "current_balance": 121.51,
-      "last_updated": "20260516"
-    },
-    "94372": {
-      "room_name": "陶园1栋第10层1004房间",
-      "current_balance": 249.53,
-      "last_updated": "20260516"
-    },
-    "17409": {
-      "room_name": "陶园1栋第12层1208房间",
-      "current_balance": 188.28,
-      "last_updated": "20260516"
-    },
-    "81002": {
-      "room_name": "陶园1栋第9层907房间",
-      "current_balance": 99.55,
-      "last_updated": "20260516"
-    },
-    "21046": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "98710": {
-      "room_name": "陶园1栋第1层116房间",
-      "current_balance": 19.42,
       "last_updated": "20260516"
     },
     "37135": {
@@ -3433,79 +603,14 @@
       "current_balance": 173.26,
       "last_updated": "20260516"
     },
-    "91758": {
-      "room_name": "陶园1栋第4层401房间",
-      "current_balance": 279.83,
-      "last_updated": "20260516"
-    },
-    "68643": {
-      "room_name": "陶园1栋第3层313房间",
-      "current_balance": 144.81,
-      "last_updated": "20260516"
-    },
     "29409": {
       "room_name": "陶园1栋第4层410房间",
       "current_balance": 361.75,
       "last_updated": "20260516"
     },
-    "54615": {
-      "room_name": "陶园1栋第10层1007房间",
-      "current_balance": 314.41,
-      "last_updated": "20260516"
-    },
-    "80586": {
-      "room_name": "陶园1栋第12层1210房间",
-      "current_balance": 1682.73,
-      "last_updated": "20260516"
-    },
     "37402": {
       "room_name": "陶园1栋第7层709房间",
       "current_balance": 327.32,
-      "last_updated": "20260516"
-    },
-    "12928": {
-      "room_name": "陶园1栋第4层402房间",
-      "current_balance": 147.02,
-      "last_updated": "20260516"
-    },
-    "55044": {
-      "room_name": "陶园1栋第11层1109房间",
-      "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
-    "74751": {
-      "room_name": "陶园1栋第3层315房间",
-      "current_balance": 111.86,
-      "last_updated": "20260516"
-    },
-    "80902": {
-      "room_name": "陶园1栋第1层110房间",
-      "current_balance": 49.03,
-      "last_updated": "20260516"
-    },
-    "26097": {
-      "room_name": "陶园1栋第10层1010房间",
-      "current_balance": 357.76,
-      "last_updated": "20260516"
-    },
-    "54658": {
-      "room_name": "陶园1栋第10层1006房间",
-      "current_balance": 120.35,
-      "last_updated": "20260516"
-    },
-    "81424": {
-      "room_name": "陶园1栋第9层901房间",
-      "current_balance": 75.53,
-      "last_updated": "20260516"
-    },
-    "26051": {
-      "room_name": "陶园1栋第11层1102房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "56607": {
-      "room_name": "陶园1栋第11层1105房间",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "45739": {
@@ -3518,104 +623,14 @@
       "current_balance": 167.51,
       "last_updated": "20260516"
     },
-    "22428": {
-      "room_name": "陶园1栋第4层411房间",
-      "current_balance": 686.14,
-      "last_updated": "20260516"
-    },
-    "81361": {
-      "room_name": "陶园1栋第12层1209房间",
-      "current_balance": 304.79,
-      "last_updated": "20260516"
-    },
     "55130": {
       "room_name": "陶园1栋第7层716房间",
       "current_balance": 165.93,
       "last_updated": "20260516"
     },
-    "32448": {
-      "room_name": "陶园1栋第5层515房间",
-      "current_balance": 278.65,
-      "last_updated": "20260516"
-    },
-    "80151": {
-      "room_name": "陶园1栋第9层902房间",
-      "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
-    "36340": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "39079": {
-      "room_name": "陶园1栋第10层1011房间",
-      "current_balance": 314.5,
-      "last_updated": "20260516"
-    },
-    "81589": {
-      "room_name": "陶园1栋第12层1211房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "60724": {
-      "room_name": "陶园1栋第8层801房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "58174": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
-      "last_updated": "20260516"
-    },
-    "83597": {
-      "room_name": "陶园1栋第11层1107房间",
-      "current_balance": 21.31,
-      "last_updated": "20260516"
-    },
-    "57654": {
-      "room_name": "陶园1栋第11层1107房间",
-      "current_balance": 21.31,
-      "last_updated": "20260516"
-    },
-    "21012": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
-      "last_updated": "20260516"
-    },
-    "78890": {
-      "room_name": "陶园1栋第10层1018房间",
-      "current_balance": 82.35,
-      "last_updated": "20260516"
-    },
-    "84353": {
-      "room_name": "陶园1栋第4层403房间",
-      "current_balance": 48.15,
-      "last_updated": "20260516"
-    },
     "16840": {
       "room_name": "陶园1栋第8层816房间",
       "current_balance": 135.84,
-      "last_updated": "20260516"
-    },
-    "28551": {
-      "room_name": "陶园1栋第12层1202房间",
-      "current_balance": 93.14,
-      "last_updated": "20260516"
-    },
-    "56003": {
-      "room_name": "陶园1栋第2层203房间",
-      "current_balance": 54.56,
-      "last_updated": "20260516"
-    },
-    "60728": {
-      "room_name": "陶园1栋第3层306房间",
-      "current_balance": 145.73,
-      "last_updated": "20260516"
-    },
-    "36197": {
-      "room_name": "陶园1栋第3层310房间",
-      "current_balance": 203.95,
       "last_updated": "20260516"
     },
     "17694": {
@@ -3628,159 +643,9 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "86295": {
-      "room_name": "陶园1栋第4层404房间",
-      "current_balance": 317.21,
-      "last_updated": "20260516"
-    },
-    "17246": {
-      "room_name": "陶园1栋第11层1111房间",
-      "current_balance": 120.88,
-      "last_updated": "20260516"
-    },
-    "92985": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
-    "93325": {
-      "room_name": "陶园1栋第9层910房间",
-      "current_balance": 88.49,
-      "last_updated": "20260516"
-    },
-    "36479": {
-      "room_name": "陶园1栋第5层504房间",
-      "current_balance": 15.0,
-      "last_updated": "20260516"
-    },
-    "44244": {
-      "room_name": "陶园1栋第4层412房间",
-      "current_balance": 107.65,
-      "last_updated": "20260516"
-    },
-    "98677": {
-      "room_name": "陶园1栋第2层210房间",
-      "current_balance": 157.79,
-      "last_updated": "20260516"
-    },
-    "60573": {
-      "room_name": "陶园1栋第5层502房间",
-      "current_balance": 293.26,
-      "last_updated": "20260516"
-    },
     "42814": {
       "room_name": "0718",
       "current_balance": 97.4,
-      "last_updated": "20260516"
-    },
-    "56236": {
-      "room_name": "陶园1栋第11层1107房间",
-      "current_balance": 21.31,
-      "last_updated": "20260516"
-    },
-    "46276": {
-      "room_name": "陶园1栋第10层1013房间",
-      "current_balance": 156.91,
-      "last_updated": "20260516"
-    },
-    "21501": {
-      "room_name": "陶园1栋第2层207房间",
-      "current_balance": 104.04,
-      "last_updated": "20260516"
-    },
-    "57115": {
-      "room_name": "陶园1栋第11层1109房间",
-      "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
-    "58709": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
-    "91886": {
-      "room_name": "陶园1栋第9层904房间",
-      "current_balance": 60.13,
-      "last_updated": "20260516"
-    },
-    "48406": {
-      "room_name": "陶园1栋第11层1111房间",
-      "current_balance": 120.88,
-      "last_updated": "20260516"
-    },
-    "14085": {
-      "room_name": "陶园1栋第12层1212房间",
-      "current_balance": 293.5,
-      "last_updated": "20260516"
-    },
-    "57289": {
-      "room_name": "陶园1栋第7层716房间",
-      "current_balance": 165.93,
-      "last_updated": "20260516"
-    },
-    "23011": {
-      "room_name": "陶园1栋第2层205房间",
-      "current_balance": 98.85,
-      "last_updated": "20260516"
-    },
-    "54489": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "20678": {
-      "room_name": "陶园1栋第6层604房间",
-      "current_balance": 230.74,
-      "last_updated": "20260516"
-    },
-    "82942": {
-      "room_name": "陶园1栋第12层1202房间",
-      "current_balance": 93.14,
-      "last_updated": "20260516"
-    },
-    "27891": {
-      "room_name": "陶园1栋第9层902房间",
-      "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
-    "43417": {
-      "room_name": "陶园1栋第10层1018房间",
-      "current_balance": 82.35,
-      "last_updated": "20260516"
-    },
-    "30297": {
-      "room_name": "陶园1栋第10层1014房间",
-      "current_balance": 283.74,
-      "last_updated": "20260516"
-    },
-    "55295": {
-      "room_name": "陶园1栋第11层1105房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "41587": {
-      "room_name": "陶园1栋第6层610房间",
-      "current_balance": 86.98,
-      "last_updated": "20260516"
-    },
-    "63374": {
-      "room_name": "陶园1栋第6层618房间",
-      "current_balance": 167.51,
-      "last_updated": "20260516"
-    },
-    "83379": {
-      "room_name": "陶园1栋第4层402房间",
-      "current_balance": 147.02,
-      "last_updated": "20260516"
-    },
-    "32261": {
-      "room_name": "陶园1栋第10层1008房间",
-      "current_balance": 131.7,
-      "last_updated": "20260516"
-    },
-    "41039": {
-      "room_name": "陶园1栋第7层715房间",
-      "current_balance": 271.74,
       "last_updated": "20260516"
     },
     "34931": {
@@ -3788,129 +653,9 @@
       "current_balance": 23.55,
       "last_updated": "20260516"
     },
-    "87077": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "54477": {
-      "room_name": "陶园1栋第9层904房间",
-      "current_balance": 60.13,
-      "last_updated": "20260516"
-    },
-    "51274": {
-      "room_name": "陶园1栋第7层715房间",
-      "current_balance": 271.74,
-      "last_updated": "20260516"
-    },
-    "37240": {
-      "room_name": "陶园1栋第7层702房间",
-      "current_balance": 168.3,
-      "last_updated": "20260516"
-    },
-    "50985": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
-    "37753": {
-      "room_name": "陶园1栋第10层1001房间",
-      "current_balance": 32.84,
-      "last_updated": "20260516"
-    },
-    "25122": {
-      "room_name": "陶园1栋第5层502房间",
-      "current_balance": 293.26,
-      "last_updated": "20260516"
-    },
-    "54869": {
-      "room_name": "陶园1栋第11层1104房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "20929": {
-      "room_name": "陶园1栋第9层917房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "20410": {
-      "room_name": "陶园1栋第7层701房间",
-      "current_balance": 114.85,
-      "last_updated": "20260516"
-    },
-    "61506": {
-      "room_name": "陶园1栋第2层206房间",
-      "current_balance": 126.63,
-      "last_updated": "20260516"
-    },
-    "25843": {
-      "room_name": "陶园1栋第6层609房间",
-      "current_balance": 281.24,
-      "last_updated": "20260516"
-    },
-    "57535": {
-      "room_name": "陶园1栋第2层205房间",
-      "current_balance": 98.85,
-      "last_updated": "20260516"
-    },
-    "35678": {
-      "room_name": "陶园1栋第10层1017房间",
-      "current_balance": 132.89,
-      "last_updated": "20260516"
-    },
-    "58661": {
-      "room_name": "陶园1栋第9层903房间",
-      "current_balance": 177.65,
-      "last_updated": "20260516"
-    },
     "44165": {
       "room_name": "陶园1栋第2层213房间",
       "current_balance": 197.64,
-      "last_updated": "20260516"
-    },
-    "54289": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "31669": {
-      "room_name": "陶园1栋第1层105房间",
-      "current_balance": 44.1,
-      "last_updated": "20260516"
-    },
-    "10964": {
-      "room_name": "陶园1栋第7层701房间",
-      "current_balance": 114.85,
-      "last_updated": "20260516"
-    },
-    "75728": {
-      "room_name": "陶园1栋第3层312房间",
-      "current_balance": 78.88,
-      "last_updated": "20260516"
-    },
-    "98203": {
-      "room_name": "陶园1栋第2层207房间",
-      "current_balance": 104.04,
-      "last_updated": "20260516"
-    },
-    "37910": {
-      "room_name": "陶园1栋第3层306房间",
-      "current_balance": 145.73,
-      "last_updated": "20260516"
-    },
-    "81588": {
-      "room_name": "陶园1栋第12层1211房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "99248": {
-      "room_name": "陶园1栋第1层101房间",
-      "current_balance": 78.96,
-      "last_updated": "20260516"
-    },
-    "22953": {
-      "room_name": "陶园1栋第3层316房间",
-      "current_balance": 181.21,
       "last_updated": "20260516"
     },
     "16975": {
@@ -3918,34 +663,9 @@
       "current_balance": 110.74,
       "last_updated": "20260516"
     },
-    "13149": {
-      "room_name": "陶园1栋第1层106房间",
-      "current_balance": 173.26,
-      "last_updated": "20260516"
-    },
-    "44415": {
-      "room_name": "陶园1栋第4层413房间",
-      "current_balance": 33.03,
-      "last_updated": "20260516"
-    },
     "55252": {
       "room_name": "1017",
       "current_balance": 132.89,
-      "last_updated": "20260516"
-    },
-    "31834": {
-      "room_name": "陶园1栋第9层909房间",
-      "current_balance": 31.6,
-      "last_updated": "20260516"
-    },
-    "37026": {
-      "room_name": "陶园1栋第2层205房间",
-      "current_balance": 98.85,
-      "last_updated": "20260516"
-    },
-    "54156": {
-      "room_name": "陶园1栋第11层1108房间",
-      "current_balance": 100.3,
       "last_updated": "20260516"
     },
     "21753": {
@@ -3953,34 +673,9 @@
       "current_balance": 98.85,
       "last_updated": "20260516"
     },
-    "22741": {
-      "room_name": "陶园1栋第10层1018房间",
-      "current_balance": 82.35,
-      "last_updated": "20260516"
-    },
-    "80197": {
-      "room_name": "陶园1栋第3层318房间",
-      "current_balance": 139.59,
-      "last_updated": "20260516"
-    },
     "69958": {
       "room_name": "陶园1栋第10层1012房间",
       "current_balance": 15.46,
-      "last_updated": "20260516"
-    },
-    "81249": {
-      "room_name": "陶园1栋第8层818房间",
-      "current_balance": 65.07,
-      "last_updated": "20260516"
-    },
-    "78906": {
-      "room_name": "陶园1栋第10层1018房间",
-      "current_balance": 82.35,
-      "last_updated": "20260516"
-    },
-    "27573": {
-      "room_name": "陶园1栋第7层712房间",
-      "current_balance": 1078.87,
       "last_updated": "20260516"
     },
     "95302": {
@@ -3988,39 +683,9 @@
       "current_balance": 41.88,
       "last_updated": "20260516"
     },
-    "14323": {
-      "room_name": "陶园1栋第4层402房间",
-      "current_balance": 147.02,
-      "last_updated": "20260516"
-    },
-    "44616": {
-      "room_name": "陶园1栋第4层408房间",
-      "current_balance": 180.18,
-      "last_updated": "20260516"
-    },
-    "59195": {
-      "room_name": "陶园1栋第9层911房间",
-      "current_balance": 25.92,
-      "last_updated": "20260516"
-    },
-    "34138": {
-      "room_name": "陶园1栋第9层901房间",
-      "current_balance": 75.53,
-      "last_updated": "20260516"
-    },
-    "98464": {
-      "room_name": "陶园1栋第10层1007房间",
-      "current_balance": 314.41,
-      "last_updated": "20260516"
-    },
     "88958": {
       "room_name": "陶园1栋第9层905房间",
       "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "62872": {
-      "room_name": "陶园1栋第2层203房间",
-      "current_balance": 54.56,
       "last_updated": "20260516"
     },
     "81710": {
@@ -4028,44 +693,9 @@
       "current_balance": 1682.73,
       "last_updated": "20260516"
     },
-    "58660": {
-      "room_name": "陶园1栋第9层903房间",
-      "current_balance": 177.65,
-      "last_updated": "20260516"
-    },
-    "99349": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
-    "52653": {
-      "room_name": "陶园1栋第9层918房间",
-      "current_balance": 1.03,
-      "last_updated": "20260516"
-    },
-    "60646": {
-      "room_name": "陶园1栋第2层211房间",
-      "current_balance": 15.25,
-      "last_updated": "20260516"
-    },
-    "46895": {
-      "room_name": "陶园1栋第2层203房间",
-      "current_balance": 54.56,
-      "last_updated": "20260516"
-    },
-    "73295": {
-      "room_name": "陶园1栋第12层1211房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "46674": {
       "room_name": "陶园1栋第6层603房间",
       "current_balance": 23.19,
-      "last_updated": "20260516"
-    },
-    "40040": {
-      "room_name": "陶园1栋第7层704房间",
-      "current_balance": 165.76,
       "last_updated": "20260516"
     },
     "30084": {
@@ -4073,74 +703,9 @@
       "current_balance": 111.38,
       "last_updated": "20260516"
     },
-    "68972": {
-      "room_name": "陶园1栋第12层1203房间",
-      "current_balance": 76.2,
-      "last_updated": "20260516"
-    },
-    "13090": {
-      "room_name": "陶园1栋第3层304房间",
-      "current_balance": 54.55,
-      "last_updated": "20260516"
-    },
-    "53966": {
-      "room_name": "陶园1栋第9层915房间",
-      "current_balance": 60.22,
-      "last_updated": "20260516"
-    },
-    "83834": {
-      "room_name": "陶园1栋第6层616房间",
-      "current_balance": 41.88,
-      "last_updated": "20260516"
-    },
-    "44562": {
-      "room_name": "陶园1栋第4层413房间",
-      "current_balance": 33.03,
-      "last_updated": "20260516"
-    },
-    "18721": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
     "74671": {
       "room_name": "陶园1栋第5层506房间",
       "current_balance": 323.73,
-      "last_updated": "20260516"
-    },
-    "88130": {
-      "room_name": "陶园1栋第11层1110房间",
-      "current_balance": 110.46,
-      "last_updated": "20260516"
-    },
-    "17275": {
-      "room_name": "陶园1栋第7层707房间",
-      "current_balance": 421.65,
-      "last_updated": "20260516"
-    },
-    "18423": {
-      "room_name": "陶园1栋第8层816房间",
-      "current_balance": 135.84,
-      "last_updated": "20260516"
-    },
-    "18333": {
-      "room_name": "陶园1栋第10层1014房间",
-      "current_balance": 283.74,
-      "last_updated": "20260516"
-    },
-    "79943": {
-      "room_name": "陶园1栋第9层904房间",
-      "current_balance": 60.13,
-      "last_updated": "20260516"
-    },
-    "57262": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "54515": {
-      "room_name": "陶园1栋第10层1012房间",
-      "current_balance": 15.46,
       "last_updated": "20260516"
     },
     "16363": {
@@ -4148,124 +713,14 @@
       "current_balance": 381.67,
       "last_updated": "20260516"
     },
-    "58208": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
-      "last_updated": "20260516"
-    },
-    "59647": {
-      "room_name": "陶园1栋第2层209房间",
-      "current_balance": 107.7,
-      "last_updated": "20260516"
-    },
-    "79672": {
-      "room_name": "陶园1栋第9层908房间",
-      "current_balance": 460.72,
-      "last_updated": "20260516"
-    },
     "44622": {
       "room_name": "陶园1栋第2层212房间",
       "current_balance": 297.74,
       "last_updated": "20260516"
     },
-    "39043": {
-      "room_name": "陶园1栋第7层713房间",
-      "current_balance": 90.92,
-      "last_updated": "20260516"
-    },
-    "53853": {
-      "room_name": "陶园1栋第2层203房间",
-      "current_balance": 54.56,
-      "last_updated": "20260516"
-    },
-    "55929": {
-      "room_name": "陶园1栋第2层206房间",
-      "current_balance": 126.63,
-      "last_updated": "20260516"
-    },
-    "16891": {
-      "room_name": "陶园1栋第9层918房间",
-      "current_balance": 1.03,
-      "last_updated": "20260516"
-    },
-    "44458": {
-      "room_name": "陶园1栋第2层217房间",
-      "current_balance": 67.02,
-      "last_updated": "20260516"
-    },
-    "41945": {
-      "room_name": "陶园1栋第9层908房间",
-      "current_balance": 460.72,
-      "last_updated": "20260516"
-    },
-    "20660": {
-      "room_name": "陶园1栋第6层604房间",
-      "current_balance": 230.74,
-      "last_updated": "20260516"
-    },
-    "69911": {
-      "room_name": "陶园1栋第10层1004房间",
-      "current_balance": 249.53,
-      "last_updated": "20260516"
-    },
-    "53510": {
-      "room_name": "陶园1栋第10层1015房间",
-      "current_balance": 99.86,
-      "last_updated": "20260516"
-    },
-    "85425": {
-      "room_name": "陶园1栋第10层1001房间",
-      "current_balance": 32.84,
-      "last_updated": "20260516"
-    },
-    "13613": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
     "63464": {
       "room_name": "陶园1栋第12层1206房间",
       "current_balance": 136.88,
-      "last_updated": "20260516"
-    },
-    "36828": {
-      "room_name": "陶园1栋第11层1107房间",
-      "current_balance": 21.31,
-      "last_updated": "20260516"
-    },
-    "34750": {
-      "room_name": "陶园1栋第8层801房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "55487": {
-      "room_name": "陶园1栋第2层205房间",
-      "current_balance": 98.85,
-      "last_updated": "20260516"
-    },
-    "41038": {
-      "room_name": "陶园1栋第7层714房间",
-      "current_balance": 302.24,
-      "last_updated": "20260516"
-    },
-    "18317": {
-      "room_name": "陶园1栋第4层411房间",
-      "current_balance": 686.14,
-      "last_updated": "20260516"
-    },
-    "36391": {
-      "room_name": "陶园1栋第2层218房间",
-      "current_balance": 87.94,
-      "last_updated": "20260516"
-    },
-    "39467": {
-      "room_name": "陶园1栋第2层203房间",
-      "current_balance": 54.56,
-      "last_updated": "20260516"
-    },
-    "20659": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
       "last_updated": "20260516"
     },
     "13337": {
@@ -4278,24 +733,9 @@
       "current_balance": 15.0,
       "last_updated": "20260516"
     },
-    "57665": {
-      "room_name": "陶园1栋第11层1107房间",
-      "current_balance": 21.31,
-      "last_updated": "20260516"
-    },
-    "51313": {
-      "room_name": "陶园1栋第7层713房间",
-      "current_balance": 90.92,
-      "last_updated": "20260516"
-    },
     "37907": {
       "room_name": "陶园1栋第5层514房间",
       "current_balance": 176.92,
-      "last_updated": "20260516"
-    },
-    "78893": {
-      "room_name": "陶园1栋第9层909房间",
-      "current_balance": 31.6,
       "last_updated": "20260516"
     },
     "36198": {
@@ -4308,69 +748,9 @@
       "current_balance": 115.5,
       "last_updated": "20260516"
     },
-    "61620": {
-      "room_name": "陶园1栋第10层1014房间",
-      "current_balance": 283.74,
-      "last_updated": "20260516"
-    },
-    "47746": {
-      "room_name": "陶园1栋第10层1010房间",
-      "current_balance": 357.76,
-      "last_updated": "20260516"
-    },
-    "16356": {
-      "room_name": "陶园1栋第5层515房间",
-      "current_balance": 278.65,
-      "last_updated": "20260516"
-    },
-    "57282": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "80166": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "88270": {
-      "room_name": "陶园1栋第10层1011房间",
-      "current_balance": 314.5,
-      "last_updated": "20260516"
-    },
-    "18791": {
-      "room_name": "陶园1栋第7层711房间",
-      "current_balance": 76.75,
-      "last_updated": "20260516"
-    },
-    "37580": {
-      "room_name": "陶园1栋第3层313房间",
-      "current_balance": 144.81,
-      "last_updated": "20260516"
-    },
-    "83571": {
-      "room_name": "陶园1栋第4层403房间",
-      "current_balance": 48.15,
-      "last_updated": "20260516"
-    },
-    "33873": {
-      "room_name": "陶园1栋第7层708房间",
-      "current_balance": 556.88,
-      "last_updated": "20260516"
-    },
     "42262": {
       "room_name": "陶园1栋第3层311房间",
       "current_balance": 250.1,
-      "last_updated": "20260516"
-    },
-    "21325": {
-      "room_name": "陶园1栋第11层1111房间",
-      "current_balance": 120.88,
-      "last_updated": "20260516"
-    },
-    "83234": {
-      "room_name": "陶园1栋第1层115房间",
-      "current_balance": 33.01,
       "last_updated": "20260516"
     },
     "20251": {
@@ -4378,104 +758,14 @@
       "current_balance": 168.3,
       "last_updated": "20260516"
     },
-    "80350": {
-      "room_name": "陶园1栋第8层814房间",
-      "current_balance": 213.37,
-      "last_updated": "20260516"
-    },
-    "22432": {
-      "room_name": "陶园1栋第4层411房间",
-      "current_balance": 686.14,
-      "last_updated": "20260516"
-    },
-    "29030": {
-      "room_name": "陶园1栋第7层706房间",
-      "current_balance": 27.1,
-      "last_updated": "20260516"
-    },
-    "16719": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
-    "19219": {
-      "room_name": "陶园1栋第9层910房间",
-      "current_balance": 88.49,
-      "last_updated": "20260516"
-    },
-    "57599": {
-      "room_name": "陶园1栋第2层202房间",
-      "current_balance": 95.31,
-      "last_updated": "20260516"
-    },
-    "13126": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
-      "last_updated": "20260516"
-    },
-    "70665": {
-      "room_name": "陶园1栋第5层504房间",
-      "current_balance": 15.0,
-      "last_updated": "20260516"
-    },
     "17036": {
       "room_name": "陶园1栋第10层1005房间",
       "current_balance": 67.7,
       "last_updated": "20260516"
     },
-    "39338": {
-      "room_name": "陶园1栋第10层1007房间",
-      "current_balance": 314.41,
-      "last_updated": "20260516"
-    },
-    "45070": {
-      "room_name": "陶园1栋第4层414房间",
-      "current_balance": 137.31,
-      "last_updated": "20260516"
-    },
-    "80340": {
-      "room_name": "陶园1栋第8层817房间",
-      "current_balance": 111.65,
-      "last_updated": "20260516"
-    },
     "16555": {
       "room_name": "陶园1栋第5层509房间",
       "current_balance": 228.77,
-      "last_updated": "20260516"
-    },
-    "14416": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
-    "64348": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "37161": {
-      "room_name": "陶园1栋第5层509房间",
-      "current_balance": 228.77,
-      "last_updated": "20260516"
-    },
-    "58955": {
-      "room_name": "陶园1栋第2层201房间",
-      "current_balance": 22.22,
-      "last_updated": "20260516"
-    },
-    "47155": {
-      "room_name": "陶园1栋第11层1107房间",
-      "current_balance": 21.31,
-      "last_updated": "20260516"
-    },
-    "85473": {
-      "room_name": "陶园1栋第4层409房间",
-      "current_balance": 92.73,
-      "last_updated": "20260516"
-    },
-    "44315": {
-      "room_name": "陶园1栋第2层216房间",
-      "current_balance": 233.37,
       "last_updated": "20260516"
     },
     "60447": {
@@ -4488,19 +778,9 @@
       "current_balance": 332.59,
       "last_updated": "20260516"
     },
-    "84191": {
-      "room_name": "陶园1栋第3层310房间",
-      "current_balance": 203.95,
-      "last_updated": "20260516"
-    },
     "40016": {
       "room_name": "陶园1栋第10层1015房间",
       "current_balance": 99.86,
-      "last_updated": "20260516"
-    },
-    "36890": {
-      "room_name": "陶园1栋第3层316房间",
-      "current_balance": 181.21,
       "last_updated": "20260516"
     },
     "22554": {
@@ -4508,39 +788,9 @@
       "current_balance": 210.57,
       "last_updated": "20260516"
     },
-    "86908": {
-      "room_name": "陶园1栋第11层1108房间",
-      "current_balance": 100.3,
-      "last_updated": "20260516"
-    },
-    "81971": {
-      "room_name": "陶园1栋第9层910房间",
-      "current_balance": 88.49,
-      "last_updated": "20260516"
-    },
-    "60183": {
-      "room_name": "陶园1栋第2层215房间",
-      "current_balance": 66.0,
-      "last_updated": "20260516"
-    },
     "67833": {
       "room_name": "陶园1栋第1层114房间",
       "current_balance": 58.48,
-      "last_updated": "20260516"
-    },
-    "39993": {
-      "room_name": "陶园1栋第9层904房间",
-      "current_balance": 60.13,
-      "last_updated": "20260516"
-    },
-    "43609": {
-      "room_name": "陶园1栋第9层913房间",
-      "current_balance": 134.54,
-      "last_updated": "20260516"
-    },
-    "12960": {
-      "room_name": "陶园1栋第6层608房间",
-      "current_balance": 381.67,
       "last_updated": "20260516"
     },
     "69737": {
@@ -4548,59 +798,9 @@
       "current_balance": 283.74,
       "last_updated": "20260516"
     },
-    "83492": {
-      "room_name": "陶园1栋第3层301房间",
-      "current_balance": 752.19,
-      "last_updated": "20260516"
-    },
-    "80282": {
-      "room_name": "陶园1栋第9层905房间",
-      "current_balance": 49.68,
-      "last_updated": "20260516"
-    },
-    "11348": {
-      "room_name": "陶园1栋第9层910房间",
-      "current_balance": 88.49,
-      "last_updated": "20260516"
-    },
     "21307": {
       "room_name": "陶园1栋第7层711房间",
       "current_balance": 76.75,
-      "last_updated": "20260516"
-    },
-    "63171": {
-      "room_name": "陶园1栋第10层1008房间",
-      "current_balance": 131.7,
-      "last_updated": "20260516"
-    },
-    "54505": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
-      "last_updated": "20260516"
-    },
-    "94629": {
-      "room_name": "陶园1栋第7层718房间",
-      "current_balance": 97.4,
-      "last_updated": "20260516"
-    },
-    "80811": {
-      "room_name": "陶园1栋第11层1109房间",
-      "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
-    "35223": {
-      "room_name": "陶园1栋第3层304房间",
-      "current_balance": 54.55,
-      "last_updated": "20260516"
-    },
-    "25482": {
-      "room_name": "陶园1栋第5层514房间",
-      "current_balance": 176.92,
-      "last_updated": "20260516"
-    },
-    "16801": {
-      "room_name": "陶园1栋第10层1004房间",
-      "current_balance": 249.53,
       "last_updated": "20260516"
     },
     "62600": {
@@ -4608,44 +808,9 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "88155": {
-      "room_name": "陶园1栋第10层1017房间",
-      "current_balance": 132.89,
-      "last_updated": "20260516"
-    },
-    "27510": {
-      "room_name": "陶园1栋第2层209房间",
-      "current_balance": 107.7,
-      "last_updated": "20260516"
-    },
-    "80535": {
-      "room_name": "陶园1栋第10层1007房间",
-      "current_balance": 314.41,
-      "last_updated": "20260516"
-    },
     "37206": {
       "room_name": "陶园1栋第7层701房间",
       "current_balance": 114.85,
-      "last_updated": "20260516"
-    },
-    "16243": {
-      "room_name": "陶园1栋第3层302房间",
-      "current_balance": 44.65,
-      "last_updated": "20260516"
-    },
-    "28943": {
-      "room_name": "陶园1栋第5层509房间",
-      "current_balance": 228.77,
-      "last_updated": "20260516"
-    },
-    "83363": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
-    "55065": {
-      "room_name": "陶园1栋第11层1102房间",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "55585": {
@@ -4653,19 +818,9 @@
       "current_balance": 249.07,
       "last_updated": "20260516"
     },
-    "35677": {
-      "room_name": "陶园1栋第1层114房间",
-      "current_balance": 58.48,
-      "last_updated": "20260516"
-    },
     "88059": {
       "room_name": "陶园1栋第9层907房间",
       "current_balance": 99.55,
-      "last_updated": "20260516"
-    },
-    "16606": {
-      "room_name": "陶园1栋第7层717房间",
-      "current_balance": 181.17,
       "last_updated": "20260516"
     },
     "38595": {
@@ -4673,54 +828,9 @@
       "current_balance": 95.31,
       "last_updated": "20260516"
     },
-    "94253": {
-      "room_name": "陶园1栋第8层817房间",
-      "current_balance": 111.65,
-      "last_updated": "20260516"
-    },
-    "77311": {
-      "room_name": "陶园1栋第3层310房间",
-      "current_balance": 203.95,
-      "last_updated": "20260516"
-    },
-    "58117": {
-      "room_name": "陶园1栋第10层1001房间",
-      "current_balance": 32.84,
-      "last_updated": "20260516"
-    },
-    "56423": {
-      "room_name": "陶园1栋第10层1009房间",
-      "current_balance": 111.38,
-      "last_updated": "20260516"
-    },
-    "82378": {
-      "room_name": "陶园1栋第4层411房间",
-      "current_balance": 686.14,
-      "last_updated": "20260516"
-    },
-    "74517": {
-      "room_name": "陶园1栋第7层718房间",
-      "current_balance": 97.4,
-      "last_updated": "20260516"
-    },
-    "53424": {
-      "room_name": "陶园1栋第12层1202房间",
-      "current_balance": 93.14,
-      "last_updated": "20260516"
-    },
     "78120": {
       "room_name": "陶园1栋第3层301房间",
       "current_balance": 752.19,
-      "last_updated": "20260516"
-    },
-    "16691": {
-      "room_name": "陶园1栋第9层902房间",
-      "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
-    "81467": {
-      "room_name": "陶园1栋第1层102房间",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "46064": {
@@ -4728,44 +838,14 @@
       "current_balance": 173.06,
       "last_updated": "20260516"
     },
-    "57587": {
-      "room_name": "陶园1栋第12层1201房间",
-      "current_balance": 15.44,
-      "last_updated": "20260516"
-    },
     "61118": {
       "room_name": "陶园1栋第4层415房间",
       "current_balance": 182.88,
       "last_updated": "20260516"
     },
-    "25065": {
-      "room_name": "陶园1栋第10层1014房间",
-      "current_balance": 283.74,
-      "last_updated": "20260516"
-    },
     "67667": {
       "room_name": "陶园1栋第3层306房间",
       "current_balance": 145.73,
-      "last_updated": "20260516"
-    },
-    "40294": {
-      "room_name": "陶园1栋第4层416房间",
-      "current_balance": 154.79,
-      "last_updated": "20260516"
-    },
-    "22571": {
-      "room_name": "陶园1栋第10层1017房间",
-      "current_balance": 132.89,
-      "last_updated": "20260516"
-    },
-    "16848": {
-      "room_name": "陶园1栋第1层109房间",
-      "current_balance": 159.68,
-      "last_updated": "20260516"
-    },
-    "81820": {
-      "room_name": "陶园1栋第1层104房间",
-      "current_balance": 351.76,
       "last_updated": "20260516"
     },
     "15997": {
@@ -4783,36 +863,6 @@
       "current_balance": 181.12,
       "last_updated": "20260516"
     },
-    "44284": {
-      "room_name": "陶园1栋第4层406房间",
-      "current_balance": 689.21,
-      "last_updated": "20260516"
-    },
-    "79309": {
-      "room_name": "陶园1栋第3层312房间",
-      "current_balance": 78.88,
-      "last_updated": "20260516"
-    },
-    "24401": {
-      "room_name": "陶园1栋第3层314房间",
-      "current_balance": 22.1,
-      "last_updated": "20260516"
-    },
-    "80345": {
-      "room_name": "陶园1栋第8层813房间",
-      "current_balance": 864.6,
-      "last_updated": "20260516"
-    },
-    "12941": {
-      "room_name": "陶园1栋第3层311房间",
-      "current_balance": 250.1,
-      "last_updated": "20260516"
-    },
-    "16538": {
-      "room_name": "陶园1栋第11层1108房间",
-      "current_balance": 100.3,
-      "last_updated": "20260516"
-    },
     "36177": {
       "room_name": "陶园1栋第3层310房间",
       "current_balance": 203.95,
@@ -4823,79 +873,9 @@
       "current_balance": 121.51,
       "last_updated": "20260516"
     },
-    "50439": {
-      "room_name": "陶园1栋第12层1204房间",
-      "current_balance": 64.19,
-      "last_updated": "20260516"
-    },
-    "83337": {
-      "room_name": "陶园1栋第4层401房间",
-      "current_balance": 279.83,
-      "last_updated": "20260516"
-    },
-    "20058": {
-      "room_name": "陶园1栋第11层1105房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "20062": {
-      "room_name": "陶园1栋第2层202房间",
-      "current_balance": 95.31,
-      "last_updated": "20260516"
-    },
-    "13562": {
-      "room_name": "陶园1栋第3层306房间",
-      "current_balance": 145.73,
-      "last_updated": "20260516"
-    },
-    "54521": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
-    "59135": {
-      "room_name": "陶园1栋第7层712房间",
-      "current_balance": 1078.87,
-      "last_updated": "20260516"
-    },
-    "68973": {
-      "room_name": "陶园1栋第7层715房间",
-      "current_balance": 271.74,
-      "last_updated": "20260516"
-    },
-    "17907": {
-      "room_name": "陶园1栋第11层1110房间",
-      "current_balance": 110.46,
-      "last_updated": "20260516"
-    },
-    "68807": {
-      "room_name": "陶园1栋第4层416房间",
-      "current_balance": 154.79,
-      "last_updated": "20260516"
-    },
-    "21293": {
-      "room_name": "陶园1栋第2层206房间",
-      "current_balance": 126.63,
-      "last_updated": "20260516"
-    },
-    "44590": {
-      "room_name": "陶园1栋第4层412房间",
-      "current_balance": 107.65,
-      "last_updated": "20260516"
-    },
-    "13683": {
-      "room_name": "陶园1栋第7层714房间",
-      "current_balance": 302.24,
-      "last_updated": "20260516"
-    },
     "12089": {
       "room_name": "陶园1栋第5层501房间",
       "current_balance": 9.69,
-      "last_updated": "20260516"
-    },
-    "46381": {
-      "room_name": "陶园1栋第9层902房间",
-      "current_balance": 91.19,
       "last_updated": "20260516"
     },
     "37376": {
@@ -4903,39 +883,9 @@
       "current_balance": 21.31,
       "last_updated": "20260516"
     },
-    "71243": {
-      "room_name": "陶园1栋第10层1007房间",
-      "current_balance": 314.41,
-      "last_updated": "20260516"
-    },
-    "17175": {
-      "room_name": "陶园1栋第9层911房间",
-      "current_balance": 25.92,
-      "last_updated": "20260516"
-    },
     "84473": {
       "room_name": "陶园1栋第9层903房间",
       "current_balance": 177.65,
-      "last_updated": "20260516"
-    },
-    "12822": {
-      "room_name": "陶园1栋第6层616房间",
-      "current_balance": 41.88,
-      "last_updated": "20260516"
-    },
-    "43651": {
-      "room_name": "陶园1栋第9层902房间",
-      "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
-    "57098": {
-      "room_name": "陶园1栋第10层1012房间",
-      "current_balance": 15.46,
-      "last_updated": "20260516"
-    },
-    "54028": {
-      "room_name": "陶园1栋第2层207房间",
-      "current_balance": 104.04,
       "last_updated": "20260516"
     },
     "53380": {
@@ -4943,114 +893,9 @@
       "current_balance": 332.41,
       "last_updated": "20260516"
     },
-    "81380": {
-      "room_name": "陶园1栋第8层816房间",
-      "current_balance": 135.84,
-      "last_updated": "20260516"
-    },
-    "20367": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "55641": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
-    "16109": {
-      "room_name": "陶园1栋第3层309房间",
-      "current_balance": 699.08,
-      "last_updated": "20260516"
-    },
-    "70028": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
-    "17352": {
-      "room_name": "陶园1栋第12层1201房间",
-      "current_balance": 15.44,
-      "last_updated": "20260516"
-    },
-    "61398": {
-      "room_name": "陶园1栋第3层308房间",
-      "current_balance": 339.98,
-      "last_updated": "20260516"
-    },
-    "35685": {
-      "room_name": "陶园1栋第8层817房间",
-      "current_balance": 111.65,
-      "last_updated": "20260516"
-    },
-    "55238": {
-      "room_name": "陶园1栋第11层1111房间",
-      "current_balance": 120.88,
-      "last_updated": "20260516"
-    },
-    "21910": {
-      "room_name": "陶园1栋第8层815房间",
-      "current_balance": 37.61,
-      "last_updated": "20260516"
-    },
     "18006": {
       "room_name": "陶园1栋第7层705房间",
       "current_balance": 111.59,
-      "last_updated": "20260516"
-    },
-    "75838": {
-      "room_name": "陶园1栋第11层1108房间",
-      "current_balance": 100.3,
-      "last_updated": "20260516"
-    },
-    "54617": {
-      "room_name": "陶园1栋第11层1104房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "27033": {
-      "room_name": "陶园1栋第9层907房间",
-      "current_balance": 99.55,
-      "last_updated": "20260516"
-    },
-    "22256": {
-      "room_name": "陶园1栋第5层516房间",
-      "current_balance": 183.41,
-      "last_updated": "20260516"
-    },
-    "49406": {
-      "room_name": "陶园1栋第12层1202房间",
-      "current_balance": 93.14,
-      "last_updated": "20260516"
-    },
-    "75385": {
-      "room_name": "陶园1栋第4层401房间",
-      "current_balance": 279.83,
-      "last_updated": "20260516"
-    },
-    "17734": {
-      "room_name": "陶园1栋第8层815房间",
-      "current_balance": 37.61,
-      "last_updated": "20260516"
-    },
-    "56224": {
-      "room_name": "陶园1栋第9层914房间",
-      "current_balance": 132.48,
-      "last_updated": "20260516"
-    },
-    "74924": {
-      "room_name": "陶园1栋第12层1209房间",
-      "current_balance": 304.79,
-      "last_updated": "20260516"
-    },
-    "52852": {
-      "room_name": "陶园1栋第7层714房间",
-      "current_balance": 302.24,
-      "last_updated": "20260516"
-    },
-    "18819": {
-      "room_name": "陶园1栋第10层1010房间",
-      "current_balance": 357.76,
       "last_updated": "20260516"
     },
     "61471": {
@@ -5058,59 +903,9 @@
       "current_balance": 674.91,
       "last_updated": "20260516"
     },
-    "58713": {
-      "room_name": "陶园1栋第10层1011房间",
-      "current_balance": 314.5,
-      "last_updated": "20260516"
-    },
-    "42782": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
     "51633": {
       "room_name": "0917",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "26997": {
-      "room_name": "陶园1栋第12层1201房间",
-      "current_balance": 15.44,
-      "last_updated": "20260516"
-    },
-    "67748": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "84194": {
-      "room_name": "陶园1栋第3层317房间",
-      "current_balance": 100.25,
-      "last_updated": "20260516"
-    },
-    "54370": {
-      "room_name": "陶园1栋第10层1010房间",
-      "current_balance": 357.76,
-      "last_updated": "20260516"
-    },
-    "12926": {
-      "room_name": "陶园1栋第4层402房间",
-      "current_balance": 147.02,
-      "last_updated": "20260516"
-    },
-    "16570": {
-      "room_name": "陶园1栋第5层503房间",
-      "current_balance": 23.55,
-      "last_updated": "20260516"
-    },
-    "55058": {
-      "room_name": "陶园1栋第2层204房间",
-      "current_balance": 181.12,
-      "last_updated": "20260516"
-    },
-    "13124": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
       "last_updated": "20260516"
     },
     "79704": {
@@ -5118,79 +913,9 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "15280": {
-      "room_name": "陶园1栋第5层515房间",
-      "current_balance": 278.65,
-      "last_updated": "20260516"
-    },
-    "52618": {
-      "room_name": "陶园1栋第7层718房间",
-      "current_balance": 97.4,
-      "last_updated": "20260516"
-    },
-    "26079": {
-      "room_name": "陶园1栋第6层617房间",
-      "current_balance": 164.56,
-      "last_updated": "20260516"
-    },
-    "54499": {
-      "room_name": "陶园1栋第10层1005房间",
-      "current_balance": 67.7,
-      "last_updated": "20260516"
-    },
-    "57263": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "92807": {
-      "room_name": "陶园1栋第3层301房间",
-      "current_balance": 752.19,
-      "last_updated": "20260516"
-    },
-    "34738": {
-      "room_name": "陶园1栋第8层801房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "38248": {
-      "room_name": "陶园1栋第3层309房间",
-      "current_balance": 699.08,
-      "last_updated": "20260516"
-    },
-    "75754": {
-      "room_name": "陶园1栋第7层711房间",
-      "current_balance": 76.75,
-      "last_updated": "20260516"
-    },
-    "17190": {
-      "room_name": "陶园1栋第11层1107房间",
-      "current_balance": 21.31,
-      "last_updated": "20260516"
-    },
-    "51278": {
-      "room_name": "陶园1栋第7层715房间",
-      "current_balance": 271.74,
-      "last_updated": "20260516"
-    },
-    "17505": {
-      "room_name": "陶园1栋第9层916房间",
-      "current_balance": 193.0,
-      "last_updated": "20260516"
-    },
-    "52737": {
-      "room_name": "陶园1栋第7层718房间",
-      "current_balance": 97.4,
-      "last_updated": "20260516"
-    },
     "34974": {
       "room_name": "陶园1栋第5层517房间",
       "current_balance": 857.84,
-      "last_updated": "20260516"
-    },
-    "21512": {
-      "room_name": "陶园1栋第12层1211房间",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "39971": {
@@ -5198,94 +923,9 @@
       "current_balance": 60.62,
       "last_updated": "20260516"
     },
-    "20003": {
-      "room_name": "陶园1栋第7层712房间",
-      "current_balance": 1078.87,
-      "last_updated": "20260516"
-    },
-    "80793": {
-      "room_name": "陶园1栋第11层1109房间",
-      "current_balance": 4.04,
-      "last_updated": "20260516"
-    },
     "20403": {
       "room_name": "陶园1栋第6层605房间",
       "current_balance": 118.6,
-      "last_updated": "20260516"
-    },
-    "90474": {
-      "room_name": "陶园1栋第10层1014房间",
-      "current_balance": 283.74,
-      "last_updated": "20260516"
-    },
-    "13056": {
-      "room_name": "陶园1栋第3层316房间",
-      "current_balance": 181.21,
-      "last_updated": "20260516"
-    },
-    "81040": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
-      "last_updated": "20260516"
-    },
-    "82701": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
-    "80993": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
-    "81042": {
-      "room_name": "陶园1栋第10层1004房间",
-      "current_balance": 249.53,
-      "last_updated": "20260516"
-    },
-    "81994": {
-      "room_name": "陶园1栋第10层1013房间",
-      "current_balance": 156.91,
-      "last_updated": "20260516"
-    },
-    "29103": {
-      "room_name": "陶园1栋第9层901房间",
-      "current_balance": 75.53,
-      "last_updated": "20260516"
-    },
-    "81441": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "18304": {
-      "room_name": "陶园1栋第4层403房间",
-      "current_balance": 48.15,
-      "last_updated": "20260516"
-    },
-    "75462": {
-      "room_name": "陶园1栋第4层410房间",
-      "current_balance": 361.75,
-      "last_updated": "20260516"
-    },
-    "41040": {
-      "room_name": "陶园1栋第7层716房间",
-      "current_balance": 165.93,
-      "last_updated": "20260516"
-    },
-    "81262": {
-      "room_name": "陶园1栋第10层1006房间",
-      "current_balance": 120.35,
-      "last_updated": "20260516"
-    },
-    "25584": {
-      "room_name": "陶园1栋第10层1014房间",
-      "current_balance": 283.74,
-      "last_updated": "20260516"
-    },
-    "81550": {
-      "room_name": "陶园1栋第10层1010房间",
-      "current_balance": 357.76,
       "last_updated": "20260516"
     },
     "19228": {
@@ -5293,84 +933,9 @@
       "current_balance": 92.73,
       "last_updated": "20260516"
     },
-    "75917": {
-      "room_name": "陶园1栋第11层1106房间",
-      "current_balance": 118.41,
-      "last_updated": "20260516"
-    },
-    "42017": {
-      "room_name": "陶园1栋第10层1013房间",
-      "current_balance": 156.91,
-      "last_updated": "20260516"
-    },
-    "98251": {
-      "room_name": "陶园1栋第3层305房间",
-      "current_balance": 79.55,
-      "last_updated": "20260516"
-    },
-    "55079": {
-      "room_name": "陶园1栋第12层1201房间",
-      "current_balance": 15.44,
-      "last_updated": "20260516"
-    },
-    "14645": {
-      "room_name": "陶园1栋第2层217房间",
-      "current_balance": 67.02,
-      "last_updated": "20260516"
-    },
-    "53554": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "17129": {
-      "room_name": "陶园1栋第11层1102房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "30821": {
-      "room_name": "陶园1栋第10层1010房间",
-      "current_balance": 357.76,
-      "last_updated": "20260516"
-    },
-    "96028": {
-      "room_name": "陶园1栋第2层218房间",
-      "current_balance": 87.94,
-      "last_updated": "20260516"
-    },
-    "80728": {
-      "room_name": "陶园1栋第8层816房间",
-      "current_balance": 135.84,
-      "last_updated": "20260516"
-    },
     "44220": {
       "room_name": "陶园1栋第4层406房间",
       "current_balance": 689.21,
-      "last_updated": "20260516"
-    },
-    "35902": {
-      "room_name": "陶园1栋第10层1008房间",
-      "current_balance": 131.7,
-      "last_updated": "20260516"
-    },
-    "83268": {
-      "room_name": "陶园1栋第6层616房间",
-      "current_balance": 41.88,
-      "last_updated": "20260516"
-    },
-    "24131": {
-      "room_name": "陶园1栋第3层318房间",
-      "current_balance": 139.59,
-      "last_updated": "20260516"
-    },
-    "12046": {
-      "room_name": "陶园1栋第12层1201房间",
-      "current_balance": 15.44,
-      "last_updated": "20260516"
-    },
-    "13614": {
-      "room_name": "陶园1栋第3层303房间",
-      "current_balance": 127.61,
       "last_updated": "20260516"
     },
     "41085": {
@@ -5378,134 +943,9 @@
       "current_balance": 43.51,
       "last_updated": "20260516"
     },
-    "62732": {
-      "room_name": "陶园1栋第10层1017房间",
-      "current_balance": 132.89,
-      "last_updated": "20260516"
-    },
-    "12585": {
-      "room_name": "陶园1栋第10层1008房间",
-      "current_balance": 131.7,
-      "last_updated": "20260516"
-    },
-    "11774": {
-      "room_name": "陶园1栋第9层911房间",
-      "current_balance": 25.92,
-      "last_updated": "20260516"
-    },
-    "63068": {
-      "room_name": "陶园1栋第1层107房间",
-      "current_balance": 115.5,
-      "last_updated": "20260516"
-    },
-    "28731": {
-      "room_name": "陶园1栋第1层107房间",
-      "current_balance": 115.5,
-      "last_updated": "20260516"
-    },
-    "17043": {
-      "room_name": "陶园1栋第11层1101房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "84252": {
-      "room_name": "陶园1栋第10层1014房间",
-      "current_balance": 283.74,
-      "last_updated": "20260516"
-    },
-    "30007": {
-      "room_name": "陶园1栋第12层1204房间",
-      "current_balance": 64.19,
-      "last_updated": "20260516"
-    },
-    "16947": {
-      "room_name": "陶园1栋第8层818房间",
-      "current_balance": 65.07,
-      "last_updated": "20260516"
-    },
     "23414": {
       "room_name": "陶园1栋第2层210房间",
       "current_balance": 157.79,
-      "last_updated": "20260516"
-    },
-    "74385": {
-      "room_name": "陶园1栋第3层315房间",
-      "current_balance": 111.86,
-      "last_updated": "20260516"
-    },
-    "61659": {
-      "room_name": "陶园1栋第2层215房间",
-      "current_balance": 66.0,
-      "last_updated": "20260516"
-    },
-    "35740": {
-      "room_name": "陶园1栋第7层701房间",
-      "current_balance": 114.85,
-      "last_updated": "20260516"
-    },
-    "26543": {
-      "room_name": "陶园1栋第4层404房间",
-      "current_balance": 317.21,
-      "last_updated": "20260516"
-    },
-    "26561": {
-      "room_name": "陶园1栋第5层501房间",
-      "current_balance": 9.69,
-      "last_updated": "20260516"
-    },
-    "85094": {
-      "room_name": "陶园1栋第9层911房间",
-      "current_balance": 25.92,
-      "last_updated": "20260516"
-    },
-    "37228": {
-      "room_name": "陶园1栋第3层302房间",
-      "current_balance": 44.65,
-      "last_updated": "20260516"
-    },
-    "36053": {
-      "room_name": "陶园1栋第8层815房间",
-      "current_balance": 37.61,
-      "last_updated": "20260516"
-    },
-    "41167": {
-      "room_name": "陶园1栋第9层909房间",
-      "current_balance": 31.6,
-      "last_updated": "20260516"
-    },
-    "19286": {
-      "room_name": "陶园1栋第12层1203房间",
-      "current_balance": 76.2,
-      "last_updated": "20260516"
-    },
-    "60856": {
-      "room_name": "陶园1栋第9层916房间",
-      "current_balance": 193.0,
-      "last_updated": "20260516"
-    },
-    "54639": {
-      "room_name": "陶园1栋第9层902房间",
-      "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
-    "54698": {
-      "room_name": "陶园1栋第9层907房间",
-      "current_balance": 99.55,
-      "last_updated": "20260516"
-    },
-    "16857": {
-      "room_name": "陶园1栋第11层1103房间",
-      "current_balance": 6.8,
-      "last_updated": "20260516"
-    },
-    "25879": {
-      "room_name": "陶园1栋第5层508房间",
-      "current_balance": 183.07,
-      "last_updated": "20260516"
-    },
-    "36080": {
-      "room_name": "陶园1栋第8层814房间",
-      "current_balance": 213.37,
       "last_updated": "20260516"
     },
     "81833": {
@@ -5513,29 +953,9 @@
       "current_balance": 351.76,
       "last_updated": "20260516"
     },
-    "48460": {
-      "room_name": "陶园1栋第9层915房间",
-      "current_balance": 60.22,
-      "last_updated": "20260516"
-    },
     "25839": {
       "room_name": "陶园1栋第6层609房间",
       "current_balance": 281.24,
-      "last_updated": "20260516"
-    },
-    "41083": {
-      "room_name": "陶园1栋第1层101房间",
-      "current_balance": 78.96,
-      "last_updated": "20260516"
-    },
-    "22767": {
-      "room_name": "陶园1栋第2层203房间",
-      "current_balance": 54.56,
-      "last_updated": "20260516"
-    },
-    "58034": {
-      "room_name": "陶园1栋第10层1015房间",
-      "current_balance": 99.86,
       "last_updated": "20260516"
     },
     "30659": {
@@ -5548,39 +968,9 @@
       "current_balance": 59.14,
       "last_updated": "20260516"
     },
-    "16869": {
-      "room_name": "陶园1栋第11层1101房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "73211": {
-      "room_name": "陶园1栋第3层317房间",
-      "current_balance": 100.25,
-      "last_updated": "20260516"
-    },
-    "54654": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
-      "last_updated": "20260516"
-    },
-    "67128": {
-      "room_name": "陶园1栋第11层1101房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "35544": {
-      "room_name": "陶园1栋第6层601房间",
-      "current_balance": 74.51,
-      "last_updated": "20260516"
-    },
     "70564": {
       "room_name": "陶园1栋第10层1004房间",
       "current_balance": 249.53,
-      "last_updated": "20260516"
-    },
-    "60163": {
-      "room_name": "陶园1栋第9层915房间",
-      "current_balance": 60.22,
       "last_updated": "20260516"
     },
     "35032": {
@@ -5588,59 +978,9 @@
       "current_balance": 33.01,
       "last_updated": "20260516"
     },
-    "14975": {
-      "room_name": "陶园1栋第4层415房间",
-      "current_balance": 182.88,
-      "last_updated": "20260516"
-    },
-    "28737": {
-      "room_name": "陶园1栋第9层916房间",
-      "current_balance": 193.0,
-      "last_updated": "20260516"
-    },
-    "14116": {
-      "room_name": "陶园1栋第3层315房间",
-      "current_balance": 111.86,
-      "last_updated": "20260516"
-    },
-    "37131": {
-      "room_name": "陶园1栋第5层506房间",
-      "current_balance": 323.73,
-      "last_updated": "20260516"
-    },
-    "13383": {
-      "room_name": "陶园1栋第3层304房间",
-      "current_balance": 54.55,
-      "last_updated": "20260516"
-    },
-    "39320": {
-      "room_name": "陶园1栋第12层1208房间",
-      "current_balance": 188.28,
-      "last_updated": "20260516"
-    },
     "73552": {
       "room_name": "陶园1栋第2层207房间",
       "current_balance": 104.04,
-      "last_updated": "20260516"
-    },
-    "29113": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "81248": {
-      "room_name": "陶园1栋第8层818房间",
-      "current_balance": 65.07,
-      "last_updated": "20260516"
-    },
-    "84041": {
-      "room_name": "陶园1栋第8层816房间",
-      "current_balance": 135.84,
-      "last_updated": "20260516"
-    },
-    "75384": {
-      "room_name": "陶园1栋第3层312房间",
-      "current_balance": 78.88,
       "last_updated": "20260516"
     },
     "41082": {
@@ -5663,164 +1003,14 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "51098": {
-      "room_name": "陶园1栋第12层1204房间",
-      "current_balance": 64.19,
-      "last_updated": "20260516"
-    },
-    "74921": {
-      "room_name": "陶园1栋第12层1206房间",
-      "current_balance": 136.88,
-      "last_updated": "20260516"
-    },
-    "63191": {
-      "room_name": "陶园1栋第2层206房间",
-      "current_balance": 126.63,
-      "last_updated": "20260516"
-    },
-    "55083": {
-      "room_name": "陶园1栋第11层1110房间",
-      "current_balance": 110.46,
-      "last_updated": "20260516"
-    },
-    "87169": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "68989": {
-      "room_name": "陶园1栋第10层1016房间",
-      "current_balance": 6.06,
-      "last_updated": "20260516"
-    },
-    "23424": {
-      "room_name": "陶园1栋第2层210房间",
-      "current_balance": 157.79,
-      "last_updated": "20260516"
-    },
     "64148": {
       "room_name": "陶园1栋第7层715房间",
       "current_balance": 271.74,
       "last_updated": "20260516"
     },
-    "81043": {
-      "room_name": "陶园1栋第10层1004房间",
-      "current_balance": 249.53,
-      "last_updated": "20260516"
-    },
     "38197": {
       "room_name": "陶园1栋第3层308房间",
       "current_balance": 339.98,
-      "last_updated": "20260516"
-    },
-    "35562": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
-    "44531": {
-      "room_name": "陶园1栋第4层414房间",
-      "current_balance": 137.31,
-      "last_updated": "20260516"
-    },
-    "57800": {
-      "room_name": "陶园1栋第11层1103房间",
-      "current_balance": 6.8,
-      "last_updated": "20260516"
-    },
-    "60903": {
-      "room_name": "陶园1栋第9层901房间",
-      "current_balance": 75.53,
-      "last_updated": "20260516"
-    },
-    "23459": {
-      "room_name": "陶园1栋第2层204房间",
-      "current_balance": 181.12,
-      "last_updated": "20260516"
-    },
-    "57609": {
-      "room_name": "陶园1栋第9层910房间",
-      "current_balance": 88.49,
-      "last_updated": "20260516"
-    },
-    "36863": {
-      "room_name": "陶园1栋第12层1212房间",
-      "current_balance": 293.5,
-      "last_updated": "20260516"
-    },
-    "41320": {
-      "room_name": "陶园1栋第9层903房间",
-      "current_balance": 177.65,
-      "last_updated": "20260516"
-    },
-    "18629": {
-      "room_name": "陶园1栋第7层703房间",
-      "current_balance": 210.57,
-      "last_updated": "20260516"
-    },
-    "53295": {
-      "room_name": "陶园1栋第2层206房间",
-      "current_balance": 126.63,
-      "last_updated": "20260516"
-    },
-    "28600": {
-      "room_name": "陶园1栋第10层1002房间",
-      "current_balance": 156.11,
-      "last_updated": "20260516"
-    },
-    "22627": {
-      "room_name": "陶园1栋第9层912房间",
-      "current_balance": 59.14,
-      "last_updated": "20260516"
-    },
-    "29918": {
-      "room_name": "陶园1栋第3层304房间",
-      "current_balance": 54.55,
-      "last_updated": "20260516"
-    },
-    "94817": {
-      "room_name": "陶园1栋第4层402房间",
-      "current_balance": 147.02,
-      "last_updated": "20260516"
-    },
-    "29626": {
-      "room_name": "陶园1栋第10层1015房间",
-      "current_balance": 99.86,
-      "last_updated": "20260516"
-    },
-    "16950": {
-      "room_name": "1206",
-      "current_balance": 136.88,
-      "last_updated": "20260516"
-    },
-    "36937": {
-      "room_name": "陶园1栋第1层107房间",
-      "current_balance": 115.5,
-      "last_updated": "20260516"
-    },
-    "12977": {
-      "room_name": "陶园1栋第2层204房间",
-      "current_balance": 181.12,
-      "last_updated": "20260516"
-    },
-    "17456": {
-      "room_name": "陶园1栋第10层1007房间",
-      "current_balance": 314.41,
-      "last_updated": "20260516"
-    },
-    "59751": {
-      "room_name": "陶园1栋第2层211房间",
-      "current_balance": 15.25,
-      "last_updated": "20260516"
-    },
-    "82740": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "73971": {
-      "room_name": "陶园1栋第2层214房间",
-      "current_balance": 43.51,
       "last_updated": "20260516"
     },
     "80430": {
@@ -5833,144 +1023,14 @@
       "current_balance": 86.98,
       "last_updated": "20260516"
     },
-    "12091": {
-      "room_name": "陶园1栋第5层517房间",
-      "current_balance": 857.84,
-      "last_updated": "20260516"
-    },
-    "53496": {
-      "room_name": "陶园1栋第10层1015房间",
-      "current_balance": 99.86,
-      "last_updated": "20260516"
-    },
-    "41089": {
-      "room_name": "陶园1栋第10层1009房间",
-      "current_balance": 111.38,
-      "last_updated": "20260516"
-    },
-    "48354": {
-      "room_name": "陶园1栋第2层209房间",
-      "current_balance": 107.7,
-      "last_updated": "20260516"
-    },
-    "16974": {
-      "room_name": "陶园1栋第9层906房间",
-      "current_balance": 63.19,
-      "last_updated": "20260516"
-    },
-    "37244": {
-      "room_name": "陶园1栋第7层702房间",
-      "current_balance": 168.3,
-      "last_updated": "20260516"
-    },
-    "32270": {
-      "room_name": "陶园1栋第10层1012房间",
-      "current_balance": 15.46,
-      "last_updated": "20260516"
-    },
-    "59619": {
-      "room_name": "陶园1栋第2层210房间",
-      "current_balance": 157.79,
-      "last_updated": "20260516"
-    },
-    "63303": {
-      "room_name": "陶园1栋第11层1111房间",
-      "current_balance": 120.88,
-      "last_updated": "20260516"
-    },
-    "32242": {
-      "room_name": "陶园1栋第7层707房间",
-      "current_balance": 421.65,
-      "last_updated": "20260516"
-    },
-    "76712": {
-      "room_name": "陶园1栋第9层903房间",
-      "current_balance": 177.65,
-      "last_updated": "20260516"
-    },
-    "54959": {
-      "room_name": "陶园1栋第11层1101房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "78880": {
-      "room_name": "陶园1栋第10层1001房间",
-      "current_balance": 32.84,
-      "last_updated": "20260516"
-    },
-    "20895": {
-      "room_name": "陶园1栋第4层403房间",
-      "current_balance": 48.15,
-      "last_updated": "20260516"
-    },
-    "13078": {
-      "room_name": "陶园1栋第3层316房间",
-      "current_balance": 181.21,
-      "last_updated": "20260516"
-    },
-    "23544": {
-      "room_name": "陶园1栋第2层204房间",
-      "current_balance": 181.12,
-      "last_updated": "20260516"
-    },
-    "68165": {
-      "room_name": "陶园1栋第6层611房间",
-      "current_balance": 60.62,
-      "last_updated": "20260516"
-    },
     "26779": {
       "room_name": "陶园1栋第2层203房间",
       "current_balance": 54.56,
       "last_updated": "20260516"
     },
-    "40184": {
-      "room_name": "陶园1栋第3层306房间",
-      "current_balance": 145.73,
-      "last_updated": "20260516"
-    },
-    "67990": {
-      "room_name": "陶园1栋第10层1003房间",
-      "current_balance": 57.0,
-      "last_updated": "20260516"
-    },
-    "17475": {
-      "room_name": "陶园1栋第4层404房间",
-      "current_balance": 317.21,
-      "last_updated": "20260516"
-    },
     "21125": {
       "room_name": "陶园1栋第7层704房间",
       "current_balance": 165.76,
-      "last_updated": "20260516"
-    },
-    "16571": {
-      "room_name": "陶园1栋第8层813房间",
-      "current_balance": 864.6,
-      "last_updated": "20260516"
-    },
-    "10835": {
-      "room_name": "陶园1栋第2层217房间",
-      "current_balance": 67.02,
-      "last_updated": "20260516"
-    },
-    "17893": {
-      "room_name": "陶园1栋第12层1211房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "12512": {
-      "room_name": "陶园1栋第3层308房间",
-      "current_balance": 339.98,
-      "last_updated": "20260516"
-    },
-    "77131": {
-      "room_name": "陶园1栋第4层409房间",
-      "current_balance": 92.73,
-      "last_updated": "20260516"
-    },
-    "70090": {
-      "room_name": "陶园1栋第5层502房间",
-      "current_balance": 293.26,
       "last_updated": "20260516"
     }
   }

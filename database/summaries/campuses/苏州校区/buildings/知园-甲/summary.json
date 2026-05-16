@@ -1,13 +1,8 @@
 {
   "building": "知园-甲",
   "campus": "苏州校区",
-  "total_rooms": 27,
+  "total_rooms": 20,
   "rooms": {
-    "43498": {
-      "room_name": "甲201",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "96291": {
       "room_name": "甲702",
       "current_balance": 0.0,
@@ -18,28 +13,8 @@
       "current_balance": 9.03,
       "last_updated": "20260516"
     },
-    "83012": {
-      "room_name": "甲201",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "70037": {
-      "room_name": "甲201",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "28799": {
-      "room_name": "甲201",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "96286": {
       "room_name": "甲704",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "26519": {
-      "room_name": "甲201",
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
@@ -83,11 +58,6 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "79933": {
-      "room_name": "甲508",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "96305": {
       "room_name": "甲705",
       "current_balance": 0.0,
@@ -125,11 +95,6 @@
     },
     "97562": {
       "room_name": "甲701",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "14236": {
-      "room_name": "甲201",
       "current_balance": 0.0,
       "last_updated": "20260516"
     },

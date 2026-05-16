@@ -1,7 +1,7 @@
 {
   "building": "科创大厦B",
   "campus": "苏州校区",
-  "total_rooms": 476,
+  "total_rooms": 320,
   "rooms": {
     "42699": {
       "room_name": "B804",
@@ -18,19 +18,9 @@
       "current_balance": 3.81,
       "last_updated": "20260516"
     },
-    "99785": {
-      "room_name": "B843",
-      "current_balance": 57.95,
-      "last_updated": "20260516"
-    },
     "42430": {
       "room_name": "B542",
       "current_balance": 47.37,
-      "last_updated": "20260516"
-    },
-    "64404": {
-      "room_name": "B423",
-      "current_balance": 88.69,
       "last_updated": "20260516"
     },
     "42592": {
@@ -63,19 +53,9 @@
       "current_balance": 15.49,
       "last_updated": "20260516"
     },
-    "84048": {
-      "room_name": "B529",
-      "current_balance": 13.58,
-      "last_updated": "20260516"
-    },
     "67703": {
       "room_name": "B534",
       "current_balance": 39.51,
-      "last_updated": "20260516"
-    },
-    "42417": {
-      "room_name": "B617",
-      "current_balance": 17.72,
       "last_updated": "20260516"
     },
     "58475": {
@@ -108,44 +88,9 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "95973": {
-      "room_name": "B834",
-      "current_balance": 36.97,
-      "last_updated": "20260516"
-    },
-    "68307": {
-      "room_name": "B401",
-      "current_balance": 92.66,
-      "last_updated": "20260516"
-    },
-    "42389": {
-      "room_name": "B534",
-      "current_balance": 39.51,
-      "last_updated": "20260516"
-    },
-    "97322": {
-      "room_name": "B216",
-      "current_balance": 58.33,
-      "last_updated": "20260516"
-    },
-    "44696": {
-      "room_name": "B740",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "65917": {
-      "room_name": "B620",
-      "current_balance": 110.41,
-      "last_updated": "20260516"
-    },
     "47612": {
       "room_name": "B519",
       "current_balance": 189.79,
-      "last_updated": "20260516"
-    },
-    "42448": {
-      "room_name": "B821",
-      "current_balance": 71.95,
       "last_updated": "20260516"
     },
     "67778": {
@@ -153,34 +98,9 @@
       "current_balance": 116.83,
       "last_updated": "20260516"
     },
-    "71185": {
-      "room_name": "B716",
-      "current_balance": 47.84,
-      "last_updated": "20260516"
-    },
-    "48276": {
-      "room_name": "B530",
-      "current_balance": 44.39,
-      "last_updated": "20260516"
-    },
     "69903": {
       "room_name": "B318",
       "current_balance": 15.86,
-      "last_updated": "20260516"
-    },
-    "65101": {
-      "room_name": "B430",
-      "current_balance": 187.07,
-      "last_updated": "20260516"
-    },
-    "42587": {
-      "room_name": "B834",
-      "current_balance": 36.97,
-      "last_updated": "20260516"
-    },
-    "42622": {
-      "room_name": "B629",
-      "current_balance": 146.7,
       "last_updated": "20260516"
     },
     "69909": {
@@ -196,16 +116,6 @@
     "42590": {
       "room_name": "B714",
       "current_balance": 69.58,
-      "last_updated": "20260516"
-    },
-    "75612": {
-      "room_name": "B431",
-      "current_balance": 93.28,
-      "last_updated": "20260516"
-    },
-    "75085": {
-      "room_name": "B519",
-      "current_balance": 189.79,
       "last_updated": "20260516"
     },
     "62394": {
@@ -233,19 +143,9 @@
       "current_balance": 97.61,
       "last_updated": "20260516"
     },
-    "58388": {
-      "room_name": "B515",
-      "current_balance": 57.02,
-      "last_updated": "20260516"
-    },
     "42402": {
       "room_name": "B609",
       "current_balance": 31.1,
-      "last_updated": "20260516"
-    },
-    "75426": {
-      "room_name": "B326",
-      "current_balance": 83.09,
       "last_updated": "20260516"
     },
     "71900": {
@@ -266,11 +166,6 @@
     "99966": {
       "room_name": "B222",
       "current_balance": 91.07,
-      "last_updated": "20260516"
-    },
-    "65546": {
-      "room_name": "B539",
-      "current_balance": 90.88,
       "last_updated": "20260516"
     },
     "39596": {
@@ -308,11 +203,6 @@
       "current_balance": 113.72,
       "last_updated": "20260516"
     },
-    "96662": {
-      "room_name": "B1018",
-      "current_balance": 43.97,
-      "last_updated": "20260516"
-    },
     "70143": {
       "room_name": "B707",
       "current_balance": 92.85,
@@ -328,19 +218,9 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "70465": {
-      "room_name": "B701",
-      "current_balance": 12.04,
-      "last_updated": "20260516"
-    },
     "91731": {
       "room_name": "B326",
       "current_balance": 83.09,
-      "last_updated": "20260516"
-    },
-    "47271": {
-      "room_name": "B733",
-      "current_balance": 12.44,
       "last_updated": "20260516"
     },
     "42423": {
@@ -363,19 +243,9 @@
       "current_balance": 51.78,
       "last_updated": "20260516"
     },
-    "96265": {
-      "room_name": "B326",
-      "current_balance": 83.09,
-      "last_updated": "20260516"
-    },
     "93117": {
       "room_name": "B332",
       "current_balance": 116.02,
-      "last_updated": "20260516"
-    },
-    "99024": {
-      "room_name": "B911",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "58458": {
@@ -388,11 +258,6 @@
       "current_balance": 173.68,
       "last_updated": "20260516"
     },
-    "43320": {
-      "room_name": "B825",
-      "current_balance": 49.63,
-      "last_updated": "20260516"
-    },
     "96847": {
       "room_name": "B1018",
       "current_balance": 43.97,
@@ -401,11 +266,6 @@
     "64672": {
       "room_name": "B434",
       "current_balance": 23.31,
-      "last_updated": "20260516"
-    },
-    "74160": {
-      "room_name": "B325",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "42316": {
@@ -423,16 +283,6 @@
       "current_balance": 41.68,
       "last_updated": "20260516"
     },
-    "43525": {
-      "room_name": "B730",
-      "current_balance": 173.68,
-      "last_updated": "20260516"
-    },
-    "42339": {
-      "room_name": "B701",
-      "current_balance": 12.04,
-      "last_updated": "20260516"
-    },
     "42319": {
       "room_name": "B612",
       "current_balance": 274.53,
@@ -448,19 +298,9 @@
       "current_balance": 87.84,
       "last_updated": "20260516"
     },
-    "42897": {
-      "room_name": "B728",
-      "current_balance": 144.18,
-      "last_updated": "20260516"
-    },
     "82414": {
       "room_name": "B343",
       "current_balance": 78.14,
-      "last_updated": "20260516"
-    },
-    "64303": {
-      "room_name": "B510",
-      "current_balance": 142.93,
       "last_updated": "20260516"
     },
     "64042": {
@@ -468,19 +308,9 @@
       "current_balance": 18.56,
       "last_updated": "20260516"
     },
-    "69765": {
-      "room_name": "B529",
-      "current_balance": 13.58,
-      "last_updated": "20260516"
-    },
     "42579": {
       "room_name": "B711",
       "current_balance": 13.64,
-      "last_updated": "20260516"
-    },
-    "71738": {
-      "room_name": "B529",
-      "current_balance": 13.58,
       "last_updated": "20260516"
     },
     "42395": {
@@ -523,11 +353,6 @@
       "current_balance": 135.6,
       "last_updated": "20260516"
     },
-    "66642": {
-      "room_name": "B845",
-      "current_balance": 45.52,
-      "last_updated": "20260516"
-    },
     "18634": {
       "room_name": "B541",
       "current_balance": 0.0,
@@ -536,16 +361,6 @@
     "69726": {
       "room_name": "B440",
       "current_balance": 42.06,
-      "last_updated": "20260516"
-    },
-    "42630": {
-      "room_name": "B608",
-      "current_balance": 78.82,
-      "last_updated": "20260516"
-    },
-    "47285": {
-      "room_name": "B823",
-      "current_balance": 56.11,
       "last_updated": "20260516"
     },
     "42334": {
@@ -593,34 +408,9 @@
       "current_balance": 11.78,
       "last_updated": "20260516"
     },
-    "94771": {
-      "room_name": "B1006",
-      "current_balance": 12.51,
-      "last_updated": "20260516"
-    },
-    "95594": {
-      "room_name": "B430",
-      "current_balance": 187.07,
-      "last_updated": "20260516"
-    },
     "70850": {
       "room_name": "B307",
       "current_balance": 21.37,
-      "last_updated": "20260516"
-    },
-    "59310": {
-      "room_name": "B510",
-      "current_balance": 142.93,
-      "last_updated": "20260516"
-    },
-    "42776": {
-      "room_name": "B746",
-      "current_balance": 32.94,
-      "last_updated": "20260516"
-    },
-    "88878": {
-      "room_name": "B625",
-      "current_balance": 84.66,
       "last_updated": "20260516"
     },
     "71437": {
@@ -648,11 +438,6 @@
       "current_balance": 39.75,
       "last_updated": "20260516"
     },
-    "84226": {
-      "room_name": "B508",
-      "current_balance": 466.63,
-      "last_updated": "20260516"
-    },
     "42619": {
       "room_name": "B638",
       "current_balance": 0.0,
@@ -661,11 +446,6 @@
     "58259": {
       "room_name": "B513",
       "current_balance": 48.09,
-      "last_updated": "20260516"
-    },
-    "63937": {
-      "room_name": "B443",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "66346": {
@@ -713,11 +493,6 @@
       "current_balance": 145.06,
       "last_updated": "20260516"
     },
-    "42690": {
-      "room_name": "B635",
-      "current_balance": 79.95,
-      "last_updated": "20260516"
-    },
     "98688": {
       "room_name": "B725",
       "current_balance": 144.94,
@@ -733,19 +508,9 @@
       "current_balance": 80.87,
       "last_updated": "20260516"
     },
-    "68914": {
-      "room_name": "B625",
-      "current_balance": 84.66,
-      "last_updated": "20260516"
-    },
     "58302": {
       "room_name": "B511",
       "current_balance": 97.42,
-      "last_updated": "20260516"
-    },
-    "72805": {
-      "room_name": "B518",
-      "current_balance": 39.01,
       "last_updated": "20260516"
     },
     "60332": {
@@ -788,11 +553,6 @@
       "current_balance": 28.38,
       "last_updated": "20260516"
     },
-    "67052": {
-      "room_name": "B821",
-      "current_balance": 71.95,
-      "last_updated": "20260516"
-    },
     "95588": {
       "room_name": "B210",
       "current_balance": 148.34,
@@ -813,16 +573,6 @@
       "current_balance": 91.34,
       "last_updated": "20260516"
     },
-    "74770": {
-      "room_name": "B430",
-      "current_balance": 187.07,
-      "last_updated": "20260516"
-    },
-    "42491": {
-      "room_name": "B607",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "42386": {
       "room_name": "B736",
       "current_balance": 90.36,
@@ -833,11 +583,6 @@
       "current_balance": 44.01,
       "last_updated": "20260516"
     },
-    "69204": {
-      "room_name": "B310",
-      "current_balance": 10.8,
-      "last_updated": "20260516"
-    },
     "93539": {
       "room_name": "B331",
       "current_balance": 122.33,
@@ -846,11 +591,6 @@
     "70765": {
       "room_name": "B310",
       "current_balance": 10.8,
-      "last_updated": "20260516"
-    },
-    "64099": {
-      "room_name": "B906",
-      "current_balance": 196.04,
       "last_updated": "20260516"
     },
     "64768": {
@@ -881,16 +621,6 @@
     "43063": {
       "room_name": "B620",
       "current_balance": 110.41,
-      "last_updated": "20260516"
-    },
-    "65083": {
-      "room_name": "B431",
-      "current_balance": 93.28,
-      "last_updated": "20260516"
-    },
-    "97445": {
-      "room_name": "B533",
-      "current_balance": 81.52,
       "last_updated": "20260516"
     },
     "98745": {
@@ -928,16 +658,6 @@
       "current_balance": 162.83,
       "last_updated": "20260516"
     },
-    "67510": {
-      "room_name": "B438",
-      "current_balance": 18.56,
-      "last_updated": "20260516"
-    },
-    "68041": {
-      "room_name": "B403",
-      "current_balance": 6.83,
-      "last_updated": "20260516"
-    },
     "82465": {
       "room_name": "B342",
       "current_balance": 35.34,
@@ -951,11 +671,6 @@
     "93996": {
       "room_name": "B214",
       "current_balance": 38.27,
-      "last_updated": "20260516"
-    },
-    "74824": {
-      "room_name": "B533",
-      "current_balance": 81.52,
       "last_updated": "20260516"
     },
     "42376": {
@@ -998,44 +713,14 @@
       "current_balance": 63.55,
       "last_updated": "20260516"
     },
-    "95509": {
-      "room_name": "B325",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "42564": {
       "room_name": "B702",
       "current_balance": 137.01,
       "last_updated": "20260516"
     },
-    "71159": {
-      "room_name": "B630",
-      "current_balance": 59.06,
-      "last_updated": "20260516"
-    },
-    "98243": {
-      "room_name": "B218",
-      "current_balance": 1.65,
-      "last_updated": "20260516"
-    },
-    "96336": {
-      "room_name": "B435",
-      "current_balance": 11.88,
-      "last_updated": "20260516"
-    },
     "42710": {
       "room_name": "B734",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "69724": {
-      "room_name": "B320",
-      "current_balance": 76.25,
-      "last_updated": "20260516"
-    },
-    "91746": {
-      "room_name": "B836",
-      "current_balance": 93.2,
       "last_updated": "20260516"
     },
     "47218": {
@@ -1058,11 +743,6 @@
       "current_balance": 142.93,
       "last_updated": "20260516"
     },
-    "68887": {
-      "room_name": "B740",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "42498": {
       "room_name": "B713",
       "current_balance": 78.96,
@@ -1078,16 +758,6 @@
       "current_balance": 42.23,
       "last_updated": "20260516"
     },
-    "69704": {
-      "room_name": "B907",
-      "current_balance": 67.37,
-      "last_updated": "20260516"
-    },
-    "42401": {
-      "room_name": "B540",
-      "current_balance": 20.98,
-      "last_updated": "20260516"
-    },
     "89267": {
       "room_name": "B507",
       "current_balance": 99.39,
@@ -1098,19 +768,9 @@
       "current_balance": 13.31,
       "last_updated": "20260516"
     },
-    "68306": {
-      "room_name": "B401",
-      "current_balance": 92.66,
-      "last_updated": "20260516"
-    },
     "43136": {
       "room_name": "B810",
       "current_balance": 111.62,
-      "last_updated": "20260516"
-    },
-    "42611": {
-      "room_name": "B614",
-      "current_balance": 82.71,
       "last_updated": "20260516"
     },
     "74006": {
@@ -1123,29 +783,14 @@
       "current_balance": 104.13,
       "last_updated": "20260516"
     },
-    "68310": {
-      "room_name": "B909",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "69151": {
       "room_name": "B305",
       "current_balance": 208.16,
       "last_updated": "20260516"
     },
-    "74646": {
-      "room_name": "B742",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "42557": {
       "room_name": "B601",
       "current_balance": 2.74,
-      "last_updated": "20260516"
-    },
-    "75509": {
-      "room_name": "B1006",
-      "current_balance": 12.51,
       "last_updated": "20260516"
     },
     "42463": {
@@ -1156,11 +801,6 @@
     "92535": {
       "room_name": "B1008",
       "current_balance": 99.74,
-      "last_updated": "20260516"
-    },
-    "92000": {
-      "room_name": "B807",
-      "current_balance": 35.92,
       "last_updated": "20260516"
     },
     "62545": {
@@ -1178,11 +818,6 @@
       "current_balance": 24.5,
       "last_updated": "20260516"
     },
-    "98803": {
-      "room_name": "B908",
-      "current_balance": 431.57,
-      "last_updated": "20260516"
-    },
     "95476": {
       "room_name": "B208",
       "current_balance": 18.43,
@@ -1193,19 +828,9 @@
       "current_balance": 93.28,
       "last_updated": "20260516"
     },
-    "69684": {
-      "room_name": "B713",
-      "current_balance": 78.96,
-      "last_updated": "20260516"
-    },
     "69883": {
       "room_name": "B443",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "97342": {
-      "room_name": "B242",
-      "current_balance": 65.92,
       "last_updated": "20260516"
     },
     "42594": {
@@ -1218,11 +843,6 @@
       "current_balance": 139.76,
       "last_updated": "20260516"
     },
-    "75466": {
-      "room_name": "B325",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "42725": {
       "room_name": "B616",
       "current_balance": 22.5,
@@ -1231,16 +851,6 @@
     "43399": {
       "room_name": "B628",
       "current_balance": 106.5,
-      "last_updated": "20260516"
-    },
-    "98663": {
-      "room_name": "B904",
-      "current_balance": 438.38,
-      "last_updated": "20260516"
-    },
-    "63610": {
-      "room_name": "B912",
-      "current_balance": 42.23,
       "last_updated": "20260516"
     },
     "65561": {
@@ -1268,24 +878,9 @@
       "current_balance": 58.33,
       "last_updated": "20260516"
     },
-    "69031": {
-      "room_name": "B444",
-      "current_balance": 50.65,
-      "last_updated": "20260516"
-    },
-    "95654": {
-      "room_name": "B433",
-      "current_balance": 64.84,
-      "last_updated": "20260516"
-    },
     "71704": {
       "room_name": "B538",
       "current_balance": 78.98,
-      "last_updated": "20260516"
-    },
-    "72137": {
-      "room_name": "B529",
-      "current_balance": 13.58,
       "last_updated": "20260516"
     },
     "72903": {
@@ -1313,49 +908,14 @@
       "current_balance": 89.02,
       "last_updated": "20260516"
     },
-    "70819": {
-      "room_name": "B310",
-      "current_balance": 10.8,
-      "last_updated": "20260516"
-    },
-    "62659": {
-      "room_name": "B445",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "70568": {
-      "room_name": "B907",
-      "current_balance": 67.37,
-      "last_updated": "20260516"
-    },
-    "74025": {
-      "room_name": "B821",
-      "current_balance": 71.95,
-      "last_updated": "20260516"
-    },
     "75064": {
       "room_name": "B723",
       "current_balance": 0.73,
       "last_updated": "20260516"
     },
-    "70032": {
-      "room_name": "B308",
-      "current_balance": 7.59,
-      "last_updated": "20260516"
-    },
-    "42434": {
-      "room_name": "B707",
-      "current_balance": 92.85,
-      "last_updated": "20260516"
-    },
     "72642": {
       "room_name": "B323",
       "current_balance": 21.98,
-      "last_updated": "20260516"
-    },
-    "84454": {
-      "room_name": "B309",
-      "current_balance": 49.28,
       "last_updated": "20260516"
     },
     "95596": {
@@ -1393,24 +953,9 @@
       "current_balance": 84.96,
       "last_updated": "20260516"
     },
-    "99582": {
-      "room_name": "B405",
-      "current_balance": 82.77,
-      "last_updated": "20260516"
-    },
     "42408": {
       "room_name": "B622",
       "current_balance": 2.97,
-      "last_updated": "20260516"
-    },
-    "67675": {
-      "room_name": "B620",
-      "current_balance": 110.41,
-      "last_updated": "20260516"
-    },
-    "42332": {
-      "room_name": "B609",
-      "current_balance": 31.1,
       "last_updated": "20260516"
     },
     "43165": {
@@ -1428,11 +973,6 @@
       "current_balance": 34.6,
       "last_updated": "20260516"
     },
-    "59726": {
-      "room_name": "B902",
-      "current_balance": 209.05,
-      "last_updated": "20260516"
-    },
     "74013": {
       "room_name": "B317",
       "current_balance": 179.07,
@@ -1448,16 +988,6 @@
       "current_balance": 12.51,
       "last_updated": "20260516"
     },
-    "42312": {
-      "room_name": "B745",
-      "current_balance": 119.41,
-      "last_updated": "20260516"
-    },
-    "68364": {
-      "room_name": "B402",
-      "current_balance": 10.44,
-      "last_updated": "20260516"
-    },
     "42366": {
       "room_name": "B604",
       "current_balance": 20.94,
@@ -1466,11 +996,6 @@
     "42913": {
       "room_name": "B910",
       "current_balance": 323.29,
-      "last_updated": "20260516"
-    },
-    "30558": {
-      "room_name": "B730",
-      "current_balance": 173.68,
       "last_updated": "20260516"
     },
     "96912": {
@@ -1508,11 +1033,6 @@
       "current_balance": 121.08,
       "last_updated": "20260516"
     },
-    "64810": {
-      "room_name": "B623",
-      "current_balance": 79.18,
-      "last_updated": "20260516"
-    },
     "72070": {
       "room_name": "B320",
       "current_balance": 76.25,
@@ -1521,11 +1041,6 @@
     "42369": {
       "room_name": "B718",
       "current_balance": 49.77,
-      "last_updated": "20260516"
-    },
-    "95967": {
-      "room_name": "B525",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "47914": {
@@ -1548,19 +1063,9 @@
       "current_balance": 431.57,
       "last_updated": "20260516"
     },
-    "70466": {
-      "room_name": "B701",
-      "current_balance": 12.04,
-      "last_updated": "20260516"
-    },
     "42346": {
       "room_name": "B822",
       "current_balance": 30.18,
-      "last_updated": "20260516"
-    },
-    "66006": {
-      "room_name": "B727",
-      "current_balance": 90.5,
       "last_updated": "20260516"
     },
     "42320": {
@@ -1583,16 +1088,6 @@
       "current_balance": 84.22,
       "last_updated": "20260516"
     },
-    "96003": {
-      "room_name": "B1008",
-      "current_balance": 99.74,
-      "last_updated": "20260516"
-    },
-    "64618": {
-      "room_name": "B510",
-      "current_balance": 142.93,
-      "last_updated": "20260516"
-    },
     "68916": {
       "room_name": "B414",
       "current_balance": 15.18,
@@ -1608,11 +1103,6 @@
       "current_balance": 4.1,
       "last_updated": "20260516"
     },
-    "42390": {
-      "room_name": "B719",
-      "current_balance": 38.96,
-      "last_updated": "20260516"
-    },
     "45977": {
       "room_name": "B535",
       "current_balance": 94.05,
@@ -1621,11 +1111,6 @@
     "42655": {
       "room_name": "B625",
       "current_balance": 84.66,
-      "last_updated": "20260516"
-    },
-    "17881": {
-      "room_name": "B742",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "44159": {
@@ -1638,34 +1123,14 @@
       "current_balance": 35.25,
       "last_updated": "20260516"
     },
-    "69205": {
-      "room_name": "B309",
-      "current_balance": 49.28,
-      "last_updated": "20260516"
-    },
-    "47481": {
-      "room_name": "B823",
-      "current_balance": 56.11,
-      "last_updated": "20260516"
-    },
     "42436": {
       "room_name": "B845",
       "current_balance": 45.52,
       "last_updated": "20260516"
     },
-    "44670": {
-      "room_name": "B740",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "42410": {
       "room_name": "B705",
       "current_balance": 28.07,
-      "last_updated": "20260516"
-    },
-    "62771": {
-      "room_name": "B807",
-      "current_balance": 35.92,
       "last_updated": "20260516"
     },
     "68783": {
@@ -1676,11 +1141,6 @@
     "42665": {
       "room_name": "B914",
       "current_balance": 822.88,
-      "last_updated": "20260516"
-    },
-    "96196": {
-      "room_name": "B209",
-      "current_balance": 11.67,
       "last_updated": "20260516"
     },
     "98392": {
@@ -1698,29 +1158,9 @@
       "current_balance": 86.91,
       "last_updated": "20260516"
     },
-    "65560": {
-      "room_name": "B908",
-      "current_balance": 431.57,
-      "last_updated": "20260516"
-    },
-    "41984": {
-      "room_name": "B725",
-      "current_balance": 144.94,
-      "last_updated": "20260516"
-    },
-    "69813": {
-      "room_name": "B404",
-      "current_balance": 195.24,
-      "last_updated": "20260516"
-    },
     "74928": {
       "room_name": "B823",
       "current_balance": 56.11,
-      "last_updated": "20260516"
-    },
-    "96804": {
-      "room_name": "B322",
-      "current_balance": 535.88,
       "last_updated": "20260516"
     },
     "63239": {
@@ -1738,39 +1178,14 @@
       "current_balance": 23.4,
       "last_updated": "20260516"
     },
-    "99014": {
-      "room_name": "B909",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "64442": {
       "room_name": "B426",
       "current_balance": 269.77,
       "last_updated": "20260516"
     },
-    "97565": {
-      "room_name": "B326",
-      "current_balance": 83.09,
-      "last_updated": "20260516"
-    },
-    "95666": {
-      "room_name": "B201",
-      "current_balance": 13.31,
-      "last_updated": "20260516"
-    },
-    "61633": {
-      "room_name": "B507",
-      "current_balance": 99.39,
-      "last_updated": "20260516"
-    },
     "97754": {
       "room_name": "B633",
       "current_balance": 80.28,
-      "last_updated": "20260516"
-    },
-    "71325": {
-      "room_name": "B529",
-      "current_balance": 13.58,
       "last_updated": "20260516"
     },
     "42296": {
@@ -1808,11 +1223,6 @@
       "current_balance": 119.41,
       "last_updated": "20260516"
     },
-    "42380": {
-      "room_name": "B838",
-      "current_balance": 11.2,
-      "last_updated": "20260516"
-    },
     "54976": {
       "room_name": "B532",
       "current_balance": 30.59,
@@ -1833,19 +1243,9 @@
       "current_balance": 62.36,
       "last_updated": "20260516"
     },
-    "74771": {
-      "room_name": "B431",
-      "current_balance": 93.28,
-      "last_updated": "20260516"
-    },
     "43367": {
       "room_name": "B813",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "95589": {
-      "room_name": "B327",
-      "current_balance": 39.36,
       "last_updated": "20260516"
     },
     "42629": {
@@ -1863,29 +1263,14 @@
       "current_balance": 0.5,
       "last_updated": "20260516"
     },
-    "66712": {
-      "room_name": "B632",
-      "current_balance": 116.83,
-      "last_updated": "20260516"
-    },
     "43005": {
       "room_name": "B712",
       "current_balance": 12.73,
       "last_updated": "20260516"
     },
-    "42873": {
-      "room_name": "B623",
-      "current_balance": 79.18,
-      "last_updated": "20260516"
-    },
     "64365": {
       "room_name": "B444",
       "current_balance": 50.65,
-      "last_updated": "20260516"
-    },
-    "71549": {
-      "room_name": "B533",
-      "current_balance": 81.52,
       "last_updated": "20260516"
     },
     "95831": {
@@ -1923,11 +1308,6 @@
       "current_balance": 209.05,
       "last_updated": "20260516"
     },
-    "39506": {
-      "room_name": "B209",
-      "current_balance": 11.67,
-      "last_updated": "20260516"
-    },
     "61802": {
       "room_name": "B501",
       "current_balance": 0.0,
@@ -1946,11 +1326,6 @@
     "59293": {
       "room_name": "B509",
       "current_balance": 114.25,
-      "last_updated": "20260516"
-    },
-    "70426": {
-      "room_name": "B442",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "42383": {
@@ -1973,16 +1348,6 @@
       "current_balance": 53.46,
       "last_updated": "20260516"
     },
-    "85147": {
-      "room_name": "B715",
-      "current_balance": 13.94,
-      "last_updated": "20260516"
-    },
-    "97553": {
-      "room_name": "B308",
-      "current_balance": 7.59,
-      "last_updated": "20260516"
-    },
     "94278": {
       "room_name": "B423",
       "current_balance": 88.69,
@@ -1998,34 +1363,14 @@
       "current_balance": 49.63,
       "last_updated": "20260516"
     },
-    "65192": {
-      "room_name": "B827",
-      "current_balance": 99.54,
-      "last_updated": "20260516"
-    },
     "69331": {
       "room_name": "B302",
       "current_balance": 53.28,
       "last_updated": "20260516"
     },
-    "42539": {
-      "room_name": "B520",
-      "current_balance": 174.81,
-      "last_updated": "20260516"
-    },
-    "95845": {
-      "room_name": "B209",
-      "current_balance": 11.67,
-      "last_updated": "20260516"
-    },
     "69026": {
       "room_name": "B419",
       "current_balance": 28.93,
-      "last_updated": "20260516"
-    },
-    "64973": {
-      "room_name": "B745",
-      "current_balance": 119.41,
       "last_updated": "20260516"
     },
     "42439": {
@@ -2038,16 +1383,6 @@
       "current_balance": 13.58,
       "last_updated": "20260516"
     },
-    "69923": {
-      "room_name": "B718",
-      "current_balance": 49.77,
-      "last_updated": "20260516"
-    },
-    "65559": {
-      "room_name": "B432",
-      "current_balance": 175.06,
-      "last_updated": "20260516"
-    },
     "64901": {
       "room_name": "B209",
       "current_balance": 11.67,
@@ -2056,16 +1391,6 @@
     "42309": {
       "room_name": "B814",
       "current_balance": 255.27,
-      "last_updated": "20260516"
-    },
-    "67030": {
-      "room_name": "B440",
-      "current_balance": 42.06,
-      "last_updated": "20260516"
-    },
-    "93607": {
-      "room_name": "B809",
-      "current_balance": 41.68,
       "last_updated": "20260516"
     },
     "87376": {
@@ -2078,19 +1403,9 @@
       "current_balance": 208.23,
       "last_updated": "20260516"
     },
-    "42433": {
-      "room_name": "B737",
-      "current_balance": 21.0,
-      "last_updated": "20260516"
-    },
     "72488": {
       "room_name": "B316",
       "current_balance": 81.87,
-      "last_updated": "20260516"
-    },
-    "97716": {
-      "room_name": "B216",
-      "current_balance": 58.33,
       "last_updated": "20260516"
     },
     "42926": {
@@ -2113,21 +1428,6 @@
       "current_balance": 119.6,
       "last_updated": "20260516"
     },
-    "71739": {
-      "room_name": "B529",
-      "current_balance": 13.58,
-      "last_updated": "20260516"
-    },
-    "63111": {
-      "room_name": "B440",
-      "current_balance": 42.06,
-      "last_updated": "20260516"
-    },
-    "42651": {
-      "room_name": "B733",
-      "current_balance": 12.44,
-      "last_updated": "20260516"
-    },
     "94227": {
       "room_name": "B433",
       "current_balance": 64.84,
@@ -2138,11 +1438,6 @@
       "current_balance": 73.44,
       "last_updated": "20260516"
     },
-    "42526": {
-      "room_name": "B538",
-      "current_balance": 78.98,
-      "last_updated": "20260516"
-    },
     "42358": {
       "room_name": "B724",
       "current_balance": 104.82,
@@ -2151,21 +1446,6 @@
     "54463": {
       "room_name": "B643",
       "current_balance": 58.69,
-      "last_updated": "20260516"
-    },
-    "64408": {
-      "room_name": "B905",
-      "current_balance": 139.76,
-      "last_updated": "20260516"
-    },
-    "68511": {
-      "room_name": "B529",
-      "current_balance": 13.58,
-      "last_updated": "20260516"
-    },
-    "70035": {
-      "room_name": "B401",
-      "current_balance": 92.66,
       "last_updated": "20260516"
     },
     "92185": {
@@ -2238,11 +1518,6 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "65071": {
-      "room_name": "B430",
-      "current_balance": 187.07,
-      "last_updated": "20260516"
-    },
     "64647": {
       "room_name": "B424",
       "current_balance": 0.12,
@@ -2256,16 +1531,6 @@
     "64202": {
       "room_name": "B422",
       "current_balance": 122.34,
-      "last_updated": "20260516"
-    },
-    "68305": {
-      "room_name": "B401",
-      "current_balance": 92.66,
-      "last_updated": "20260516"
-    },
-    "93148": {
-      "room_name": "B621",
-      "current_balance": 260.1,
       "last_updated": "20260516"
     },
     "17742": {
@@ -2293,11 +1558,6 @@
       "current_balance": 149.57,
       "last_updated": "20260516"
     },
-    "42435": {
-      "room_name": "B802",
-      "current_balance": 46.04,
-      "last_updated": "20260516"
-    },
     "42763": {
       "room_name": "B637",
       "current_balance": 0.68,
@@ -2306,16 +1566,6 @@
     "83903": {
       "room_name": "B816",
       "current_balance": 96.42,
-      "last_updated": "20260516"
-    },
-    "69363": {
-      "room_name": "B316",
-      "current_balance": 81.87,
-      "last_updated": "20260516"
-    },
-    "61646": {
-      "room_name": "B518",
-      "current_balance": 39.01,
       "last_updated": "20260516"
     },
     "68112": {
@@ -2333,19 +1583,9 @@
       "current_balance": 125.71,
       "last_updated": "20260516"
     },
-    "74591": {
-      "room_name": "B407",
-      "current_balance": 188.96,
-      "last_updated": "20260516"
-    },
     "42374": {
       "room_name": "B721",
       "current_balance": 27.44,
-      "last_updated": "20260516"
-    },
-    "83721": {
-      "room_name": "B405",
-      "current_balance": 82.77,
       "last_updated": "20260516"
     },
     "68322": {
@@ -2353,34 +1593,14 @@
       "current_balance": 46.33,
       "last_updated": "20260516"
     },
-    "66525": {
-      "room_name": "B908",
-      "current_balance": 431.57,
-      "last_updated": "20260516"
-    },
-    "91817": {
-      "room_name": "B518",
-      "current_balance": 39.01,
-      "last_updated": "20260516"
-    },
     "88829": {
       "room_name": "B330",
       "current_balance": 102.08,
       "last_updated": "20260516"
     },
-    "88056": {
-      "room_name": "B309",
-      "current_balance": 49.28,
-      "last_updated": "20260516"
-    },
     "42481": {
       "room_name": "B610",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "42618": {
-      "room_name": "B618",
-      "current_balance": 12.39,
       "last_updated": "20260516"
     }
   }

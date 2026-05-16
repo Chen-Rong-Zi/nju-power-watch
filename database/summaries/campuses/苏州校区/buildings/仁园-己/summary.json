@@ -1,51 +1,11 @@
 {
   "building": "仁园-己",
   "campus": "苏州校区",
-  "total_rooms": 337,
+  "total_rooms": 73,
   "rooms": {
-    "54417": {
-      "room_name": "己209",
-      "current_balance": 113.07,
-      "last_updated": "20260516"
-    },
-    "45521": {
-      "room_name": "己406",
-      "current_balance": 333.16,
-      "last_updated": "20260516"
-    },
     "56452": {
       "room_name": "己503",
       "current_balance": 76.43,
-      "last_updated": "20260516"
-    },
-    "64687": {
-      "room_name": "己406",
-      "current_balance": 333.16,
-      "last_updated": "20260516"
-    },
-    "40311": {
-      "room_name": "己305",
-      "current_balance": 728.37,
-      "last_updated": "20260516"
-    },
-    "64706": {
-      "room_name": "己506",
-      "current_balance": 21.1,
-      "last_updated": "20260516"
-    },
-    "22472": {
-      "room_name": "己309",
-      "current_balance": 209.63,
-      "last_updated": "20260516"
-    },
-    "52359": {
-      "room_name": "己802",
-      "current_balance": 54.36,
-      "last_updated": "20260516"
-    },
-    "44483": {
-      "room_name": "己206",
-      "current_balance": 59.91,
       "last_updated": "20260516"
     },
     "45377": {
@@ -58,51 +18,6 @@
       "current_balance": 33.72,
       "last_updated": "20260516"
     },
-    "40190": {
-      "room_name": "己803",
-      "current_balance": 153.56,
-      "last_updated": "20260516"
-    },
-    "59437": {
-      "room_name": "己710",
-      "current_balance": 194.97,
-      "last_updated": "20260516"
-    },
-    "56279": {
-      "room_name": "己511",
-      "current_balance": 19.78,
-      "last_updated": "20260516"
-    },
-    "18758": {
-      "room_name": "己311",
-      "current_balance": 36.92,
-      "last_updated": "20260516"
-    },
-    "44334": {
-      "room_name": "己311",
-      "current_balance": 36.92,
-      "last_updated": "20260516"
-    },
-    "45609": {
-      "room_name": "己311",
-      "current_balance": 36.92,
-      "last_updated": "20260516"
-    },
-    "54818": {
-      "room_name": "己407",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "40250": {
-      "room_name": "己505",
-      "current_balance": 102.01,
-      "last_updated": "20260516"
-    },
-    "59273": {
-      "room_name": "己709",
-      "current_balance": 175.41,
-      "last_updated": "20260516"
-    },
     "54213": {
       "room_name": "己604",
       "current_balance": 345.33,
@@ -113,34 +28,9 @@
       "current_balance": 143.72,
       "last_updated": "20260516"
     },
-    "61687": {
-      "room_name": "己304",
-      "current_balance": 177.23,
-      "last_updated": "20260516"
-    },
-    "70923": {
-      "room_name": "己405",
-      "current_balance": 27.2,
-      "last_updated": "20260516"
-    },
-    "61654": {
-      "room_name": "己204",
-      "current_balance": 105.48,
-      "last_updated": "20260516"
-    },
     "40286": {
       "room_name": "己408",
       "current_balance": 339.4,
-      "last_updated": "20260516"
-    },
-    "45340": {
-      "room_name": "己302",
-      "current_balance": 18.1,
-      "last_updated": "20260516"
-    },
-    "54220": {
-      "room_name": "己509",
-      "current_balance": 29.02,
       "last_updated": "20260516"
     },
     "55566": {
@@ -153,16 +43,6 @@
       "current_balance": 21.1,
       "last_updated": "20260516"
     },
-    "61980": {
-      "room_name": "己501",
-      "current_balance": 170.23,
-      "last_updated": "20260516"
-    },
-    "44726": {
-      "room_name": "己808",
-      "current_balance": 299.68,
-      "last_updated": "20260516"
-    },
     "54175": {
       "room_name": "己611",
       "current_balance": 191.18,
@@ -173,44 +53,9 @@
       "current_balance": 308.77,
       "last_updated": "20260516"
     },
-    "58683": {
-      "room_name": "己608",
-      "current_balance": 33.72,
-      "last_updated": "20260516"
-    },
-    "56765": {
-      "room_name": "己505",
-      "current_balance": 102.01,
-      "last_updated": "20260516"
-    },
-    "71772": {
-      "room_name": "己709",
-      "current_balance": 175.41,
-      "last_updated": "20260516"
-    },
-    "59553": {
-      "room_name": "己706",
-      "current_balance": 408.1,
-      "last_updated": "20260516"
-    },
-    "55614": {
-      "room_name": "己408",
-      "current_balance": 339.4,
-      "last_updated": "20260516"
-    },
     "45423": {
       "room_name": "己205",
       "current_balance": 215.14,
-      "last_updated": "20260516"
-    },
-    "59312": {
-      "room_name": "己804",
-      "current_balance": 15.59,
-      "last_updated": "20260516"
-    },
-    "58446": {
-      "room_name": "己407",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "44359": {
@@ -218,29 +63,9 @@
       "current_balance": 202.6,
       "last_updated": "20260516"
     },
-    "44332": {
-      "room_name": "己410",
-      "current_balance": 241.4,
-      "last_updated": "20260516"
-    },
-    "54194": {
-      "room_name": "己607",
-      "current_balance": 56.16,
-      "last_updated": "20260516"
-    },
     "40287": {
       "room_name": "己409",
       "current_balance": 21.01,
-      "last_updated": "20260516"
-    },
-    "58556": {
-      "room_name": "己705",
-      "current_balance": 72.76,
-      "last_updated": "20260516"
-    },
-    "75514": {
-      "room_name": "己510",
-      "current_balance": 141.58,
       "last_updated": "20260516"
     },
     "40188": {
@@ -248,69 +73,9 @@
       "current_balance": 336.3,
       "last_updated": "20260516"
     },
-    "45425": {
-      "room_name": "己410",
-      "current_balance": 241.4,
-      "last_updated": "20260516"
-    },
-    "59951": {
-      "room_name": "己207",
-      "current_balance": 9.54,
-      "last_updated": "20260516"
-    },
-    "45140": {
-      "room_name": "己509",
-      "current_balance": 29.02,
-      "last_updated": "20260516"
-    },
-    "57147": {
-      "room_name": "己205",
-      "current_balance": 215.14,
-      "last_updated": "20260516"
-    },
-    "40247": {
-      "room_name": "己608",
-      "current_balance": 33.72,
-      "last_updated": "20260516"
-    },
-    "44367": {
-      "room_name": "己403",
-      "current_balance": 202.6,
-      "last_updated": "20260516"
-    },
     "25077": {
       "room_name": "己410",
       "current_balance": 241.4,
-      "last_updated": "20260516"
-    },
-    "40316": {
-      "room_name": "己204",
-      "current_balance": 105.48,
-      "last_updated": "20260516"
-    },
-    "60296": {
-      "room_name": "己704",
-      "current_balance": 140.2,
-      "last_updated": "20260516"
-    },
-    "40285": {
-      "room_name": "己407",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "53829": {
-      "room_name": "己710",
-      "current_balance": 194.97,
-      "last_updated": "20260516"
-    },
-    "44409": {
-      "room_name": "己305",
-      "current_balance": 728.37,
-      "last_updated": "20260516"
-    },
-    "40204": {
-      "room_name": "己705",
-      "current_balance": 72.76,
       "last_updated": "20260516"
     },
     "48330": {
@@ -318,79 +83,9 @@
       "current_balance": 442.22,
       "last_updated": "20260516"
     },
-    "40318": {
-      "room_name": "己206",
-      "current_balance": 59.91,
-      "last_updated": "20260516"
-    },
-    "45175": {
-      "room_name": "己503",
-      "current_balance": 76.43,
-      "last_updated": "20260516"
-    },
-    "44892": {
-      "room_name": "己405",
-      "current_balance": 27.2,
-      "last_updated": "20260516"
-    },
-    "48329": {
-      "room_name": "己809",
-      "current_balance": 442.22,
-      "last_updated": "20260516"
-    },
-    "21070": {
-      "room_name": "己511",
-      "current_balance": 19.78,
-      "last_updated": "20260516"
-    },
-    "55600": {
-      "room_name": "己403",
-      "current_balance": 202.6,
-      "last_updated": "20260516"
-    },
-    "44388": {
-      "room_name": "己309",
-      "current_balance": 209.63,
-      "last_updated": "20260516"
-    },
-    "27577": {
-      "room_name": "己505",
-      "current_balance": 102.01,
-      "last_updated": "20260516"
-    },
-    "44925": {
-      "room_name": "己504",
-      "current_balance": 54.85,
-      "last_updated": "20260516"
-    },
     "20811": {
       "room_name": "己508",
       "current_balance": 36.19,
-      "last_updated": "20260516"
-    },
-    "54192": {
-      "room_name": "己606",
-      "current_balance": 69.97,
-      "last_updated": "20260516"
-    },
-    "45345": {
-      "room_name": "己307",
-      "current_balance": 13.99,
-      "last_updated": "20260516"
-    },
-    "21759": {
-      "room_name": "己202",
-      "current_balance": 23.8,
-      "last_updated": "20260516"
-    },
-    "60803": {
-      "room_name": "己711",
-      "current_balance": 141.2,
-      "last_updated": "20260516"
-    },
-    "40233": {
-      "room_name": "己604",
-      "current_balance": 345.33,
       "last_updated": "20260516"
     },
     "45271": {
@@ -398,89 +93,9 @@
       "current_balance": 156.34,
       "last_updated": "20260516"
     },
-    "45453": {
-      "room_name": "己402",
-      "current_balance": 153.56,
-      "last_updated": "20260516"
-    },
-    "28790": {
-      "room_name": "己303",
-      "current_balance": 145.09,
-      "last_updated": "20260516"
-    },
-    "59313": {
-      "room_name": "己806",
-      "current_balance": 336.3,
-      "last_updated": "20260516"
-    },
-    "54276": {
-      "room_name": "己807",
-      "current_balance": 143.72,
-      "last_updated": "20260516"
-    },
-    "60722": {
-      "room_name": "己203",
-      "current_balance": 385.02,
-      "last_updated": "20260516"
-    },
-    "67870": {
-      "room_name": "己506",
-      "current_balance": 21.1,
-      "last_updated": "20260516"
-    },
-    "53243": {
-      "room_name": "己610",
-      "current_balance": 467.48,
-      "last_updated": "20260516"
-    },
-    "59490": {
-      "room_name": "己401",
-      "current_balance": 156.34,
-      "last_updated": "20260516"
-    },
-    "60972": {
-      "room_name": "己306",
-      "current_balance": 135.28,
-      "last_updated": "20260516"
-    },
-    "62720": {
-      "room_name": "己602",
-      "current_balance": 246.43,
-      "last_updated": "20260516"
-    },
-    "45906": {
-      "room_name": "己507",
-      "current_balance": 261.65,
-      "last_updated": "20260516"
-    },
-    "40205": {
-      "room_name": "己706",
-      "current_balance": 408.1,
-      "last_updated": "20260516"
-    },
-    "40158": {
-      "room_name": "己811",
-      "current_balance": 498.6,
-      "last_updated": "20260516"
-    },
     "59704": {
       "room_name": "己708",
       "current_balance": 213.76,
-      "last_updated": "20260516"
-    },
-    "56463": {
-      "room_name": "己503",
-      "current_balance": 76.43,
-      "last_updated": "20260516"
-    },
-    "45463": {
-      "room_name": "己505",
-      "current_balance": 102.01,
-      "last_updated": "20260516"
-    },
-    "40280": {
-      "room_name": "己308",
-      "current_balance": 1431.46,
       "last_updated": "20260516"
     },
     "40189": {
@@ -488,64 +103,9 @@
       "current_balance": 99.13,
       "last_updated": "20260516"
     },
-    "59295": {
-      "room_name": "己606",
-      "current_balance": 69.97,
-      "last_updated": "20260516"
-    },
     "51101": {
       "room_name": "己704",
       "current_balance": 140.2,
-      "last_updated": "20260516"
-    },
-    "59651": {
-      "room_name": "己611",
-      "current_balance": 191.18,
-      "last_updated": "20260516"
-    },
-    "59290": {
-      "room_name": "己709",
-      "current_balance": 175.41,
-      "last_updated": "20260516"
-    },
-    "45436": {
-      "room_name": "己501",
-      "current_balance": 170.23,
-      "last_updated": "20260516"
-    },
-    "59521": {
-      "room_name": "己706",
-      "current_balance": 408.1,
-      "last_updated": "20260516"
-    },
-    "45354": {
-      "room_name": "己510",
-      "current_balance": 141.58,
-      "last_updated": "20260516"
-    },
-    "40240": {
-      "room_name": "己504",
-      "current_balance": 54.85,
-      "last_updated": "20260516"
-    },
-    "91989": {
-      "room_name": "己305",
-      "current_balance": 728.37,
-      "last_updated": "20260516"
-    },
-    "40207": {
-      "room_name": "己710",
-      "current_balance": 194.97,
-      "last_updated": "20260516"
-    },
-    "40159": {
-      "room_name": "己810",
-      "current_balance": 56.68,
-      "last_updated": "20260516"
-    },
-    "55397": {
-      "room_name": "己409",
-      "current_balance": 21.01,
       "last_updated": "20260516"
     },
     "45446": {
@@ -558,39 +118,9 @@
       "current_balance": 333.16,
       "last_updated": "20260516"
     },
-    "44127": {
-      "room_name": "己209",
-      "current_balance": 113.07,
-      "last_updated": "20260516"
-    },
-    "55269": {
-      "room_name": "己402",
-      "current_balance": 153.56,
-      "last_updated": "20260516"
-    },
-    "40160": {
-      "room_name": "己804",
-      "current_balance": 15.59,
-      "last_updated": "20260516"
-    },
-    "40206": {
-      "room_name": "己708",
-      "current_balance": 213.76,
-      "last_updated": "20260516"
-    },
     "40314": {
       "room_name": "己302",
       "current_balance": 18.1,
-      "last_updated": "20260516"
-    },
-    "58501": {
-      "room_name": "己809",
-      "current_balance": 442.22,
-      "last_updated": "20260516"
-    },
-    "62058": {
-      "room_name": "己701",
-      "current_balance": 151.16,
       "last_updated": "20260516"
     },
     "58360": {
@@ -598,44 +128,9 @@
       "current_balance": 29.02,
       "last_updated": "20260516"
     },
-    "45121": {
-      "room_name": "己210",
-      "current_balance": 69.9,
-      "last_updated": "20260516"
-    },
-    "51503": {
-      "room_name": "己604",
-      "current_balance": 345.33,
-      "last_updated": "20260516"
-    },
     "40312": {
       "room_name": "己304",
       "current_balance": 177.23,
-      "last_updated": "20260516"
-    },
-    "40315": {
-      "room_name": "己203",
-      "current_balance": 385.02,
-      "last_updated": "20260516"
-    },
-    "60738": {
-      "room_name": "己702",
-      "current_balance": 9.33,
-      "last_updated": "20260516"
-    },
-    "55513": {
-      "room_name": "己302",
-      "current_balance": 18.1,
-      "last_updated": "20260516"
-    },
-    "56625": {
-      "room_name": "己511",
-      "current_balance": 19.78,
-      "last_updated": "20260516"
-    },
-    "58103": {
-      "room_name": "己401",
-      "current_balance": 156.34,
       "last_updated": "20260516"
     },
     "47973": {
@@ -643,29 +138,9 @@
       "current_balance": 13.99,
       "last_updated": "20260516"
     },
-    "62801": {
-      "room_name": "己403",
-      "current_balance": 202.6,
-      "last_updated": "20260516"
-    },
     "45541": {
       "room_name": "己504",
       "current_balance": 54.85,
-      "last_updated": "20260516"
-    },
-    "54232": {
-      "room_name": "己702",
-      "current_balance": 9.33,
-      "last_updated": "20260516"
-    },
-    "40236": {
-      "room_name": "己611",
-      "current_balance": 191.18,
-      "last_updated": "20260516"
-    },
-    "45272": {
-      "room_name": "己408",
-      "current_balance": 339.4,
       "last_updated": "20260516"
     },
     "45473": {
@@ -673,84 +148,9 @@
       "current_balance": 140.09,
       "last_updated": "20260516"
     },
-    "45415": {
-      "room_name": "己410",
-      "current_balance": 241.4,
-      "last_updated": "20260516"
-    },
-    "51430": {
-      "room_name": "己506",
-      "current_balance": 21.1,
-      "last_updated": "20260516"
-    },
-    "59531": {
-      "room_name": "己706",
-      "current_balance": 408.1,
-      "last_updated": "20260516"
-    },
-    "45275": {
-      "room_name": "己406",
-      "current_balance": 333.16,
-      "last_updated": "20260516"
-    },
-    "59626": {
-      "room_name": "己708",
-      "current_balance": 213.76,
-      "last_updated": "20260516"
-    },
-    "60224": {
-      "room_name": "己206",
-      "current_balance": 59.91,
-      "last_updated": "20260516"
-    },
-    "45439": {
-      "room_name": "己205",
-      "current_balance": 215.14,
-      "last_updated": "20260516"
-    },
-    "45122": {
-      "room_name": "己210",
-      "current_balance": 69.9,
-      "last_updated": "20260516"
-    },
-    "28791": {
-      "room_name": "己303",
-      "current_balance": 145.09,
-      "last_updated": "20260516"
-    },
-    "44333": {
-      "room_name": "己409",
-      "current_balance": 21.01,
-      "last_updated": "20260516"
-    },
     "45361": {
       "room_name": "己501",
       "current_balance": 170.23,
-      "last_updated": "20260516"
-    },
-    "44362": {
-      "room_name": "己308",
-      "current_balance": 1431.46,
-      "last_updated": "20260516"
-    },
-    "40196": {
-      "room_name": "己711",
-      "current_balance": 141.2,
-      "last_updated": "20260516"
-    },
-    "40186": {
-      "room_name": "己808",
-      "current_balance": 299.68,
-      "last_updated": "20260516"
-    },
-    "58921": {
-      "room_name": "己808",
-      "current_balance": 299.68,
-      "last_updated": "20260516"
-    },
-    "49238": {
-      "room_name": "己806",
-      "current_balance": 336.3,
       "last_updated": "20260516"
     },
     "40201": {
@@ -758,49 +158,9 @@
       "current_balance": 151.16,
       "last_updated": "20260516"
     },
-    "40185": {
-      "room_name": "己809",
-      "current_balance": 442.22,
-      "last_updated": "20260516"
-    },
     "30683": {
       "room_name": "己505",
       "current_balance": 102.01,
-      "last_updated": "20260516"
-    },
-    "72190": {
-      "room_name": "己704",
-      "current_balance": 140.2,
-      "last_updated": "20260516"
-    },
-    "44421": {
-      "room_name": "己309",
-      "current_balance": 209.63,
-      "last_updated": "20260516"
-    },
-    "40234": {
-      "room_name": "己606",
-      "current_balance": 69.97,
-      "last_updated": "20260516"
-    },
-    "54174": {
-      "room_name": "己606",
-      "current_balance": 69.97,
-      "last_updated": "20260516"
-    },
-    "56490": {
-      "room_name": "己210",
-      "current_balance": 69.9,
-      "last_updated": "20260516"
-    },
-    "54448": {
-      "room_name": "己203",
-      "current_balance": 385.02,
-      "last_updated": "20260516"
-    },
-    "53810": {
-      "room_name": "己804",
-      "current_balance": 15.59,
       "last_updated": "20260516"
     },
     "48336": {
@@ -808,44 +168,9 @@
       "current_balance": 56.68,
       "last_updated": "20260516"
     },
-    "81173": {
-      "room_name": "己411",
-      "current_balance": 208.52,
-      "last_updated": "20260516"
-    },
-    "40191": {
-      "room_name": "己802",
-      "current_balance": 54.36,
-      "last_updated": "20260516"
-    },
-    "71265": {
-      "room_name": "己602",
-      "current_balance": 246.43,
-      "last_updated": "20260516"
-    },
-    "62398": {
-      "room_name": "己704",
-      "current_balance": 140.2,
-      "last_updated": "20260516"
-    },
-    "75291": {
-      "room_name": "己403",
-      "current_balance": 202.6,
-      "last_updated": "20260516"
-    },
     "40283": {
       "room_name": "己405",
       "current_balance": 27.2,
-      "last_updated": "20260516"
-    },
-    "45336": {
-      "room_name": "己311",
-      "current_balance": 36.92,
-      "last_updated": "20260516"
-    },
-    "61870": {
-      "room_name": "己705",
-      "current_balance": 72.76,
       "last_updated": "20260516"
     },
     "40238": {
@@ -853,34 +178,9 @@
       "current_balance": 42.89,
       "last_updated": "20260516"
     },
-    "56397": {
-      "room_name": "己508",
-      "current_balance": 36.19,
-      "last_updated": "20260516"
-    },
-    "40327": {
-      "room_name": "己209",
-      "current_balance": 113.07,
-      "last_updated": "20260516"
-    },
     "60361": {
       "room_name": "己404",
       "current_balance": 483.26,
-      "last_updated": "20260516"
-    },
-    "75501": {
-      "room_name": "己510",
-      "current_balance": 141.58,
-      "last_updated": "20260516"
-    },
-    "72016": {
-      "room_name": "己209",
-      "current_balance": 113.07,
-      "last_updated": "20260516"
-    },
-    "62675": {
-      "room_name": "己801",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "65184": {
@@ -888,19 +188,9 @@
       "current_balance": 450.3,
       "last_updated": "20260516"
     },
-    "22090": {
-      "room_name": "己303",
-      "current_balance": 145.09,
-      "last_updated": "20260516"
-    },
     "59830": {
       "room_name": "己610",
       "current_balance": 467.48,
-      "last_updated": "20260516"
-    },
-    "44202": {
-      "room_name": "己307",
-      "current_balance": 13.99,
       "last_updated": "20260516"
     },
     "49025": {
@@ -913,94 +203,14 @@
       "current_balance": 1431.46,
       "last_updated": "20260516"
     },
-    "39109": {
-      "room_name": "己502",
-      "current_balance": 42.89,
-      "last_updated": "20260516"
-    },
-    "51424": {
-      "room_name": "己510",
-      "current_balance": 141.58,
-      "last_updated": "20260516"
-    },
-    "61710": {
-      "room_name": "己304",
-      "current_balance": 177.23,
-      "last_updated": "20260516"
-    },
-    "45459": {
-      "room_name": "己407",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "55271": {
-      "room_name": "己402",
-      "current_balance": 153.56,
-      "last_updated": "20260516"
-    },
     "45337": {
       "room_name": "己203",
       "current_balance": 385.02,
       "last_updated": "20260516"
     },
-    "44447": {
-      "room_name": "己204",
-      "current_balance": 105.48,
-      "last_updated": "20260516"
-    },
-    "44727": {
-      "room_name": "己807",
-      "current_balance": 143.72,
-      "last_updated": "20260516"
-    },
-    "57491": {
-      "room_name": "己502",
-      "current_balance": 42.89,
-      "last_updated": "20260516"
-    },
-    "58555": {
-      "room_name": "己705",
-      "current_balance": 72.76,
-      "last_updated": "20260516"
-    },
-    "44536": {
-      "room_name": "己205",
-      "current_balance": 215.14,
-      "last_updated": "20260516"
-    },
     "40289": {
       "room_name": "己411",
       "current_balance": 208.52,
-      "last_updated": "20260516"
-    },
-    "40232": {
-      "room_name": "己603",
-      "current_balance": 76.96,
-      "last_updated": "20260516"
-    },
-    "40282": {
-      "room_name": "己404",
-      "current_balance": 483.26,
-      "last_updated": "20260516"
-    },
-    "45335": {
-      "room_name": "己508",
-      "current_balance": 36.19,
-      "last_updated": "20260516"
-    },
-    "54190": {
-      "room_name": "己610",
-      "current_balance": 467.48,
-      "last_updated": "20260516"
-    },
-    "40260": {
-      "room_name": "己402",
-      "current_balance": 153.56,
-      "last_updated": "20260516"
-    },
-    "75307": {
-      "room_name": "己403",
-      "current_balance": 202.6,
       "last_updated": "20260516"
     },
     "54221": {
@@ -1013,99 +223,14 @@
       "current_balance": 15.59,
       "last_updated": "20260516"
     },
-    "53308": {
-      "room_name": "己208",
-      "current_balance": 164.41,
-      "last_updated": "20260516"
-    },
-    "44465": {
-      "room_name": "己203",
-      "current_balance": 385.02,
-      "last_updated": "20260516"
-    },
-    "44403": {
-      "room_name": "己302",
-      "current_balance": 18.1,
-      "last_updated": "20260516"
-    },
-    "59806": {
-      "room_name": "己811",
-      "current_balance": 498.6,
-      "last_updated": "20260516"
-    },
-    "40249": {
-      "room_name": "己610",
-      "current_balance": 467.48,
-      "last_updated": "20260516"
-    },
-    "60635": {
-      "room_name": "己807",
-      "current_balance": 143.72,
-      "last_updated": "20260516"
-    },
-    "40202": {
-      "room_name": "己702",
-      "current_balance": 9.33,
-      "last_updated": "20260516"
-    },
     "58299": {
       "room_name": "己711",
       "current_balance": 141.2,
       "last_updated": "20260516"
     },
-    "60512": {
-      "room_name": "己510",
-      "current_balance": 141.58,
-      "last_updated": "20260516"
-    },
-    "44508": {
-      "room_name": "己306",
-      "current_balance": 135.28,
-      "last_updated": "20260516"
-    },
-    "66686": {
-      "room_name": "己805",
-      "current_balance": 99.13,
-      "last_updated": "20260516"
-    },
-    "59479": {
-      "room_name": "己202",
-      "current_balance": 23.8,
-      "last_updated": "20260516"
-    },
-    "93028": {
-      "room_name": "己805",
-      "current_balance": 99.13,
-      "last_updated": "20260516"
-    },
-    "45316": {
-      "room_name": "己305",
-      "current_balance": 728.37,
-      "last_updated": "20260516"
-    },
-    "61092": {
-      "room_name": "己505",
-      "current_balance": 102.01,
-      "last_updated": "20260516"
-    },
-    "45307": {
-      "room_name": "己202",
-      "current_balance": 23.8,
-      "last_updated": "20260516"
-    },
     "58326": {
       "room_name": "己801",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "44338": {
-      "room_name": "己501",
-      "current_balance": 170.23,
-      "last_updated": "20260516"
-    },
-    "45470": {
-      "room_name": "己511",
-      "current_balance": 19.78,
       "last_updated": "20260516"
     },
     "54200": {
@@ -1118,44 +243,9 @@
       "current_balance": 246.43,
       "last_updated": "20260516"
     },
-    "40192": {
-      "room_name": "己801",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "57315": {
-      "room_name": "己306",
-      "current_balance": 135.28,
-      "last_updated": "20260516"
-    },
-    "45464": {
-      "room_name": "己404",
-      "current_balance": 483.26,
-      "last_updated": "20260516"
-    },
-    "45376": {
-      "room_name": "己204",
-      "current_balance": 105.48,
-      "last_updated": "20260516"
-    },
     "59354": {
       "room_name": "己811",
       "current_balance": 498.6,
-      "last_updated": "20260516"
-    },
-    "23778": {
-      "room_name": "己509",
-      "current_balance": 29.02,
-      "last_updated": "20260516"
-    },
-    "59192": {
-      "room_name": "己701",
-      "current_balance": 151.16,
-      "last_updated": "20260516"
-    },
-    "11121": {
-      "room_name": "己207",
-      "current_balance": 9.54,
       "last_updated": "20260516"
     },
     "61926": {
@@ -1168,89 +258,9 @@
       "current_balance": 408.1,
       "last_updated": "20260516"
     },
-    "45542": {
-      "room_name": "己504",
-      "current_balance": 54.85,
-      "last_updated": "20260516"
-    },
-    "59280": {
-      "room_name": "己803",
-      "current_balance": 153.56,
-      "last_updated": "20260516"
-    },
-    "59277": {
-      "room_name": "己605",
-      "current_balance": 54.6,
-      "last_updated": "20260516"
-    },
-    "45187": {
-      "room_name": "己208",
-      "current_balance": 164.41,
-      "last_updated": "20260516"
-    },
-    "40231": {
-      "room_name": "己602",
-      "current_balance": 246.43,
-      "last_updated": "20260516"
-    },
-    "56665": {
-      "room_name": "己405",
-      "current_balance": 27.2,
-      "last_updated": "20260516"
-    },
-    "45435": {
-      "room_name": "己411",
-      "current_balance": 208.52,
-      "last_updated": "20260516"
-    },
-    "67809": {
-      "room_name": "己402",
-      "current_balance": 153.56,
-      "last_updated": "20260516"
-    },
-    "61708": {
-      "room_name": "己304",
-      "current_balance": 177.23,
-      "last_updated": "20260516"
-    },
-    "57456": {
-      "room_name": "己808",
-      "current_balance": 299.68,
-      "last_updated": "20260516"
-    },
-    "40324": {
-      "room_name": "己205",
-      "current_balance": 215.14,
-      "last_updated": "20260516"
-    },
-    "40326": {
-      "room_name": "己208",
-      "current_balance": 164.41,
-      "last_updated": "20260516"
-    },
-    "62397": {
-      "room_name": "己704",
-      "current_balance": 140.2,
-      "last_updated": "20260516"
-    },
     "40313": {
       "room_name": "己303",
       "current_balance": 145.09,
-      "last_updated": "20260516"
-    },
-    "59683": {
-      "room_name": "己708",
-      "current_balance": 213.76,
-      "last_updated": "20260516"
-    },
-    "54179": {
-      "room_name": "己608",
-      "current_balance": 33.72,
-      "last_updated": "20260516"
-    },
-    "57457": {
-      "room_name": "己808",
-      "current_balance": 299.68,
       "last_updated": "20260516"
     },
     "92012": {
@@ -1258,89 +268,14 @@
       "current_balance": 728.37,
       "last_updated": "20260516"
     },
-    "59278": {
-      "room_name": "己805",
-      "current_balance": 99.13,
-      "last_updated": "20260516"
-    },
     "45179": {
       "room_name": "己208",
       "current_balance": 164.41,
       "last_updated": "20260516"
     },
-    "44346": {
-      "room_name": "己308",
-      "current_balance": 1431.46,
-      "last_updated": "20260516"
-    },
-    "40235": {
-      "room_name": "己607",
-      "current_balance": 56.16,
-      "last_updated": "20260516"
-    },
-    "44300": {
-      "room_name": "己308",
-      "current_balance": 1431.46,
-      "last_updated": "20260516"
-    },
-    "75939": {
-      "room_name": "己605",
-      "current_balance": 54.6,
-      "last_updated": "20260516"
-    },
-    "44355": {
-      "room_name": "己309",
-      "current_balance": 209.63,
-      "last_updated": "20260516"
-    },
-    "44377": {
-      "room_name": "己408",
-      "current_balance": 339.4,
-      "last_updated": "20260516"
-    },
-    "56230": {
-      "room_name": "己310",
-      "current_balance": 140.09,
-      "last_updated": "20260516"
-    },
     "45317": {
       "room_name": "己209",
       "current_balance": 113.07,
-      "last_updated": "20260516"
-    },
-    "57513": {
-      "room_name": "己502",
-      "current_balance": 42.89,
-      "last_updated": "20260516"
-    },
-    "60982": {
-      "room_name": "己406",
-      "current_balance": 333.16,
-      "last_updated": "20260516"
-    },
-    "58145": {
-      "room_name": "己807",
-      "current_balance": 143.72,
-      "last_updated": "20260516"
-    },
-    "60981": {
-      "room_name": "己810",
-      "current_balance": 56.68,
-      "last_updated": "20260516"
-    },
-    "23075": {
-      "room_name": "己506",
-      "current_balance": 21.1,
-      "last_updated": "20260516"
-    },
-    "54195": {
-      "room_name": "己703",
-      "current_balance": 308.77,
-      "last_updated": "20260516"
-    },
-    "45314": {
-      "room_name": "己207",
-      "current_balance": 9.54,
       "last_updated": "20260516"
     },
     "59304": {
@@ -1353,109 +288,14 @@
       "current_balance": 54.6,
       "last_updated": "20260516"
     },
-    "40325": {
-      "room_name": "己207",
-      "current_balance": 9.54,
-      "last_updated": "20260516"
-    },
-    "45180": {
-      "room_name": "己208",
-      "current_balance": 164.41,
-      "last_updated": "20260516"
-    },
-    "40288": {
-      "room_name": "己410",
-      "current_balance": 241.4,
-      "last_updated": "20260516"
-    },
-    "40239": {
-      "room_name": "己503",
-      "current_balance": 76.43,
-      "last_updated": "20260516"
-    },
-    "40322": {
-      "room_name": "己306",
-      "current_balance": 135.28,
-      "last_updated": "20260516"
-    },
-    "45098": {
-      "room_name": "己209",
-      "current_balance": 113.07,
-      "last_updated": "20260516"
-    },
-    "40203": {
-      "room_name": "己704",
-      "current_balance": 140.2,
-      "last_updated": "20260516"
-    },
-    "45331": {
-      "room_name": "己502",
-      "current_balance": 42.89,
-      "last_updated": "20260516"
-    },
-    "55256": {
-      "room_name": "己406",
-      "current_balance": 333.16,
-      "last_updated": "20260516"
-    },
-    "48229": {
-      "room_name": "己504",
-      "current_balance": 54.85,
-      "last_updated": "20260516"
-    },
-    "60304": {
-      "room_name": "己605",
-      "current_balance": 54.6,
-      "last_updated": "20260516"
-    },
-    "45879": {
-      "room_name": "己411",
-      "current_balance": 208.52,
-      "last_updated": "20260516"
-    },
-    "44718": {
-      "room_name": "己307",
-      "current_balance": 13.99,
-      "last_updated": "20260516"
-    },
     "40279": {
       "room_name": "己311",
       "current_balance": 36.92,
       "last_updated": "20260516"
     },
-    "40194": {
-      "room_name": "己707",
-      "current_balance": 450.3,
-      "last_updated": "20260516"
-    },
-    "49470": {
-      "room_name": "己709",
-      "current_balance": 175.41,
-      "last_updated": "20260516"
-    },
-    "58301": {
-      "room_name": "己711",
-      "current_balance": 141.2,
-      "last_updated": "20260516"
-    },
-    "20477": {
-      "room_name": "己304",
-      "current_balance": 177.23,
-      "last_updated": "20260516"
-    },
-    "53460": {
-      "room_name": "己607",
-      "current_balance": 56.16,
-      "last_updated": "20260516"
-    },
     "40195": {
       "room_name": "己709",
       "current_balance": 175.41,
-      "last_updated": "20260516"
-    },
-    "45281": {
-      "room_name": "己406",
-      "current_balance": 333.16,
       "last_updated": "20260516"
     },
     "59294": {
@@ -1468,24 +308,9 @@
       "current_balance": 209.63,
       "last_updated": "20260516"
     },
-    "49198": {
-      "room_name": "己707",
-      "current_balance": 450.3,
-      "last_updated": "20260516"
-    },
-    "45242": {
-      "room_name": "己507",
-      "current_balance": 261.65,
-      "last_updated": "20260516"
-    },
     "59292": {
       "room_name": "己603",
       "current_balance": 76.96,
-      "last_updated": "20260516"
-    },
-    "44340": {
-      "room_name": "己206",
-      "current_balance": 59.91,
       "last_updated": "20260516"
     },
     "63035": {
@@ -1503,109 +328,14 @@
       "current_balance": 194.97,
       "last_updated": "20260516"
     },
-    "40321": {
-      "room_name": "己307",
-      "current_balance": 13.99,
-      "last_updated": "20260516"
-    },
-    "54888": {
-      "room_name": "己310",
-      "current_balance": 140.09,
-      "last_updated": "20260516"
-    },
-    "59288": {
-      "room_name": "己803",
-      "current_balance": 153.56,
-      "last_updated": "20260516"
-    },
-    "62184": {
-      "room_name": "己202",
-      "current_balance": 23.8,
-      "last_updated": "20260516"
-    },
-    "91987": {
-      "room_name": "己305",
-      "current_balance": 728.37,
-      "last_updated": "20260516"
-    },
-    "47712": {
-      "room_name": "己508",
-      "current_balance": 36.19,
-      "last_updated": "20260516"
-    },
-    "58814": {
-      "room_name": "己603",
-      "current_balance": 76.96,
-      "last_updated": "20260516"
-    },
     "40323": {
       "room_name": "己202",
       "current_balance": 23.8,
       "last_updated": "20260516"
     },
-    "59320": {
-      "room_name": "己609",
-      "current_balance": 175.99,
-      "last_updated": "20260516"
-    },
     "45114": {
       "room_name": "己210",
       "current_balance": 69.9,
-      "last_updated": "20260516"
-    },
-    "40328": {
-      "room_name": "己210",
-      "current_balance": 69.9,
-      "last_updated": "20260516"
-    },
-    "40193": {
-      "room_name": "己703",
-      "current_balance": 308.77,
-      "last_updated": "20260516"
-    },
-    "56674": {
-      "room_name": "己207",
-      "current_balance": 9.54,
-      "last_updated": "20260516"
-    },
-    "56025": {
-      "room_name": "己305",
-      "current_balance": 728.37,
-      "last_updated": "20260516"
-    },
-    "45426": {
-      "room_name": "己409",
-      "current_balance": 21.01,
-      "last_updated": "20260516"
-    },
-    "54168": {
-      "room_name": "己604",
-      "current_balance": 345.33,
-      "last_updated": "20260516"
-    },
-    "45349": {
-      "room_name": "己310",
-      "current_balance": 140.09,
-      "last_updated": "20260516"
-    },
-    "40248": {
-      "room_name": "己609",
-      "current_balance": 175.99,
-      "last_updated": "20260516"
-    },
-    "44376": {
-      "room_name": "己408",
-      "current_balance": 339.4,
-      "last_updated": "20260516"
-    },
-    "40281": {
-      "room_name": "己403",
-      "current_balance": 202.6,
-      "last_updated": "20260516"
-    },
-    "59593": {
-      "room_name": "己806",
-      "current_balance": 336.3,
       "last_updated": "20260516"
     },
     "45714": {
@@ -1618,29 +348,9 @@
       "current_balance": 153.56,
       "last_updated": "20260516"
     },
-    "54198": {
-      "room_name": "己607",
-      "current_balance": 56.16,
-      "last_updated": "20260516"
-    },
-    "48350": {
-      "room_name": "己810",
-      "current_balance": 56.68,
-      "last_updated": "20260516"
-    },
-    "40237": {
-      "room_name": "己501",
-      "current_balance": 170.23,
-      "last_updated": "20260516"
-    },
     "45295": {
       "room_name": "己206",
       "current_balance": 59.91,
-      "last_updated": "20260516"
-    },
-    "40309": {
-      "room_name": "己310",
-      "current_balance": 140.09,
       "last_updated": "20260516"
     },
     "57100": {
@@ -1648,44 +358,14 @@
       "current_balance": 141.58,
       "last_updated": "20260516"
     },
-    "45286": {
-      "room_name": "己411",
-      "current_balance": 208.52,
-      "last_updated": "20260516"
-    },
-    "59465": {
-      "room_name": "己805",
-      "current_balance": 99.13,
-      "last_updated": "20260516"
-    },
     "59978": {
       "room_name": "己808",
       "current_balance": 299.68,
       "last_updated": "20260516"
     },
-    "40259": {
-      "room_name": "己401",
-      "current_balance": 156.34,
-      "last_updated": "20260516"
-    },
-    "20407": {
-      "room_name": "己307",
-      "current_balance": 13.99,
-      "last_updated": "20260516"
-    },
-    "62057": {
-      "room_name": "己701",
-      "current_balance": 151.16,
-      "last_updated": "20260516"
-    },
     "57119": {
       "room_name": "己407",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "45339": {
-      "room_name": "己302",
-      "current_balance": 18.1,
       "last_updated": "20260516"
     }
   }

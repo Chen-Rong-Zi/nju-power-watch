@@ -1,46 +1,11 @@
 {
   "building": "12幢",
   "campus": "仙林校区",
-  "total_rooms": 1100,
+  "total_rooms": 285,
   "rooms": {
-    "91795": {
-      "room_name": "503房间",
-      "current_balance": 400.31,
-      "last_updated": "20260516"
-    },
-    "25251": {
-      "room_name": "425房间",
-      "current_balance": 166.44,
-      "last_updated": "20260516"
-    },
-    "92945": {
-      "room_name": "443房间",
-      "current_balance": 27.71,
-      "last_updated": "20260516"
-    },
     "63972": {
       "room_name": "252房间",
       "current_balance": 103.68,
-      "last_updated": "20260516"
-    },
-    "54157": {
-      "room_name": "547房间",
-      "current_balance": 205.37,
-      "last_updated": "20260516"
-    },
-    "92518": {
-      "room_name": "451房间",
-      "current_balance": 50.74,
-      "last_updated": "20260516"
-    },
-    "27827": {
-      "room_name": "417房间",
-      "current_balance": 24.23,
-      "last_updated": "20260516"
-    },
-    "28865": {
-      "room_name": "518房间",
-      "current_balance": 36.18,
       "last_updated": "20260516"
     },
     "96685": {
@@ -48,44 +13,9 @@
       "current_balance": 108.71,
       "last_updated": "20260516"
     },
-    "48357": {
-      "room_name": "548房间",
-      "current_balance": 83.9,
-      "last_updated": "20260516"
-    },
-    "89219": {
-      "room_name": "234房间",
-      "current_balance": 679.0,
-      "last_updated": "20260516"
-    },
-    "49358": {
-      "room_name": "308房间",
-      "current_balance": 1216.36,
-      "last_updated": "20260516"
-    },
     "31167": {
       "room_name": "332房间",
       "current_balance": 117.8,
-      "last_updated": "20260516"
-    },
-    "19956": {
-      "room_name": "346房间",
-      "current_balance": 63.13,
-      "last_updated": "20260516"
-    },
-    "17901": {
-      "room_name": "118房间",
-      "current_balance": 731.02,
-      "last_updated": "20260516"
-    },
-    "84688": {
-      "room_name": "328房间",
-      "current_balance": 57.65,
-      "last_updated": "20260516"
-    },
-    "89852": {
-      "room_name": "315房间",
-      "current_balance": 565.91,
       "last_updated": "20260516"
     },
     "59873": {
@@ -93,54 +23,9 @@
       "current_balance": 27.71,
       "last_updated": "20260516"
     },
-    "34236": {
-      "room_name": "349房间",
-      "current_balance": 18.98,
-      "last_updated": "20260516"
-    },
-    "14350": {
-      "room_name": "538房间",
-      "current_balance": 353.78,
-      "last_updated": "20260516"
-    },
-    "60612": {
-      "room_name": "335房间",
-      "current_balance": 708.39,
-      "last_updated": "20260516"
-    },
     "31249": {
       "room_name": "402房间",
       "current_balance": 6.43,
-      "last_updated": "20260516"
-    },
-    "92962": {
-      "room_name": "509房间",
-      "current_balance": 640.4,
-      "last_updated": "20260516"
-    },
-    "57688": {
-      "room_name": "539房间",
-      "current_balance": 500.4,
-      "last_updated": "20260516"
-    },
-    "43747": {
-      "room_name": "423房间",
-      "current_balance": 857.58,
-      "last_updated": "20260516"
-    },
-    "12880": {
-      "room_name": "446房间",
-      "current_balance": 1002.14,
-      "last_updated": "20260516"
-    },
-    "12536": {
-      "room_name": "107房间",
-      "current_balance": 76.39,
-      "last_updated": "20260516"
-    },
-    "85558": {
-      "room_name": "113房间",
-      "current_balance": 186.26,
       "last_updated": "20260516"
     },
     "67439": {
@@ -153,36 +38,6 @@
       "current_balance": 118.52,
       "last_updated": "20260516"
     },
-    "59455": {
-      "room_name": "406房间",
-      "current_balance": 499.61,
-      "last_updated": "20260516"
-    },
-    "90661": {
-      "room_name": "207房间",
-      "current_balance": 62.44,
-      "last_updated": "20260516"
-    },
-    "27256": {
-      "room_name": "402房间",
-      "current_balance": 6.43,
-      "last_updated": "20260516"
-    },
-    "89938": {
-      "room_name": "246房间",
-      "current_balance": 384.11,
-      "last_updated": "20260516"
-    },
-    "30125": {
-      "room_name": "232房间",
-      "current_balance": 47.42,
-      "last_updated": "20260516"
-    },
-    "58989": {
-      "room_name": "441房间",
-      "current_balance": 380.43,
-      "last_updated": "20260516"
-    },
     "80818": {
       "room_name": "403房间",
       "current_balance": 10.6,
@@ -193,69 +48,9 @@
       "current_balance": 611.17,
       "last_updated": "20260516"
     },
-    "49401": {
-      "room_name": "214房间",
-      "current_balance": 221.35,
-      "last_updated": "20260516"
-    },
-    "92716": {
-      "room_name": "401房间",
-      "current_balance": 419.66,
-      "last_updated": "20260516"
-    },
     "90556": {
       "room_name": "211房间",
       "current_balance": 514.15,
-      "last_updated": "20260516"
-    },
-    "43017": {
-      "room_name": "546房间",
-      "current_balance": 32.79,
-      "last_updated": "20260516"
-    },
-    "91869": {
-      "room_name": "520房间",
-      "current_balance": 316.72,
-      "last_updated": "20260516"
-    },
-    "77264": {
-      "room_name": "408房间",
-      "current_balance": 443.09,
-      "last_updated": "20260516"
-    },
-    "43299": {
-      "room_name": "137房间",
-      "current_balance": 7.04,
-      "last_updated": "20260516"
-    },
-    "87805": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
-      "last_updated": "20260516"
-    },
-    "18811": {
-      "room_name": "348房间",
-      "current_balance": 339.51,
-      "last_updated": "20260516"
-    },
-    "67603": {
-      "room_name": "328房间",
-      "current_balance": 57.65,
-      "last_updated": "20260516"
-    },
-    "62144": {
-      "room_name": "422房间",
-      "current_balance": 279.48,
-      "last_updated": "20260516"
-    },
-    "63976": {
-      "room_name": "136房间",
-      "current_balance": 74.99,
-      "last_updated": "20260516"
-    },
-    "58670": {
-      "room_name": "341房间",
-      "current_balance": 240.27,
       "last_updated": "20260516"
     },
     "62637": {
@@ -273,31 +68,6 @@
       "current_balance": 119.45,
       "last_updated": "20260516"
     },
-    "52866": {
-      "room_name": "214房间",
-      "current_balance": 221.35,
-      "last_updated": "20260516"
-    },
-    "57020": {
-      "room_name": "407房间",
-      "current_balance": 135.12,
-      "last_updated": "20260516"
-    },
-    "72814": {
-      "room_name": "245房间",
-      "current_balance": 169.64,
-      "last_updated": "20260516"
-    },
-    "84136": {
-      "room_name": "447房间",
-      "current_balance": 420.48,
-      "last_updated": "20260516"
-    },
-    "82003": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
     "60097": {
       "room_name": "339房间",
       "current_balance": 8.04,
@@ -313,44 +83,9 @@
       "current_balance": 27.71,
       "last_updated": "20260516"
     },
-    "31348": {
-      "room_name": "121房间",
-      "current_balance": 803.24,
-      "last_updated": "20260516"
-    },
     "40213": {
       "room_name": "130房间",
       "current_balance": 119.06,
-      "last_updated": "20260516"
-    },
-    "58577": {
-      "room_name": "320房间",
-      "current_balance": 750.87,
-      "last_updated": "20260516"
-    },
-    "72665": {
-      "room_name": "322房间",
-      "current_balance": 79.67,
-      "last_updated": "20260516"
-    },
-    "87793": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
-      "last_updated": "20260516"
-    },
-    "81647": {
-      "room_name": "446房间",
-      "current_balance": 1002.14,
-      "last_updated": "20260516"
-    },
-    "63077": {
-      "room_name": "250房间",
-      "current_balance": 163.26,
-      "last_updated": "20260516"
-    },
-    "58193": {
-      "room_name": "325房间",
-      "current_balance": 261.03,
       "last_updated": "20260516"
     },
     "67577": {
@@ -358,49 +93,9 @@
       "current_balance": 353.78,
       "last_updated": "20260516"
     },
-    "43710": {
-      "room_name": "410房间",
-      "current_balance": 47.86,
-      "last_updated": "20260516"
-    },
     "49033": {
       "room_name": "251房间",
       "current_balance": 908.22,
-      "last_updated": "20260516"
-    },
-    "57260": {
-      "room_name": "242房间",
-      "current_balance": 126.86,
-      "last_updated": "20260516"
-    },
-    "81866": {
-      "room_name": "530房间",
-      "current_balance": 301.92,
-      "last_updated": "20260516"
-    },
-    "68601": {
-      "room_name": "334房间",
-      "current_balance": 85.07,
-      "last_updated": "20260516"
-    },
-    "12737": {
-      "room_name": "520房间",
-      "current_balance": 316.72,
-      "last_updated": "20260516"
-    },
-    "80631": {
-      "room_name": "209房间",
-      "current_balance": 74.3,
-      "last_updated": "20260516"
-    },
-    "90883": {
-      "room_name": "413房间",
-      "current_balance": 518.57,
-      "last_updated": "20260516"
-    },
-    "11910": {
-      "room_name": "537房间",
-      "current_balance": 501.16,
       "last_updated": "20260516"
     },
     "14024": {
@@ -411,21 +106,6 @@
     "44448": {
       "room_name": "0512",
       "current_balance": 17.46,
-      "last_updated": "20260516"
-    },
-    "14007": {
-      "room_name": "235房间",
-      "current_balance": 96.22,
-      "last_updated": "20260516"
-    },
-    "57689": {
-      "room_name": "539房间",
-      "current_balance": 500.4,
-      "last_updated": "20260516"
-    },
-    "93277": {
-      "room_name": "330房间",
-      "current_balance": 496.42,
       "last_updated": "20260516"
     },
     "63550": {
@@ -448,94 +128,9 @@
       "current_balance": 518.57,
       "last_updated": "20260516"
     },
-    "62727": {
-      "room_name": "228房间",
-      "current_balance": 173.93,
-      "last_updated": "20260516"
-    },
-    "34936": {
-      "room_name": "532房间",
-      "current_balance": 136.97,
-      "last_updated": "20260516"
-    },
-    "59599": {
-      "room_name": "309房间",
-      "current_balance": 719.1,
-      "last_updated": "20260516"
-    },
-    "73983": {
-      "room_name": "134房间",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "92594": {
-      "room_name": "202房间",
-      "current_balance": 108.54,
-      "last_updated": "20260516"
-    },
-    "25050": {
-      "room_name": "550房间",
-      "current_balance": 298.33,
-      "last_updated": "20260516"
-    },
-    "25240": {
-      "room_name": "230房间",
-      "current_balance": 95.85,
-      "last_updated": "20260516"
-    },
-    "23359": {
-      "room_name": "204房间",
-      "current_balance": 402.13,
-      "last_updated": "20260516"
-    },
-    "56436": {
-      "room_name": "104房间",
-      "current_balance": 143.03,
-      "last_updated": "20260516"
-    },
-    "60615": {
-      "room_name": "352房间",
-      "current_balance": 785.69,
-      "last_updated": "20260516"
-    },
-    "61024": {
-      "room_name": "403房间",
-      "current_balance": 10.6,
-      "last_updated": "20260516"
-    },
-    "67434": {
-      "room_name": "201房间",
-      "current_balance": 121.08,
-      "last_updated": "20260516"
-    },
-    "94015": {
-      "room_name": "421房间",
-      "current_balance": 42.58,
-      "last_updated": "20260516"
-    },
     "82836": {
       "room_name": "446房间",
       "current_balance": 1002.14,
-      "last_updated": "20260516"
-    },
-    "50498": {
-      "room_name": "309房间",
-      "current_balance": 719.1,
-      "last_updated": "20260516"
-    },
-    "12989": {
-      "room_name": "450房间",
-      "current_balance": 192.19,
-      "last_updated": "20260516"
-    },
-    "12740": {
-      "room_name": "252房间",
-      "current_balance": 103.68,
-      "last_updated": "20260516"
-    },
-    "83124": {
-      "room_name": "212房间",
-      "current_balance": 108.71,
       "last_updated": "20260516"
     },
     "78566": {
@@ -543,64 +138,9 @@
       "current_balance": 74.3,
       "last_updated": "20260516"
     },
-    "35769": {
-      "room_name": "101房间",
-      "current_balance": 22.62,
-      "last_updated": "20260516"
-    },
-    "81855": {
-      "room_name": "515房间",
-      "current_balance": 512.18,
-      "last_updated": "20260516"
-    },
     "54782": {
       "room_name": "340房间",
       "current_balance": 806.87,
-      "last_updated": "20260516"
-    },
-    "80854": {
-      "room_name": "107房间",
-      "current_balance": 76.39,
-      "last_updated": "20260516"
-    },
-    "71744": {
-      "room_name": "313房间",
-      "current_balance": 274.64,
-      "last_updated": "20260516"
-    },
-    "93290": {
-      "room_name": "330房间",
-      "current_balance": 496.42,
-      "last_updated": "20260516"
-    },
-    "24067": {
-      "room_name": "336房间",
-      "current_balance": 42.22,
-      "last_updated": "20260516"
-    },
-    "10743": {
-      "room_name": "349房间",
-      "current_balance": 18.98,
-      "last_updated": "20260516"
-    },
-    "49159": {
-      "room_name": "324房间",
-      "current_balance": 59.24,
-      "last_updated": "20260516"
-    },
-    "11224": {
-      "room_name": "435房间",
-      "current_balance": 852.2,
-      "last_updated": "20260516"
-    },
-    "74292": {
-      "room_name": "107房间",
-      "current_balance": 76.39,
-      "last_updated": "20260516"
-    },
-    "95030": {
-      "room_name": "515房间",
-      "current_balance": 512.18,
       "last_updated": "20260516"
     },
     "91624": {
@@ -618,49 +158,14 @@
       "current_balance": 95.85,
       "last_updated": "20260516"
     },
-    "50187": {
-      "room_name": "544房间",
-      "current_balance": 257.78,
-      "last_updated": "20260516"
-    },
     "31571": {
       "room_name": "0418",
       "current_balance": 240.97,
       "last_updated": "20260516"
     },
-    "26800": {
-      "room_name": "218房间",
-      "current_balance": 385.27,
-      "last_updated": "20260516"
-    },
-    "31651": {
-      "room_name": "419房间",
-      "current_balance": 54.71,
-      "last_updated": "20260516"
-    },
-    "47299": {
-      "room_name": "523房间",
-      "current_balance": 183.26,
-      "last_updated": "20260516"
-    },
-    "87795": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
-      "last_updated": "20260516"
-    },
     "12894": {
       "room_name": "311房间",
       "current_balance": 684.7,
-      "last_updated": "20260516"
-    },
-    "12215": {
-      "room_name": "310房间",
-      "current_balance": 194.56,
-      "last_updated": "20260516"
-    },
-    "13671": {
-      "room_name": "212房间",
-      "current_balance": 108.71,
       "last_updated": "20260516"
     },
     "12754": {
@@ -673,49 +178,9 @@
       "current_balance": 45.24,
       "last_updated": "20260516"
     },
-    "35748": {
-      "room_name": "219房间",
-      "current_balance": 40.77,
-      "last_updated": "20260516"
-    },
     "83572": {
       "room_name": "522房间",
       "current_balance": 552.68,
-      "last_updated": "20260516"
-    },
-    "79848": {
-      "room_name": "428房间",
-      "current_balance": 132.73,
-      "last_updated": "20260516"
-    },
-    "36988": {
-      "room_name": "139房间",
-      "current_balance": 448.96,
-      "last_updated": "20260516"
-    },
-    "44252": {
-      "room_name": "241房间",
-      "current_balance": 623.5,
-      "last_updated": "20260516"
-    },
-    "67930": {
-      "room_name": "440房间",
-      "current_balance": 59.61,
-      "last_updated": "20260516"
-    },
-    "15904": {
-      "room_name": "104房间",
-      "current_balance": 143.03,
-      "last_updated": "20260516"
-    },
-    "62224": {
-      "room_name": "346房间",
-      "current_balance": 63.13,
-      "last_updated": "20260516"
-    },
-    "39310": {
-      "room_name": "120房间",
-      "current_balance": 360.75,
       "last_updated": "20260516"
     },
     "92149": {
@@ -728,49 +193,14 @@
       "current_balance": 15.25,
       "last_updated": "20260516"
     },
-    "71083": {
-      "room_name": "327房间",
-      "current_balance": 25.54,
-      "last_updated": "20260516"
-    },
-    "55866": {
-      "room_name": "326房间",
-      "current_balance": 178.0,
-      "last_updated": "20260516"
-    },
-    "14857": {
-      "room_name": "141房间",
-      "current_balance": 126.35,
-      "last_updated": "20260516"
-    },
     "36073": {
       "room_name": "552房间",
       "current_balance": 42.07,
       "last_updated": "20260516"
     },
-    "14501": {
-      "room_name": "320房间",
-      "current_balance": 750.87,
-      "last_updated": "20260516"
-    },
-    "90873": {
-      "room_name": "233房间",
-      "current_balance": 81.29,
-      "last_updated": "20260516"
-    },
     "14023": {
       "room_name": "215房间",
       "current_balance": 322.87,
-      "last_updated": "20260516"
-    },
-    "88082": {
-      "room_name": "246房间",
-      "current_balance": 384.11,
-      "last_updated": "20260516"
-    },
-    "84430": {
-      "room_name": "249房间",
-      "current_balance": 30.71,
       "last_updated": "20260516"
     },
     "74090": {
@@ -783,19 +213,9 @@
       "current_balance": 623.5,
       "last_updated": "20260516"
     },
-    "35933": {
-      "room_name": "207房间",
-      "current_balance": 62.44,
-      "last_updated": "20260516"
-    },
     "90441": {
       "room_name": "239房间",
       "current_balance": 629.38,
-      "last_updated": "20260516"
-    },
-    "27361": {
-      "room_name": "317房间",
-      "current_balance": 735.19,
       "last_updated": "20260516"
     },
     "87469": {
@@ -808,54 +228,9 @@
       "current_balance": 217.86,
       "last_updated": "20260516"
     },
-    "12021": {
-      "room_name": "301房间",
-      "current_balance": 123.2,
-      "last_updated": "20260516"
-    },
-    "13758": {
-      "room_name": "212房间",
-      "current_balance": 108.71,
-      "last_updated": "20260516"
-    },
-    "18061": {
-      "room_name": "305房间",
-      "current_balance": 769.83,
-      "last_updated": "20260516"
-    },
     "33756": {
       "room_name": "421房间",
       "current_balance": 42.58,
-      "last_updated": "20260516"
-    },
-    "54899": {
-      "room_name": "224房间",
-      "current_balance": 276.29,
-      "last_updated": "20260516"
-    },
-    "27570": {
-      "room_name": "234房间",
-      "current_balance": 679.0,
-      "last_updated": "20260516"
-    },
-    "12190": {
-      "room_name": "545房间",
-      "current_balance": 16.76,
-      "last_updated": "20260516"
-    },
-    "38664": {
-      "room_name": "537房间",
-      "current_balance": 501.16,
-      "last_updated": "20260516"
-    },
-    "60748": {
-      "room_name": "331房间",
-      "current_balance": 764.51,
-      "last_updated": "20260516"
-    },
-    "14080": {
-      "room_name": "409房间",
-      "current_balance": 98.48,
       "last_updated": "20260516"
     },
     "54549": {
@@ -866,36 +241,6 @@
     "35126": {
       "room_name": "229房间",
       "current_balance": 19.38,
-      "last_updated": "20260516"
-    },
-    "23963": {
-      "room_name": "541房间",
-      "current_balance": 72.89,
-      "last_updated": "20260516"
-    },
-    "98474": {
-      "room_name": "433房间",
-      "current_balance": 54.6,
-      "last_updated": "20260516"
-    },
-    "37097": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
-    "84884": {
-      "room_name": "412房间",
-      "current_balance": 173.94,
-      "last_updated": "20260516"
-    },
-    "61919": {
-      "room_name": "533房间",
-      "current_balance": 513.28,
-      "last_updated": "20260516"
-    },
-    "14521": {
-      "room_name": "235房间",
-      "current_balance": 96.22,
       "last_updated": "20260516"
     },
     "54287": {
@@ -918,24 +263,9 @@
       "current_balance": 451.66,
       "last_updated": "20260516"
     },
-    "60590": {
-      "room_name": "445房间",
-      "current_balance": 710.17,
-      "last_updated": "20260516"
-    },
     "62744": {
       "room_name": "543房间",
       "current_balance": 31.34,
-      "last_updated": "20260516"
-    },
-    "27684": {
-      "room_name": "510房间",
-      "current_balance": 15.25,
-      "last_updated": "20260516"
-    },
-    "75178": {
-      "room_name": "129房间",
-      "current_balance": 0.36,
       "last_updated": "20260516"
     },
     "33527": {
@@ -948,29 +278,14 @@
       "current_balance": 640.4,
       "last_updated": "20260516"
     },
-    "86500": {
-      "room_name": "115房间",
-      "current_balance": 468.46,
-      "last_updated": "20260516"
-    },
     "11937": {
       "room_name": "342房间",
       "current_balance": 633.41,
       "last_updated": "20260516"
     },
-    "92762": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
     "57451": {
       "room_name": "125房间",
       "current_balance": 1434.41,
-      "last_updated": "20260516"
-    },
-    "23669": {
-      "room_name": "220房间",
-      "current_balance": 66.31,
       "last_updated": "20260516"
     },
     "60315": {
@@ -998,89 +313,14 @@
       "current_balance": 1002.14,
       "last_updated": "20260516"
     },
-    "60086": {
-      "room_name": "140房间",
-      "current_balance": 118.52,
-      "last_updated": "20260516"
-    },
-    "50212": {
-      "room_name": "414房间",
-      "current_balance": 200.9,
-      "last_updated": "20260516"
-    },
-    "32315": {
-      "room_name": "135房间",
-      "current_balance": 152.19,
-      "last_updated": "20260516"
-    },
     "26962": {
       "room_name": "103房间",
       "current_balance": 273.5,
       "last_updated": "20260516"
     },
-    "27269": {
-      "room_name": "542房间",
-      "current_balance": 698.56,
-      "last_updated": "20260516"
-    },
-    "27724": {
-      "room_name": "547房间",
-      "current_balance": 205.37,
-      "last_updated": "20260516"
-    },
-    "49729": {
-      "room_name": "122房间",
-      "current_balance": 73.96,
-      "last_updated": "20260516"
-    },
-    "61957": {
-      "room_name": "539房间",
-      "current_balance": 500.4,
-      "last_updated": "20260516"
-    },
-    "29816": {
-      "room_name": "438房间",
-      "current_balance": 74.64,
-      "last_updated": "20260516"
-    },
-    "87767": {
-      "room_name": "448房间",
-      "current_balance": 378.33,
-      "last_updated": "20260516"
-    },
-    "57757": {
-      "room_name": "404房间",
-      "current_balance": 855.37,
-      "last_updated": "20260516"
-    },
-    "61257": {
-      "room_name": "241房间",
-      "current_balance": 623.5,
-      "last_updated": "20260516"
-    },
     "25369": {
       "room_name": "0233",
       "current_balance": 81.29,
-      "last_updated": "20260516"
-    },
-    "37824": {
-      "room_name": "319房间",
-      "current_balance": 281.92,
-      "last_updated": "20260516"
-    },
-    "92227": {
-      "room_name": "207房间",
-      "current_balance": 62.44,
-      "last_updated": "20260516"
-    },
-    "25263": {
-      "room_name": "234房间",
-      "current_balance": 679.0,
-      "last_updated": "20260516"
-    },
-    "56673": {
-      "room_name": "221房间",
-      "current_balance": 19.4,
       "last_updated": "20260516"
     },
     "94888": {
@@ -1093,24 +333,9 @@
       "current_balance": 102.69,
       "last_updated": "20260516"
     },
-    "91694": {
-      "room_name": "305房间",
-      "current_balance": 769.83,
-      "last_updated": "20260516"
-    },
-    "21765": {
-      "room_name": "436房间",
-      "current_balance": 9.3,
-      "last_updated": "20260516"
-    },
     "57421": {
       "room_name": "314房间",
       "current_balance": 4.26,
-      "last_updated": "20260516"
-    },
-    "60675": {
-      "room_name": "433房间",
-      "current_balance": 54.6,
       "last_updated": "20260516"
     },
     "87804": {
@@ -1118,54 +343,9 @@
       "current_balance": 123.46,
       "last_updated": "20260516"
     },
-    "59896": {
-      "room_name": "447房间",
-      "current_balance": 420.48,
-      "last_updated": "20260516"
-    },
-    "57338": {
-      "room_name": "336房间",
-      "current_balance": 42.22,
-      "last_updated": "20260516"
-    },
-    "12490": {
-      "room_name": "250房间",
-      "current_balance": 163.26,
-      "last_updated": "20260516"
-    },
-    "11961": {
-      "room_name": "217房间",
-      "current_balance": 85.95,
-      "last_updated": "20260516"
-    },
     "23175": {
       "room_name": "415房间",
       "current_balance": 445.21,
-      "last_updated": "20260516"
-    },
-    "88977": {
-      "room_name": "213房间",
-      "current_balance": 822.69,
-      "last_updated": "20260516"
-    },
-    "13202": {
-      "room_name": "251房间",
-      "current_balance": 908.22,
-      "last_updated": "20260516"
-    },
-    "60116": {
-      "room_name": "310房间",
-      "current_balance": 194.56,
-      "last_updated": "20260516"
-    },
-    "62616": {
-      "room_name": "449房间",
-      "current_balance": 85.88,
-      "last_updated": "20260516"
-    },
-    "90286": {
-      "room_name": "205房间",
-      "current_balance": 246.63,
       "last_updated": "20260516"
     },
     "46349": {
@@ -1173,19 +353,9 @@
       "current_balance": 105.4,
       "last_updated": "20260516"
     },
-    "49745": {
-      "room_name": "502房间",
-      "current_balance": 18.97,
-      "last_updated": "20260516"
-    },
     "39128": {
       "room_name": "122房间",
       "current_balance": 73.96,
-      "last_updated": "20260516"
-    },
-    "44446": {
-      "room_name": "218房间",
-      "current_balance": 385.27,
       "last_updated": "20260516"
     },
     "29856": {
@@ -1193,34 +363,9 @@
       "current_balance": 83.13,
       "last_updated": "20260516"
     },
-    "30201": {
-      "room_name": "326房间",
-      "current_balance": 178.0,
-      "last_updated": "20260516"
-    },
-    "12738": {
-      "room_name": "520房间",
-      "current_balance": 316.72,
-      "last_updated": "20260516"
-    },
-    "38898": {
-      "room_name": "445房间",
-      "current_balance": 710.17,
-      "last_updated": "20260516"
-    },
     "90596": {
       "room_name": "206房间",
       "current_balance": 163.87,
-      "last_updated": "20260516"
-    },
-    "64854": {
-      "room_name": "319房间",
-      "current_balance": 281.92,
-      "last_updated": "20260516"
-    },
-    "57602": {
-      "room_name": "135房间",
-      "current_balance": 152.19,
       "last_updated": "20260516"
     },
     "91925": {
@@ -1228,89 +373,9 @@
       "current_balance": 384.11,
       "last_updated": "20260516"
     },
-    "18581": {
-      "room_name": "101房间",
-      "current_balance": 22.62,
-      "last_updated": "20260516"
-    },
-    "24667": {
-      "room_name": "404房间",
-      "current_balance": 855.37,
-      "last_updated": "20260516"
-    },
-    "11429": {
-      "room_name": "449房间",
-      "current_balance": 85.88,
-      "last_updated": "20260516"
-    },
-    "87434": {
-      "room_name": "528房间",
-      "current_balance": 611.17,
-      "last_updated": "20260516"
-    },
-    "44420": {
-      "room_name": "417房间",
-      "current_balance": 24.23,
-      "last_updated": "20260516"
-    },
-    "42355": {
-      "room_name": "548房间",
-      "current_balance": 83.9,
-      "last_updated": "20260516"
-    },
-    "67564": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
-    "16924": {
-      "room_name": "549房间",
-      "current_balance": 493.26,
-      "last_updated": "20260516"
-    },
     "44453": {
       "room_name": "529房间",
       "current_balance": 19.07,
-      "last_updated": "20260516"
-    },
-    "49608": {
-      "room_name": "104房间",
-      "current_balance": 143.03,
-      "last_updated": "20260516"
-    },
-    "32344": {
-      "room_name": "524房间",
-      "current_balance": 311.04,
-      "last_updated": "20260516"
-    },
-    "58911": {
-      "room_name": "352房间",
-      "current_balance": 785.69,
-      "last_updated": "20260516"
-    },
-    "53905": {
-      "room_name": "414房间",
-      "current_balance": 200.9,
-      "last_updated": "20260516"
-    },
-    "62125": {
-      "room_name": "444房间",
-      "current_balance": 273.93,
-      "last_updated": "20260516"
-    },
-    "61866": {
-      "room_name": "412房间",
-      "current_balance": 173.94,
-      "last_updated": "20260516"
-    },
-    "37923": {
-      "room_name": "244房间",
-      "current_balance": 48.94,
-      "last_updated": "20260516"
-    },
-    "57202": {
-      "room_name": "422房间",
-      "current_balance": 279.48,
       "last_updated": "20260516"
     },
     "63518": {
@@ -1318,34 +383,9 @@
       "current_balance": 194.56,
       "last_updated": "20260516"
     },
-    "36623": {
-      "room_name": "319房间",
-      "current_balance": 281.92,
-      "last_updated": "20260516"
-    },
-    "75637": {
-      "room_name": "322房间",
-      "current_balance": 79.67,
-      "last_updated": "20260516"
-    },
-    "44399": {
-      "room_name": "519房间",
-      "current_balance": 716.51,
-      "last_updated": "20260516"
-    },
-    "12556": {
-      "room_name": "331房间",
-      "current_balance": 764.51,
-      "last_updated": "20260516"
-    },
     "83932": {
       "room_name": "319房间",
       "current_balance": 281.92,
-      "last_updated": "20260516"
-    },
-    "58418": {
-      "room_name": "137房间",
-      "current_balance": 7.04,
       "last_updated": "20260516"
     },
     "99808": {
@@ -1353,89 +393,9 @@
       "current_balance": 329.23,
       "last_updated": "20260516"
     },
-    "82123": {
-      "room_name": "528房间",
-      "current_balance": 611.17,
-      "last_updated": "20260516"
-    },
-    "54270": {
-      "room_name": "440房间",
-      "current_balance": 59.61,
-      "last_updated": "20260516"
-    },
-    "30403": {
-      "room_name": "136房间",
-      "current_balance": 74.99,
-      "last_updated": "20260516"
-    },
-    "62641": {
-      "room_name": "311房间",
-      "current_balance": 684.7,
-      "last_updated": "20260516"
-    },
-    "34143": {
-      "room_name": "247房间",
-      "current_balance": 109.35,
-      "last_updated": "20260516"
-    },
-    "57790": {
-      "room_name": "141房间",
-      "current_balance": 126.35,
-      "last_updated": "20260516"
-    },
-    "30244": {
-      "room_name": "433房间",
-      "current_balance": 54.6,
-      "last_updated": "20260516"
-    },
-    "26646": {
-      "room_name": "236房间",
-      "current_balance": 156.88,
-      "last_updated": "20260516"
-    },
-    "37528": {
-      "room_name": "227房间",
-      "current_balance": 946.18,
-      "last_updated": "20260516"
-    },
     "33133": {
       "room_name": "124房间",
       "current_balance": 84.89,
-      "last_updated": "20260516"
-    },
-    "82542": {
-      "room_name": "521房间",
-      "current_balance": 106.08,
-      "last_updated": "20260516"
-    },
-    "51840": {
-      "room_name": "539房间",
-      "current_balance": 500.4,
-      "last_updated": "20260516"
-    },
-    "62052": {
-      "room_name": "324房间",
-      "current_balance": 59.24,
-      "last_updated": "20260516"
-    },
-    "74853": {
-      "room_name": "450房间",
-      "current_balance": 192.19,
-      "last_updated": "20260516"
-    },
-    "30622": {
-      "room_name": "428房间",
-      "current_balance": 132.73,
-      "last_updated": "20260516"
-    },
-    "37096": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
-    "38509": {
-      "room_name": "122房间",
-      "current_balance": 73.96,
       "last_updated": "20260516"
     },
     "88717": {
@@ -1443,74 +403,14 @@
       "current_balance": 108.54,
       "last_updated": "20260516"
     },
-    "82111": {
-      "room_name": "423房间",
-      "current_balance": 857.58,
-      "last_updated": "20260516"
-    },
-    "19042": {
-      "room_name": "525房间",
-      "current_balance": 512.4,
-      "last_updated": "20260516"
-    },
-    "87978": {
-      "room_name": "202房间",
-      "current_balance": 108.54,
-      "last_updated": "20260516"
-    },
-    "61795": {
-      "room_name": "425房间",
-      "current_balance": 166.44,
-      "last_updated": "20260516"
-    },
     "63517": {
       "room_name": "425房间",
       "current_balance": 166.44,
       "last_updated": "20260516"
     },
-    "88884": {
-      "room_name": "537房间",
-      "current_balance": 501.16,
-      "last_updated": "20260516"
-    },
-    "50359": {
-      "room_name": "549房间",
-      "current_balance": 493.26,
-      "last_updated": "20260516"
-    },
-    "26833": {
-      "room_name": "347房间",
-      "current_balance": 73.23,
-      "last_updated": "20260516"
-    },
-    "82977": {
-      "room_name": "117房间",
-      "current_balance": 13.12,
-      "last_updated": "20260516"
-    },
-    "12606": {
-      "room_name": "117房间",
-      "current_balance": 13.12,
-      "last_updated": "20260516"
-    },
-    "29829": {
-      "room_name": "438房间",
-      "current_balance": 74.64,
-      "last_updated": "20260516"
-    },
     "84318": {
       "room_name": "0410",
       "current_balance": 47.86,
-      "last_updated": "20260516"
-    },
-    "24943": {
-      "room_name": "523房间",
-      "current_balance": 183.26,
-      "last_updated": "20260516"
-    },
-    "36835": {
-      "room_name": "537房间",
-      "current_balance": 501.16,
       "last_updated": "20260516"
     },
     "15061": {
@@ -1523,24 +423,9 @@
       "current_balance": 170.92,
       "last_updated": "20260516"
     },
-    "61857": {
-      "room_name": "546房间",
-      "current_balance": 32.79,
-      "last_updated": "20260516"
-    },
     "34840": {
       "room_name": "535房间",
       "current_balance": 36.12,
-      "last_updated": "20260516"
-    },
-    "51573": {
-      "room_name": "214房间",
-      "current_balance": 221.35,
-      "last_updated": "20260516"
-    },
-    "50480": {
-      "room_name": "411房间",
-      "current_balance": 320.64,
       "last_updated": "20260516"
     },
     "59836": {
@@ -1553,24 +438,9 @@
       "current_balance": 13.12,
       "last_updated": "20260516"
     },
-    "18140": {
-      "room_name": "236房间",
-      "current_balance": 156.88,
-      "last_updated": "20260516"
-    },
     "79116": {
       "room_name": "301房间",
       "current_balance": 123.2,
-      "last_updated": "20260516"
-    },
-    "31585": {
-      "room_name": "412房间",
-      "current_balance": 173.94,
-      "last_updated": "20260516"
-    },
-    "89956": {
-      "room_name": "515房间",
-      "current_balance": 512.18,
       "last_updated": "20260516"
     },
     "13276": {
@@ -1588,89 +458,14 @@
       "current_balance": 785.69,
       "last_updated": "20260516"
     },
-    "29973": {
-      "room_name": "225房间",
-      "current_balance": 36.2,
-      "last_updated": "20260516"
-    },
-    "58245": {
-      "room_name": "430房间",
-      "current_balance": 833.65,
-      "last_updated": "20260516"
-    },
-    "12594": {
-      "room_name": "513房间",
-      "current_balance": 85.12,
-      "last_updated": "20260516"
-    },
-    "28603": {
-      "room_name": "513房间",
-      "current_balance": 85.12,
-      "last_updated": "20260516"
-    },
-    "14002": {
-      "room_name": "448房间",
-      "current_balance": 378.33,
-      "last_updated": "20260516"
-    },
-    "57965": {
-      "room_name": "351房间",
-      "current_balance": 4.12,
-      "last_updated": "20260516"
-    },
-    "57548": {
-      "room_name": "418房间",
-      "current_balance": 240.97,
-      "last_updated": "20260516"
-    },
-    "14862": {
-      "room_name": "307房间",
-      "current_balance": 481.58,
-      "last_updated": "20260516"
-    },
-    "54311": {
-      "room_name": "552房间",
-      "current_balance": 42.07,
-      "last_updated": "20260516"
-    },
-    "13838": {
-      "room_name": "303房间",
-      "current_balance": 398.04,
-      "last_updated": "20260516"
-    },
     "49151": {
       "room_name": "419房间",
       "current_balance": 54.71,
       "last_updated": "20260516"
     },
-    "11020": {
-      "room_name": "312房间",
-      "current_balance": 622.19,
-      "last_updated": "20260516"
-    },
-    "77855": {
-      "room_name": "536房间",
-      "current_balance": 22.85,
-      "last_updated": "20260516"
-    },
     "55506": {
       "room_name": "0123",
       "current_balance": 451.66,
-      "last_updated": "20260516"
-    },
-    "27422": {
-      "room_name": "308房间",
-      "current_balance": 1216.36,
-      "last_updated": "20260516"
-    },
-    "94594": {
-      "room_name": "313房间",
-      "current_balance": 274.64,
-      "last_updated": "20260516"
-    },
-    "62928": {
-      "room_name": "141房间",
-      "current_balance": 126.35,
       "last_updated": "20260516"
     },
     "13556": {
@@ -1683,44 +478,9 @@
       "current_balance": 42.22,
       "last_updated": "20260516"
     },
-    "59892": {
-      "room_name": "544房间",
-      "current_balance": 257.78,
-      "last_updated": "20260516"
-    },
-    "27456": {
-      "room_name": "229房间",
-      "current_balance": 19.38,
-      "last_updated": "20260516"
-    },
     "91268": {
       "room_name": "302房间",
       "current_balance": 4.74,
-      "last_updated": "20260516"
-    },
-    "62643": {
-      "room_name": "311房间",
-      "current_balance": 684.7,
-      "last_updated": "20260516"
-    },
-    "57287": {
-      "room_name": "533房间",
-      "current_balance": 513.28,
-      "last_updated": "20260516"
-    },
-    "11108": {
-      "room_name": "331房间",
-      "current_balance": 764.51,
-      "last_updated": "20260516"
-    },
-    "87604": {
-      "room_name": "110房间",
-      "current_balance": 237.8,
-      "last_updated": "20260516"
-    },
-    "21862": {
-      "room_name": "130房间",
-      "current_balance": 119.06,
       "last_updated": "20260516"
     },
     "30396": {
@@ -1728,49 +488,9 @@
       "current_balance": 76.04,
       "last_updated": "20260516"
     },
-    "52064": {
-      "room_name": "430房间",
-      "current_balance": 833.65,
-      "last_updated": "20260516"
-    },
-    "57628": {
-      "room_name": "442房间",
-      "current_balance": 102.69,
-      "last_updated": "20260516"
-    },
-    "27380": {
-      "room_name": "346房间",
-      "current_balance": 63.13,
-      "last_updated": "20260516"
-    },
-    "90033": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
-      "last_updated": "20260516"
-    },
-    "58890": {
-      "room_name": "131房间",
-      "current_balance": 552.39,
-      "last_updated": "20260516"
-    },
-    "41608": {
-      "room_name": "350房间",
-      "current_balance": 372.76,
-      "last_updated": "20260516"
-    },
-    "57270": {
-      "room_name": "533房间",
-      "current_balance": 513.28,
-      "last_updated": "20260516"
-    },
     "62722": {
       "room_name": "135房间",
       "current_balance": 152.19,
-      "last_updated": "20260516"
-    },
-    "44085": {
-      "room_name": "519房间",
-      "current_balance": 716.51,
       "last_updated": "20260516"
     },
     "11996": {
@@ -1778,99 +498,9 @@
       "current_balance": 385.27,
       "last_updated": "20260516"
     },
-    "16262": {
-      "room_name": "205房间",
-      "current_balance": 246.63,
-      "last_updated": "20260516"
-    },
-    "23362": {
-      "room_name": "542房间",
-      "current_balance": 698.56,
-      "last_updated": "20260516"
-    },
-    "21758": {
-      "room_name": "121房间",
-      "current_balance": 803.24,
-      "last_updated": "20260516"
-    },
-    "24330": {
-      "room_name": "440房间",
-      "current_balance": 59.61,
-      "last_updated": "20260516"
-    },
-    "26056": {
-      "room_name": "524房间",
-      "current_balance": 311.04,
-      "last_updated": "20260516"
-    },
-    "34480": {
-      "room_name": "348房间",
-      "current_balance": 339.51,
-      "last_updated": "20260516"
-    },
-    "13722": {
-      "room_name": "413房间",
-      "current_balance": 518.57,
-      "last_updated": "20260516"
-    },
-    "91214": {
-      "room_name": "210房间",
-      "current_balance": 460.18,
-      "last_updated": "20260516"
-    },
-    "17231": {
-      "room_name": "229房间",
-      "current_balance": 19.38,
-      "last_updated": "20260516"
-    },
-    "27265": {
-      "room_name": "402房间",
-      "current_balance": 6.43,
-      "last_updated": "20260516"
-    },
-    "14901": {
-      "room_name": "424房间",
-      "current_balance": 96.29,
-      "last_updated": "20260516"
-    },
-    "35944": {
-      "room_name": "316房间",
-      "current_balance": 170.92,
-      "last_updated": "20260516"
-    },
-    "98514": {
-      "room_name": "512房间",
-      "current_balance": 17.46,
-      "last_updated": "20260516"
-    },
-    "42982": {
-      "room_name": "140房间",
-      "current_balance": 118.52,
-      "last_updated": "20260516"
-    },
-    "61971": {
-      "room_name": "416房间",
-      "current_balance": 17.76,
-      "last_updated": "20260516"
-    },
-    "57261": {
-      "room_name": "242房间",
-      "current_balance": 126.86,
-      "last_updated": "20260516"
-    },
     "87907": {
       "room_name": "204房间",
       "current_balance": 402.13,
-      "last_updated": "20260516"
-    },
-    "60800": {
-      "room_name": "251房间",
-      "current_balance": 908.22,
-      "last_updated": "20260516"
-    },
-    "74007": {
-      "room_name": "545房间",
-      "current_balance": 16.76,
       "last_updated": "20260516"
     },
     "59333": {
@@ -1878,109 +508,9 @@
       "current_balance": 806.87,
       "last_updated": "20260516"
     },
-    "34358": {
-      "room_name": "227房间",
-      "current_balance": 946.18,
-      "last_updated": "20260516"
-    },
-    "12783": {
-      "room_name": "352房间",
-      "current_balance": 785.69,
-      "last_updated": "20260516"
-    },
-    "36427": {
-      "room_name": "142房间",
-      "current_balance": 26.32,
-      "last_updated": "20260516"
-    },
-    "69425": {
-      "room_name": "101房间",
-      "current_balance": 22.62,
-      "last_updated": "20260516"
-    },
-    "63882": {
-      "room_name": "534房间",
-      "current_balance": 639.52,
-      "last_updated": "20260516"
-    },
-    "83349": {
-      "room_name": "226房间",
-      "current_balance": 394.21,
-      "last_updated": "20260516"
-    },
-    "93275": {
-      "room_name": "517房间",
-      "current_balance": 219.06,
-      "last_updated": "20260516"
-    },
-    "31357": {
-      "room_name": "343房间",
-      "current_balance": 96.82,
-      "last_updated": "20260516"
-    },
-    "90840": {
-      "room_name": "204房间",
-      "current_balance": 402.13,
-      "last_updated": "20260516"
-    },
-    "60591": {
-      "room_name": "137房间",
-      "current_balance": 7.04,
-      "last_updated": "20260516"
-    },
-    "61074": {
-      "room_name": "429房间",
-      "current_balance": 434.53,
-      "last_updated": "20260516"
-    },
-    "31711": {
-      "room_name": "230房间",
-      "current_balance": 95.85,
-      "last_updated": "20260516"
-    },
-    "62229": {
-      "room_name": "422房间",
-      "current_balance": 279.48,
-      "last_updated": "20260516"
-    },
     "71630": {
       "room_name": "501房间",
       "current_balance": 69.68,
-      "last_updated": "20260516"
-    },
-    "40893": {
-      "room_name": "247房间",
-      "current_balance": 109.35,
-      "last_updated": "20260516"
-    },
-    "95693": {
-      "room_name": "206房间",
-      "current_balance": 163.87,
-      "last_updated": "20260516"
-    },
-    "63514": {
-      "room_name": "347房间",
-      "current_balance": 73.23,
-      "last_updated": "20260516"
-    },
-    "56510": {
-      "room_name": "343房间",
-      "current_balance": 96.82,
-      "last_updated": "20260516"
-    },
-    "91854": {
-      "room_name": "227房间",
-      "current_balance": 946.18,
-      "last_updated": "20260516"
-    },
-    "15623": {
-      "room_name": "214房间",
-      "current_balance": 221.35,
-      "last_updated": "20260516"
-    },
-    "80150": {
-      "room_name": "215房间",
-      "current_balance": 322.87,
       "last_updated": "20260516"
     },
     "58486": {
@@ -1988,79 +518,14 @@
       "current_balance": 735.19,
       "last_updated": "20260516"
     },
-    "25339": {
-      "room_name": "508房间",
-      "current_balance": 105.4,
-      "last_updated": "20260516"
-    },
-    "60718": {
-      "room_name": "432房间",
-      "current_balance": 1497.84,
-      "last_updated": "20260516"
-    },
-    "12526": {
-      "room_name": "111房间",
-      "current_balance": 242.47,
-      "last_updated": "20260516"
-    },
-    "39249": {
-      "room_name": "440房间",
-      "current_balance": 59.61,
-      "last_updated": "20260516"
-    },
-    "37360": {
-      "room_name": "130房间",
-      "current_balance": 119.06,
-      "last_updated": "20260516"
-    },
-    "13616": {
-      "room_name": "221房间",
-      "current_balance": 19.4,
-      "last_updated": "20260516"
-    },
     "90256": {
       "room_name": "527房间",
       "current_balance": 207.7,
       "last_updated": "20260516"
     },
-    "60976": {
-      "room_name": "534房间",
-      "current_balance": 639.52,
-      "last_updated": "20260516"
-    },
-    "17856": {
-      "room_name": "323房间",
-      "current_balance": 423.99,
-      "last_updated": "20260516"
-    },
-    "14027": {
-      "room_name": "338房间",
-      "current_balance": 107.9,
-      "last_updated": "20260516"
-    },
-    "60129": {
-      "room_name": "316房间",
-      "current_balance": 170.92,
-      "last_updated": "20260516"
-    },
-    "63131": {
-      "room_name": "419房间",
-      "current_balance": 54.71,
-      "last_updated": "20260516"
-    },
     "98906": {
       "room_name": "228房间",
       "current_balance": 173.93,
-      "last_updated": "20260516"
-    },
-    "22868": {
-      "room_name": "332房间",
-      "current_balance": 117.8,
-      "last_updated": "20260516"
-    },
-    "27250": {
-      "room_name": "108房间",
-      "current_balance": 90.66,
       "last_updated": "20260516"
     },
     "53443": {
@@ -2073,89 +538,14 @@
       "current_balance": 74.3,
       "last_updated": "20260516"
     },
-    "88940": {
-      "room_name": "535房间",
-      "current_balance": 36.12,
-      "last_updated": "20260516"
-    },
-    "12774": {
-      "room_name": "413房间",
-      "current_balance": 518.57,
-      "last_updated": "20260516"
-    },
-    "12686": {
-      "room_name": "205房间",
-      "current_balance": 246.63,
-      "last_updated": "20260516"
-    },
-    "27322": {
-      "room_name": "525房间",
-      "current_balance": 512.4,
-      "last_updated": "20260516"
-    },
-    "59645": {
-      "room_name": "314房间",
-      "current_balance": 4.26,
-      "last_updated": "20260516"
-    },
-    "41580": {
-      "room_name": "225房间",
-      "current_balance": 36.2,
-      "last_updated": "20260516"
-    },
     "53986": {
       "room_name": "329房间",
       "current_balance": 3.98,
       "last_updated": "20260516"
     },
-    "60960": {
-      "room_name": "133房间",
-      "current_balance": 42.06,
-      "last_updated": "20260516"
-    },
-    "28669": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
-      "last_updated": "20260516"
-    },
-    "34670": {
-      "room_name": "135房间",
-      "current_balance": 152.19,
-      "last_updated": "20260516"
-    },
-    "83763": {
-      "room_name": "140房间",
-      "current_balance": 118.52,
-      "last_updated": "20260516"
-    },
-    "60191": {
-      "room_name": "420房间",
-      "current_balance": 404.44,
-      "last_updated": "20260516"
-    },
-    "31266": {
-      "room_name": "319房间",
-      "current_balance": 281.92,
-      "last_updated": "20260516"
-    },
     "67068": {
       "room_name": "127房间",
       "current_balance": 161.78,
-      "last_updated": "20260516"
-    },
-    "35770": {
-      "room_name": "133房间",
-      "current_balance": 42.06,
-      "last_updated": "20260516"
-    },
-    "13915": {
-      "room_name": "135房间",
-      "current_balance": 152.19,
-      "last_updated": "20260516"
-    },
-    "14712": {
-      "room_name": "351房间",
-      "current_balance": 4.12,
       "last_updated": "20260516"
     },
     "29149": {
@@ -2183,41 +573,6 @@
       "current_balance": 42.06,
       "last_updated": "20260516"
     },
-    "66315": {
-      "room_name": "338房间",
-      "current_balance": 107.9,
-      "last_updated": "20260516"
-    },
-    "89639": {
-      "room_name": "312房间",
-      "current_balance": 622.19,
-      "last_updated": "20260516"
-    },
-    "28058": {
-      "room_name": "108房间",
-      "current_balance": 90.66,
-      "last_updated": "20260516"
-    },
-    "63990": {
-      "room_name": "238房间",
-      "current_balance": 89.22,
-      "last_updated": "20260516"
-    },
-    "54961": {
-      "room_name": "550房间",
-      "current_balance": 298.33,
-      "last_updated": "20260516"
-    },
-    "59898": {
-      "room_name": "339房间",
-      "current_balance": 8.04,
-      "last_updated": "20260516"
-    },
-    "28728": {
-      "room_name": "243房间",
-      "current_balance": 337.63,
-      "last_updated": "20260516"
-    },
     "62657": {
       "room_name": "437房间",
       "current_balance": 2677.89,
@@ -2228,24 +583,9 @@
       "current_balance": 4.26,
       "last_updated": "20260516"
     },
-    "58525": {
-      "room_name": "341房间",
-      "current_balance": 240.27,
-      "last_updated": "20260516"
-    },
     "50527": {
       "room_name": "540房间",
       "current_balance": 458.84,
-      "last_updated": "20260516"
-    },
-    "50608": {
-      "room_name": "331房间",
-      "current_balance": 764.51,
-      "last_updated": "20260516"
-    },
-    "91594": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
       "last_updated": "20260516"
     },
     "26052": {
@@ -2253,74 +593,14 @@
       "current_balance": 722.15,
       "last_updated": "20260516"
     },
-    "78245": {
-      "room_name": "249房间",
-      "current_balance": 30.71,
-      "last_updated": "20260516"
-    },
     "88447": {
       "room_name": "410房间",
       "current_balance": 47.86,
       "last_updated": "20260516"
     },
-    "90665": {
-      "room_name": "211房间",
-      "current_balance": 514.15,
-      "last_updated": "20260516"
-    },
-    "14551": {
-      "room_name": "414房间",
-      "current_balance": 200.9,
-      "last_updated": "20260516"
-    },
-    "29312": {
-      "room_name": "511房间",
-      "current_balance": 10.64,
-      "last_updated": "20260516"
-    },
-    "92048": {
-      "room_name": "117房间",
-      "current_balance": 13.12,
-      "last_updated": "20260516"
-    },
-    "20607": {
-      "room_name": "125房间",
-      "current_balance": 1434.41,
-      "last_updated": "20260516"
-    },
-    "93594": {
-      "room_name": "302房间",
-      "current_balance": 4.74,
-      "last_updated": "20260516"
-    },
     "60499": {
       "room_name": "343房间",
       "current_balance": 96.82,
-      "last_updated": "20260516"
-    },
-    "28714": {
-      "room_name": "505房间",
-      "current_balance": 509.59,
-      "last_updated": "20260516"
-    },
-    "49235": {
-      "room_name": "506房间",
-      "current_balance": 977.6,
-      "last_updated": "20260516"
-    },
-    "31494": {
-      "room_name": "127房间",
-      "current_balance": 161.78,
-      "last_updated": "20260516"
-    },
-    "81482": {
-      "room_name": "528房间",
-      "current_balance": 611.17,
-      "last_updated": "20260516"
-    },
-    "81869": {
-      "room_name": "249房间",
-      "current_balance": 30.71,
       "last_updated": "20260516"
     },
     "70610": {
@@ -2333,34 +613,9 @@
       "current_balance": 465.47,
       "last_updated": "20260516"
     },
-    "64540": {
-      "room_name": "345房间",
-      "current_balance": 737.34,
-      "last_updated": "20260516"
-    },
-    "16648": {
-      "room_name": "349房间",
-      "current_balance": 18.98,
-      "last_updated": "20260516"
-    },
-    "82504": {
-      "room_name": "521房间",
-      "current_balance": 106.08,
-      "last_updated": "20260516"
-    },
-    "90911": {
-      "room_name": "201房间",
-      "current_balance": 121.08,
-      "last_updated": "20260516"
-    },
     "14963": {
       "room_name": "321房间",
       "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
-    "91194": {
-      "room_name": "516房间",
-      "current_balance": 550.95,
       "last_updated": "20260516"
     },
     "88839": {
@@ -2368,44 +623,9 @@
       "current_balance": 173.94,
       "last_updated": "20260516"
     },
-    "57760": {
-      "room_name": "337房间",
-      "current_balance": 318.9,
-      "last_updated": "20260516"
-    },
-    "13039": {
-      "room_name": "238房间",
-      "current_balance": 89.22,
-      "last_updated": "20260516"
-    },
-    "26111": {
-      "room_name": "103房间",
-      "current_balance": 273.5,
-      "last_updated": "20260516"
-    },
     "73932": {
       "room_name": "134房间",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "58585": {
-      "room_name": "329房间",
-      "current_balance": 3.98,
-      "last_updated": "20260516"
-    },
-    "53097": {
-      "room_name": "137房间",
-      "current_balance": 7.04,
-      "last_updated": "20260516"
-    },
-    "93955": {
-      "room_name": "209房间",
-      "current_balance": 74.3,
-      "last_updated": "20260516"
-    },
-    "61647": {
-      "room_name": "330房间",
-      "current_balance": 496.42,
       "last_updated": "20260516"
     },
     "59391": {
@@ -2413,29 +633,9 @@
       "current_balance": 26.32,
       "last_updated": "20260516"
     },
-    "60492": {
-      "room_name": "244房间",
-      "current_balance": 48.94,
-      "last_updated": "20260516"
-    },
-    "37275": {
-      "room_name": "539房间",
-      "current_balance": 500.4,
-      "last_updated": "20260516"
-    },
-    "44050": {
-      "room_name": "532房间",
-      "current_balance": 136.97,
-      "last_updated": "20260516"
-    },
     "42968": {
       "room_name": "217房间",
       "current_balance": 85.95,
-      "last_updated": "20260516"
-    },
-    "59055": {
-      "room_name": "345房间",
-      "current_balance": 737.34,
       "last_updated": "20260516"
     },
     "43561": {
@@ -2443,54 +643,9 @@
       "current_balance": 85.12,
       "last_updated": "20260516"
     },
-    "14065": {
-      "room_name": "516房间",
-      "current_balance": 550.95,
-      "last_updated": "20260516"
-    },
-    "61558": {
-      "room_name": "140房间",
-      "current_balance": 118.52,
-      "last_updated": "20260516"
-    },
     "31489": {
       "room_name": "139房间",
       "current_balance": 448.96,
-      "last_updated": "20260516"
-    },
-    "78221": {
-      "room_name": "226房间",
-      "current_balance": 394.21,
-      "last_updated": "20260516"
-    },
-    "94535": {
-      "room_name": "216房间",
-      "current_balance": 465.47,
-      "last_updated": "20260516"
-    },
-    "60624": {
-      "room_name": "305房间",
-      "current_balance": 769.83,
-      "last_updated": "20260516"
-    },
-    "75424": {
-      "room_name": "504房间",
-      "current_balance": 415.12,
-      "last_updated": "20260516"
-    },
-    "57500": {
-      "room_name": "327房间",
-      "current_balance": 25.54,
-      "last_updated": "20260516"
-    },
-    "83194": {
-      "room_name": "226房间",
-      "current_balance": 394.21,
-      "last_updated": "20260516"
-    },
-    "58810": {
-      "room_name": "506房间",
-      "current_balance": 977.6,
       "last_updated": "20260516"
     },
     "37823": {
@@ -2503,34 +658,9 @@
       "current_balance": 497.52,
       "last_updated": "20260516"
     },
-    "60694": {
-      "room_name": "448房间",
-      "current_balance": 378.33,
-      "last_updated": "20260516"
-    },
-    "58428": {
-      "room_name": "407房间",
-      "current_balance": 135.12,
-      "last_updated": "20260516"
-    },
-    "38829": {
-      "room_name": "451房间",
-      "current_balance": 50.74,
-      "last_updated": "20260516"
-    },
-    "93467": {
-      "room_name": "304房间",
-      "current_balance": 85.76,
-      "last_updated": "20260516"
-    },
     "29708": {
       "room_name": "536房间",
       "current_balance": 22.85,
-      "last_updated": "20260516"
-    },
-    "42217": {
-      "room_name": "208房间",
-      "current_balance": 155.97,
       "last_updated": "20260516"
     },
     "67365": {
@@ -2541,26 +671,6 @@
     "23396": {
       "room_name": "502房间",
       "current_balance": 18.97,
-      "last_updated": "20260516"
-    },
-    "92310": {
-      "room_name": "315房间",
-      "current_balance": 565.91,
-      "last_updated": "20260516"
-    },
-    "55243": {
-      "room_name": "309房间",
-      "current_balance": 719.1,
-      "last_updated": "20260516"
-    },
-    "38138": {
-      "room_name": "243房间",
-      "current_balance": 337.63,
-      "last_updated": "20260516"
-    },
-    "87688": {
-      "room_name": "301房间",
-      "current_balance": 123.2,
       "last_updated": "20260516"
     },
     "49182": {
@@ -2583,29 +693,9 @@
       "current_balance": 855.37,
       "last_updated": "20260516"
     },
-    "15002": {
-      "room_name": "521房间",
-      "current_balance": 106.08,
-      "last_updated": "20260516"
-    },
     "26686": {
       "room_name": "0451",
       "current_balance": 50.74,
-      "last_updated": "20260516"
-    },
-    "60121": {
-      "room_name": "339房间",
-      "current_balance": 8.04,
-      "last_updated": "20260516"
-    },
-    "80960": {
-      "room_name": "202房间",
-      "current_balance": 108.54,
-      "last_updated": "20260516"
-    },
-    "12159": {
-      "room_name": "207房间",
-      "current_balance": 62.44,
       "last_updated": "20260516"
     },
     "91240": {
@@ -2633,19 +723,9 @@
       "current_balance": 79.67,
       "last_updated": "20260516"
     },
-    "60197": {
-      "room_name": "329房间",
-      "current_balance": 3.98,
-      "last_updated": "20260516"
-    },
     "60601": {
       "room_name": "427房间",
       "current_balance": 37.02,
-      "last_updated": "20260516"
-    },
-    "93595": {
-      "room_name": "221房间",
-      "current_balance": 19.4,
       "last_updated": "20260516"
     },
     "93978": {
@@ -2658,44 +738,14 @@
       "current_balance": 59.24,
       "last_updated": "20260516"
     },
-    "77294": {
-      "room_name": "223房间",
-      "current_balance": 77.5,
-      "last_updated": "20260516"
-    },
-    "27037": {
-      "room_name": "103房间",
-      "current_balance": 273.5,
-      "last_updated": "20260516"
-    },
     "54187": {
       "room_name": "550房间",
       "current_balance": 298.33,
       "last_updated": "20260516"
     },
-    "25969": {
-      "room_name": "106房间",
-      "current_balance": 55.15,
-      "last_updated": "20260516"
-    },
-    "39508": {
-      "room_name": "240房间",
-      "current_balance": 129.12,
-      "last_updated": "20260516"
-    },
-    "94312": {
-      "room_name": "303房间",
-      "current_balance": 398.04,
-      "last_updated": "20260516"
-    },
     "55763": {
       "room_name": "0326",
       "current_balance": 178.0,
-      "last_updated": "20260516"
-    },
-    "26198": {
-      "room_name": "437房间",
-      "current_balance": 2677.89,
       "last_updated": "20260516"
     },
     "13761": {
@@ -2708,59 +758,9 @@
       "current_balance": 434.53,
       "last_updated": "20260516"
     },
-    "63970": {
-      "room_name": "248房间",
-      "current_balance": 553.1,
-      "last_updated": "20260516"
-    },
-    "26495": {
-      "room_name": "344房间",
-      "current_balance": 715.56,
-      "last_updated": "20260516"
-    },
-    "88718": {
-      "room_name": "202房间",
-      "current_balance": 108.54,
-      "last_updated": "20260516"
-    },
-    "29471": {
-      "room_name": "328房间",
-      "current_balance": 57.65,
-      "last_updated": "20260516"
-    },
     "27786": {
       "room_name": "521房间",
       "current_balance": 106.08,
-      "last_updated": "20260516"
-    },
-    "26073": {
-      "room_name": "510房间",
-      "current_balance": 15.25,
-      "last_updated": "20260516"
-    },
-    "13757": {
-      "room_name": "410房间",
-      "current_balance": 47.86,
-      "last_updated": "20260516"
-    },
-    "50857": {
-      "room_name": "120房间",
-      "current_balance": 360.75,
-      "last_updated": "20260516"
-    },
-    "30634": {
-      "room_name": "327房间",
-      "current_balance": 25.54,
-      "last_updated": "20260516"
-    },
-    "59178": {
-      "room_name": "517房间",
-      "current_balance": 219.06,
-      "last_updated": "20260516"
-    },
-    "49086": {
-      "room_name": "426房间",
-      "current_balance": 321.08,
       "last_updated": "20260516"
     },
     "57636": {
@@ -2768,49 +768,9 @@
       "current_balance": 380.43,
       "last_updated": "20260516"
     },
-    "60418": {
-      "room_name": "232房间",
-      "current_balance": 47.42,
-      "last_updated": "20260516"
-    },
-    "60834": {
-      "room_name": "510房间",
-      "current_balance": 15.25,
-      "last_updated": "20260516"
-    },
-    "71469": {
-      "room_name": "405房间",
-      "current_balance": 497.52,
-      "last_updated": "20260516"
-    },
-    "39479": {
-      "room_name": "102房间",
-      "current_balance": 343.34,
-      "last_updated": "20260516"
-    },
     "26530": {
       "room_name": "507房间",
       "current_balance": 30.96,
-      "last_updated": "20260516"
-    },
-    "83638": {
-      "room_name": "520房间",
-      "current_balance": 316.72,
-      "last_updated": "20260516"
-    },
-    "12665": {
-      "room_name": "523房间",
-      "current_balance": 183.26,
-      "last_updated": "20260516"
-    },
-    "68646": {
-      "room_name": "218房间",
-      "current_balance": 385.27,
-      "last_updated": "20260516"
-    },
-    "59023": {
-      "room_name": "534房间",
-      "current_balance": 639.52,
       "last_updated": "20260516"
     },
     "48972": {
@@ -2823,44 +783,9 @@
       "current_balance": 423.99,
       "last_updated": "20260516"
     },
-    "36426": {
-      "room_name": "325房间",
-      "current_balance": 261.03,
-      "last_updated": "20260516"
-    },
-    "35844": {
-      "room_name": "505房间",
-      "current_balance": 509.59,
-      "last_updated": "20260516"
-    },
-    "32036": {
-      "room_name": "432房间",
-      "current_balance": 1497.84,
-      "last_updated": "20260516"
-    },
-    "14003": {
-      "room_name": "547房间",
-      "current_balance": 205.37,
-      "last_updated": "20260516"
-    },
-    "92519": {
-      "room_name": "312房间",
-      "current_balance": 622.19,
-      "last_updated": "20260516"
-    },
-    "35567": {
-      "room_name": "318房间",
-      "current_balance": 160.7,
-      "last_updated": "20260516"
-    },
     "36300": {
       "room_name": "345房间",
       "current_balance": 737.34,
-      "last_updated": "20260516"
-    },
-    "59865": {
-      "room_name": "240房间",
-      "current_balance": 129.12,
       "last_updated": "20260516"
     },
     "38681": {
@@ -2868,59 +793,9 @@
       "current_balance": 715.56,
       "last_updated": "20260516"
     },
-    "50918": {
-      "room_name": "429房间",
-      "current_balance": 434.53,
-      "last_updated": "20260516"
-    },
-    "37095": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
     "73245": {
       "room_name": "547房间",
       "current_balance": 205.37,
-      "last_updated": "20260516"
-    },
-    "24247": {
-      "room_name": "118房间",
-      "current_balance": 731.02,
-      "last_updated": "20260516"
-    },
-    "15173": {
-      "room_name": "350房间",
-      "current_balance": 372.76,
-      "last_updated": "20260516"
-    },
-    "11231": {
-      "room_name": "443房间",
-      "current_balance": 27.71,
-      "last_updated": "20260516"
-    },
-    "16487": {
-      "room_name": "444房间",
-      "current_balance": 273.93,
-      "last_updated": "20260516"
-    },
-    "41723": {
-      "room_name": "344房间",
-      "current_balance": 715.56,
-      "last_updated": "20260516"
-    },
-    "68563": {
-      "room_name": "349房间",
-      "current_balance": 18.98,
-      "last_updated": "20260516"
-    },
-    "82267": {
-      "room_name": "111房间",
-      "current_balance": 242.47,
-      "last_updated": "20260516"
-    },
-    "42036": {
-      "room_name": "514房间",
-      "current_balance": 547.69,
       "last_updated": "20260516"
     },
     "32530": {
@@ -2928,59 +803,14 @@
       "current_balance": 83.9,
       "last_updated": "20260516"
     },
-    "32792": {
-      "room_name": "531房间",
-      "current_balance": 119.45,
-      "last_updated": "20260516"
-    },
     "58666": {
       "room_name": "0406",
       "current_balance": 499.61,
       "last_updated": "20260516"
     },
-    "58246": {
-      "room_name": "310房间",
-      "current_balance": 194.56,
-      "last_updated": "20260516"
-    },
     "38402": {
       "room_name": "102房间",
       "current_balance": 343.34,
-      "last_updated": "20260516"
-    },
-    "58990": {
-      "room_name": "405房间",
-      "current_balance": 497.52,
-      "last_updated": "20260516"
-    },
-    "35179": {
-      "room_name": "252房间",
-      "current_balance": 103.68,
-      "last_updated": "20260516"
-    },
-    "92808": {
-      "room_name": "519房间",
-      "current_balance": 716.51,
-      "last_updated": "20260516"
-    },
-    "26553": {
-      "room_name": "119房间",
-      "current_balance": 397.01,
-      "last_updated": "20260516"
-    },
-    "83035": {
-      "room_name": "533房间",
-      "current_balance": 513.28,
-      "last_updated": "20260516"
-    },
-    "17389": {
-      "room_name": "319房间",
-      "current_balance": 281.92,
-      "last_updated": "20260516"
-    },
-    "82961": {
-      "room_name": "536房间",
-      "current_balance": 22.85,
       "last_updated": "20260516"
     },
     "24359": {
@@ -2993,16 +823,6 @@
       "current_balance": 468.46,
       "last_updated": "20260516"
     },
-    "59864": {
-      "room_name": "240房间",
-      "current_balance": 129.12,
-      "last_updated": "20260516"
-    },
-    "67129": {
-      "room_name": "504房间",
-      "current_balance": 415.12,
-      "last_updated": "20260516"
-    },
     "39565": {
       "room_name": "137房间",
       "current_balance": 7.04,
@@ -3013,179 +833,9 @@
       "current_balance": 500.4,
       "last_updated": "20260516"
     },
-    "30268": {
-      "room_name": "104房间",
-      "current_balance": 143.03,
-      "last_updated": "20260516"
-    },
-    "60449": {
-      "room_name": "243房间",
-      "current_balance": 337.63,
-      "last_updated": "20260516"
-    },
-    "43075": {
-      "room_name": "340房间",
-      "current_balance": 806.87,
-      "last_updated": "20260516"
-    },
-    "89166": {
-      "room_name": "205房间",
-      "current_balance": 246.63,
-      "last_updated": "20260516"
-    },
-    "62995": {
-      "room_name": "505房间",
-      "current_balance": 509.59,
-      "last_updated": "20260516"
-    },
-    "37428": {
-      "room_name": "435房间",
-      "current_balance": 852.2,
-      "last_updated": "20260516"
-    },
-    "28255": {
-      "room_name": "407房间",
-      "current_balance": 135.12,
-      "last_updated": "20260516"
-    },
-    "55573": {
-      "room_name": "501房间",
-      "current_balance": 69.68,
-      "last_updated": "20260516"
-    },
-    "64111": {
-      "room_name": "538房间",
-      "current_balance": 353.78,
-      "last_updated": "20260516"
-    },
-    "62629": {
-      "room_name": "311房间",
-      "current_balance": 684.7,
-      "last_updated": "20260516"
-    },
-    "89730": {
-      "room_name": "527房间",
-      "current_balance": 207.7,
-      "last_updated": "20260516"
-    },
-    "15267": {
-      "room_name": "310房间",
-      "current_balance": 194.56,
-      "last_updated": "20260516"
-    },
-    "89215": {
-      "room_name": "409房间",
-      "current_balance": 98.48,
-      "last_updated": "20260516"
-    },
-    "93420": {
-      "room_name": "443房间",
-      "current_balance": 27.71,
-      "last_updated": "20260516"
-    },
-    "49290": {
-      "room_name": "450房间",
-      "current_balance": 192.19,
-      "last_updated": "20260516"
-    },
     "29706": {
       "room_name": "106房间",
       "current_balance": 55.15,
-      "last_updated": "20260516"
-    },
-    "90470": {
-      "room_name": "109房间",
-      "current_balance": 192.48,
-      "last_updated": "20260516"
-    },
-    "11493": {
-      "room_name": "406房间",
-      "current_balance": 499.61,
-      "last_updated": "20260516"
-    },
-    "48912": {
-      "room_name": "245房间",
-      "current_balance": 169.64,
-      "last_updated": "20260516"
-    },
-    "37290": {
-      "room_name": "237房间",
-      "current_balance": 44.8,
-      "last_updated": "20260516"
-    },
-    "94039": {
-      "room_name": "248房间",
-      "current_balance": 553.1,
-      "last_updated": "20260516"
-    },
-    "13618": {
-      "room_name": "221房间",
-      "current_balance": 19.4,
-      "last_updated": "20260516"
-    },
-    "28261": {
-      "room_name": "249房间",
-      "current_balance": 30.71,
-      "last_updated": "20260516"
-    },
-    "74091": {
-      "room_name": "520房间",
-      "current_balance": 316.72,
-      "last_updated": "20260516"
-    },
-    "23640": {
-      "room_name": "325房间",
-      "current_balance": 261.03,
-      "last_updated": "20260516"
-    },
-    "30304": {
-      "room_name": "549房间",
-      "current_balance": 493.26,
-      "last_updated": "20260516"
-    },
-    "27799": {
-      "room_name": "125房间",
-      "current_balance": 1434.41,
-      "last_updated": "20260516"
-    },
-    "13622": {
-      "room_name": "206房间",
-      "current_balance": 163.87,
-      "last_updated": "20260516"
-    },
-    "37867": {
-      "room_name": "328房间",
-      "current_balance": 57.65,
-      "last_updated": "20260516"
-    },
-    "60775": {
-      "room_name": "442房间",
-      "current_balance": 102.69,
-      "last_updated": "20260516"
-    },
-    "13733": {
-      "room_name": "116房间",
-      "current_balance": 52.07,
-      "last_updated": "20260516"
-    },
-    "29200": {
-      "room_name": "128房间",
-      "current_balance": 18.48,
-      "last_updated": "20260516"
-    },
-    "31304": {
-      "room_name": "422房间",
-      "current_balance": 279.48,
-      "last_updated": "20260516"
-    },
-    "62876": {
-      "room_name": "219房间",
-      "current_balance": 40.77,
-      "last_updated": "20260516"
-    },
-    "57481": {
-      "room_name": "122房间",
-      "current_balance": 73.96,
       "last_updated": "20260516"
     },
     "30395": {
@@ -3193,19 +843,9 @@
       "current_balance": 76.04,
       "last_updated": "20260516"
     },
-    "57179": {
-      "room_name": "410房间",
-      "current_balance": 47.86,
-      "last_updated": "20260516"
-    },
     "54257": {
       "room_name": "0404",
       "current_balance": 855.37,
-      "last_updated": "20260516"
-    },
-    "90396": {
-      "room_name": "116房间",
-      "current_balance": 52.07,
       "last_updated": "20260516"
     },
     "36779": {
@@ -3213,34 +853,9 @@
       "current_balance": 400.31,
       "last_updated": "20260516"
     },
-    "59969": {
-      "room_name": "319房间",
-      "current_balance": 281.92,
-      "last_updated": "20260516"
-    },
-    "91193": {
-      "room_name": "212房间",
-      "current_balance": 108.71,
-      "last_updated": "20260516"
-    },
-    "95446": {
-      "room_name": "217房间",
-      "current_balance": 85.95,
-      "last_updated": "20260516"
-    },
-    "34517": {
-      "room_name": "526房间",
-      "current_balance": 45.24,
-      "last_updated": "20260516"
-    },
     "60316": {
       "room_name": "318房间",
       "current_balance": 160.7,
-      "last_updated": "20260516"
-    },
-    "63437": {
-      "room_name": "227房间",
-      "current_balance": 946.18,
       "last_updated": "20260516"
     },
     "57142": {
@@ -3248,59 +863,9 @@
       "current_balance": 207.7,
       "last_updated": "20260516"
     },
-    "62007": {
-      "room_name": "229房间",
-      "current_balance": 19.38,
-      "last_updated": "20260516"
-    },
-    "15873": {
-      "room_name": "434房间",
-      "current_balance": 329.23,
-      "last_updated": "20260516"
-    },
-    "13997": {
-      "room_name": "340房间",
-      "current_balance": 806.87,
-      "last_updated": "20260516"
-    },
-    "90426": {
-      "room_name": "203房间",
-      "current_balance": 638.39,
-      "last_updated": "20260516"
-    },
-    "90407": {
-      "room_name": "116房间",
-      "current_balance": 52.07,
-      "last_updated": "20260516"
-    },
-    "70067": {
-      "room_name": "317房间",
-      "current_balance": 735.19,
-      "last_updated": "20260516"
-    },
-    "14232": {
-      "room_name": "424房间",
-      "current_balance": 96.29,
-      "last_updated": "20260516"
-    },
     "42406": {
       "room_name": "436房间",
       "current_balance": 9.3,
-      "last_updated": "20260516"
-    },
-    "87792": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
-      "last_updated": "20260516"
-    },
-    "23708": {
-      "room_name": "406房间",
-      "current_balance": 499.61,
-      "last_updated": "20260516"
-    },
-    "38348": {
-      "room_name": "213房间",
-      "current_balance": 822.69,
       "last_updated": "20260516"
     },
     "58650": {
@@ -3313,21 +878,6 @@
       "current_balance": 123.2,
       "last_updated": "20260516"
     },
-    "32873": {
-      "room_name": "342房间",
-      "current_balance": 633.41,
-      "last_updated": "20260516"
-    },
-    "49545": {
-      "room_name": "112房间",
-      "current_balance": 19.79,
-      "last_updated": "20260516"
-    },
-    "20625": {
-      "room_name": "536房间",
-      "current_balance": 22.85,
-      "last_updated": "20260516"
-    },
     "56748": {
       "room_name": "445房间",
       "current_balance": 710.17,
@@ -3338,64 +888,14 @@
       "current_balance": 497.52,
       "last_updated": "20260516"
     },
-    "89124": {
-      "room_name": "113房间",
-      "current_balance": 186.26,
-      "last_updated": "20260516"
-    },
-    "91047": {
-      "room_name": "206房间",
-      "current_balance": 163.87,
-      "last_updated": "20260516"
-    },
-    "93775": {
-      "room_name": "208房间",
-      "current_balance": 155.97,
-      "last_updated": "20260516"
-    },
-    "14426": {
-      "room_name": "210房间",
-      "current_balance": 460.18,
-      "last_updated": "20260516"
-    },
-    "34479": {
-      "room_name": "348房间",
-      "current_balance": 339.51,
-      "last_updated": "20260516"
-    },
-    "63777": {
-      "room_name": "233房间",
-      "current_balance": 81.29,
-      "last_updated": "20260516"
-    },
-    "37104": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
     "18849": {
       "room_name": "447房间",
       "current_balance": 420.48,
       "last_updated": "20260516"
     },
-    "37735": {
-      "room_name": "110房间",
-      "current_balance": 237.8,
-      "last_updated": "20260516"
-    },
     "61258": {
       "room_name": "341房间",
       "current_balance": 240.27,
-      "last_updated": "20260516"
-    },
-    "84971": {
-      "room_name": "223房间",
-      "current_balance": 77.5,
-      "last_updated": "20260516"
-    },
-    "95506": {
-      "room_name": "110房间",
-      "current_balance": 237.8,
       "last_updated": "20260516"
     },
     "92728": {
@@ -3408,19 +908,9 @@
       "current_balance": 273.93,
       "last_updated": "20260516"
     },
-    "57339": {
-      "room_name": "336房间",
-      "current_balance": 42.22,
-      "last_updated": "20260516"
-    },
     "83365": {
       "room_name": "203房间",
       "current_balance": 638.39,
-      "last_updated": "20260516"
-    },
-    "62396": {
-      "room_name": "225房间",
-      "current_balance": 36.2,
       "last_updated": "20260516"
     },
     "50117": {
@@ -3438,24 +928,9 @@
       "current_balance": 493.26,
       "last_updated": "20260516"
     },
-    "12231": {
-      "room_name": "501房间",
-      "current_balance": 69.68,
-      "last_updated": "20260516"
-    },
     "29065": {
       "room_name": "525房间",
       "current_balance": 512.4,
-      "last_updated": "20260516"
-    },
-    "76897": {
-      "room_name": "210房间",
-      "current_balance": 460.18,
-      "last_updated": "20260516"
-    },
-    "86766": {
-      "room_name": "115房间",
-      "current_balance": 468.46,
       "last_updated": "20260516"
     },
     "60072": {
@@ -3463,49 +938,9 @@
       "current_balance": 501.16,
       "last_updated": "20260516"
     },
-    "15850": {
-      "room_name": "203房间",
-      "current_balance": 638.39,
-      "last_updated": "20260516"
-    },
-    "74298": {
-      "room_name": "305房间",
-      "current_balance": 769.83,
-      "last_updated": "20260516"
-    },
-    "33391": {
-      "room_name": "110房间",
-      "current_balance": 237.8,
-      "last_updated": "20260516"
-    },
-    "91266": {
-      "room_name": "516房间",
-      "current_balance": 550.95,
-      "last_updated": "20260516"
-    },
-    "57033": {
-      "room_name": "345房间",
-      "current_balance": 737.34,
-      "last_updated": "20260516"
-    },
-    "59363": {
-      "room_name": "250房间",
-      "current_balance": 163.26,
-      "last_updated": "20260516"
-    },
     "60104": {
       "room_name": "101房间",
       "current_balance": 22.62,
-      "last_updated": "20260516"
-    },
-    "87961": {
-      "room_name": "215房间",
-      "current_balance": 322.87,
-      "last_updated": "20260516"
-    },
-    "11675": {
-      "room_name": "303房间",
-      "current_balance": 398.04,
       "last_updated": "20260516"
     },
     "60146": {
@@ -3513,114 +948,14 @@
       "current_balance": 121.08,
       "last_updated": "20260516"
     },
-    "18003": {
-      "room_name": "248房间",
-      "current_balance": 553.1,
-      "last_updated": "20260516"
-    },
-    "16681": {
-      "room_name": "439房间",
-      "current_balance": 55.97,
-      "last_updated": "20260516"
-    },
-    "58787": {
-      "room_name": "546房间",
-      "current_balance": 32.79,
-      "last_updated": "20260516"
-    },
-    "60613": {
-      "room_name": "335房间",
-      "current_balance": 708.39,
-      "last_updated": "20260516"
-    },
-    "94422": {
-      "room_name": "429房间",
-      "current_balance": 434.53,
-      "last_updated": "20260516"
-    },
-    "57310": {
-      "room_name": "342房间",
-      "current_balance": 633.41,
-      "last_updated": "20260516"
-    },
-    "80235": {
-      "room_name": "521房间",
-      "current_balance": 106.08,
-      "last_updated": "20260516"
-    },
-    "28680": {
-      "room_name": "529房间",
-      "current_balance": 19.07,
-      "last_updated": "20260516"
-    },
-    "37093": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
-    "11924": {
-      "room_name": "330房间",
-      "current_balance": 496.42,
-      "last_updated": "20260516"
-    },
-    "35775": {
-      "room_name": "507房间",
-      "current_balance": 30.96,
-      "last_updated": "20260516"
-    },
-    "91762": {
-      "room_name": "107房间",
-      "current_balance": 76.39,
-      "last_updated": "20260516"
-    },
     "87744": {
       "room_name": "411房间",
       "current_balance": 320.64,
       "last_updated": "20260516"
     },
-    "12612": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
-    "50177": {
-      "room_name": "404房间",
-      "current_balance": 855.37,
-      "last_updated": "20260516"
-    },
-    "24892": {
-      "room_name": "237房间",
-      "current_balance": 44.8,
-      "last_updated": "20260516"
-    },
-    "11820": {
-      "room_name": "534房间",
-      "current_balance": 639.52,
-      "last_updated": "20260516"
-    },
-    "42327": {
-      "room_name": "304房间",
-      "current_balance": 85.76,
-      "last_updated": "20260516"
-    },
     "52712": {
       "room_name": "0548",
       "current_balance": 83.9,
-      "last_updated": "20260516"
-    },
-    "50954": {
-      "room_name": "421房间",
-      "current_balance": 42.58,
-      "last_updated": "20260516"
-    },
-    "29110": {
-      "room_name": "527房间",
-      "current_balance": 207.7,
-      "last_updated": "20260516"
-    },
-    "83759": {
-      "room_name": "122房间",
-      "current_balance": 73.96,
       "last_updated": "20260516"
     },
     "57699": {
@@ -3633,39 +968,9 @@
       "current_balance": 246.63,
       "last_updated": "20260516"
     },
-    "28191": {
-      "room_name": "436房间",
-      "current_balance": 9.3,
-      "last_updated": "20260516"
-    },
-    "90404": {
-      "room_name": "301房间",
-      "current_balance": 123.2,
-      "last_updated": "20260516"
-    },
-    "32228": {
-      "room_name": "101房间",
-      "current_balance": 22.62,
-      "last_updated": "20260516"
-    },
-    "91517": {
-      "room_name": "549房间",
-      "current_balance": 493.26,
-      "last_updated": "20260516"
-    },
-    "42153": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
-      "last_updated": "20260516"
-    },
     "34027": {
       "room_name": "337房间",
       "current_balance": 318.9,
-      "last_updated": "20260516"
-    },
-    "84647": {
-      "room_name": "423房间",
-      "current_balance": 857.58,
       "last_updated": "20260516"
     },
     "70566": {
@@ -3678,26 +983,6 @@
       "current_balance": 98.48,
       "last_updated": "20260516"
     },
-    "58548": {
-      "room_name": "540房间",
-      "current_balance": 458.84,
-      "last_updated": "20260516"
-    },
-    "78217": {
-      "room_name": "527房间",
-      "current_balance": 207.7,
-      "last_updated": "20260516"
-    },
-    "11930": {
-      "room_name": "203房间",
-      "current_balance": 638.39,
-      "last_updated": "20260516"
-    },
-    "83005": {
-      "room_name": "116房间",
-      "current_balance": 52.07,
-      "last_updated": "20260516"
-    },
     "94889": {
       "room_name": "303房间",
       "current_balance": 398.04,
@@ -3708,59 +993,9 @@
       "current_balance": 47.42,
       "last_updated": "20260516"
     },
-    "11837": {
-      "room_name": "422房间",
-      "current_balance": 279.48,
-      "last_updated": "20260516"
-    },
-    "84417": {
-      "room_name": "213房间",
-      "current_balance": 822.69,
-      "last_updated": "20260516"
-    },
-    "12195": {
-      "room_name": "308房间",
-      "current_balance": 1216.36,
-      "last_updated": "20260516"
-    },
-    "37778": {
-      "room_name": "240房间",
-      "current_balance": 129.12,
-      "last_updated": "20260516"
-    },
-    "66445": {
-      "room_name": "223房间",
-      "current_balance": 77.5,
-      "last_updated": "20260516"
-    },
-    "15709": {
-      "room_name": "337房间",
-      "current_balance": 318.9,
-      "last_updated": "20260516"
-    },
-    "49749": {
-      "room_name": "417房间",
-      "current_balance": 24.23,
-      "last_updated": "20260516"
-    },
-    "56642": {
-      "room_name": "550房间",
-      "current_balance": 298.33,
-      "last_updated": "20260516"
-    },
     "28005": {
       "room_name": "504房间",
       "current_balance": 415.12,
-      "last_updated": "20260516"
-    },
-    "79003": {
-      "room_name": "109房间",
-      "current_balance": 192.48,
-      "last_updated": "20260516"
-    },
-    "83802": {
-      "room_name": "413房间",
-      "current_balance": 518.57,
       "last_updated": "20260516"
     },
     "68806": {
@@ -3768,44 +1003,9 @@
       "current_balance": 126.86,
       "last_updated": "20260516"
     },
-    "39397": {
-      "room_name": "131房间",
-      "current_balance": 552.39,
-      "last_updated": "20260516"
-    },
-    "63946": {
-      "room_name": "342房间",
-      "current_balance": 633.41,
-      "last_updated": "20260516"
-    },
-    "59335": {
-      "room_name": "338房间",
-      "current_balance": 107.9,
-      "last_updated": "20260516"
-    },
-    "16828": {
-      "room_name": "232房间",
-      "current_balance": 47.42,
-      "last_updated": "20260516"
-    },
-    "19299": {
-      "room_name": "247房间",
-      "current_balance": 109.35,
-      "last_updated": "20260516"
-    },
-    "80658": {
-      "room_name": "523房间",
-      "current_balance": 183.26,
-      "last_updated": "20260516"
-    },
     "57769": {
       "room_name": "243房间",
       "current_balance": 337.63,
-      "last_updated": "20260516"
-    },
-    "90410": {
-      "room_name": "313房间",
-      "current_balance": 274.64,
       "last_updated": "20260516"
     },
     "93235": {
@@ -3818,69 +1018,9 @@
       "current_balance": 4.12,
       "last_updated": "20260516"
     },
-    "61002": {
-      "room_name": "133房间",
-      "current_balance": 42.06,
-      "last_updated": "20260516"
-    },
     "81800": {
       "room_name": "516房间",
       "current_balance": 550.95,
-      "last_updated": "20260516"
-    },
-    "91696": {
-      "room_name": "511房间",
-      "current_balance": 10.64,
-      "last_updated": "20260516"
-    },
-    "74296": {
-      "room_name": "415房间",
-      "current_balance": 445.21,
-      "last_updated": "20260516"
-    },
-    "12303": {
-      "room_name": "424房间",
-      "current_balance": 96.29,
-      "last_updated": "20260516"
-    },
-    "60610": {
-      "room_name": "335房间",
-      "current_balance": 708.39,
-      "last_updated": "20260516"
-    },
-    "57006": {
-      "room_name": "130房间",
-      "current_balance": 119.06,
-      "last_updated": "20260516"
-    },
-    "59906": {
-      "room_name": "416房间",
-      "current_balance": 17.76,
-      "last_updated": "20260516"
-    },
-    "50870": {
-      "room_name": "340房间",
-      "current_balance": 806.87,
-      "last_updated": "20260516"
-    },
-    "31303": {
-      "room_name": "113房间",
-      "current_balance": 186.26,
-      "last_updated": "20260516"
-    },
-    "13460": {
-      "room_name": "311房间",
-      "current_balance": 684.7,
-      "last_updated": "20260516"
-    },
-    "88825": {
-      "room_name": "208房间",
-      "current_balance": 155.97,
-      "last_updated": "20260516"
-    },
-    "74294": {
-      "room_name": "431房间",
-      "current_balance": 63.48,
       "last_updated": "20260516"
     },
     "28385": {
@@ -3888,39 +1028,9 @@
       "current_balance": 143.03,
       "last_updated": "20260516"
     },
-    "61131": {
-      "room_name": "124房间",
-      "current_balance": 84.89,
-      "last_updated": "20260516"
-    },
     "62080": {
       "room_name": "542房间",
       "current_balance": 698.56,
-      "last_updated": "20260516"
-    },
-    "29914": {
-      "room_name": "403房间",
-      "current_balance": 10.6,
-      "last_updated": "20260516"
-    },
-    "32693": {
-      "room_name": "528房间",
-      "current_balance": 611.17,
-      "last_updated": "20260516"
-    },
-    "30736": {
-      "room_name": "228房间",
-      "current_balance": 173.93,
-      "last_updated": "20260516"
-    },
-    "67069": {
-      "room_name": "127房间",
-      "current_balance": 161.78,
-      "last_updated": "20260516"
-    },
-    "87466": {
-      "room_name": "114房间",
-      "current_balance": 17.69,
       "last_updated": "20260516"
     },
     "61262": {
@@ -3928,64 +1038,14 @@
       "current_balance": 169.64,
       "last_updated": "20260516"
     },
-    "19166": {
-      "room_name": "333房间",
-      "current_balance": 315.24,
-      "last_updated": "20260516"
-    },
-    "74295": {
-      "room_name": "403房间",
-      "current_balance": 10.6,
-      "last_updated": "20260516"
-    },
-    "82514": {
-      "room_name": "224房间",
-      "current_balance": 276.29,
-      "last_updated": "20260516"
-    },
-    "74645": {
-      "room_name": "401房间",
-      "current_balance": 419.66,
-      "last_updated": "20260516"
-    },
     "14796": {
       "room_name": "440房间",
       "current_balance": 59.61,
       "last_updated": "20260516"
     },
-    "88312": {
-      "room_name": "224房间",
-      "current_balance": 276.29,
-      "last_updated": "20260516"
-    },
-    "90409": {
-      "room_name": "313房间",
-      "current_balance": 274.64,
-      "last_updated": "20260516"
-    },
-    "60290": {
-      "room_name": "320房间",
-      "current_balance": 750.87,
-      "last_updated": "20260516"
-    },
-    "38005": {
-      "room_name": "526房间",
-      "current_balance": 45.24,
-      "last_updated": "20260516"
-    },
     "63381": {
       "room_name": "451房间",
       "current_balance": 50.74,
-      "last_updated": "20260516"
-    },
-    "16579": {
-      "room_name": "508房间",
-      "current_balance": 105.4,
-      "last_updated": "20260516"
-    },
-    "70611": {
-      "room_name": "426房间",
-      "current_balance": 321.08,
       "last_updated": "20260516"
     },
     "84029": {
@@ -4003,24 +1063,9 @@
       "current_balance": 722.15,
       "last_updated": "20260516"
     },
-    "59853": {
-      "room_name": "501房间",
-      "current_balance": 69.68,
-      "last_updated": "20260516"
-    },
-    "87794": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
-      "last_updated": "20260516"
-    },
     "23235": {
       "room_name": "418房间",
       "current_balance": 240.97,
-      "last_updated": "20260516"
-    },
-    "63710": {
-      "room_name": "104房间",
-      "current_balance": 143.03,
       "last_updated": "20260516"
     },
     "93442": {
@@ -4028,44 +1073,9 @@
       "current_balance": 0.36,
       "last_updated": "20260516"
     },
-    "95015": {
-      "room_name": "347房间",
-      "current_balance": 73.23,
-      "last_updated": "20260516"
-    },
-    "91660": {
-      "room_name": "202房间",
-      "current_balance": 108.54,
-      "last_updated": "20260516"
-    },
-    "82428": {
-      "room_name": "114房间",
-      "current_balance": 17.69,
-      "last_updated": "20260516"
-    },
     "37111": {
       "room_name": "121房间",
       "current_balance": 803.24,
-      "last_updated": "20260516"
-    },
-    "39356": {
-      "room_name": "223房间",
-      "current_balance": 77.5,
-      "last_updated": "20260516"
-    },
-    "58169": {
-      "room_name": "221房间",
-      "current_balance": 19.4,
-      "last_updated": "20260516"
-    },
-    "61929": {
-      "room_name": "543房间",
-      "current_balance": 31.34,
-      "last_updated": "20260516"
-    },
-    "12278": {
-      "room_name": "349房间",
-      "current_balance": 18.98,
       "last_updated": "20260516"
     },
     "76830": {
@@ -4078,69 +1088,14 @@
       "current_balance": 89.22,
       "last_updated": "20260516"
     },
-    "60193": {
-      "room_name": "418房间",
-      "current_balance": 240.97,
-      "last_updated": "20260516"
-    },
-    "87622": {
-      "room_name": "239房间",
-      "current_balance": 629.38,
-      "last_updated": "20260516"
-    },
-    "21274": {
-      "room_name": "341房间",
-      "current_balance": 240.27,
-      "last_updated": "20260516"
-    },
-    "13745": {
-      "room_name": "116房间",
-      "current_balance": 52.07,
-      "last_updated": "20260516"
-    },
     "26535": {
       "room_name": "0118",
       "current_balance": 731.02,
       "last_updated": "20260516"
     },
-    "92307": {
-      "room_name": "446房间",
-      "current_balance": 1002.14,
-      "last_updated": "20260516"
-    },
     "17648": {
       "room_name": "438房间",
       "current_balance": 74.64,
-      "last_updated": "20260516"
-    },
-    "50584": {
-      "room_name": "304房间",
-      "current_balance": 85.76,
-      "last_updated": "20260516"
-    },
-    "37427": {
-      "room_name": "502房间",
-      "current_balance": 18.97,
-      "last_updated": "20260516"
-    },
-    "15223": {
-      "room_name": "517房间",
-      "current_balance": 219.06,
-      "last_updated": "20260516"
-    },
-    "83997": {
-      "room_name": "212房间",
-      "current_balance": 108.71,
-      "last_updated": "20260516"
-    },
-    "64818": {
-      "room_name": "131房间",
-      "current_balance": 552.39,
-      "last_updated": "20260516"
-    },
-    "58647": {
-      "room_name": "325房间",
-      "current_balance": 261.03,
       "last_updated": "20260516"
     },
     "63813": {
@@ -4158,69 +1113,9 @@
       "current_balance": 257.78,
       "last_updated": "20260516"
     },
-    "13835": {
-      "room_name": "214房间",
-      "current_balance": 221.35,
-      "last_updated": "20260516"
-    },
-    "53075": {
-      "room_name": "513房间",
-      "current_balance": 85.12,
-      "last_updated": "20260516"
-    },
-    "58869": {
-      "room_name": "124房间",
-      "current_balance": 84.89,
-      "last_updated": "20260516"
-    },
-    "15248": {
-      "room_name": "416房间",
-      "current_balance": 17.76,
-      "last_updated": "20260516"
-    },
-    "11131": {
-      "room_name": "538房间",
-      "current_balance": 353.78,
-      "last_updated": "20260516"
-    },
-    "82331": {
-      "room_name": "302房间",
-      "current_balance": 4.74,
-      "last_updated": "20260516"
-    },
-    "64421": {
-      "room_name": "219房间",
-      "current_balance": 40.77,
-      "last_updated": "20260516"
-    },
-    "37284": {
-      "room_name": "138房间",
-      "current_balance": 160.1,
-      "last_updated": "20260516"
-    },
-    "41996": {
-      "room_name": "312房间",
-      "current_balance": 622.19,
-      "last_updated": "20260516"
-    },
-    "41434": {
-      "room_name": "238房间",
-      "current_balance": 89.22,
-      "last_updated": "20260516"
-    },
     "89087": {
       "room_name": "113房间",
       "current_balance": 186.26,
-      "last_updated": "20260516"
-    },
-    "33834": {
-      "room_name": "315房间",
-      "current_balance": 565.91,
-      "last_updated": "20260516"
-    },
-    "65134": {
-      "room_name": "437房间",
-      "current_balance": 2677.89,
       "last_updated": "20260516"
     },
     "48917": {
@@ -4228,99 +1123,14 @@
       "current_balance": 55.97,
       "last_updated": "20260516"
     },
-    "66723": {
-      "room_name": "142房间",
-      "current_balance": 26.32,
-      "last_updated": "20260516"
-    },
-    "63692": {
-      "room_name": "322房间",
-      "current_balance": 79.67,
-      "last_updated": "20260516"
-    },
-    "14827": {
-      "room_name": "246房间",
-      "current_balance": 384.11,
-      "last_updated": "20260516"
-    },
-    "59370": {
-      "room_name": "421房间",
-      "current_balance": 42.58,
-      "last_updated": "20260516"
-    },
-    "55861": {
-      "room_name": "501房间",
-      "current_balance": 69.68,
-      "last_updated": "20260516"
-    },
-    "59654": {
-      "room_name": "347房间",
-      "current_balance": 73.23,
-      "last_updated": "20260516"
-    },
-    "59009": {
-      "room_name": "241房间",
-      "current_balance": 623.5,
-      "last_updated": "20260516"
-    },
     "28319": {
       "room_name": "304房间",
       "current_balance": 85.76,
       "last_updated": "20260516"
     },
-    "60174": {
-      "room_name": "126房间",
-      "current_balance": 285.1,
-      "last_updated": "20260516"
-    },
-    "58613": {
-      "room_name": "435房间",
-      "current_balance": 852.2,
-      "last_updated": "20260516"
-    },
-    "53436": {
-      "room_name": "248房间",
-      "current_balance": 553.1,
-      "last_updated": "20260516"
-    },
-    "52390": {
-      "room_name": "352房间",
-      "current_balance": 785.69,
-      "last_updated": "20260516"
-    },
-    "58917": {
-      "room_name": "250房间",
-      "current_balance": 163.26,
-      "last_updated": "20260516"
-    },
-    "88391": {
-      "room_name": "303房间",
-      "current_balance": 398.04,
-      "last_updated": "20260516"
-    },
-    "34937": {
-      "room_name": "532房间",
-      "current_balance": 136.97,
-      "last_updated": "20260516"
-    },
-    "94267": {
-      "room_name": "411房间",
-      "current_balance": 320.64,
-      "last_updated": "20260516"
-    },
-    "24792": {
-      "room_name": "503房间",
-      "current_balance": 400.31,
-      "last_updated": "20260516"
-    },
     "49302": {
       "room_name": "430房间",
       "current_balance": 833.65,
-      "last_updated": "20260516"
-    },
-    "87310": {
-      "room_name": "542房间",
-      "current_balance": 698.56,
       "last_updated": "20260516"
     },
     "60947": {
@@ -4343,34 +1153,9 @@
       "current_balance": 18.98,
       "last_updated": "20260516"
     },
-    "15376": {
-      "room_name": "335房间",
-      "current_balance": 708.39,
-      "last_updated": "20260516"
-    },
-    "77773": {
-      "room_name": "504房间",
-      "current_balance": 415.12,
-      "last_updated": "20260516"
-    },
-    "61878": {
-      "room_name": "241房间",
-      "current_balance": 623.5,
-      "last_updated": "20260516"
-    },
-    "25233": {
-      "room_name": "233房间",
-      "current_balance": 81.29,
-      "last_updated": "20260516"
-    },
     "72096": {
       "room_name": "326房间",
       "current_balance": 178.0,
-      "last_updated": "20260516"
-    },
-    "12281": {
-      "room_name": "539房间",
-      "current_balance": 500.4,
       "last_updated": "20260516"
     },
     "82008": {
@@ -4383,41 +1168,6 @@
       "current_balance": 380.43,
       "last_updated": "20260516"
     },
-    "87983": {
-      "room_name": "215房间",
-      "current_balance": 322.87,
-      "last_updated": "20260516"
-    },
-    "19883": {
-      "room_name": "322房间",
-      "current_balance": 79.67,
-      "last_updated": "20260516"
-    },
-    "59297": {
-      "room_name": "427房间",
-      "current_balance": 37.02,
-      "last_updated": "20260516"
-    },
-    "28281": {
-      "room_name": "220房间",
-      "current_balance": 66.31,
-      "last_updated": "20260516"
-    },
-    "19623": {
-      "room_name": "138房间",
-      "current_balance": 160.1,
-      "last_updated": "20260516"
-    },
-    "44441": {
-      "room_name": "333房间",
-      "current_balance": 315.24,
-      "last_updated": "20260516"
-    },
-    "13885": {
-      "room_name": "514房间",
-      "current_balance": 547.69,
-      "last_updated": "20260516"
-    },
     "93473": {
       "room_name": "524房间",
       "current_balance": 311.04,
@@ -4428,49 +1178,9 @@
       "current_balance": 339.51,
       "last_updated": "20260516"
     },
-    "17771": {
-      "room_name": "332房间",
-      "current_balance": 117.8,
-      "last_updated": "20260516"
-    },
-    "58491": {
-      "room_name": "342房间",
-      "current_balance": 633.41,
-      "last_updated": "20260516"
-    },
-    "29536": {
-      "room_name": "245房间",
-      "current_balance": 169.64,
-      "last_updated": "20260516"
-    },
-    "84090": {
-      "room_name": "111房间",
-      "current_balance": 242.47,
-      "last_updated": "20260516"
-    },
-    "54031": {
-      "room_name": "545房间",
-      "current_balance": 16.76,
-      "last_updated": "20260516"
-    },
-    "37098": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
-    "91302": {
-      "room_name": "235房间",
-      "current_balance": 96.22,
-      "last_updated": "20260516"
-    },
     "14051": {
       "room_name": "346房间",
       "current_balance": 63.13,
-      "last_updated": "20260516"
-    },
-    "31392": {
-      "room_name": "502房间",
-      "current_balance": 18.97,
       "last_updated": "20260516"
     },
     "10658": {
@@ -4483,84 +1193,9 @@
       "current_balance": 24.23,
       "last_updated": "20260516"
     },
-    "61311": {
-      "room_name": "205房间",
-      "current_balance": 246.63,
-      "last_updated": "20260516"
-    },
-    "48858": {
-      "room_name": "433房间",
-      "current_balance": 54.6,
-      "last_updated": "20260516"
-    },
-    "67150": {
-      "room_name": "425房间",
-      "current_balance": 166.44,
-      "last_updated": "20260516"
-    },
-    "38873": {
-      "room_name": "106房间",
-      "current_balance": 55.15,
-      "last_updated": "20260516"
-    },
-    "13339": {
-      "room_name": "351房间",
-      "current_balance": 4.12,
-      "last_updated": "20260516"
-    },
-    "27267": {
-      "room_name": "402房间",
-      "current_balance": 6.43,
-      "last_updated": "20260516"
-    },
-    "90329": {
-      "room_name": "107房间",
-      "current_balance": 76.39,
-      "last_updated": "20260516"
-    },
     "80984": {
       "room_name": "519房间",
       "current_balance": 716.51,
-      "last_updated": "20260516"
-    },
-    "42513": {
-      "room_name": "549房间",
-      "current_balance": 493.26,
-      "last_updated": "20260516"
-    },
-    "56229": {
-      "room_name": "252房间",
-      "current_balance": 103.68,
-      "last_updated": "20260516"
-    },
-    "70234": {
-      "room_name": "546房间",
-      "current_balance": 32.79,
-      "last_updated": "20260516"
-    },
-    "58823": {
-      "room_name": "349房间",
-      "current_balance": 18.98,
-      "last_updated": "20260516"
-    },
-    "56301": {
-      "room_name": "548房间",
-      "current_balance": 83.9,
-      "last_updated": "20260516"
-    },
-    "24431": {
-      "room_name": "320房间",
-      "current_balance": 750.87,
-      "last_updated": "20260516"
-    },
-    "90370": {
-      "room_name": "113房间",
-      "current_balance": 186.26,
-      "last_updated": "20260516"
-    },
-    "67805": {
-      "room_name": "452房间",
-      "current_balance": 144.0,
       "last_updated": "20260516"
     },
     "91911": {
@@ -4568,34 +1203,9 @@
       "current_balance": 90.66,
       "last_updated": "20260516"
     },
-    "24308": {
-      "room_name": "115房间",
-      "current_balance": 468.46,
-      "last_updated": "20260516"
-    },
     "37345": {
       "room_name": "126房间",
       "current_balance": 285.1,
-      "last_updated": "20260516"
-    },
-    "60710": {
-      "room_name": "242房间",
-      "current_balance": 126.86,
-      "last_updated": "20260516"
-    },
-    "75030": {
-      "room_name": "520房间",
-      "current_balance": 316.72,
-      "last_updated": "20260516"
-    },
-    "48399": {
-      "room_name": "427房间",
-      "current_balance": 37.02,
-      "last_updated": "20260516"
-    },
-    "49756": {
-      "room_name": "337房间",
-      "current_balance": 318.9,
       "last_updated": "20260516"
     },
     "91870": {
@@ -4608,11 +1218,6 @@
       "current_balance": 552.39,
       "last_updated": "20260516"
     },
-    "91606": {
-      "room_name": "537房间",
-      "current_balance": 501.16,
-      "last_updated": "20260516"
-    },
     "61161": {
       "room_name": "452房间",
       "current_balance": 144.0,
@@ -4623,29 +1228,9 @@
       "current_balance": 769.83,
       "last_updated": "20260516"
     },
-    "14479": {
-      "room_name": "206房间",
-      "current_balance": 163.87,
-      "last_updated": "20260516"
-    },
-    "42674": {
-      "room_name": "405房间",
-      "current_balance": 497.52,
-      "last_updated": "20260516"
-    },
-    "88993": {
-      "room_name": "213房间",
-      "current_balance": 822.69,
-      "last_updated": "20260516"
-    },
     "25197": {
       "room_name": "236房间",
       "current_balance": 156.88,
-      "last_updated": "20260516"
-    },
-    "57637": {
-      "room_name": "237房间",
-      "current_balance": 44.8,
       "last_updated": "20260516"
     },
     "31302": {
@@ -4668,44 +1253,9 @@
       "current_balance": 372.76,
       "last_updated": "20260516"
     },
-    "70852": {
-      "room_name": "231房间",
-      "current_balance": 76.04,
-      "last_updated": "20260516"
-    },
-    "37353": {
-      "room_name": "126房间",
-      "current_balance": 285.1,
-      "last_updated": "20260516"
-    },
-    "13608": {
-      "room_name": "303房间",
-      "current_balance": 398.04,
-      "last_updated": "20260516"
-    },
-    "53007": {
-      "room_name": "306房间",
-      "current_balance": 251.91,
-      "last_updated": "20260516"
-    },
-    "56331": {
-      "room_name": "349房间",
-      "current_balance": 18.98,
-      "last_updated": "20260516"
-    },
     "18045": {
       "room_name": "248房间",
       "current_balance": 553.1,
-      "last_updated": "20260516"
-    },
-    "14413": {
-      "room_name": "423房间",
-      "current_balance": 857.58,
-      "last_updated": "20260516"
-    },
-    "91443": {
-      "room_name": "202房间",
-      "current_balance": 108.54,
       "last_updated": "20260516"
     },
     "91216": {
@@ -4713,24 +1263,9 @@
       "current_balance": 460.18,
       "last_updated": "20260516"
     },
-    "59740": {
-      "room_name": "222房间",
-      "current_balance": 217.86,
-      "last_updated": "20260516"
-    },
-    "15097": {
-      "room_name": "447房间",
-      "current_balance": 420.48,
-      "last_updated": "20260516"
-    },
     "76850": {
       "room_name": "435房间",
       "current_balance": 852.2,
-      "last_updated": "20260516"
-    },
-    "63187": {
-      "room_name": "338房间",
-      "current_balance": 107.9,
       "last_updated": "20260516"
     },
     "35988": {
@@ -4743,29 +1278,9 @@
       "current_balance": 698.56,
       "last_updated": "20260516"
     },
-    "13553": {
-      "room_name": "403房间",
-      "current_balance": 10.6,
-      "last_updated": "20260516"
-    },
-    "35209": {
-      "room_name": "102房间",
-      "current_balance": 343.34,
-      "last_updated": "20260516"
-    },
-    "59628": {
-      "room_name": "441房间",
-      "current_balance": 380.43,
-      "last_updated": "20260516"
-    },
     "36972": {
       "room_name": "220房间",
       "current_balance": 66.31,
-      "last_updated": "20260516"
-    },
-    "30098": {
-      "room_name": "426房间",
-      "current_balance": 321.08,
       "last_updated": "20260516"
     },
     "67062": {
@@ -4773,59 +1288,9 @@
       "current_balance": 74.99,
       "last_updated": "20260516"
     },
-    "29050": {
-      "room_name": "120房间",
-      "current_balance": 360.75,
-      "last_updated": "20260516"
-    },
-    "41805": {
-      "room_name": "524房间",
-      "current_balance": 311.04,
-      "last_updated": "20260516"
-    },
-    "23513": {
-      "room_name": "107房间",
-      "current_balance": 76.39,
-      "last_updated": "20260516"
-    },
-    "34173": {
-      "room_name": "137房间",
-      "current_balance": 7.04,
-      "last_updated": "20260516"
-    },
-    "57331": {
-      "room_name": "222房间",
-      "current_balance": 217.86,
-      "last_updated": "20260516"
-    },
-    "28907": {
-      "room_name": "432房间",
-      "current_balance": 1497.84,
-      "last_updated": "20260516"
-    },
-    "64536": {
-      "room_name": "238房间",
-      "current_balance": 89.22,
-      "last_updated": "20260516"
-    },
-    "46767": {
-      "room_name": "407房间",
-      "current_balance": 135.12,
-      "last_updated": "20260516"
-    },
-    "81699": {
-      "room_name": "412房间",
-      "current_balance": 173.94,
-      "last_updated": "20260516"
-    },
     "63904": {
       "room_name": "0547",
       "current_balance": 205.37,
-      "last_updated": "20260516"
-    },
-    "32787": {
-      "room_name": "337房间",
-      "current_balance": 318.9,
       "last_updated": "20260516"
     },
     "50757": {
@@ -4833,49 +1298,9 @@
       "current_balance": 55.97,
       "last_updated": "20260516"
     },
-    "58920": {
-      "room_name": "444房间",
-      "current_balance": 273.93,
-      "last_updated": "20260516"
-    },
-    "58519": {
-      "room_name": "449房间",
-      "current_balance": 85.88,
-      "last_updated": "20260516"
-    },
-    "94790": {
-      "room_name": "428房间",
-      "current_balance": 132.73,
-      "last_updated": "20260516"
-    },
-    "77370": {
-      "room_name": "450房间",
-      "current_balance": 192.19,
-      "last_updated": "20260516"
-    },
     "90251": {
       "room_name": "224房间",
       "current_balance": 276.29,
-      "last_updated": "20260516"
-    },
-    "19908": {
-      "room_name": "331房间",
-      "current_balance": 764.51,
-      "last_updated": "20260516"
-    },
-    "25051": {
-      "room_name": "128房间",
-      "current_balance": 18.48,
-      "last_updated": "20260516"
-    },
-    "37638": {
-      "room_name": "441房间",
-      "current_balance": 380.43,
-      "last_updated": "20260516"
-    },
-    "38166": {
-      "room_name": "533房间",
-      "current_balance": 513.28,
       "last_updated": "20260516"
     },
     "13170": {
@@ -4883,24 +1308,9 @@
       "current_balance": 30.71,
       "last_updated": "20260516"
     },
-    "51848": {
-      "room_name": "543房间",
-      "current_balance": 31.34,
-      "last_updated": "20260516"
-    },
     "54242": {
       "room_name": "240房间",
       "current_balance": 129.12,
-      "last_updated": "20260516"
-    },
-    "59550": {
-      "room_name": "324房间",
-      "current_balance": 59.24,
-      "last_updated": "20260516"
-    },
-    "50621": {
-      "room_name": "120房间",
-      "current_balance": 360.75,
       "last_updated": "20260516"
     },
     "83939": {
@@ -4913,39 +1323,9 @@
       "current_balance": 107.9,
       "last_updated": "20260516"
     },
-    "12433": {
-      "room_name": "242房间",
-      "current_balance": 126.86,
-      "last_updated": "20260516"
-    },
-    "67580": {
-      "room_name": "317房间",
-      "current_balance": 735.19,
-      "last_updated": "20260516"
-    },
-    "60068": {
-      "room_name": "342房间",
-      "current_balance": 633.41,
-      "last_updated": "20260516"
-    },
     "49146": {
       "room_name": "431房间",
       "current_balance": 63.48,
-      "last_updated": "20260516"
-    },
-    "27770": {
-      "room_name": "105房间",
-      "current_balance": 722.15,
-      "last_updated": "20260516"
-    },
-    "11925": {
-      "room_name": "330房间",
-      "current_balance": 496.42,
-      "last_updated": "20260516"
-    },
-    "90149": {
-      "room_name": "550房间",
-      "current_balance": 298.33,
       "last_updated": "20260516"
     },
     "13591": {
@@ -4953,94 +1333,9 @@
       "current_balance": 19.4,
       "last_updated": "20260516"
     },
-    "12952": {
-      "room_name": "222房间",
-      "current_balance": 217.86,
-      "last_updated": "20260516"
-    },
-    "61731": {
-      "room_name": "334房间",
-      "current_balance": 85.07,
-      "last_updated": "20260516"
-    },
-    "89397": {
-      "room_name": "117房间",
-      "current_balance": 13.12,
-      "last_updated": "20260516"
-    },
     "12492": {
       "room_name": "250房间",
       "current_balance": 163.26,
-      "last_updated": "20260516"
-    },
-    "88022": {
-      "room_name": "236房间",
-      "current_balance": 156.88,
-      "last_updated": "20260516"
-    },
-    "14005": {
-      "room_name": "313房间",
-      "current_balance": 274.64,
-      "last_updated": "20260516"
-    },
-    "57718": {
-      "room_name": "437房间",
-      "current_balance": 2677.89,
-      "last_updated": "20260516"
-    },
-    "15934": {
-      "room_name": "226房间",
-      "current_balance": 394.21,
-      "last_updated": "20260516"
-    },
-    "15224": {
-      "room_name": "517房间",
-      "current_balance": 219.06,
-      "last_updated": "20260516"
-    },
-    "64800": {
-      "room_name": "439房间",
-      "current_balance": 55.97,
-      "last_updated": "20260516"
-    },
-    "16205": {
-      "room_name": "224房间",
-      "current_balance": 276.29,
-      "last_updated": "20260516"
-    },
-    "57288": {
-      "room_name": "533房间",
-      "current_balance": 513.28,
-      "last_updated": "20260516"
-    },
-    "35334": {
-      "room_name": "217房间",
-      "current_balance": 85.95,
-      "last_updated": "20260516"
-    },
-    "67410": {
-      "room_name": "243房间",
-      "current_balance": 337.63,
-      "last_updated": "20260516"
-    },
-    "61200": {
-      "room_name": "307房间",
-      "current_balance": 481.58,
-      "last_updated": "20260516"
-    },
-    "69443": {
-      "room_name": "126房间",
-      "current_balance": 285.1,
-      "last_updated": "20260516"
-    },
-    "13021": {
-      "room_name": "109房间",
-      "current_balance": 192.48,
-      "last_updated": "20260516"
-    },
-    "88437": {
-      "room_name": "519房间",
-      "current_balance": 716.51,
       "last_updated": "20260516"
     },
     "39301": {
@@ -5048,49 +1343,9 @@
       "current_balance": 32.79,
       "last_updated": "20260516"
     },
-    "42253": {
-      "room_name": "550房间",
-      "current_balance": 298.33,
-      "last_updated": "20260516"
-    },
-    "31747": {
-      "room_name": "511房间",
-      "current_balance": 10.64,
-      "last_updated": "20260516"
-    },
-    "36237": {
-      "room_name": "123房间",
-      "current_balance": 451.66,
-      "last_updated": "20260516"
-    },
     "29894": {
       "room_name": "312房间",
       "current_balance": 622.19,
-      "last_updated": "20260516"
-    },
-    "58063": {
-      "room_name": "127房间",
-      "current_balance": 161.78,
-      "last_updated": "20260516"
-    },
-    "69967": {
-      "room_name": "307房间",
-      "current_balance": 481.58,
-      "last_updated": "20260516"
-    },
-    "58279": {
-      "room_name": "347房间",
-      "current_balance": 73.23,
-      "last_updated": "20260516"
-    },
-    "54248": {
-      "room_name": "126房间",
-      "current_balance": 285.1,
-      "last_updated": "20260516"
-    },
-    "78409": {
-      "room_name": "522房间",
-      "current_balance": 552.68,
       "last_updated": "20260516"
     },
     "62873": {
@@ -5098,159 +1353,9 @@
       "current_balance": 40.77,
       "last_updated": "20260516"
     },
-    "81859": {
-      "room_name": "535房间",
-      "current_balance": 36.12,
-      "last_updated": "20260516"
-    },
-    "78952": {
-      "room_name": "502房间",
-      "current_balance": 18.97,
-      "last_updated": "20260516"
-    },
-    "24840": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
-      "last_updated": "20260516"
-    },
-    "60051": {
-      "room_name": "130房间",
-      "current_balance": 119.06,
-      "last_updated": "20260516"
-    },
-    "59655": {
-      "room_name": "419房间",
-      "current_balance": 54.71,
-      "last_updated": "20260516"
-    },
-    "98802": {
-      "room_name": "541房间",
-      "current_balance": 72.89,
-      "last_updated": "20260516"
-    },
-    "90029": {
-      "room_name": "312房间",
-      "current_balance": 622.19,
-      "last_updated": "20260516"
-    },
-    "12839": {
-      "room_name": "325房间",
-      "current_balance": 261.03,
-      "last_updated": "20260516"
-    },
-    "49169": {
-      "room_name": "514房间",
-      "current_balance": 547.69,
-      "last_updated": "20260516"
-    },
-    "13947": {
-      "room_name": "104房间",
-      "current_balance": 143.03,
-      "last_updated": "20260516"
-    },
-    "34308": {
-      "room_name": "439房间",
-      "current_balance": 55.97,
-      "last_updated": "20260516"
-    },
-    "92313": {
-      "room_name": "223房间",
-      "current_balance": 77.5,
-      "last_updated": "20260516"
-    },
-    "91581": {
-      "room_name": "536房间",
-      "current_balance": 22.85,
-      "last_updated": "20260516"
-    },
-    "27003": {
-      "room_name": "503房间",
-      "current_balance": 400.31,
-      "last_updated": "20260516"
-    },
-    "25114": {
-      "room_name": "507房间",
-      "current_balance": 30.96,
-      "last_updated": "20260516"
-    },
-    "89863": {
-      "room_name": "315房间",
-      "current_balance": 565.91,
-      "last_updated": "20260516"
-    },
-    "16170": {
-      "room_name": "446房间",
-      "current_balance": 1002.14,
-      "last_updated": "20260516"
-    },
-    "95244": {
-      "room_name": "308房间",
-      "current_balance": 1216.36,
-      "last_updated": "20260516"
-    },
-    "11276": {
-      "room_name": "535房间",
-      "current_balance": 36.12,
-      "last_updated": "20260516"
-    },
-    "23987": {
-      "room_name": "512房间",
-      "current_balance": 17.46,
-      "last_updated": "20260516"
-    },
-    "67405": {
-      "room_name": "244房间",
-      "current_balance": 48.94,
-      "last_updated": "20260516"
-    },
-    "34486": {
-      "room_name": "223房间",
-      "current_balance": 77.5,
-      "last_updated": "20260516"
-    },
-    "34222": {
-      "room_name": "123房间",
-      "current_balance": 451.66,
-      "last_updated": "20260516"
-    },
-    "97431": {
-      "room_name": "209房间",
-      "current_balance": 74.3,
-      "last_updated": "20260516"
-    },
-    "79051": {
-      "room_name": "203房间",
-      "current_balance": 638.39,
-      "last_updated": "20260516"
-    },
-    "25845": {
-      "room_name": "551房间",
-      "current_balance": 123.46,
-      "last_updated": "20260516"
-    },
-    "79042": {
-      "room_name": "523房间",
-      "current_balance": 183.26,
-      "last_updated": "20260516"
-    },
     "17902": {
       "room_name": "118房间",
       "current_balance": 731.02,
-      "last_updated": "20260516"
-    },
-    "28022": {
-      "room_name": "415房间",
-      "current_balance": 445.21,
-      "last_updated": "20260516"
-    },
-    "65142": {
-      "room_name": "114房间",
-      "current_balance": 17.69,
-      "last_updated": "20260516"
-    },
-    "51121": {
-      "room_name": "421房间",
-      "current_balance": 42.58,
       "last_updated": "20260516"
     },
     "48971": {
@@ -5258,69 +1363,9 @@
       "current_balance": 96.82,
       "last_updated": "20260516"
     },
-    "29059": {
-      "room_name": "111房间",
-      "current_balance": 242.47,
-      "last_updated": "20260516"
-    },
     "60650": {
       "room_name": "426房间",
       "current_balance": 321.08,
-      "last_updated": "20260516"
-    },
-    "87395": {
-      "room_name": "423房间",
-      "current_balance": 857.58,
-      "last_updated": "20260516"
-    },
-    "14478": {
-      "room_name": "211房间",
-      "current_balance": 514.15,
-      "last_updated": "20260516"
-    },
-    "29857": {
-      "room_name": "132房间",
-      "current_balance": 83.13,
-      "last_updated": "20260516"
-    },
-    "62256": {
-      "room_name": "126房间",
-      "current_balance": 285.1,
-      "last_updated": "20260516"
-    },
-    "60489": {
-      "room_name": "244房间",
-      "current_balance": 48.94,
-      "last_updated": "20260516"
-    },
-    "93048": {
-      "room_name": "236房间",
-      "current_balance": 156.88,
-      "last_updated": "20260516"
-    },
-    "62038": {
-      "room_name": "211房间",
-      "current_balance": 514.15,
-      "last_updated": "20260516"
-    },
-    "67579": {
-      "room_name": "404房间",
-      "current_balance": 855.37,
-      "last_updated": "20260516"
-    },
-    "55985": {
-      "room_name": "418房间",
-      "current_balance": 240.97,
-      "last_updated": "20260516"
-    },
-    "89347": {
-      "room_name": "408房间",
-      "current_balance": 443.09,
-      "last_updated": "20260516"
-    },
-    "36832": {
-      "room_name": "540房间",
-      "current_balance": 458.84,
       "last_updated": "20260516"
     },
     "31020": {
@@ -5328,59 +1373,9 @@
       "current_balance": 74.99,
       "last_updated": "20260516"
     },
-    "62613": {
-      "room_name": "334房间",
-      "current_balance": 85.07,
-      "last_updated": "20260516"
-    },
-    "60669": {
-      "room_name": "127房间",
-      "current_balance": 161.78,
-      "last_updated": "20260516"
-    },
-    "32897": {
-      "room_name": "430房间",
-      "current_balance": 833.65,
-      "last_updated": "20260516"
-    },
-    "90125": {
-      "room_name": "438房间",
-      "current_balance": 74.64,
-      "last_updated": "20260516"
-    },
-    "49415": {
-      "room_name": "123房间",
-      "current_balance": 451.66,
-      "last_updated": "20260516"
-    },
-    "88291": {
-      "room_name": "522房间",
-      "current_balance": 552.68,
-      "last_updated": "20260516"
-    },
-    "19169": {
-      "room_name": "408房间",
-      "current_balance": 443.09,
-      "last_updated": "20260516"
-    },
-    "64673": {
-      "room_name": "445房间",
-      "current_balance": 710.17,
-      "last_updated": "20260516"
-    },
-    "12059": {
-      "room_name": "309房间",
-      "current_balance": 719.1,
-      "last_updated": "20260516"
-    },
     "37678": {
       "room_name": "119房间",
       "current_balance": 397.01,
-      "last_updated": "20260516"
-    },
-    "60314": {
-      "room_name": "318房间",
-      "current_balance": 160.7,
       "last_updated": "20260516"
     },
     "12831": {
@@ -5388,29 +1383,9 @@
       "current_balance": 496.42,
       "last_updated": "20260516"
     },
-    "80735": {
-      "room_name": "535房间",
-      "current_balance": 36.12,
-      "last_updated": "20260516"
-    },
-    "74279": {
-      "room_name": "320房间",
-      "current_balance": 750.87,
-      "last_updated": "20260516"
-    },
     "62890": {
       "room_name": "214房间",
       "current_balance": 221.35,
-      "last_updated": "20260516"
-    },
-    "13766": {
-      "room_name": "447房间",
-      "current_balance": 420.48,
-      "last_updated": "20260516"
-    },
-    "38090": {
-      "room_name": "531房间",
-      "current_balance": 119.45,
       "last_updated": "20260516"
     },
     "28267": {
@@ -5418,29 +1393,9 @@
       "current_balance": 96.29,
       "last_updated": "20260516"
     },
-    "17543": {
-      "room_name": "119房间",
-      "current_balance": 397.01,
-      "last_updated": "20260516"
-    },
     "26335": {
       "room_name": "541房间",
       "current_balance": 72.89,
-      "last_updated": "20260516"
-    },
-    "67509": {
-      "room_name": "321房间",
-      "current_balance": 670.7,
-      "last_updated": "20260516"
-    },
-    "58441": {
-      "room_name": "540房间",
-      "current_balance": 458.84,
-      "last_updated": "20260516"
-    },
-    "61650": {
-      "room_name": "330房间",
-      "current_balance": 496.42,
       "last_updated": "20260516"
     },
     "12660": {
@@ -5448,24 +1403,9 @@
       "current_balance": 76.39,
       "last_updated": "20260516"
     },
-    "92452": {
-      "room_name": "521房间",
-      "current_balance": 106.08,
-      "last_updated": "20260516"
-    },
-    "60598": {
-      "room_name": "124房间",
-      "current_balance": 84.89,
-      "last_updated": "20260516"
-    },
     "60176": {
       "room_name": "237房间",
       "current_balance": 44.8,
-      "last_updated": "20260516"
-    },
-    "30397": {
-      "room_name": "429房间",
-      "current_balance": 434.53,
       "last_updated": "20260516"
     },
     "58526": {
@@ -5483,24 +1423,9 @@
       "current_balance": 360.75,
       "last_updated": "20260516"
     },
-    "84349": {
-      "room_name": "351房间",
-      "current_balance": 4.12,
-      "last_updated": "20260516"
-    },
     "96617": {
       "room_name": "428房间",
       "current_balance": 132.73,
-      "last_updated": "20260516"
-    },
-    "32911": {
-      "room_name": "509房间",
-      "current_balance": 640.4,
-      "last_updated": "20260516"
-    },
-    "63729": {
-      "room_name": "225房间",
-      "current_balance": 36.2,
       "last_updated": "20260516"
     }
   }

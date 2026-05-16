@@ -1,7 +1,7 @@
 {
   "building": "一期食堂",
   "campus": "仙林校区",
-  "total_rooms": 17,
+  "total_rooms": 13,
   "rooms": {
     "69956": {
       "room_name": "0112",
@@ -13,19 +13,9 @@
       "current_balance": 8.56,
       "last_updated": "20260516"
     },
-    "95776": {
-      "room_name": "四食堂16#",
-      "current_balance": 10.93,
-      "last_updated": "20260516"
-    },
     "95365": {
       "room_name": "四食堂 馅饼",
       "current_balance": 1219.16,
-      "last_updated": "20260516"
-    },
-    "72255": {
-      "room_name": "四食堂 煎饼",
-      "current_balance": 643.76,
       "last_updated": "20260516"
     },
     "71757": {
@@ -38,19 +28,9 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "64834": {
-      "room_name": "四食堂 油条",
-      "current_balance": 52.31,
-      "last_updated": "20260516"
-    },
     "95994": {
       "room_name": "四食堂16#",
       "current_balance": 10.93,
-      "last_updated": "20260516"
-    },
-    "96977": {
-      "room_name": "四食堂6#",
-      "current_balance": 643.76,
       "last_updated": "20260516"
     },
     "72232": {

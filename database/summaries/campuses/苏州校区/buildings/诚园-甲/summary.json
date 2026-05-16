@@ -1,61 +1,11 @@
 {
   "building": "诚园-甲",
   "campus": "苏州校区",
-  "total_rooms": 484,
+  "total_rooms": 140,
   "rooms": {
-    "82468": {
-      "room_name": "诚园-甲-409",
-      "current_balance": 29.11,
-      "last_updated": "20260516"
-    },
-    "76274": {
-      "room_name": "诚园-甲-222",
-      "current_balance": 326.57,
-      "last_updated": "20260516"
-    },
-    "99358": {
-      "room_name": "诚园-甲-308",
-      "current_balance": 43.11,
-      "last_updated": "20260516"
-    },
-    "78701": {
-      "room_name": "诚园-甲-614",
-      "current_balance": 54.49,
-      "last_updated": "20260516"
-    },
-    "51836": {
-      "room_name": "诚园-甲-410",
-      "current_balance": 130.22,
-      "last_updated": "20260516"
-    },
-    "76470": {
-      "room_name": "诚园-甲-419",
-      "current_balance": 54.6,
-      "last_updated": "20260516"
-    },
-    "61309": {
-      "room_name": "诚园-甲-709",
-      "current_balance": 37.01,
-      "last_updated": "20260516"
-    },
-    "75483": {
-      "room_name": "诚园-甲-706",
-      "current_balance": 143.32,
-      "last_updated": "20260516"
-    },
     "79853": {
       "room_name": "诚园-甲-423",
       "current_balance": 79.65,
-      "last_updated": "20260516"
-    },
-    "76117": {
-      "room_name": "诚园-甲-410",
-      "current_balance": 130.22,
-      "last_updated": "20260516"
-    },
-    "95260": {
-      "room_name": "诚园-甲-415",
-      "current_balance": 227.76,
       "last_updated": "20260516"
     },
     "81046": {
@@ -73,169 +23,14 @@
       "current_balance": 157.55,
       "last_updated": "20260516"
     },
-    "76176": {
-      "room_name": "诚园-甲-306",
-      "current_balance": 116.86,
-      "last_updated": "20260516"
-    },
-    "78815": {
-      "room_name": "诚园-甲-319",
-      "current_balance": 61.16,
-      "last_updated": "20260516"
-    },
-    "76867": {
-      "room_name": "诚园-甲-613",
-      "current_balance": 45.23,
-      "last_updated": "20260516"
-    },
-    "76248": {
-      "room_name": "诚园-甲-226",
-      "current_balance": 217.72,
-      "last_updated": "20260516"
-    },
-    "76377": {
-      "room_name": "诚园-甲-521",
-      "current_balance": 84.64,
-      "last_updated": "20260516"
-    },
-    "76571": {
-      "room_name": "诚园-甲-308",
-      "current_balance": 43.11,
-      "last_updated": "20260516"
-    },
-    "96666": {
-      "room_name": "诚园-甲-609",
-      "current_balance": 150.92,
-      "last_updated": "20260516"
-    },
-    "53162": {
-      "room_name": "诚园-甲-322",
-      "current_balance": 160.07,
-      "last_updated": "20260516"
-    },
-    "78853": {
-      "room_name": "诚园-甲-514",
-      "current_balance": 121.44,
-      "last_updated": "20260516"
-    },
-    "76586": {
-      "room_name": "诚园-甲-308",
-      "current_balance": 43.11,
-      "last_updated": "20260516"
-    },
-    "97622": {
-      "room_name": "诚园-甲-622",
-      "current_balance": 72.65,
-      "last_updated": "20260516"
-    },
-    "77952": {
-      "room_name": "诚园-甲-506",
-      "current_balance": 50.4,
-      "last_updated": "20260516"
-    },
-    "76087": {
-      "room_name": "诚园-甲-507",
-      "current_balance": 156.66,
-      "last_updated": "20260516"
-    },
-    "98333": {
-      "room_name": "诚园-甲-520",
-      "current_balance": 266.61,
-      "last_updated": "20260516"
-    },
-    "78573": {
-      "room_name": "诚园-甲-412",
-      "current_balance": 149.78,
-      "last_updated": "20260516"
-    },
-    "76106": {
-      "room_name": "诚园-甲-511",
-      "current_balance": 57.61,
-      "last_updated": "20260516"
-    },
-    "78091": {
-      "room_name": "诚园-甲-703",
-      "current_balance": 59.66,
-      "last_updated": "20260516"
-    },
-    "76066": {
-      "room_name": "诚园-甲-420",
-      "current_balance": 171.16,
-      "last_updated": "20260516"
-    },
-    "97743": {
-      "room_name": "诚园-甲-302",
-      "current_balance": 269.4,
-      "last_updated": "20260516"
-    },
-    "76560": {
-      "room_name": "诚园-甲-401",
-      "current_balance": 74.7,
-      "last_updated": "20260516"
-    },
-    "83087": {
-      "room_name": "诚园-甲-707",
-      "current_balance": 78.11,
-      "last_updated": "20260516"
-    },
-    "77029": {
-      "room_name": "诚园-甲-408",
-      "current_balance": 22.13,
-      "last_updated": "20260516"
-    },
-    "95555": {
-      "room_name": "诚园-甲-412",
-      "current_balance": 149.78,
-      "last_updated": "20260516"
-    },
-    "97212": {
-      "room_name": "诚园-甲-626",
-      "current_balance": 135.41,
-      "last_updated": "20260516"
-    },
-    "95606": {
-      "room_name": "诚园-甲-219",
-      "current_balance": 721.35,
-      "last_updated": "20260516"
-    },
-    "80916": {
-      "room_name": "诚园-甲-707",
-      "current_balance": 78.11,
-      "last_updated": "20260516"
-    },
-    "51316": {
-      "room_name": "诚园-甲-612",
-      "current_balance": 146.46,
-      "last_updated": "20260516"
-    },
     "76519": {
       "room_name": "诚园-甲-204",
       "current_balance": 165.48,
       "last_updated": "20260516"
     },
-    "96282": {
-      "room_name": "诚园-甲-207",
-      "current_balance": 405.35,
-      "last_updated": "20260516"
-    },
     "93974": {
       "room_name": "诚园-甲-421",
       "current_balance": 291.86,
-      "last_updated": "20260516"
-    },
-    "97742": {
-      "room_name": "诚园-甲-209",
-      "current_balance": 12.52,
-      "last_updated": "20260516"
-    },
-    "88149": {
-      "room_name": "诚园-甲-403",
-      "current_balance": 213.49,
-      "last_updated": "20260516"
-    },
-    "79474": {
-      "room_name": "诚园-甲-316",
-      "current_balance": 135.9,
       "last_updated": "20260516"
     },
     "45924": {
@@ -248,24 +43,9 @@
       "current_balance": 120.01,
       "last_updated": "20260516"
     },
-    "76090": {
-      "room_name": "诚园-甲-426",
-      "current_balance": 54.41,
-      "last_updated": "20260516"
-    },
-    "91246": {
-      "room_name": "诚园-甲-202",
-      "current_balance": 111.58,
-      "last_updated": "20260516"
-    },
     "98236": {
       "room_name": "诚园-甲-611",
       "current_balance": 49.37,
-      "last_updated": "20260516"
-    },
-    "97507": {
-      "room_name": "诚园-甲-423",
-      "current_balance": 79.65,
       "last_updated": "20260516"
     },
     "98258": {
@@ -278,31 +58,6 @@
       "current_balance": 326.57,
       "last_updated": "20260516"
     },
-    "95264": {
-      "room_name": "诚园-甲-303",
-      "current_balance": 149.48,
-      "last_updated": "20260516"
-    },
-    "78184": {
-      "room_name": "诚园-甲-305",
-      "current_balance": 37.96,
-      "last_updated": "20260516"
-    },
-    "83605": {
-      "room_name": "诚园-甲-205",
-      "current_balance": 81.03,
-      "last_updated": "20260516"
-    },
-    "91931": {
-      "room_name": "诚园-甲-414",
-      "current_balance": 227.93,
-      "last_updated": "20260516"
-    },
-    "77122": {
-      "room_name": "诚园-甲-616",
-      "current_balance": 170.19,
-      "last_updated": "20260516"
-    },
     "76595": {
       "room_name": "诚园-甲-409",
       "current_balance": 29.11,
@@ -313,19 +68,9 @@
       "current_balance": 241.59,
       "last_updated": "20260516"
     },
-    "76894": {
-      "room_name": "诚园-甲-427",
-      "current_balance": 125.46,
-      "last_updated": "20260516"
-    },
     "77728": {
       "room_name": "诚园-甲-212",
       "current_balance": 108.17,
-      "last_updated": "20260516"
-    },
-    "79021": {
-      "room_name": "诚园-甲-219",
-      "current_balance": 721.35,
       "last_updated": "20260516"
     },
     "76615": {
@@ -348,24 +93,9 @@
       "current_balance": 266.61,
       "last_updated": "20260516"
     },
-    "96882": {
-      "room_name": "诚园-甲-425",
-      "current_balance": 121.87,
-      "last_updated": "20260516"
-    },
     "76116": {
       "room_name": "诚园-甲-504",
       "current_balance": 20.49,
-      "last_updated": "20260516"
-    },
-    "83633": {
-      "room_name": "诚园-甲-227",
-      "current_balance": 68.5,
-      "last_updated": "20260516"
-    },
-    "78223": {
-      "room_name": "诚园-甲-517",
-      "current_balance": 335.95,
       "last_updated": "20260516"
     },
     "81575": {
@@ -378,21 +108,6 @@
       "current_balance": 259.34,
       "last_updated": "20260516"
     },
-    "97363": {
-      "room_name": "诚园-甲-711",
-      "current_balance": 125.13,
-      "last_updated": "20260516"
-    },
-    "88131": {
-      "room_name": "诚园-甲-319",
-      "current_balance": 61.16,
-      "last_updated": "20260516"
-    },
-    "76053": {
-      "room_name": "诚园-甲-525",
-      "current_balance": 117.78,
-      "last_updated": "20260516"
-    },
     "76131": {
       "room_name": "诚园-甲-518",
       "current_balance": 173.07,
@@ -403,64 +118,9 @@
       "current_balance": 227.93,
       "last_updated": "20260516"
     },
-    "83046": {
-      "room_name": "诚园-甲-221",
-      "current_balance": 1.66,
-      "last_updated": "20260516"
-    },
-    "76424": {
-      "room_name": "诚园-甲-404",
-      "current_balance": 28.64,
-      "last_updated": "20260516"
-    },
     "95858": {
       "room_name": "诚园-甲-615",
       "current_balance": 178.43,
-      "last_updated": "20260516"
-    },
-    "76624": {
-      "room_name": "诚园-甲-413",
-      "current_balance": 187.76,
-      "last_updated": "20260516"
-    },
-    "98334": {
-      "room_name": "诚园-甲-520",
-      "current_balance": 266.61,
-      "last_updated": "20260516"
-    },
-    "97623": {
-      "room_name": "诚园-甲-622",
-      "current_balance": 72.65,
-      "last_updated": "20260516"
-    },
-    "78939": {
-      "room_name": "诚园-甲-605",
-      "current_balance": 374.1,
-      "last_updated": "20260516"
-    },
-    "98754": {
-      "room_name": "诚园-甲-711",
-      "current_balance": 125.13,
-      "last_updated": "20260516"
-    },
-    "80255": {
-      "room_name": "诚园-甲-512",
-      "current_balance": 119.58,
-      "last_updated": "20260516"
-    },
-    "77968": {
-      "room_name": "诚园-甲-210",
-      "current_balance": 0.77,
-      "last_updated": "20260516"
-    },
-    "76584": {
-      "room_name": "诚园-甲-418",
-      "current_balance": 80.7,
-      "last_updated": "20260516"
-    },
-    "76141": {
-      "room_name": "诚园-甲-602",
-      "current_balance": 179.25,
       "last_updated": "20260516"
     },
     "50865": {
@@ -468,59 +128,9 @@
       "current_balance": 213.49,
       "last_updated": "20260516"
     },
-    "80486": {
-      "room_name": "诚园-甲-214",
-      "current_balance": 9.11,
-      "last_updated": "20260516"
-    },
-    "95073": {
-      "room_name": "诚园-甲-701",
-      "current_balance": 191.6,
-      "last_updated": "20260516"
-    },
-    "76085": {
-      "room_name": "诚园-甲-519",
-      "current_balance": 174.86,
-      "last_updated": "20260516"
-    },
-    "77068": {
-      "room_name": "诚园-甲-325",
-      "current_balance": 140.31,
-      "last_updated": "20260516"
-    },
-    "93973": {
-      "room_name": "诚园-甲-421",
-      "current_balance": 291.86,
-      "last_updated": "20260516"
-    },
-    "80775": {
-      "room_name": "诚园-甲-622",
-      "current_balance": 72.65,
-      "last_updated": "20260516"
-    },
-    "83050": {
-      "room_name": "诚园-甲-705",
-      "current_balance": 10.95,
-      "last_updated": "20260516"
-    },
     "76484": {
       "room_name": "诚园-甲-427",
       "current_balance": 125.46,
-      "last_updated": "20260516"
-    },
-    "76485": {
-      "room_name": "诚园-甲-322",
-      "current_balance": 160.07,
-      "last_updated": "20260516"
-    },
-    "79973": {
-      "room_name": "诚园-甲-514",
-      "current_balance": 121.44,
-      "last_updated": "20260516"
-    },
-    "76400": {
-      "room_name": "诚园-甲-421",
-      "current_balance": 291.86,
       "last_updated": "20260516"
     },
     "76569": {
@@ -533,69 +143,9 @@
       "current_balance": 76.81,
       "last_updated": "20260516"
     },
-    "76546": {
-      "room_name": "诚园-甲-305",
-      "current_balance": 37.96,
-      "last_updated": "20260516"
-    },
-    "86502": {
-      "room_name": "诚园-甲-322",
-      "current_balance": 160.07,
-      "last_updated": "20260516"
-    },
-    "76542": {
-      "room_name": "诚园-甲-204",
-      "current_balance": 165.48,
-      "last_updated": "20260516"
-    },
-    "94784": {
-      "room_name": "诚园-甲-506",
-      "current_balance": 50.4,
-      "last_updated": "20260516"
-    },
-    "77085": {
-      "room_name": "诚园-甲-506",
-      "current_balance": 50.4,
-      "last_updated": "20260516"
-    },
     "76489": {
       "room_name": "诚园-甲-606",
       "current_balance": 118.84,
-      "last_updated": "20260516"
-    },
-    "97324": {
-      "room_name": "诚园-甲-601",
-      "current_balance": 146.1,
-      "last_updated": "20260516"
-    },
-    "97262": {
-      "room_name": "诚园-甲-627",
-      "current_balance": 58.26,
-      "last_updated": "20260516"
-    },
-    "96687": {
-      "room_name": "诚园-甲-510",
-      "current_balance": 264.96,
-      "last_updated": "20260516"
-    },
-    "78125": {
-      "room_name": "诚园-甲-327",
-      "current_balance": 7.69,
-      "last_updated": "20260516"
-    },
-    "77091": {
-      "room_name": "诚园-甲-418",
-      "current_balance": 80.7,
-      "last_updated": "20260516"
-    },
-    "78599": {
-      "room_name": "诚园-甲-710",
-      "current_balance": 70.01,
-      "last_updated": "20260516"
-    },
-    "76936": {
-      "room_name": "诚园-甲-509",
-      "current_balance": 358.48,
       "last_updated": "20260516"
     },
     "76565": {
@@ -603,44 +153,9 @@
       "current_balance": 80.7,
       "last_updated": "20260516"
     },
-    "80324": {
-      "room_name": "诚园-甲-425",
-      "current_balance": 121.87,
-      "last_updated": "20260516"
-    },
-    "78590": {
-      "room_name": "诚园-甲-324",
-      "current_balance": 208.33,
-      "last_updated": "20260516"
-    },
     "76594": {
       "room_name": "诚园-甲-317",
       "current_balance": 109.41,
-      "last_updated": "20260516"
-    },
-    "76104": {
-      "room_name": "诚园-甲-613",
-      "current_balance": 45.23,
-      "last_updated": "20260516"
-    },
-    "76487": {
-      "room_name": "诚园-甲-408",
-      "current_balance": 22.13,
-      "last_updated": "20260516"
-    },
-    "98019": {
-      "room_name": "诚园-甲-626",
-      "current_balance": 135.41,
-      "last_updated": "20260516"
-    },
-    "97379": {
-      "room_name": "诚园-甲-306",
-      "current_balance": 116.86,
-      "last_updated": "20260516"
-    },
-    "76096": {
-      "room_name": "诚园-甲-604",
-      "current_balance": 144.49,
       "last_updated": "20260516"
     },
     "76575": {
@@ -648,19 +163,9 @@
       "current_balance": 227.76,
       "last_updated": "20260516"
     },
-    "97606": {
-      "room_name": "诚园-甲-314",
-      "current_balance": 22.55,
-      "last_updated": "20260516"
-    },
     "97044": {
       "room_name": "诚园-甲-623",
       "current_balance": 48.14,
-      "last_updated": "20260516"
-    },
-    "76626": {
-      "room_name": "诚园-甲-414",
-      "current_balance": 227.93,
       "last_updated": "20260516"
     },
     "88037": {
@@ -668,69 +173,9 @@
       "current_balance": 58.26,
       "last_updated": "20260516"
     },
-    "83193": {
-      "room_name": "诚园-甲-216",
-      "current_balance": 30.3,
-      "last_updated": "20260516"
-    },
-    "97986": {
-      "room_name": "诚园-甲-324",
-      "current_balance": 208.33,
-      "last_updated": "20260516"
-    },
-    "97042": {
-      "room_name": "诚园-甲-623",
-      "current_balance": 48.14,
-      "last_updated": "20260516"
-    },
     "97725": {
       "room_name": "诚园-甲-209",
       "current_balance": 12.52,
-      "last_updated": "20260516"
-    },
-    "75624": {
-      "room_name": "诚园-甲-526",
-      "current_balance": 597.78,
-      "last_updated": "20260516"
-    },
-    "80006": {
-      "room_name": "诚园-甲-309",
-      "current_balance": 23.29,
-      "last_updated": "20260516"
-    },
-    "76129": {
-      "room_name": "诚园-甲-616",
-      "current_balance": 170.19,
-      "last_updated": "20260516"
-    },
-    "80749": {
-      "room_name": "诚园-甲-702",
-      "current_balance": 66.16,
-      "last_updated": "20260516"
-    },
-    "97953": {
-      "room_name": "诚园-甲-709",
-      "current_balance": 37.01,
-      "last_updated": "20260516"
-    },
-    "96163": {
-      "room_name": "诚园-甲-615",
-      "current_balance": 178.43,
-      "last_updated": "20260516"
-    },
-    "76576": {
-      "room_name": "诚园-甲-320",
-      "current_balance": 110.4,
-      "last_updated": "20260516"
-    },
-    "97911": {
-      "room_name": "诚园-甲-412",
-      "current_balance": 149.78,
-      "last_updated": "20260516"
-    },
-    "76762": {
-      "room_name": "诚园-甲-312",
-      "current_balance": 322.25,
       "last_updated": "20260516"
     },
     "94098": {
@@ -743,39 +188,9 @@
       "current_balance": 278.93,
       "last_updated": "20260516"
     },
-    "76110": {
-      "room_name": "诚园-甲-413",
-      "current_balance": 187.76,
-      "last_updated": "20260516"
-    },
     "99933": {
       "room_name": "诚园-甲-612",
       "current_balance": 146.46,
-      "last_updated": "20260516"
-    },
-    "97922": {
-      "room_name": "诚园-甲-412",
-      "current_balance": 149.78,
-      "last_updated": "20260516"
-    },
-    "80488": {
-      "room_name": "诚园-甲-214",
-      "current_balance": 9.11,
-      "last_updated": "20260516"
-    },
-    "78008": {
-      "room_name": "诚园-甲-311",
-      "current_balance": 309.8,
-      "last_updated": "20260516"
-    },
-    "77039": {
-      "room_name": "诚园-甲-614",
-      "current_balance": 54.49,
-      "last_updated": "20260516"
-    },
-    "51892": {
-      "room_name": "诚园-甲-622",
-      "current_balance": 72.65,
       "last_updated": "20260516"
     },
     "76421": {
@@ -788,89 +203,14 @@
       "current_balance": 191.6,
       "last_updated": "20260516"
     },
-    "81267": {
-      "room_name": "诚园-甲-611",
-      "current_balance": 49.37,
-      "last_updated": "20260516"
-    },
     "79711": {
       "room_name": "诚园-甲-407",
       "current_balance": 54.45,
       "last_updated": "20260516"
     },
-    "76876": {
-      "room_name": "诚园-甲-224",
-      "current_balance": 281.63,
-      "last_updated": "20260516"
-    },
-    "49906": {
-      "room_name": "诚园-甲-608",
-      "current_balance": 20.32,
-      "last_updated": "20260516"
-    },
-    "85285": {
-      "room_name": "诚园-甲-319",
-      "current_balance": 61.16,
-      "last_updated": "20260516"
-    },
-    "48722": {
-      "room_name": "诚园-甲-325",
-      "current_balance": 140.31,
-      "last_updated": "20260516"
-    },
     "99829": {
       "room_name": "诚园-甲-218",
       "current_balance": 68.78,
-      "last_updated": "20260516"
-    },
-    "98332": {
-      "room_name": "诚园-甲-520",
-      "current_balance": 266.61,
-      "last_updated": "20260516"
-    },
-    "98767": {
-      "room_name": "诚园-甲-620",
-      "current_balance": 14.1,
-      "last_updated": "20260516"
-    },
-    "98250": {
-      "room_name": "诚园-甲-305",
-      "current_balance": 37.96,
-      "last_updated": "20260516"
-    },
-    "77709": {
-      "room_name": "诚园-甲-402",
-      "current_balance": 166.64,
-      "last_updated": "20260516"
-    },
-    "95194": {
-      "room_name": "诚园-甲-627",
-      "current_balance": 58.26,
-      "last_updated": "20260516"
-    },
-    "96411": {
-      "room_name": "诚园-甲-207",
-      "current_balance": 405.35,
-      "last_updated": "20260516"
-    },
-    "76275": {
-      "room_name": "诚园-甲-222",
-      "current_balance": 326.57,
-      "last_updated": "20260516"
-    },
-    "78967": {
-      "room_name": "诚园-甲-416",
-      "current_balance": 14.94,
-      "last_updated": "20260516"
-    },
-    "76231": {
-      "room_name": "诚园-甲-523",
-      "current_balance": 21.71,
-      "last_updated": "20260516"
-    },
-    "76555": {
-      "room_name": "诚园-甲-323",
-      "current_balance": 79.5,
       "last_updated": "20260516"
     },
     "83330": {
@@ -883,29 +223,9 @@
       "current_balance": 52.47,
       "last_updated": "20260516"
     },
-    "76426": {
-      "room_name": "诚园-甲-502",
-      "current_balance": 259.34,
-      "last_updated": "20260516"
-    },
-    "94636": {
-      "room_name": "诚园-甲-703",
-      "current_balance": 59.66,
-      "last_updated": "20260516"
-    },
-    "78352": {
-      "room_name": "诚园-甲-315",
-      "current_balance": 222.58,
-      "last_updated": "20260516"
-    },
     "91921": {
       "room_name": "诚园-甲-603",
       "current_balance": 24.47,
-      "last_updated": "20260516"
-    },
-    "96162": {
-      "room_name": "诚园-甲-615",
-      "current_balance": 178.43,
       "last_updated": "20260516"
     },
     "77242": {
@@ -913,64 +233,9 @@
       "current_balance": 84.64,
       "last_updated": "20260516"
     },
-    "76114": {
-      "room_name": "诚园-甲-218",
-      "current_balance": 68.78,
-      "last_updated": "20260516"
-    },
-    "76520": {
-      "room_name": "诚园-甲-602",
-      "current_balance": 179.25,
-      "last_updated": "20260516"
-    },
-    "94989": {
-      "room_name": "诚园-甲-226",
-      "current_balance": 217.72,
-      "last_updated": "20260516"
-    },
-    "92650": {
-      "room_name": "诚园-甲-212",
-      "current_balance": 108.17,
-      "last_updated": "20260516"
-    },
-    "76171": {
-      "room_name": "诚园-甲-201",
-      "current_balance": 153.46,
-      "last_updated": "20260516"
-    },
-    "76278": {
-      "room_name": "诚园-甲-203",
-      "current_balance": 278.93,
-      "last_updated": "20260516"
-    },
-    "81913": {
-      "room_name": "诚园-甲-427",
-      "current_balance": 125.46,
-      "last_updated": "20260516"
-    },
     "80122": {
       "room_name": "诚园-甲-210",
       "current_balance": 0.77,
-      "last_updated": "20260516"
-    },
-    "76084": {
-      "room_name": "诚园-甲-601",
-      "current_balance": 146.1,
-      "last_updated": "20260516"
-    },
-    "99741": {
-      "room_name": "诚园-甲-620",
-      "current_balance": 14.1,
-      "last_updated": "20260516"
-    },
-    "94616": {
-      "room_name": "诚园-甲-524",
-      "current_balance": 78.15,
-      "last_updated": "20260516"
-    },
-    "94994": {
-      "room_name": "诚园-甲-517",
-      "current_balance": 335.95,
       "last_updated": "20260516"
     },
     "96241": {
@@ -978,29 +243,9 @@
       "current_balance": 405.35,
       "last_updated": "20260516"
     },
-    "77103": {
-      "room_name": "诚园-甲-407",
-      "current_balance": 54.45,
-      "last_updated": "20260516"
-    },
     "78305": {
       "room_name": "诚园-甲-216",
       "current_balance": 30.3,
-      "last_updated": "20260516"
-    },
-    "79423": {
-      "room_name": "诚园-甲-316",
-      "current_balance": 135.9,
-      "last_updated": "20260516"
-    },
-    "98373": {
-      "room_name": "诚园-甲-614",
-      "current_balance": 54.49,
-      "last_updated": "20260516"
-    },
-    "84211": {
-      "room_name": "诚园-甲-320",
-      "current_balance": 110.4,
       "last_updated": "20260516"
     },
     "97626": {
@@ -1008,44 +253,9 @@
       "current_balance": 87.44,
       "last_updated": "20260516"
     },
-    "49983": {
-      "room_name": "诚园-甲-405",
-      "current_balance": 144.42,
-      "last_updated": "20260516"
-    },
-    "80622": {
-      "room_name": "诚园-甲-323",
-      "current_balance": 79.5,
-      "last_updated": "20260516"
-    },
-    "95145": {
-      "room_name": "诚园-甲-525",
-      "current_balance": 117.78,
-      "last_updated": "20260516"
-    },
-    "97873": {
-      "room_name": "诚园-甲-618",
-      "current_balance": 155.19,
-      "last_updated": "20260516"
-    },
-    "76528": {
-      "room_name": "诚园-甲-403",
-      "current_balance": 213.49,
-      "last_updated": "20260516"
-    },
     "79136": {
       "room_name": "诚园-甲-224",
       "current_balance": 281.63,
-      "last_updated": "20260516"
-    },
-    "78695": {
-      "room_name": "诚园-甲-623",
-      "current_balance": 48.14,
-      "last_updated": "20260516"
-    },
-    "77878": {
-      "room_name": "诚园-甲-223",
-      "current_balance": 185.99,
       "last_updated": "20260516"
     },
     "76041": {
@@ -1053,54 +263,9 @@
       "current_balance": 335.95,
       "last_updated": "20260516"
     },
-    "76062": {
-      "room_name": "诚园-甲-517",
-      "current_balance": 335.95,
-      "last_updated": "20260516"
-    },
-    "81268": {
-      "room_name": "诚园-甲-611",
-      "current_balance": 49.37,
-      "last_updated": "20260516"
-    },
-    "93278": {
-      "room_name": "诚园-甲-310",
-      "current_balance": 134.07,
-      "last_updated": "20260516"
-    },
-    "76398": {
-      "room_name": "诚园-甲-602",
-      "current_balance": 179.25,
-      "last_updated": "20260516"
-    },
-    "76657": {
-      "room_name": "诚园-甲-327",
-      "current_balance": 7.69,
-      "last_updated": "20260516"
-    },
-    "80753": {
-      "room_name": "诚园-甲-314",
-      "current_balance": 22.55,
-      "last_updated": "20260516"
-    },
     "77019": {
       "room_name": "诚园-甲-215",
       "current_balance": 199.84,
-      "last_updated": "20260516"
-    },
-    "82741": {
-      "room_name": "诚园-甲-205",
-      "current_balance": 81.03,
-      "last_updated": "20260516"
-    },
-    "76603": {
-      "room_name": "诚园-甲-503",
-      "current_balance": 61.6,
-      "last_updated": "20260516"
-    },
-    "83946": {
-      "room_name": "诚园-甲-508",
-      "current_balance": 208.63,
       "last_updated": "20260516"
     },
     "79156": {
@@ -1113,29 +278,9 @@
       "current_balance": 222.58,
       "last_updated": "20260516"
     },
-    "98045": {
-      "room_name": "诚园-甲-626",
-      "current_balance": 135.41,
-      "last_updated": "20260516"
-    },
     "67804": {
       "room_name": "诚园-甲-613",
       "current_balance": 45.23,
-      "last_updated": "20260516"
-    },
-    "78708": {
-      "room_name": "诚园-甲-705",
-      "current_balance": 10.95,
-      "last_updated": "20260516"
-    },
-    "77126": {
-      "room_name": "诚园-甲-311",
-      "current_balance": 309.8,
-      "last_updated": "20260516"
-    },
-    "82411": {
-      "room_name": "诚园-甲-201",
-      "current_balance": 153.46,
       "last_updated": "20260516"
     },
     "77020": {
@@ -1143,29 +288,9 @@
       "current_balance": 156.66,
       "last_updated": "20260516"
     },
-    "98667": {
-      "room_name": "诚园-甲-406",
-      "current_balance": 73.78,
-      "last_updated": "20260516"
-    },
-    "76174": {
-      "room_name": "诚园-甲-519",
-      "current_balance": 174.86,
-      "last_updated": "20260516"
-    },
-    "77053": {
-      "room_name": "诚园-甲-315",
-      "current_balance": 222.58,
-      "last_updated": "20260516"
-    },
     "80309": {
       "room_name": "诚园-甲-413",
       "current_balance": 187.76,
-      "last_updated": "20260516"
-    },
-    "79845": {
-      "room_name": "诚园-甲-423",
-      "current_balance": 79.65,
       "last_updated": "20260516"
     },
     "77849": {
@@ -1173,34 +298,9 @@
       "current_balance": 70.01,
       "last_updated": "20260516"
     },
-    "97028": {
-      "room_name": "诚园-甲-222",
-      "current_balance": 326.57,
-      "last_updated": "20260516"
-    },
-    "98335": {
-      "room_name": "诚园-甲-427",
-      "current_balance": 125.46,
-      "last_updated": "20260516"
-    },
-    "91115": {
-      "room_name": "诚园-甲-215",
-      "current_balance": 199.84,
-      "last_updated": "20260516"
-    },
     "97578": {
       "room_name": "诚园-甲-711",
       "current_balance": 125.13,
-      "last_updated": "20260516"
-    },
-    "96412": {
-      "room_name": "诚园-甲-207",
-      "current_balance": 405.35,
-      "last_updated": "20260516"
-    },
-    "98395": {
-      "room_name": "诚园-甲-524",
-      "current_balance": 78.15,
       "last_updated": "20260516"
     },
     "98442": {
@@ -1213,69 +313,9 @@
       "current_balance": 185.99,
       "last_updated": "20260516"
     },
-    "80251": {
-      "room_name": "诚园-甲-212",
-      "current_balance": 108.17,
-      "last_updated": "20260516"
-    },
-    "78345": {
-      "room_name": "诚园-甲-516",
-      "current_balance": 21.74,
-      "last_updated": "20260516"
-    },
     "78397": {
       "room_name": "诚园-甲-226",
       "current_balance": 217.72,
-      "last_updated": "20260516"
-    },
-    "52292": {
-      "room_name": "诚园-甲-527",
-      "current_balance": 87.44,
-      "last_updated": "20260516"
-    },
-    "80562": {
-      "room_name": "诚园-甲-221",
-      "current_balance": 1.66,
-      "last_updated": "20260516"
-    },
-    "76065": {
-      "room_name": "诚园-甲-205",
-      "current_balance": 81.03,
-      "last_updated": "20260516"
-    },
-    "76582": {
-      "room_name": "诚园-甲-401",
-      "current_balance": 74.7,
-      "last_updated": "20260516"
-    },
-    "76453": {
-      "room_name": "诚园-甲-314",
-      "current_balance": 22.55,
-      "last_updated": "20260516"
-    },
-    "82387": {
-      "room_name": "诚园-甲-211",
-      "current_balance": 272.02,
-      "last_updated": "20260516"
-    },
-    "97886": {
-      "room_name": "诚园-甲-704",
-      "current_balance": 157.55,
-      "last_updated": "20260516"
-    },
-    "80337": {
-      "room_name": "诚园-甲-620",
-      "current_balance": 14.1,
-      "last_updated": "20260516"
-    },
-    "96907": {
-      "room_name": "诚园-甲-316",
-      "current_balance": 135.9,
-      "last_updated": "20260516"
-    },
-    "96634": {
-      "room_name": "诚园-甲-609",
-      "current_balance": 150.92,
       "last_updated": "20260516"
     },
     "81874": {
@@ -1288,21 +328,6 @@
       "current_balance": 721.35,
       "last_updated": "20260516"
     },
-    "99112": {
-      "room_name": "诚园-甲-210",
-      "current_balance": 0.77,
-      "last_updated": "20260516"
-    },
-    "77030": {
-      "room_name": "诚园-甲-408",
-      "current_balance": 22.13,
-      "last_updated": "20260516"
-    },
-    "81164": {
-      "room_name": "诚园-甲-605",
-      "current_balance": 374.1,
-      "last_updated": "20260516"
-    },
     "76538": {
       "room_name": "诚园-甲-312",
       "current_balance": 322.25,
@@ -1313,34 +338,9 @@
       "current_balance": 21.74,
       "last_updated": "20260516"
     },
-    "80492": {
-      "room_name": "诚园-甲-612",
-      "current_balance": 146.46,
-      "last_updated": "20260516"
-    },
-    "76271": {
-      "room_name": "诚园-甲-512",
-      "current_balance": 119.58,
-      "last_updated": "20260516"
-    },
-    "93113": {
-      "room_name": "诚园-甲-308",
-      "current_balance": 43.11,
-      "last_updated": "20260516"
-    },
     "80420": {
       "room_name": "诚园-甲-620",
       "current_balance": 14.1,
-      "last_updated": "20260516"
-    },
-    "97721": {
-      "room_name": "诚园-甲-209",
-      "current_balance": 12.52,
-      "last_updated": "20260516"
-    },
-    "94383": {
-      "room_name": "诚园-甲-223",
-      "current_balance": 185.99,
       "last_updated": "20260516"
     },
     "98616": {
@@ -1348,59 +348,9 @@
       "current_balance": 1.28,
       "last_updated": "20260516"
     },
-    "80440": {
-      "room_name": "诚园-甲-203",
-      "current_balance": 278.93,
-      "last_updated": "20260516"
-    },
-    "77115": {
-      "room_name": "诚园-甲-510",
-      "current_balance": 264.96,
-      "last_updated": "20260516"
-    },
-    "48827": {
-      "room_name": "诚园-甲-318",
-      "current_balance": 73.67,
-      "last_updated": "20260516"
-    },
-    "76185": {
-      "room_name": "诚园-甲-318",
-      "current_balance": 73.67,
-      "last_updated": "20260516"
-    },
-    "92359": {
-      "room_name": "诚园-甲-508",
-      "current_balance": 208.63,
-      "last_updated": "20260516"
-    },
-    "97590": {
-      "room_name": "诚园-甲-206",
-      "current_balance": 99.27,
-      "last_updated": "20260516"
-    },
     "76429": {
       "room_name": "诚园-甲-404",
       "current_balance": 28.64,
-      "last_updated": "20260516"
-    },
-    "76123": {
-      "room_name": "诚园-甲-302",
-      "current_balance": 269.4,
-      "last_updated": "20260516"
-    },
-    "93929": {
-      "room_name": "诚园-甲-404",
-      "current_balance": 28.64,
-      "last_updated": "20260516"
-    },
-    "76490": {
-      "room_name": "诚园-甲-323",
-      "current_balance": 79.5,
-      "last_updated": "20260516"
-    },
-    "96504": {
-      "room_name": "诚园-甲-508",
-      "current_balance": 208.63,
       "last_updated": "20260516"
     },
     "88798": {
@@ -1413,24 +363,9 @@
       "current_balance": 61.16,
       "last_updated": "20260516"
     },
-    "81746": {
-      "room_name": "诚园-甲-704",
-      "current_balance": 157.55,
-      "last_updated": "20260516"
-    },
-    "76650": {
-      "room_name": "诚园-甲-317",
-      "current_balance": 109.41,
-      "last_updated": "20260516"
-    },
     "87127": {
       "room_name": "诚园-甲-425",
       "current_balance": 121.87,
-      "last_updated": "20260516"
-    },
-    "51333": {
-      "room_name": "诚园-甲-625",
-      "current_balance": 1.28,
       "last_updated": "20260516"
     },
     "76290": {
@@ -1443,64 +378,14 @@
       "current_balance": 117.78,
       "last_updated": "20260516"
     },
-    "78300": {
-      "room_name": "诚园-甲-607",
-      "current_balance": 110.11,
-      "last_updated": "20260516"
-    },
-    "76120": {
-      "room_name": "诚园-甲-208",
-      "current_balance": 124.56,
-      "last_updated": "20260516"
-    },
-    "76527": {
-      "room_name": "诚园-甲-419",
-      "current_balance": 54.6,
-      "last_updated": "20260516"
-    },
-    "51640": {
-      "room_name": "诚园-甲-505",
-      "current_balance": 241.59,
-      "last_updated": "20260516"
-    },
-    "78545": {
-      "room_name": "诚园-甲-520",
-      "current_balance": 266.61,
-      "last_updated": "20260516"
-    },
     "77027": {
       "room_name": "诚园-甲-424",
       "current_balance": 38.15,
       "last_updated": "20260516"
     },
-    "98477": {
-      "room_name": "诚园-甲-507",
-      "current_balance": 156.66,
-      "last_updated": "20260516"
-    },
-    "92588": {
-      "room_name": "诚园-甲-301",
-      "current_balance": 76.81,
-      "last_updated": "20260516"
-    },
-    "77628": {
-      "room_name": "诚园-甲-406",
-      "current_balance": 73.78,
-      "last_updated": "20260516"
-    },
     "76602": {
       "room_name": "诚园-甲-202",
       "current_balance": 111.58,
-      "last_updated": "20260516"
-    },
-    "76640": {
-      "room_name": "诚园-甲-224",
-      "current_balance": 281.63,
-      "last_updated": "20260516"
-    },
-    "82332": {
-      "room_name": "诚园-甲-203",
-      "current_balance": 278.93,
       "last_updated": "20260516"
     },
     "76118": {
@@ -1513,29 +398,9 @@
       "current_balance": 78.11,
       "last_updated": "20260516"
     },
-    "76082": {
-      "room_name": "诚园-甲-411",
-      "current_balance": 126.17,
-      "last_updated": "20260516"
-    },
-    "97814": {
-      "room_name": "诚园-甲-313",
-      "current_balance": 145.94,
-      "last_updated": "20260516"
-    },
     "83127": {
       "room_name": "诚园-甲-524",
       "current_balance": 78.15,
-      "last_updated": "20260516"
-    },
-    "77955": {
-      "room_name": "诚园-甲-514",
-      "current_balance": 121.44,
-      "last_updated": "20260516"
-    },
-    "76887": {
-      "room_name": "诚园-甲-613",
-      "current_balance": 45.23,
       "last_updated": "20260516"
     },
     "77136": {
@@ -1543,34 +408,14 @@
       "current_balance": 14.52,
       "last_updated": "20260516"
     },
-    "76067": {
-      "room_name": "诚园-甲-301",
-      "current_balance": 76.81,
-      "last_updated": "20260516"
-    },
     "98055": {
       "room_name": "诚园-甲-214",
       "current_balance": 9.11,
       "last_updated": "20260516"
     },
-    "98123": {
-      "room_name": "诚园-甲-702",
-      "current_balance": 66.16,
-      "last_updated": "20260516"
-    },
-    "97043": {
-      "room_name": "诚园-甲-623",
-      "current_balance": 48.14,
-      "last_updated": "20260516"
-    },
     "51291": {
       "room_name": "诚园-甲-201",
       "current_balance": 153.46,
-      "last_updated": "20260516"
-    },
-    "98444": {
-      "room_name": "诚园-甲-526",
-      "current_balance": 597.78,
       "last_updated": "20260516"
     },
     "94218": {
@@ -1583,26 +428,6 @@
       "current_balance": 597.78,
       "last_updated": "20260516"
     },
-    "81525": {
-      "room_name": "诚园-甲-415",
-      "current_balance": 227.76,
-      "last_updated": "20260516"
-    },
-    "76068": {
-      "room_name": "诚园-甲-613",
-      "current_balance": 45.23,
-      "last_updated": "20260516"
-    },
-    "76417": {
-      "room_name": "诚园-甲-406",
-      "current_balance": 73.78,
-      "last_updated": "20260516"
-    },
-    "76510": {
-      "room_name": "诚园-甲-503",
-      "current_balance": 61.6,
-      "last_updated": "20260516"
-    },
     "93054": {
       "room_name": "诚园-甲-519",
       "current_balance": 174.86,
@@ -1611,11 +436,6 @@
     "79956": {
       "room_name": "诚园-甲-406",
       "current_balance": 73.78,
-      "last_updated": "20260516"
-    },
-    "97413": {
-      "room_name": "诚园-甲-422",
-      "current_balance": 235.59,
       "last_updated": "20260516"
     },
     "97760": {
@@ -1628,29 +448,9 @@
       "current_balance": 110.11,
       "last_updated": "20260516"
     },
-    "97032": {
-      "room_name": "诚园-甲-206",
-      "current_balance": 99.27,
-      "last_updated": "20260516"
-    },
-    "98168": {
-      "room_name": "诚园-甲-411",
-      "current_balance": 126.17,
-      "last_updated": "20260516"
-    },
-    "76070": {
-      "room_name": "诚园-甲-426",
-      "current_balance": 54.41,
-      "last_updated": "20260516"
-    },
     "83011": {
       "room_name": "诚园-甲-305",
       "current_balance": 37.96,
-      "last_updated": "20260516"
-    },
-    "76549": {
-      "room_name": "诚园-甲-407",
-      "current_balance": 54.45,
       "last_updated": "20260516"
     },
     "51636": {
@@ -1661,16 +461,6 @@
     "77142": {
       "room_name": "诚园-甲-323",
       "current_balance": 79.5,
-      "last_updated": "20260516"
-    },
-    "60915": {
-      "room_name": "诚园-甲-606",
-      "current_balance": 118.84,
-      "last_updated": "20260516"
-    },
-    "77531": {
-      "room_name": "诚园-甲-313",
-      "current_balance": 145.94,
       "last_updated": "20260516"
     },
     "81728": {
@@ -1688,24 +478,9 @@
       "current_balance": 54.41,
       "last_updated": "20260516"
     },
-    "93503": {
-      "room_name": "诚园-甲-604",
-      "current_balance": 144.49,
-      "last_updated": "20260516"
-    },
-    "76700": {
-      "room_name": "诚园-甲-315",
-      "current_balance": 222.58,
-      "last_updated": "20260516"
-    },
     "77108": {
       "room_name": "诚园-甲-626",
       "current_balance": 135.41,
-      "last_updated": "20260516"
-    },
-    "84008": {
-      "room_name": "诚园-甲-606",
-      "current_balance": 118.84,
       "last_updated": "20260516"
     },
     "77907": {
@@ -1713,54 +488,9 @@
       "current_balance": 69.53,
       "last_updated": "20260516"
     },
-    "95607": {
-      "room_name": "诚园-甲-219",
-      "current_balance": 721.35,
-      "last_updated": "20260516"
-    },
-    "96633": {
-      "room_name": "诚园-甲-609",
-      "current_balance": 150.92,
-      "last_updated": "20260516"
-    },
-    "51772": {
-      "room_name": "诚园-甲-507",
-      "current_balance": 156.66,
-      "last_updated": "20260516"
-    },
     "79710": {
       "room_name": "诚园-甲-419",
       "current_balance": 54.6,
-      "last_updated": "20260516"
-    },
-    "77058": {
-      "room_name": "诚园-甲-617",
-      "current_balance": 47.05,
-      "last_updated": "20260516"
-    },
-    "76152": {
-      "room_name": "诚园-甲-202",
-      "current_balance": 111.58,
-      "last_updated": "20260516"
-    },
-    "76038": {
-      "room_name": "诚园-甲-311",
-      "current_balance": 309.8,
-      "last_updated": "20260516"
-    },
-    "76401": {
-      "room_name": "诚园-甲-603",
-      "current_balance": 24.47,
-      "last_updated": "20260516"
-    },
-    "98052": {
-      "room_name": "诚园-甲-709",
-      "current_balance": 37.01,
-      "last_updated": "20260516"
-    },
-    "76561": {
-      "room_name": "诚园-甲-503",
-      "current_balance": 61.6,
       "last_updated": "20260516"
     },
     "81860": {
@@ -1768,59 +498,9 @@
       "current_balance": 119.58,
       "last_updated": "20260516"
     },
-    "76877": {
-      "room_name": "诚园-甲-224",
-      "current_balance": 281.63,
-      "last_updated": "20260516"
-    },
-    "96813": {
-      "room_name": "诚园-甲-402",
-      "current_balance": 166.64,
-      "last_updated": "20260516"
-    },
-    "76580": {
-      "room_name": "诚园-甲-309",
-      "current_balance": 23.29,
-      "last_updated": "20260516"
-    },
-    "76486": {
-      "room_name": "诚园-甲-502",
-      "current_balance": 259.34,
-      "last_updated": "20260516"
-    },
-    "80784": {
-      "room_name": "诚园-甲-622",
-      "current_balance": 72.65,
-      "last_updated": "20260516"
-    },
-    "76097": {
-      "room_name": "诚园-甲-604",
-      "current_balance": 144.49,
-      "last_updated": "20260516"
-    },
-    "78069": {
-      "room_name": "诚园-甲-202",
-      "current_balance": 111.58,
-      "last_updated": "20260516"
-    },
-    "84071": {
-      "room_name": "诚园-甲-520",
-      "current_balance": 266.61,
-      "last_updated": "20260516"
-    },
     "78912": {
       "room_name": "诚园-甲-508",
       "current_balance": 208.63,
-      "last_updated": "20260516"
-    },
-    "98226": {
-      "room_name": "诚园-甲-513",
-      "current_balance": 43.22,
-      "last_updated": "20260516"
-    },
-    "77748": {
-      "room_name": "诚园-甲-525",
-      "current_balance": 117.78,
       "last_updated": "20260516"
     },
     "80739": {
@@ -1828,34 +508,9 @@
       "current_balance": 66.16,
       "last_updated": "20260516"
     },
-    "97764": {
-      "room_name": "诚园-甲-518",
-      "current_balance": 173.07,
-      "last_updated": "20260516"
-    },
-    "98020": {
-      "room_name": "诚园-甲-626",
-      "current_balance": 135.41,
-      "last_updated": "20260516"
-    },
-    "77018": {
-      "room_name": "诚园-甲-218",
-      "current_balance": 68.78,
-      "last_updated": "20260516"
-    },
     "76126": {
       "room_name": "诚园-甲-302",
       "current_balance": 269.4,
-      "last_updated": "20260516"
-    },
-    "76912": {
-      "room_name": "诚园-甲-326",
-      "current_balance": 159.4,
-      "last_updated": "20260516"
-    },
-    "76469": {
-      "room_name": "诚园-甲-303",
-      "current_balance": 149.48,
       "last_updated": "20260516"
     },
     "76428": {
@@ -1868,59 +523,9 @@
       "current_balance": 130.22,
       "last_updated": "20260516"
     },
-    "53174": {
-      "room_name": "诚园-甲-321",
-      "current_balance": 69.53,
-      "last_updated": "20260516"
-    },
-    "76661": {
-      "room_name": "诚园-甲-423",
-      "current_balance": 79.65,
-      "last_updated": "20260516"
-    },
-    "95205": {
-      "room_name": "诚园-甲-308",
-      "current_balance": 43.11,
-      "last_updated": "20260516"
-    },
-    "50172": {
-      "room_name": "诚园-甲-225",
-      "current_balance": 103.77,
-      "last_updated": "20260516"
-    },
-    "99912": {
-      "room_name": "诚园-甲-612",
-      "current_balance": 146.46,
-      "last_updated": "20260516"
-    },
     "88183": {
       "room_name": "诚园-甲-416",
       "current_balance": 14.94,
-      "last_updated": "20260516"
-    },
-    "96974": {
-      "room_name": "诚园-甲-312",
-      "current_balance": 322.25,
-      "last_updated": "20260516"
-    },
-    "76099": {
-      "room_name": "诚园-甲-320",
-      "current_balance": 110.4,
-      "last_updated": "20260516"
-    },
-    "81940": {
-      "room_name": "诚园-甲-414",
-      "current_balance": 227.93,
-      "last_updated": "20260516"
-    },
-    "96199": {
-      "room_name": "诚园-甲-505",
-      "current_balance": 241.59,
-      "last_updated": "20260516"
-    },
-    "81237": {
-      "room_name": "诚园-甲-611",
-      "current_balance": 49.37,
       "last_updated": "20260516"
     },
     "97325": {
@@ -1928,44 +533,9 @@
       "current_balance": 146.1,
       "last_updated": "20260516"
     },
-    "76124": {
-      "room_name": "诚园-甲-302",
-      "current_balance": 269.4,
-      "last_updated": "20260516"
-    },
-    "51470": {
-      "room_name": "诚园-甲-327",
-      "current_balance": 7.69,
-      "last_updated": "20260516"
-    },
     "76228": {
       "room_name": "诚园-甲-511",
       "current_balance": 57.61,
-      "last_updated": "20260516"
-    },
-    "76170": {
-      "room_name": "诚园-甲-318",
-      "current_balance": 73.67,
-      "last_updated": "20260516"
-    },
-    "52447": {
-      "room_name": "诚园-甲-213",
-      "current_balance": 52.47,
-      "last_updated": "20260516"
-    },
-    "51530": {
-      "room_name": "诚园-甲-521",
-      "current_balance": 84.64,
-      "last_updated": "20260516"
-    },
-    "97480": {
-      "room_name": "诚园-甲-617",
-      "current_balance": 47.05,
-      "last_updated": "20260516"
-    },
-    "97717": {
-      "room_name": "诚园-甲-302",
-      "current_balance": 269.4,
       "last_updated": "20260516"
     },
     "52799": {
@@ -1973,89 +543,14 @@
       "current_balance": 81.03,
       "last_updated": "20260516"
     },
-    "84404": {
-      "room_name": "诚园-甲-416",
-      "current_balance": 14.94,
-      "last_updated": "20260516"
-    },
     "99113": {
       "room_name": "诚园-甲-617",
       "current_balance": 47.05,
       "last_updated": "20260516"
     },
-    "83215": {
-      "room_name": "诚园-甲-518",
-      "current_balance": 173.07,
-      "last_updated": "20260516"
-    },
-    "96350": {
-      "room_name": "诚园-甲-511",
-      "current_balance": 57.61,
-      "last_updated": "20260516"
-    },
-    "48175": {
-      "room_name": "诚园-甲-310",
-      "current_balance": 134.07,
-      "last_updated": "20260516"
-    },
-    "81933": {
-      "room_name": "诚园-甲-603",
-      "current_balance": 24.47,
-      "last_updated": "20260516"
-    },
-    "78129": {
-      "room_name": "诚园-甲-607",
-      "current_balance": 110.11,
-      "last_updated": "20260516"
-    },
-    "81511": {
-      "room_name": "诚园-甲-524",
-      "current_balance": 78.15,
-      "last_updated": "20260516"
-    },
-    "76125": {
-      "room_name": "诚园-甲-218",
-      "current_balance": 68.78,
-      "last_updated": "20260516"
-    },
-    "77816": {
-      "room_name": "诚园-甲-519",
-      "current_balance": 174.86,
-      "last_updated": "20260516"
-    },
-    "76089": {
-      "room_name": "诚园-甲-510",
-      "current_balance": 264.96,
-      "last_updated": "20260516"
-    },
-    "76059": {
-      "room_name": "诚园-甲-520",
-      "current_balance": 266.61,
-      "last_updated": "20260516"
-    },
-    "87577": {
-      "room_name": "诚园-甲-212",
-      "current_balance": 108.17,
-      "last_updated": "20260516"
-    },
-    "81242": {
-      "room_name": "诚园-甲-424",
-      "current_balance": 38.15,
-      "last_updated": "20260516"
-    },
     "97580": {
       "room_name": "诚园-甲-307",
       "current_balance": 30.43,
-      "last_updated": "20260516"
-    },
-    "95263": {
-      "room_name": "诚园-甲-517",
-      "current_balance": 335.95,
-      "last_updated": "20260516"
-    },
-    "77938": {
-      "room_name": "诚园-甲-411",
-      "current_balance": 126.17,
       "last_updated": "20260516"
     },
     "80441": {
@@ -2068,11 +563,6 @@
       "current_balance": 22.55,
       "last_updated": "20260516"
     },
-    "80487": {
-      "room_name": "诚园-甲-214",
-      "current_balance": 9.11,
-      "last_updated": "20260516"
-    },
     "85800": {
       "room_name": "诚园-甲-420",
       "current_balance": 171.16,
@@ -2083,19 +573,9 @@
       "current_balance": 235.59,
       "last_updated": "20260516"
     },
-    "76537": {
-      "room_name": "诚园-甲-204",
-      "current_balance": 165.48,
-      "last_updated": "20260516"
-    },
     "77088": {
       "room_name": "诚园-甲-211",
       "current_balance": 272.02,
-      "last_updated": "20260516"
-    },
-    "91593": {
-      "room_name": "诚园-甲-210",
-      "current_balance": 0.77,
       "last_updated": "20260516"
     },
     "95206": {
@@ -2113,64 +593,9 @@
       "current_balance": 61.6,
       "last_updated": "20260516"
     },
-    "51219": {
-      "room_name": "诚园-甲-416",
-      "current_balance": 14.94,
-      "last_updated": "20260516"
-    },
-    "81517": {
-      "room_name": "诚园-甲-522",
-      "current_balance": 153.87,
-      "last_updated": "20260516"
-    },
-    "78422": {
-      "room_name": "诚园-甲-516",
-      "current_balance": 21.74,
-      "last_updated": "20260516"
-    },
     "77220": {
       "room_name": "诚园-甲-411",
       "current_balance": 126.17,
-      "last_updated": "20260516"
-    },
-    "78687": {
-      "room_name": "诚园-甲-505",
-      "current_balance": 241.59,
-      "last_updated": "20260516"
-    },
-    "98062": {
-      "room_name": "诚园-甲-617",
-      "current_balance": 47.05,
-      "last_updated": "20260516"
-    },
-    "88806": {
-      "room_name": "诚园-甲-208",
-      "current_balance": 124.56,
-      "last_updated": "20260516"
-    },
-    "97263": {
-      "room_name": "诚园-甲-627",
-      "current_balance": 58.26,
-      "last_updated": "20260516"
-    },
-    "88226": {
-      "room_name": "诚园-甲-409",
-      "current_balance": 29.11,
-      "last_updated": "20260516"
-    },
-    "79540": {
-      "room_name": "诚园-甲-516",
-      "current_balance": 21.74,
-      "last_updated": "20260516"
-    },
-    "80566": {
-      "room_name": "诚园-甲-426",
-      "current_balance": 54.41,
-      "last_updated": "20260516"
-    },
-    "76539": {
-      "room_name": "诚园-甲-313",
-      "current_balance": 145.94,
       "last_updated": "20260516"
     },
     "76101": {
@@ -2178,34 +603,9 @@
       "current_balance": 21.71,
       "last_updated": "20260516"
     },
-    "95203": {
-      "room_name": "诚园-甲-424",
-      "current_balance": 38.15,
-      "last_updated": "20260516"
-    },
-    "97031": {
-      "room_name": "诚园-甲-206",
-      "current_balance": 99.27,
-      "last_updated": "20260516"
-    },
-    "99843": {
-      "room_name": "诚园-甲-216",
-      "current_balance": 30.3,
-      "last_updated": "20260516"
-    },
     "80451": {
       "room_name": "诚园-甲-706",
       "current_balance": 143.32,
-      "last_updated": "20260516"
-    },
-    "96810": {
-      "room_name": "诚园-甲-227",
-      "current_balance": 68.5,
-      "last_updated": "20260516"
-    },
-    "97310": {
-      "room_name": "诚园-甲-601",
-      "current_balance": 146.1,
       "last_updated": "20260516"
     },
     "76178": {
@@ -2218,24 +618,9 @@
       "current_balance": 50.4,
       "last_updated": "20260516"
     },
-    "76667": {
-      "room_name": "诚园-甲-321",
-      "current_balance": 69.53,
-      "last_updated": "20260516"
-    },
     "79776": {
       "room_name": "诚园-甲-303",
       "current_balance": 149.48,
-      "last_updated": "20260516"
-    },
-    "96635": {
-      "room_name": "诚园-甲-609",
-      "current_balance": 150.92,
-      "last_updated": "20260516"
-    },
-    "98234": {
-      "room_name": "诚园-甲-605",
-      "current_balance": 374.1,
       "last_updated": "20260516"
     },
     "76083": {
@@ -2243,29 +628,9 @@
       "current_balance": 170.19,
       "last_updated": "20260516"
     },
-    "97589": {
-      "room_name": "诚园-甲-206",
-      "current_balance": 99.27,
-      "last_updated": "20260516"
-    },
-    "52055": {
-      "room_name": "诚园-甲-601",
-      "current_balance": 146.1,
-      "last_updated": "20260516"
-    },
     "80180": {
       "room_name": "诚园-甲-322",
       "current_balance": 160.07,
-      "last_updated": "20260516"
-    },
-    "80352": {
-      "room_name": "诚园-甲-422",
-      "current_balance": 235.59,
-      "last_updated": "20260516"
-    },
-    "97719": {
-      "room_name": "诚园-甲-407",
-      "current_balance": 54.45,
       "last_updated": "20260516"
     },
     "92051": {
@@ -2273,24 +638,9 @@
       "current_balance": 22.13,
       "last_updated": "20260516"
     },
-    "76532": {
-      "room_name": "诚园-甲-420",
-      "current_balance": 171.16,
-      "last_updated": "20260516"
-    },
-    "92870": {
-      "room_name": "诚园-甲-227",
-      "current_balance": 68.5,
-      "last_updated": "20260516"
-    },
     "80380": {
       "room_name": "诚园-甲-703",
       "current_balance": 59.66,
-      "last_updated": "20260516"
-    },
-    "76158": {
-      "room_name": "诚园-甲-222",
-      "current_balance": 326.57,
       "last_updated": "20260516"
     },
     "77163": {
@@ -2313,11 +663,6 @@
       "current_balance": 159.4,
       "last_updated": "20260516"
     },
-    "76098": {
-      "room_name": "诚园-甲-509",
-      "current_balance": 358.48,
-      "last_updated": "20260516"
-    },
     "76465": {
       "room_name": "诚园-甲-206",
       "current_balance": 99.27,
@@ -2338,29 +683,9 @@
       "current_balance": 110.4,
       "last_updated": "20260516"
     },
-    "81744": {
-      "room_name": "诚园-甲-220",
-      "current_balance": 2.54,
-      "last_updated": "20260516"
-    },
-    "78104": {
-      "room_name": "诚园-甲-612",
-      "current_balance": 146.46,
-      "last_updated": "20260516"
-    },
     "97921": {
       "room_name": "诚园-甲-709",
       "current_balance": 37.01,
-      "last_updated": "20260516"
-    },
-    "98704": {
-      "room_name": "诚园-甲-413",
-      "current_balance": 187.76,
-      "last_updated": "20260516"
-    },
-    "82660": {
-      "room_name": "诚园-甲-215",
-      "current_balance": 199.84,
       "last_updated": "20260516"
     },
     "76184": {
@@ -2368,59 +693,14 @@
       "current_balance": 153.87,
       "last_updated": "20260516"
     },
-    "76637": {
-      "room_name": "诚园-甲-420",
-      "current_balance": 171.16,
-      "last_updated": "20260516"
-    },
-    "76767": {
-      "room_name": "诚园-甲-415",
-      "current_balance": 227.76,
-      "last_updated": "20260516"
-    },
-    "80672": {
-      "room_name": "诚园-甲-527",
-      "current_balance": 87.44,
-      "last_updated": "20260516"
-    },
-    "79998": {
-      "room_name": "诚园-甲-522",
-      "current_balance": 153.87,
-      "last_updated": "20260516"
-    },
-    "76526": {
-      "room_name": "诚园-甲-419",
-      "current_balance": 54.6,
-      "last_updated": "20260516"
-    },
-    "52056": {
-      "room_name": "诚园-甲-408",
-      "current_balance": 22.13,
-      "last_updated": "20260516"
-    },
     "76512": {
       "room_name": "诚园-甲-402",
       "current_balance": 166.64,
       "last_updated": "20260516"
     },
-    "78611": {
-      "room_name": "诚园-甲-526",
-      "current_balance": 597.78,
-      "last_updated": "20260516"
-    },
-    "97544": {
-      "room_name": "诚园-甲-615",
-      "current_balance": 178.43,
-      "last_updated": "20260516"
-    },
     "78443": {
       "room_name": "诚园-甲-618",
       "current_balance": 155.19,
-      "last_updated": "20260516"
-    },
-    "80917": {
-      "room_name": "诚园-甲-707",
-      "current_balance": 78.11,
       "last_updated": "20260516"
     }
   }

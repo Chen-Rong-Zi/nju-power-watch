@@ -1,7 +1,7 @@
 {
   "building": "17幢",
   "campus": "仙林校区",
-  "total_rooms": 1406,
+  "total_rooms": 432,
   "rooms": {
     "26010": {
       "room_name": "17栋第7层709",
@@ -18,61 +18,6 @@
       "current_balance": 93.9,
       "last_updated": "20260516"
     },
-    "90682": {
-      "room_name": "17栋第3层318",
-      "current_balance": 212.07,
-      "last_updated": "20260516"
-    },
-    "41933": {
-      "room_name": "17栋第8层817",
-      "current_balance": 315.91,
-      "last_updated": "20260516"
-    },
-    "17813": {
-      "room_name": "17栋第12层1207",
-      "current_balance": 134.15,
-      "last_updated": "20260516"
-    },
-    "43716": {
-      "room_name": "17栋第2层205",
-      "current_balance": 757.98,
-      "last_updated": "20260516"
-    },
-    "80112": {
-      "room_name": "17栋第13层1303",
-      "current_balance": 146.07,
-      "last_updated": "20260516"
-    },
-    "37846": {
-      "room_name": "17栋第17层1715",
-      "current_balance": 599.03,
-      "last_updated": "20260516"
-    },
-    "54117": {
-      "room_name": "17栋第4层416",
-      "current_balance": 664.66,
-      "last_updated": "20260516"
-    },
-    "45447": {
-      "room_name": "17栋第3层308",
-      "current_balance": 5.03,
-      "last_updated": "20260516"
-    },
-    "43885": {
-      "room_name": "17栋第11层1119",
-      "current_balance": 637.89,
-      "last_updated": "20260516"
-    },
-    "57236": {
-      "room_name": "17栋第17层1719",
-      "current_balance": 1222.13,
-      "last_updated": "20260516"
-    },
-    "63736": {
-      "room_name": "17栋第9层906",
-      "current_balance": 7.3,
-      "last_updated": "20260516"
-    },
     "72950": {
       "room_name": "0720",
       "current_balance": 26.07,
@@ -83,44 +28,9 @@
       "current_balance": 865.42,
       "last_updated": "20260516"
     },
-    "94142": {
-      "room_name": "17栋第9层916",
-      "current_balance": 730.08,
-      "last_updated": "20260516"
-    },
-    "90639": {
-      "room_name": "17栋第7层712",
-      "current_balance": 6.59,
-      "last_updated": "20260516"
-    },
-    "91491": {
-      "room_name": "17栋第5层502",
-      "current_balance": 332.57,
-      "last_updated": "20260516"
-    },
-    "57009": {
-      "room_name": "17栋第17层1710",
-      "current_balance": 421.73,
-      "last_updated": "20260516"
-    },
-    "26089": {
-      "room_name": "17栋第12层1212",
-      "current_balance": 389.56,
-      "last_updated": "20260516"
-    },
     "88954": {
       "room_name": "17栋第6层608",
       "current_balance": 1104.02,
-      "last_updated": "20260516"
-    },
-    "35969": {
-      "room_name": "17栋第4层423",
-      "current_balance": 52.39,
-      "last_updated": "20260516"
-    },
-    "90362": {
-      "room_name": "17栋第16层1601",
-      "current_balance": 179.47,
       "last_updated": "20260516"
     },
     "90094": {
@@ -131,11 +41,6 @@
     "87881": {
       "room_name": "17栋第4层405",
       "current_balance": 496.16,
-      "last_updated": "20260516"
-    },
-    "24020": {
-      "room_name": "17栋第11层1112",
-      "current_balance": 699.02,
       "last_updated": "20260516"
     },
     "25440": {
@@ -153,26 +58,6 @@
       "current_balance": 103.03,
       "last_updated": "20260516"
     },
-    "36976": {
-      "room_name": "17栋第8层802",
-      "current_balance": 146.17,
-      "last_updated": "20260516"
-    },
-    "89981": {
-      "room_name": "17栋第3层317",
-      "current_balance": 140.56,
-      "last_updated": "20260516"
-    },
-    "90874": {
-      "room_name": "17栋第7层713",
-      "current_balance": 676.92,
-      "last_updated": "20260516"
-    },
-    "13221": {
-      "room_name": "17栋第5层512",
-      "current_balance": 588.79,
-      "last_updated": "20260516"
-    },
     "70029": {
       "room_name": "17栋第16层1622",
       "current_balance": 456.3,
@@ -183,74 +68,9 @@
       "current_balance": 237.5,
       "last_updated": "20260516"
     },
-    "26086": {
-      "room_name": "17栋第6层601",
-      "current_balance": 97.03,
-      "last_updated": "20260516"
-    },
-    "92822": {
-      "room_name": "17栋第4层406",
-      "current_balance": 48.4,
-      "last_updated": "20260516"
-    },
-    "11630": {
-      "room_name": "17栋第3层319",
-      "current_balance": 430.1,
-      "last_updated": "20260516"
-    },
-    "11532": {
-      "room_name": "17栋第16层1620",
-      "current_balance": 498.53,
-      "last_updated": "20260516"
-    },
-    "77244": {
-      "room_name": "17栋第4层421",
-      "current_balance": 215.45,
-      "last_updated": "20260516"
-    },
-    "52084": {
-      "room_name": "17栋第1层101",
-      "current_balance": 301.74,
-      "last_updated": "20260516"
-    },
-    "91125": {
-      "room_name": "17栋第8层813",
-      "current_balance": 6.23,
-      "last_updated": "20260516"
-    },
-    "75090": {
-      "room_name": "17栋第14层1406",
-      "current_balance": 82.72,
-      "last_updated": "20260516"
-    },
-    "90130": {
-      "room_name": "17栋第12层1203",
-      "current_balance": 728.3,
-      "last_updated": "20260516"
-    },
     "26383": {
       "room_name": "17栋第2层218",
       "current_balance": 662.59,
-      "last_updated": "20260516"
-    },
-    "94692": {
-      "room_name": "17栋第12层1223",
-      "current_balance": 203.54,
-      "last_updated": "20260516"
-    },
-    "90172": {
-      "room_name": "17栋第16层1605",
-      "current_balance": 27.7,
-      "last_updated": "20260516"
-    },
-    "16457": {
-      "room_name": "17栋第9层902",
-      "current_balance": 258.94,
-      "last_updated": "20260516"
-    },
-    "37950": {
-      "room_name": "17栋第12层1203",
-      "current_balance": 728.3,
       "last_updated": "20260516"
     },
     "90173": {
@@ -268,11 +88,6 @@
       "current_balance": 100.67,
       "last_updated": "20260516"
     },
-    "75829": {
-      "room_name": "17栋第6层607",
-      "current_balance": 88.65,
-      "last_updated": "20260516"
-    },
     "32498": {
       "room_name": "17栋第15层1521",
       "current_balance": 99.98,
@@ -281,36 +96,6 @@
     "91914": {
       "room_name": "17栋第16层1617",
       "current_balance": 49.58,
-      "last_updated": "20260516"
-    },
-    "90462": {
-      "room_name": "17栋第5层516",
-      "current_balance": 278.35,
-      "last_updated": "20260516"
-    },
-    "54196": {
-      "room_name": "17栋第18层1823",
-      "current_balance": 82.86,
-      "last_updated": "20260516"
-    },
-    "92265": {
-      "room_name": "17栋第8层811",
-      "current_balance": 261.95,
-      "last_updated": "20260516"
-    },
-    "27894": {
-      "room_name": "17栋第7层712",
-      "current_balance": 6.59,
-      "last_updated": "20260516"
-    },
-    "90129": {
-      "room_name": "17栋第12层1203",
-      "current_balance": 728.3,
-      "last_updated": "20260516"
-    },
-    "91887": {
-      "room_name": "17栋第10层1023",
-      "current_balance": 9.87,
       "last_updated": "20260516"
     },
     "14114": {
@@ -323,26 +108,6 @@
       "current_balance": 87.84,
       "last_updated": "20260516"
     },
-    "27385": {
-      "room_name": "17栋第3层313",
-      "current_balance": 394.58,
-      "last_updated": "20260516"
-    },
-    "61539": {
-      "room_name": "17栋第12层1204",
-      "current_balance": 652.68,
-      "last_updated": "20260516"
-    },
-    "26131": {
-      "room_name": "17栋第8层813",
-      "current_balance": 6.23,
-      "last_updated": "20260516"
-    },
-    "54935": {
-      "room_name": "17栋第17层1713",
-      "current_balance": 87.29,
-      "last_updated": "20260516"
-    },
     "27529": {
       "room_name": "17栋第8层805",
       "current_balance": 1348.82,
@@ -353,64 +118,9 @@
       "current_balance": 570.09,
       "last_updated": "20260516"
     },
-    "57622": {
-      "room_name": "17栋第18层1806",
-      "current_balance": 276.98,
-      "last_updated": "20260516"
-    },
-    "12245": {
-      "room_name": "17栋第17层1718",
-      "current_balance": 313.7,
-      "last_updated": "20260516"
-    },
-    "14649": {
-      "room_name": "17栋第17层1710",
-      "current_balance": 421.73,
-      "last_updated": "20260516"
-    },
-    "88682": {
-      "room_name": "17栋第11层1112",
-      "current_balance": 699.02,
-      "last_updated": "20260516"
-    },
-    "88479": {
-      "room_name": "17栋第10层1016",
-      "current_balance": 528.48,
-      "last_updated": "20260516"
-    },
-    "94632": {
-      "room_name": "17栋第4层408",
-      "current_balance": 648.12,
-      "last_updated": "20260516"
-    },
-    "67826": {
-      "room_name": "17栋第5层502",
-      "current_balance": 332.57,
-      "last_updated": "20260516"
-    },
-    "20566": {
-      "room_name": "17栋第9层905",
-      "current_balance": 22.13,
-      "last_updated": "20260516"
-    },
-    "53857": {
-      "room_name": "17栋第16层1602",
-      "current_balance": 45.92,
-      "last_updated": "20260516"
-    },
     "12835": {
       "room_name": "17栋第11层1105",
       "current_balance": 780.62,
-      "last_updated": "20260516"
-    },
-    "39005": {
-      "room_name": "17栋第2层217",
-      "current_balance": 103.03,
-      "last_updated": "20260516"
-    },
-    "93067": {
-      "room_name": "17栋第13层1317",
-      "current_balance": 162.89,
       "last_updated": "20260516"
     },
     "65063": {
@@ -423,26 +133,6 @@
       "current_balance": 535.71,
       "last_updated": "20260516"
     },
-    "14592": {
-      "room_name": "17栋第14层1415",
-      "current_balance": 386.67,
-      "last_updated": "20260516"
-    },
-    "90668": {
-      "room_name": "17栋第11层1115",
-      "current_balance": 758.33,
-      "last_updated": "20260516"
-    },
-    "91312": {
-      "room_name": "17栋第6层604",
-      "current_balance": 486.06,
-      "last_updated": "20260516"
-    },
-    "26968": {
-      "room_name": "17栋第2层203",
-      "current_balance": 10.76,
-      "last_updated": "20260516"
-    },
     "93162": {
       "room_name": "17栋第6层622",
       "current_balance": 788.36,
@@ -451,16 +141,6 @@
     "92835": {
       "room_name": "17栋第18层1807",
       "current_balance": 679.82,
-      "last_updated": "20260516"
-    },
-    "40654": {
-      "room_name": "17栋第13层1307",
-      "current_balance": 78.64,
-      "last_updated": "20260516"
-    },
-    "59555": {
-      "room_name": "17栋第7层705",
-      "current_balance": 255.36,
       "last_updated": "20260516"
     },
     "24855": {
@@ -473,51 +153,6 @@
       "current_balance": 22.13,
       "last_updated": "20260516"
     },
-    "81255": {
-      "room_name": "17栋第4层402",
-      "current_balance": 559.6,
-      "last_updated": "20260516"
-    },
-    "70048": {
-      "room_name": "17栋第5层509",
-      "current_balance": 173.98,
-      "last_updated": "20260516"
-    },
-    "12218": {
-      "room_name": "17栋第18层1820",
-      "current_balance": 291.86,
-      "last_updated": "20260516"
-    },
-    "15333": {
-      "room_name": "17栋第10层1004",
-      "current_balance": 59.89,
-      "last_updated": "20260516"
-    },
-    "86326": {
-      "room_name": "17栋第12层1211",
-      "current_balance": 48.96,
-      "last_updated": "20260516"
-    },
-    "83728": {
-      "room_name": "17栋第17层1722",
-      "current_balance": 267.61,
-      "last_updated": "20260516"
-    },
-    "13952": {
-      "room_name": "17栋第16层1602",
-      "current_balance": 45.92,
-      "last_updated": "20260516"
-    },
-    "93897": {
-      "room_name": "17栋第12层1217",
-      "current_balance": 60.32,
-      "last_updated": "20260516"
-    },
-    "11606": {
-      "room_name": "17栋第3层319",
-      "current_balance": 430.1,
-      "last_updated": "20260516"
-    },
     "49704": {
       "room_name": "17栋第7层722",
       "current_balance": 29.29,
@@ -526,16 +161,6 @@
     "25427": {
       "room_name": "0621",
       "current_balance": 125.54,
-      "last_updated": "20260516"
-    },
-    "78191": {
-      "room_name": "17栋第12层1215",
-      "current_balance": 371.95,
-      "last_updated": "20260516"
-    },
-    "59563": {
-      "room_name": "17栋第3层304",
-      "current_balance": 490.58,
       "last_updated": "20260516"
     },
     "93538": {
@@ -558,84 +183,9 @@
       "current_balance": 328.15,
       "last_updated": "20260516"
     },
-    "15057": {
-      "room_name": "17栋第4层416",
-      "current_balance": 664.66,
-      "last_updated": "20260516"
-    },
-    "89367": {
-      "room_name": "17栋第12层1222",
-      "current_balance": 14.69,
-      "last_updated": "20260516"
-    },
     "11946": {
       "room_name": "17栋第14层1411",
       "current_balance": 390.61,
-      "last_updated": "20260516"
-    },
-    "24041": {
-      "room_name": "17栋第11层1112",
-      "current_balance": 699.02,
-      "last_updated": "20260516"
-    },
-    "18406": {
-      "room_name": "17栋第18层1822",
-      "current_balance": 77.82,
-      "last_updated": "20260516"
-    },
-    "36721": {
-      "room_name": "17栋第8层802",
-      "current_balance": 146.17,
-      "last_updated": "20260516"
-    },
-    "59964": {
-      "room_name": "17栋第15层1514",
-      "current_balance": 93.9,
-      "last_updated": "20260516"
-    },
-    "60135": {
-      "room_name": "17栋第11层1110",
-      "current_balance": 586.44,
-      "last_updated": "20260516"
-    },
-    "15241": {
-      "room_name": "17栋第16层1613",
-      "current_balance": 396.13,
-      "last_updated": "20260516"
-    },
-    "92066": {
-      "room_name": "17栋第8层814",
-      "current_balance": 681.08,
-      "last_updated": "20260516"
-    },
-    "88556": {
-      "room_name": "17栋第11层1121",
-      "current_balance": 546.6,
-      "last_updated": "20260516"
-    },
-    "16210": {
-      "room_name": "17栋第6层617",
-      "current_balance": 6.2,
-      "last_updated": "20260516"
-    },
-    "42708": {
-      "room_name": "17栋第10层1014",
-      "current_balance": 599.35,
-      "last_updated": "20260516"
-    },
-    "59106": {
-      "room_name": "17栋第15层1502",
-      "current_balance": 636.94,
-      "last_updated": "20260516"
-    },
-    "62793": {
-      "room_name": "17栋第10层1002",
-      "current_balance": 813.15,
-      "last_updated": "20260516"
-    },
-    "90667": {
-      "room_name": "17栋第12层1207",
-      "current_balance": 134.15,
       "last_updated": "20260516"
     },
     "92811": {
@@ -663,49 +213,9 @@
       "current_balance": 193.47,
       "last_updated": "20260516"
     },
-    "29390": {
-      "room_name": "17栋第6层609",
-      "current_balance": 688.02,
-      "last_updated": "20260516"
-    },
-    "38492": {
-      "room_name": "17栋第3层320",
-      "current_balance": 77.56,
-      "last_updated": "20260516"
-    },
-    "49154": {
-      "room_name": "17栋第9层913",
-      "current_balance": 521.21,
-      "last_updated": "20260516"
-    },
-    "89714": {
-      "room_name": "17栋第4层401",
-      "current_balance": 703.76,
-      "last_updated": "20260516"
-    },
-    "57520": {
-      "room_name": "17栋第15层1504",
-      "current_balance": 348.03,
-      "last_updated": "20260516"
-    },
     "27620": {
       "room_name": "17栋第10层1014",
       "current_balance": 599.35,
-      "last_updated": "20260516"
-    },
-    "97783": {
-      "room_name": "17栋第8层805",
-      "current_balance": 1348.82,
-      "last_updated": "20260516"
-    },
-    "59116": {
-      "room_name": "17栋第11层1103",
-      "current_balance": 727.53,
-      "last_updated": "20260516"
-    },
-    "50193": {
-      "room_name": "17栋第14层1415",
-      "current_balance": 386.67,
       "last_updated": "20260516"
     },
     "88062": {
@@ -713,34 +223,9 @@
       "current_balance": 551.53,
       "last_updated": "20260516"
     },
-    "11490": {
-      "room_name": "17栋第5层516",
-      "current_balance": 278.35,
-      "last_updated": "20260516"
-    },
-    "94788": {
-      "room_name": "17栋第14层1416",
-      "current_balance": 507.43,
-      "last_updated": "20260516"
-    },
     "59168": {
       "room_name": "17栋第10层1007",
       "current_balance": 722.36,
-      "last_updated": "20260516"
-    },
-    "60737": {
-      "room_name": "17栋第11层1114",
-      "current_balance": 686.63,
-      "last_updated": "20260516"
-    },
-    "94665": {
-      "room_name": "17栋第9层919",
-      "current_balance": 141.37,
-      "last_updated": "20260516"
-    },
-    "89951": {
-      "room_name": "17栋第7层717",
-      "current_balance": 290.14,
       "last_updated": "20260516"
     },
     "19340": {
@@ -753,21 +238,6 @@
       "current_balance": 382.0,
       "last_updated": "20260516"
     },
-    "23301": {
-      "room_name": "17栋第11层1115",
-      "current_balance": 758.33,
-      "last_updated": "20260516"
-    },
-    "90963": {
-      "room_name": "17栋第7层716",
-      "current_balance": 431.47,
-      "last_updated": "20260516"
-    },
-    "15411": {
-      "room_name": "17栋第17层1703",
-      "current_balance": 121.59,
-      "last_updated": "20260516"
-    },
     "24876": {
       "room_name": "0719",
       "current_balance": 460.26,
@@ -778,64 +248,14 @@
       "current_balance": 285.17,
       "last_updated": "20260516"
     },
-    "36563": {
-      "room_name": "17栋第4层409",
-      "current_balance": 667.3,
-      "last_updated": "20260516"
-    },
-    "12985": {
-      "room_name": "17栋第4层401",
-      "current_balance": 703.76,
-      "last_updated": "20260516"
-    },
     "26104": {
       "room_name": "17栋第8层802",
       "current_balance": 146.17,
       "last_updated": "20260516"
     },
-    "11306": {
-      "room_name": "17栋第10层1023",
-      "current_balance": 9.87,
-      "last_updated": "20260516"
-    },
-    "15012": {
-      "room_name": "17栋第5层515",
-      "current_balance": 511.31,
-      "last_updated": "20260516"
-    },
-    "83021": {
-      "room_name": "17栋第2层215",
-      "current_balance": 537.82,
-      "last_updated": "20260516"
-    },
-    "24724": {
-      "room_name": "17栋第6层606",
-      "current_balance": 520.24,
-      "last_updated": "20260516"
-    },
-    "25671": {
-      "room_name": "17栋第2层209",
-      "current_balance": 346.64,
-      "last_updated": "20260516"
-    },
-    "83258": {
-      "room_name": "17栋第12层1223",
-      "current_balance": 203.54,
-      "last_updated": "20260516"
-    },
     "15940": {
       "room_name": "17栋第18层1817",
       "current_balance": 132.06,
-      "last_updated": "20260516"
-    },
-    "73005": {
-      "room_name": "17栋第17层1705",
-      "current_balance": 175.56,
-      "last_updated": "20260516"
-    },
-    "92731": {
-      "room_name": "17栋第11层1104",
-      "current_balance": 517.55,
       "last_updated": "20260516"
     },
     "31364": {
@@ -853,21 +273,6 @@
       "current_balance": 396.44,
       "last_updated": "20260516"
     },
-    "23189": {
-      "room_name": "17栋第9层908",
-      "current_balance": 726.54,
-      "last_updated": "20260516"
-    },
-    "39465": {
-      "room_name": "17栋第15层1506",
-      "current_balance": 990.45,
-      "last_updated": "20260516"
-    },
-    "63737": {
-      "room_name": "17栋第9层906",
-      "current_balance": 7.3,
-      "last_updated": "20260516"
-    },
     "30141": {
       "room_name": "17栋第2层204",
       "current_balance": 133.39,
@@ -878,39 +283,14 @@
       "current_balance": 711.08,
       "last_updated": "20260516"
     },
-    "92178": {
-      "room_name": "17栋第12层1214",
-      "current_balance": 565.7,
-      "last_updated": "20260516"
-    },
     "57048": {
       "room_name": "17栋第14层1401",
       "current_balance": 711.16,
       "last_updated": "20260516"
     },
-    "25124": {
-      "room_name": "17栋第12层1206",
-      "current_balance": 185.9,
-      "last_updated": "20260516"
-    },
-    "12829": {
-      "room_name": "17栋第16层1623",
-      "current_balance": 4.61,
-      "last_updated": "20260516"
-    },
     "50291": {
       "room_name": "1715",
       "current_balance": 599.03,
-      "last_updated": "20260516"
-    },
-    "42874": {
-      "room_name": "17栋第7层723",
-      "current_balance": 121.55,
-      "last_updated": "20260516"
-    },
-    "24850": {
-      "room_name": "17栋第9层902",
-      "current_balance": 258.94,
       "last_updated": "20260516"
     },
     "90089": {
@@ -923,109 +303,14 @@
       "current_balance": 313.25,
       "last_updated": "20260516"
     },
-    "89702": {
-      "room_name": "17栋第12层1219",
-      "current_balance": 51.44,
-      "last_updated": "20260516"
-    },
-    "29799": {
-      "room_name": "17栋第4层408",
-      "current_balance": 648.12,
-      "last_updated": "20260516"
-    },
-    "90946": {
-      "room_name": "17栋第14层1402",
-      "current_balance": 31.28,
-      "last_updated": "20260516"
-    },
     "83772": {
       "room_name": "17栋第11层1122",
       "current_balance": 315.89,
       "last_updated": "20260516"
     },
-    "91512": {
-      "room_name": "17栋第11层1121",
-      "current_balance": 546.6,
-      "last_updated": "20260516"
-    },
-    "89690": {
-      "room_name": "17栋第10层1012",
-      "current_balance": 665.42,
-      "last_updated": "20260516"
-    },
-    "77985": {
-      "room_name": "17栋第11层1112",
-      "current_balance": 699.02,
-      "last_updated": "20260516"
-    },
-    "27582": {
-      "room_name": "17栋第15层1508",
-      "current_balance": 521.12,
-      "last_updated": "20260516"
-    },
-    "89912": {
-      "room_name": "17栋第5层513",
-      "current_balance": 711.08,
-      "last_updated": "20260516"
-    },
-    "90360": {
-      "room_name": "17栋第7层723",
-      "current_balance": 121.55,
-      "last_updated": "20260516"
-    },
-    "90233": {
-      "room_name": "17栋第8层812",
-      "current_balance": 539.92,
-      "last_updated": "20260516"
-    },
-    "60313": {
-      "room_name": "17栋第13层1311",
-      "current_balance": 555.12,
-      "last_updated": "20260516"
-    },
-    "94527": {
-      "room_name": "17栋第6层611",
-      "current_balance": 809.05,
-      "last_updated": "20260516"
-    },
-    "28850": {
-      "room_name": "17栋第4层410",
-      "current_balance": 617.48,
-      "last_updated": "20260516"
-    },
-    "17086": {
-      "room_name": "17栋第15层1523",
-      "current_balance": 115.09,
-      "last_updated": "20260516"
-    },
-    "71625": {
-      "room_name": "17栋第12层1205",
-      "current_balance": 266.39,
-      "last_updated": "20260516"
-    },
-    "89421": {
-      "room_name": "17栋第6层620",
-      "current_balance": 19.33,
-      "last_updated": "20260516"
-    },
     "29051": {
       "room_name": "0322",
       "current_balance": 11.3,
-      "last_updated": "20260516"
-    },
-    "25766": {
-      "room_name": "17栋第2层219",
-      "current_balance": 38.29,
-      "last_updated": "20260516"
-    },
-    "34638": {
-      "room_name": "17栋第3层315",
-      "current_balance": 36.0,
-      "last_updated": "20260516"
-    },
-    "88193": {
-      "room_name": "17栋第10层1017",
-      "current_balance": 584.52,
       "last_updated": "20260516"
     },
     "16121": {
@@ -1038,49 +323,9 @@
       "current_balance": 207.17,
       "last_updated": "20260516"
     },
-    "11991": {
-      "room_name": "17栋第4层413",
-      "current_balance": 267.26,
-      "last_updated": "20260516"
-    },
-    "74327": {
-      "room_name": "17栋第10层1003",
-      "current_balance": 144.64,
-      "last_updated": "20260516"
-    },
     "24037": {
       "room_name": "17栋第4层406",
       "current_balance": 48.4,
-      "last_updated": "20260516"
-    },
-    "88253": {
-      "room_name": "17栋第5层518",
-      "current_balance": 96.32,
-      "last_updated": "20260516"
-    },
-    "54760": {
-      "room_name": "17栋第13层1317",
-      "current_balance": 162.89,
-      "last_updated": "20260516"
-    },
-    "61317": {
-      "room_name": "17栋第18层1819",
-      "current_balance": 7.15,
-      "last_updated": "20260516"
-    },
-    "12911": {
-      "room_name": "17栋第6层613",
-      "current_balance": 845.12,
-      "last_updated": "20260516"
-    },
-    "29367": {
-      "room_name": "17栋第9层915",
-      "current_balance": 30.18,
-      "last_updated": "20260516"
-    },
-    "92825": {
-      "room_name": "17栋第2层207",
-      "current_balance": 53.57,
       "last_updated": "20260516"
     },
     "84310": {
@@ -1093,11 +338,6 @@
       "current_balance": 660.68,
       "last_updated": "20260516"
     },
-    "26755": {
-      "room_name": "17栋第12层1215",
-      "current_balance": 371.95,
-      "last_updated": "20260516"
-    },
     "61914": {
       "room_name": "17栋第11层1116",
       "current_balance": 411.68,
@@ -1108,19 +348,9 @@
       "current_balance": 170.87,
       "last_updated": "20260516"
     },
-    "94569": {
-      "room_name": "17栋第5层501",
-      "current_balance": 31.98,
-      "last_updated": "20260516"
-    },
     "29185": {
       "room_name": "17栋第1层102",
       "current_balance": 306.84,
-      "last_updated": "20260516"
-    },
-    "26107": {
-      "room_name": "17栋第13层1313",
-      "current_balance": 143.75,
       "last_updated": "20260516"
     },
     "22984": {
@@ -1128,27 +358,7 @@
       "current_balance": 676.92,
       "last_updated": "20260516"
     },
-    "65309": {
-      "room_name": "17栋第17层1720",
-      "current_balance": 26.32,
-      "last_updated": "20260516"
-    },
-    "59063": {
-      "room_name": "17栋第1层104",
-      "current_balance": 157.61,
-      "last_updated": "20260516"
-    },
     "23252": {
-      "room_name": "17栋第6层615",
-      "current_balance": 562.02,
-      "last_updated": "20260516"
-    },
-    "90073": {
-      "room_name": "17栋第6层607",
-      "current_balance": 88.65,
-      "last_updated": "20260516"
-    },
-    "89652": {
       "room_name": "17栋第6层615",
       "current_balance": 562.02,
       "last_updated": "20260516"
@@ -1158,39 +368,9 @@
       "current_balance": 26.32,
       "last_updated": "20260516"
     },
-    "13802": {
-      "room_name": "17栋第15层1523",
-      "current_balance": 115.09,
-      "last_updated": "20260516"
-    },
-    "77484": {
-      "room_name": "17栋第10层1005",
-      "current_balance": 382.75,
-      "last_updated": "20260516"
-    },
     "75377": {
       "room_name": "0519",
       "current_balance": 406.31,
-      "last_updated": "20260516"
-    },
-    "93852": {
-      "room_name": "17栋第4层402",
-      "current_balance": 559.6,
-      "last_updated": "20260516"
-    },
-    "34414": {
-      "room_name": "17栋第10层1006",
-      "current_balance": 3.48,
-      "last_updated": "20260516"
-    },
-    "89576": {
-      "room_name": "17栋第11层1111",
-      "current_balance": 416.07,
-      "last_updated": "20260516"
-    },
-    "95615": {
-      "room_name": "17栋第5层511",
-      "current_balance": 347.15,
       "last_updated": "20260516"
     },
     "30156": {
@@ -1198,19 +378,9 @@
       "current_balance": 410.39,
       "last_updated": "20260516"
     },
-    "73027": {
-      "room_name": "17栋第8层804",
-      "current_balance": 128.58,
-      "last_updated": "20260516"
-    },
     "94612": {
       "room_name": "17栋第11层1112",
       "current_balance": 699.02,
-      "last_updated": "20260516"
-    },
-    "32489": {
-      "room_name": "17栋第17层1716",
-      "current_balance": 164.62,
       "last_updated": "20260516"
     },
     "59532": {
@@ -1223,11 +393,6 @@
       "current_balance": 14.14,
       "last_updated": "20260516"
     },
-    "26633": {
-      "room_name": "17栋第15层1513",
-      "current_balance": 328.15,
-      "last_updated": "20260516"
-    },
     "14764": {
       "room_name": "17栋第6层609",
       "current_balance": 688.02,
@@ -1238,64 +403,9 @@
       "current_balance": 255.36,
       "last_updated": "20260516"
     },
-    "72585": {
-      "room_name": "17栋第8层812",
-      "current_balance": 539.92,
-      "last_updated": "20260516"
-    },
-    "11179": {
-      "room_name": "17栋第14层1421",
-      "current_balance": 244.67,
-      "last_updated": "20260516"
-    },
-    "42118": {
-      "room_name": "17栋第7层715",
-      "current_balance": 827.6,
-      "last_updated": "20260516"
-    },
-    "81924": {
-      "room_name": "17栋第8层814",
-      "current_balance": 681.08,
-      "last_updated": "20260516"
-    },
     "26271": {
       "room_name": "0818",
       "current_balance": 660.68,
-      "last_updated": "20260516"
-    },
-    "56083": {
-      "room_name": "17栋第13层1305",
-      "current_balance": 41.06,
-      "last_updated": "20260516"
-    },
-    "80192": {
-      "room_name": "17栋第11层1101",
-      "current_balance": 279.53,
-      "last_updated": "20260516"
-    },
-    "13805": {
-      "room_name": "17栋第8层810",
-      "current_balance": 243.04,
-      "last_updated": "20260516"
-    },
-    "22856": {
-      "room_name": "17栋第2层212",
-      "current_balance": 649.35,
-      "last_updated": "20260516"
-    },
-    "13434": {
-      "room_name": "17栋第4层411",
-      "current_balance": 441.14,
-      "last_updated": "20260516"
-    },
-    "30701": {
-      "room_name": "17栋第6层603",
-      "current_balance": 231.36,
-      "last_updated": "20260516"
-    },
-    "26391": {
-      "room_name": "17栋第3层310",
-      "current_balance": 226.36,
       "last_updated": "20260516"
     },
     "26563": {
@@ -1303,39 +413,14 @@
       "current_balance": 144.64,
       "last_updated": "20260516"
     },
-    "30196": {
-      "room_name": "17栋第15层1513",
-      "current_balance": 328.15,
-      "last_updated": "20260516"
-    },
-    "29376": {
-      "room_name": "17栋第7层718",
-      "current_balance": 550.39,
-      "last_updated": "20260516"
-    },
     "93856": {
       "room_name": "17栋第4层402",
       "current_balance": 559.6,
       "last_updated": "20260516"
     },
-    "68828": {
-      "room_name": "17栋第13层1305",
-      "current_balance": 41.06,
-      "last_updated": "20260516"
-    },
-    "14137": {
-      "room_name": "17栋第13层1320",
-      "current_balance": 48.89,
-      "last_updated": "20260516"
-    },
     "42280": {
       "room_name": "17栋第6层605",
       "current_balance": 402.76,
-      "last_updated": "20260516"
-    },
-    "65406": {
-      "room_name": "17栋第4层403",
-      "current_balance": 133.23,
       "last_updated": "20260516"
     },
     "55696": {
@@ -1348,11 +433,6 @@
       "current_balance": 333.28,
       "last_updated": "20260516"
     },
-    "91506": {
-      "room_name": "17栋第12层1214",
-      "current_balance": 565.7,
-      "last_updated": "20260516"
-    },
     "52564": {
       "room_name": "17栋第15层1516",
       "current_balance": 183.05,
@@ -1363,84 +443,14 @@
       "current_balance": 686.63,
       "last_updated": "20260516"
     },
-    "88610": {
-      "room_name": "17栋第4层418",
-      "current_balance": 780.52,
-      "last_updated": "20260516"
-    },
-    "90217": {
-      "room_name": "17栋第12层1219",
-      "current_balance": 51.44,
-      "last_updated": "20260516"
-    },
-    "14233": {
-      "room_name": "17栋第9层914",
-      "current_balance": 672.87,
-      "last_updated": "20260516"
-    },
-    "34468": {
-      "room_name": "17栋第3层321",
-      "current_balance": 19.32,
-      "last_updated": "20260516"
-    },
     "92003": {
       "room_name": "17栋第6层603",
       "current_balance": 231.36,
       "last_updated": "20260516"
     },
-    "15754": {
-      "room_name": "17栋第5层508",
-      "current_balance": 764.32,
-      "last_updated": "20260516"
-    },
-    "13930": {
-      "room_name": "17栋第15层1511",
-      "current_balance": 264.45,
-      "last_updated": "20260516"
-    },
-    "56579": {
-      "room_name": "17栋第6层607",
-      "current_balance": 88.65,
-      "last_updated": "20260516"
-    },
-    "84321": {
-      "room_name": "17栋第4层413",
-      "current_balance": 267.26,
-      "last_updated": "20260516"
-    },
-    "13349": {
-      "room_name": "17栋第17层1707",
-      "current_balance": 11.54,
-      "last_updated": "20260516"
-    },
-    "17091": {
-      "room_name": "17栋第9层914",
-      "current_balance": 672.87,
-      "last_updated": "20260516"
-    },
-    "24711": {
-      "room_name": "17栋第2层210",
-      "current_balance": 42.63,
-      "last_updated": "20260516"
-    },
-    "41362": {
-      "room_name": "17栋第13层1321",
-      "current_balance": 237.5,
-      "last_updated": "20260516"
-    },
     "59193": {
       "room_name": "17栋第7层721",
       "current_balance": 702.74,
-      "last_updated": "20260516"
-    },
-    "88764": {
-      "room_name": "17栋第4层402",
-      "current_balance": 559.6,
-      "last_updated": "20260516"
-    },
-    "90191": {
-      "room_name": "17栋第6层622",
-      "current_balance": 788.36,
       "last_updated": "20260516"
     },
     "13199": {
@@ -1453,59 +463,9 @@
       "current_balance": 371.36,
       "last_updated": "20260516"
     },
-    "28258": {
-      "room_name": "17栋第8层811",
-      "current_balance": 261.95,
-      "last_updated": "20260516"
-    },
-    "11627": {
-      "room_name": "17栋第16层1607",
-      "current_balance": 136.03,
-      "last_updated": "20260516"
-    },
-    "39856": {
-      "room_name": "17栋第6层620",
-      "current_balance": 19.33,
-      "last_updated": "20260516"
-    },
-    "44761": {
-      "room_name": "17栋第5层519",
-      "current_balance": 406.31,
-      "last_updated": "20260516"
-    },
-    "26020": {
-      "room_name": "17栋第4层414",
-      "current_balance": 461.64,
-      "last_updated": "20260516"
-    },
-    "60774": {
-      "room_name": "17栋第10层1002",
-      "current_balance": 813.15,
-      "last_updated": "20260516"
-    },
     "15145": {
       "room_name": "17栋第13层1312",
       "current_balance": 659.59,
-      "last_updated": "20260516"
-    },
-    "19098": {
-      "room_name": "17栋第9层912",
-      "current_balance": 7.81,
-      "last_updated": "20260516"
-    },
-    "27138": {
-      "room_name": "17栋第2层215",
-      "current_balance": 537.82,
-      "last_updated": "20260516"
-    },
-    "89818": {
-      "room_name": "17栋第6层604",
-      "current_balance": 486.06,
-      "last_updated": "20260516"
-    },
-    "89647": {
-      "room_name": "17栋第18层1802",
-      "current_balance": 61.95,
       "last_updated": "20260516"
     },
     "54527": {
@@ -1528,44 +488,9 @@
       "current_balance": 100.08,
       "last_updated": "20260516"
     },
-    "77505": {
-      "room_name": "17栋第10层1019",
-      "current_balance": 333.28,
-      "last_updated": "20260516"
-    },
-    "79137": {
-      "room_name": "17栋第11层1104",
-      "current_balance": 517.55,
-      "last_updated": "20260516"
-    },
-    "93660": {
-      "room_name": "17栋第6层611",
-      "current_balance": 809.05,
-      "last_updated": "20260516"
-    },
-    "89921": {
-      "room_name": "17栋第11层1113",
-      "current_balance": 74.56,
-      "last_updated": "20260516"
-    },
     "23965": {
       "room_name": "17栋第2层223",
       "current_balance": 7.18,
-      "last_updated": "20260516"
-    },
-    "91641": {
-      "room_name": "17栋第5层523",
-      "current_balance": 235.63,
-      "last_updated": "20260516"
-    },
-    "39665": {
-      "room_name": "17栋第11层1123",
-      "current_balance": 63.22,
-      "last_updated": "20260516"
-    },
-    "31612": {
-      "room_name": "17栋第7层717",
-      "current_balance": 290.14,
       "last_updated": "20260516"
     },
     "77180": {
@@ -1578,39 +503,9 @@
       "current_balance": 388.28,
       "last_updated": "20260516"
     },
-    "64437": {
-      "room_name": "17栋第6层608",
-      "current_balance": 1104.02,
-      "last_updated": "20260516"
-    },
-    "48331": {
-      "room_name": "17栋第15层1518",
-      "current_balance": 150.99,
-      "last_updated": "20260516"
-    },
     "50399": {
       "room_name": "17栋第12层1206",
       "current_balance": 185.9,
-      "last_updated": "20260516"
-    },
-    "47636": {
-      "room_name": "17栋第5层515",
-      "current_balance": 511.31,
-      "last_updated": "20260516"
-    },
-    "13359": {
-      "room_name": "17栋第10层1017",
-      "current_balance": 584.52,
-      "last_updated": "20260516"
-    },
-    "17320": {
-      "room_name": "17栋第3层306",
-      "current_balance": 492.32,
-      "last_updated": "20260516"
-    },
-    "25982": {
-      "room_name": "17栋第7层720",
-      "current_balance": 26.07,
       "last_updated": "20260516"
     },
     "32874": {
@@ -1618,34 +513,9 @@
       "current_balance": 179.77,
       "last_updated": "20260516"
     },
-    "92909": {
-      "room_name": "17栋第4层413",
-      "current_balance": 267.26,
-      "last_updated": "20260516"
-    },
-    "81876": {
-      "room_name": "17栋第9层914",
-      "current_balance": 672.87,
-      "last_updated": "20260516"
-    },
-    "45929": {
-      "room_name": "17栋第2层210",
-      "current_balance": 42.63,
-      "last_updated": "20260516"
-    },
     "51656": {
       "room_name": "17栋第14层1403",
       "current_balance": 257.96,
-      "last_updated": "20260516"
-    },
-    "70224": {
-      "room_name": "17栋第8层804",
-      "current_balance": 128.58,
-      "last_updated": "20260516"
-    },
-    "25174": {
-      "room_name": "17栋第9层905",
-      "current_balance": 22.13,
       "last_updated": "20260516"
     },
     "13173": {
@@ -1653,84 +523,9 @@
       "current_balance": 348.03,
       "last_updated": "20260516"
     },
-    "92209": {
-      "room_name": "17栋第6层605",
-      "current_balance": 402.76,
-      "last_updated": "20260516"
-    },
-    "11952": {
-      "room_name": "17栋第14层1411",
-      "current_balance": 390.61,
-      "last_updated": "20260516"
-    },
-    "92831": {
-      "room_name": "17栋第4层407",
-      "current_balance": 39.95,
-      "last_updated": "20260516"
-    },
-    "45250": {
-      "room_name": "17栋第6层608",
-      "current_balance": 1104.02,
-      "last_updated": "20260516"
-    },
-    "41226": {
-      "room_name": "17栋第15层1505",
-      "current_balance": 238.99,
-      "last_updated": "20260516"
-    },
-    "28195": {
-      "room_name": "17栋第3层314",
-      "current_balance": 186.86,
-      "last_updated": "20260516"
-    },
-    "26817": {
-      "room_name": "17栋第4层420",
-      "current_balance": 6.33,
-      "last_updated": "20260516"
-    },
-    "15009": {
-      "room_name": "17栋第11层1117",
-      "current_balance": 580.45,
-      "last_updated": "20260516"
-    },
-    "24006": {
-      "room_name": "17栋第9层911",
-      "current_balance": 7.21,
-      "last_updated": "20260516"
-    },
     "35699": {
       "room_name": "0202",
       "current_balance": 101.86,
-      "last_updated": "20260516"
-    },
-    "59667": {
-      "room_name": "17栋第15层1513",
-      "current_balance": 328.15,
-      "last_updated": "20260516"
-    },
-    "19966": {
-      "room_name": "17栋第17层1702",
-      "current_balance": 68.94,
-      "last_updated": "20260516"
-    },
-    "26554": {
-      "room_name": "17栋第7层702",
-      "current_balance": 744.82,
-      "last_updated": "20260516"
-    },
-    "15982": {
-      "room_name": "17栋第12层1210",
-      "current_balance": 560.72,
-      "last_updated": "20260516"
-    },
-    "60207": {
-      "room_name": "17栋第5层520",
-      "current_balance": 539.99,
-      "last_updated": "20260516"
-    },
-    "90630": {
-      "room_name": "17栋第4层401",
-      "current_balance": 703.76,
       "last_updated": "20260516"
     },
     "31839": {
@@ -1738,39 +533,9 @@
       "current_balance": 15.19,
       "last_updated": "20260516"
     },
-    "79431": {
-      "room_name": "17栋第4层413",
-      "current_balance": 267.26,
-      "last_updated": "20260516"
-    },
-    "93346": {
-      "room_name": "17栋第5层508",
-      "current_balance": 764.32,
-      "last_updated": "20260516"
-    },
-    "24386": {
-      "room_name": "17栋第2层213",
-      "current_balance": 87.26,
-      "last_updated": "20260516"
-    },
-    "11603": {
-      "room_name": "17栋第6层622",
-      "current_balance": 788.36,
-      "last_updated": "20260516"
-    },
-    "88010": {
-      "room_name": "17栋第10层1003",
-      "current_balance": 144.64,
-      "last_updated": "20260516"
-    },
     "90841": {
       "room_name": "17栋第12层1201",
       "current_balance": 287.52,
-      "last_updated": "20260516"
-    },
-    "79135": {
-      "room_name": "17栋第15层1509",
-      "current_balance": 92.68,
       "last_updated": "20260516"
     },
     "23931": {
@@ -1778,19 +543,9 @@
       "current_balance": 162.02,
       "last_updated": "20260516"
     },
-    "94065": {
-      "room_name": "17栋第6层615",
-      "current_balance": 562.02,
-      "last_updated": "20260516"
-    },
     "28637": {
       "room_name": "17栋第2层214",
       "current_balance": 699.66,
-      "last_updated": "20260516"
-    },
-    "91196": {
-      "room_name": "17栋第4层412",
-      "current_balance": 910.41,
       "last_updated": "20260516"
     },
     "16329": {
@@ -1798,59 +553,9 @@
       "current_balance": 218.33,
       "last_updated": "20260516"
     },
-    "73139": {
-      "room_name": "17栋第6层623",
-      "current_balance": 40.45,
-      "last_updated": "20260516"
-    },
-    "54955": {
-      "room_name": "17栋第5层501",
-      "current_balance": 31.98,
-      "last_updated": "20260516"
-    },
-    "88615": {
-      "room_name": "17栋第12层1201",
-      "current_balance": 287.52,
-      "last_updated": "20260516"
-    },
-    "65437": {
-      "room_name": "17栋第6层616",
-      "current_balance": 410.39,
-      "last_updated": "20260516"
-    },
-    "84669": {
-      "room_name": "17栋第7层712",
-      "current_balance": 6.59,
-      "last_updated": "20260516"
-    },
-    "24050": {
-      "room_name": "17栋第8层808",
-      "current_balance": 46.3,
-      "last_updated": "20260516"
-    },
-    "23279": {
-      "room_name": "17栋第16层1609",
-      "current_balance": 7.02,
-      "last_updated": "20260516"
-    },
     "47440": {
       "room_name": "17栋第17层1721",
       "current_balance": 34.43,
-      "last_updated": "20260516"
-    },
-    "40504": {
-      "room_name": "17栋第8层821",
-      "current_balance": 30.97,
-      "last_updated": "20260516"
-    },
-    "11715": {
-      "room_name": "17栋第11层1110",
-      "current_balance": 586.44,
-      "last_updated": "20260516"
-    },
-    "78176": {
-      "room_name": "17栋第8层804",
-      "current_balance": 128.58,
       "last_updated": "20260516"
     },
     "14351": {
@@ -1858,34 +563,9 @@
       "current_balance": 910.41,
       "last_updated": "20260516"
     },
-    "90692": {
-      "room_name": "17栋第9层903",
-      "current_balance": 786.79,
-      "last_updated": "20260516"
-    },
     "40970": {
       "room_name": "17栋第8层810",
       "current_balance": 243.04,
-      "last_updated": "20260516"
-    },
-    "97975": {
-      "room_name": "17栋第12层1208",
-      "current_balance": 829.43,
-      "last_updated": "20260516"
-    },
-    "15272": {
-      "room_name": "17栋第4层415",
-      "current_balance": 776.74,
-      "last_updated": "20260516"
-    },
-    "93365": {
-      "room_name": "17栋第14层1411",
-      "current_balance": 390.61,
-      "last_updated": "20260516"
-    },
-    "91101": {
-      "room_name": "17栋第4层415",
-      "current_balance": 776.74,
       "last_updated": "20260516"
     },
     "28950": {
@@ -1896,11 +576,6 @@
     "65921": {
       "room_name": "17栋第17层1704",
       "current_balance": 965.67,
-      "last_updated": "20260516"
-    },
-    "25426": {
-      "room_name": "17栋第6层621",
-      "current_balance": 125.54,
       "last_updated": "20260516"
     },
     "19063": {
@@ -1928,34 +603,14 @@
       "current_balance": 681.08,
       "last_updated": "20260516"
     },
-    "29875": {
-      "room_name": "17栋第9层909",
-      "current_balance": 396.44,
-      "last_updated": "20260516"
-    },
-    "88060": {
-      "room_name": "17栋第6层623",
-      "current_balance": 40.45,
-      "last_updated": "20260516"
-    },
     "25239": {
       "room_name": "17栋第2层201",
       "current_balance": 107.13,
       "last_updated": "20260516"
     },
-    "18987": {
-      "room_name": "17栋第8层815",
-      "current_balance": 524.64,
-      "last_updated": "20260516"
-    },
     "45970": {
       "room_name": "17栋第18层1818",
       "current_balance": 158.1,
-      "last_updated": "20260516"
-    },
-    "94528": {
-      "room_name": "17栋第6层609",
-      "current_balance": 688.02,
       "last_updated": "20260516"
     },
     "87475": {
@@ -1968,29 +623,9 @@
       "current_balance": 521.12,
       "last_updated": "20260516"
     },
-    "77652": {
-      "room_name": "17栋第7层703",
-      "current_balance": 207.17,
-      "last_updated": "20260516"
-    },
-    "38279": {
-      "room_name": "17栋第7层701",
-      "current_balance": 819.13,
-      "last_updated": "20260516"
-    },
-    "89554": {
-      "room_name": "17栋第5层510",
-      "current_balance": 263.92,
-      "last_updated": "20260516"
-    },
     "77867": {
       "room_name": "17栋第5层512",
       "current_balance": 588.79,
-      "last_updated": "20260516"
-    },
-    "84075": {
-      "room_name": "17栋第5层503",
-      "current_balance": 129.85,
       "last_updated": "20260516"
     },
     "98550": {
@@ -2003,99 +638,14 @@
       "current_balance": 420.17,
       "last_updated": "20260516"
     },
-    "23174": {
-      "room_name": "17栋第12层1219",
-      "current_balance": 51.44,
-      "last_updated": "20260516"
-    },
-    "90014": {
-      "room_name": "17栋第6层613",
-      "current_balance": 845.12,
-      "last_updated": "20260516"
-    },
-    "28217": {
-      "room_name": "17栋第4层423",
-      "current_balance": 52.39,
-      "last_updated": "20260516"
-    },
-    "23074": {
-      "room_name": "17栋第8层803",
-      "current_balance": 286.75,
-      "last_updated": "20260516"
-    },
-    "33954": {
-      "room_name": "17栋第2层206",
-      "current_balance": 30.51,
-      "last_updated": "20260516"
-    },
-    "25264": {
-      "room_name": "17栋第7层708",
-      "current_balance": 919.31,
-      "last_updated": "20260516"
-    },
-    "47294": {
-      "room_name": "17栋第17层1723",
-      "current_balance": 162.02,
-      "last_updated": "20260516"
-    },
-    "73682": {
-      "room_name": "17栋第3层316",
-      "current_balance": 118.48,
-      "last_updated": "20260516"
-    },
-    "91555": {
-      "room_name": "17栋第15层1507",
-      "current_balance": 48.59,
-      "last_updated": "20260516"
-    },
-    "92500": {
-      "room_name": "17栋第15层1512",
-      "current_balance": 88.35,
-      "last_updated": "20260516"
-    },
-    "28840": {
-      "room_name": "17栋第14层1415",
-      "current_balance": 386.67,
-      "last_updated": "20260516"
-    },
-    "60463": {
-      "room_name": "17栋第17层1702",
-      "current_balance": 68.94,
-      "last_updated": "20260516"
-    },
-    "91917": {
-      "room_name": "17栋第4层409",
-      "current_balance": 667.3,
-      "last_updated": "20260516"
-    },
-    "27129": {
-      "room_name": "17栋第9层908",
-      "current_balance": 726.54,
-      "last_updated": "20260516"
-    },
     "52774": {
       "room_name": "1305",
       "current_balance": 41.06,
       "last_updated": "20260516"
     },
-    "26345": {
-      "room_name": "17栋第3层302",
-      "current_balance": 280.96,
-      "last_updated": "20260516"
-    },
-    "61314": {
-      "room_name": "17栋第2层220",
-      "current_balance": 114.11,
-      "last_updated": "20260516"
-    },
     "51863": {
       "room_name": "17栋第16层1608",
       "current_balance": 345.37,
-      "last_updated": "20260516"
-    },
-    "32047": {
-      "room_name": "17栋第11层1103",
-      "current_balance": 727.53,
       "last_updated": "20260516"
     },
     "92952": {
@@ -2113,29 +663,9 @@
       "current_balance": 48.59,
       "last_updated": "20260516"
     },
-    "57940": {
-      "room_name": "17栋第17层1701",
-      "current_balance": 3.37,
-      "last_updated": "20260516"
-    },
-    "13931": {
-      "room_name": "17栋第15层1511",
-      "current_balance": 264.45,
-      "last_updated": "20260516"
-    },
     "97790": {
       "room_name": "17栋第10层1001",
       "current_balance": 156.59,
-      "last_updated": "20260516"
-    },
-    "58127": {
-      "room_name": "17栋第12层1216",
-      "current_balance": 591.23,
-      "last_updated": "20260516"
-    },
-    "21280": {
-      "room_name": "17栋第11层1115",
-      "current_balance": 758.33,
       "last_updated": "20260516"
     },
     "45471": {
@@ -2143,39 +673,9 @@
       "current_balance": 5.03,
       "last_updated": "20260516"
     },
-    "24993": {
-      "room_name": "17栋第2层210",
-      "current_balance": 42.63,
-      "last_updated": "20260516"
-    },
-    "95187": {
-      "room_name": "17栋第4层406",
-      "current_balance": 48.4,
-      "last_updated": "20260516"
-    },
-    "91962": {
-      "room_name": "17栋第6层607",
-      "current_balance": 88.65,
-      "last_updated": "20260516"
-    },
-    "28220": {
-      "room_name": "17栋第8层811",
-      "current_balance": 261.95,
-      "last_updated": "20260516"
-    },
-    "27171": {
-      "room_name": "17栋第9层911",
-      "current_balance": 7.21,
-      "last_updated": "20260516"
-    },
     "90468": {
       "room_name": "17栋第8层811",
       "current_balance": 261.95,
-      "last_updated": "20260516"
-    },
-    "45928": {
-      "room_name": "17栋第2层212",
-      "current_balance": 649.35,
       "last_updated": "20260516"
     },
     "34400": {
@@ -2183,34 +683,9 @@
       "current_balance": 386.2,
       "last_updated": "20260516"
     },
-    "89415": {
-      "room_name": "17栋第8层813",
-      "current_balance": 6.23,
-      "last_updated": "20260516"
-    },
-    "79150": {
-      "room_name": "17栋第9层916",
-      "current_balance": 730.08,
-      "last_updated": "20260516"
-    },
-    "63476": {
-      "room_name": "17栋第13层1307",
-      "current_balance": 78.64,
-      "last_updated": "20260516"
-    },
-    "83438": {
-      "room_name": "17栋第12层1218",
-      "current_balance": 903.87,
-      "last_updated": "20260516"
-    },
     "89008": {
       "room_name": "17栋第6层614",
       "current_balance": 20.85,
-      "last_updated": "20260516"
-    },
-    "90638": {
-      "room_name": "17栋第12层1207",
-      "current_balance": 134.15,
       "last_updated": "20260516"
     },
     "13324": {
@@ -2218,29 +693,9 @@
       "current_balance": 267.73,
       "last_updated": "20260516"
     },
-    "42856": {
-      "room_name": "17栋第17层1723",
-      "current_balance": 162.02,
-      "last_updated": "20260516"
-    },
-    "89404": {
-      "room_name": "17栋第10层1019",
-      "current_balance": 333.28,
-      "last_updated": "20260516"
-    },
     "90854": {
       "room_name": "17栋第12层1205",
       "current_balance": 266.39,
-      "last_updated": "20260516"
-    },
-    "30602": {
-      "room_name": "17栋第12层1211",
-      "current_balance": 48.96,
-      "last_updated": "20260516"
-    },
-    "93389": {
-      "room_name": "17栋第11层1111",
-      "current_balance": 416.07,
       "last_updated": "20260516"
     },
     "17810": {
@@ -2248,74 +703,9 @@
       "current_balance": 21.79,
       "last_updated": "20260516"
     },
-    "35829": {
-      "room_name": "17栋第14层1417",
-      "current_balance": 327.68,
-      "last_updated": "20260516"
-    },
-    "60064": {
-      "room_name": "17栋第11层1105",
-      "current_balance": 780.62,
-      "last_updated": "20260516"
-    },
-    "74085": {
-      "room_name": "17栋第6层607",
-      "current_balance": 88.65,
-      "last_updated": "20260516"
-    },
-    "49699": {
-      "room_name": "17栋第3层318",
-      "current_balance": 212.07,
-      "last_updated": "20260516"
-    },
-    "78557": {
-      "room_name": "17栋第4层403",
-      "current_balance": 133.23,
-      "last_updated": "20260516"
-    },
-    "30338": {
-      "room_name": "17栋第11层1112",
-      "current_balance": 699.02,
-      "last_updated": "20260516"
-    },
-    "12735": {
-      "room_name": "17栋第4层417",
-      "current_balance": 588.74,
-      "last_updated": "20260516"
-    },
-    "24059": {
-      "room_name": "17栋第9层916",
-      "current_balance": 730.08,
-      "last_updated": "20260516"
-    },
-    "77904": {
-      "room_name": "17栋第4层405",
-      "current_balance": 496.16,
-      "last_updated": "20260516"
-    },
-    "58833": {
-      "room_name": "17栋第18层1822",
-      "current_balance": 77.82,
-      "last_updated": "20260516"
-    },
-    "47048": {
-      "room_name": "17栋第3层309",
-      "current_balance": 476.7,
-      "last_updated": "20260516"
-    },
-    "26953": {
-      "room_name": "17栋第9层904",
-      "current_balance": 87.39,
-      "last_updated": "20260516"
-    },
     "72453": {
       "room_name": "17栋第4层408",
       "current_balance": 648.12,
-      "last_updated": "20260516"
-    },
-    "64529": {
-      "room_name": "17栋第11层1108",
-      "current_balance": 324.6,
       "last_updated": "20260516"
     },
     "90170": {
@@ -2323,54 +713,9 @@
       "current_balance": 728.3,
       "last_updated": "20260516"
     },
-    "37046": {
-      "room_name": "17栋第3层317",
-      "current_balance": 140.56,
-      "last_updated": "20260516"
-    },
-    "89763": {
-      "room_name": "17栋第10层1019",
-      "current_balance": 333.28,
-      "last_updated": "20260516"
-    },
-    "83789": {
-      "room_name": "17栋第11层1122",
-      "current_balance": 315.89,
-      "last_updated": "20260516"
-    },
-    "21958": {
-      "room_name": "17栋第12层1210",
-      "current_balance": 560.72,
-      "last_updated": "20260516"
-    },
     "28121": {
       "room_name": "17栋第3层305",
       "current_balance": 118.28,
-      "last_updated": "20260516"
-    },
-    "89614": {
-      "room_name": "17栋第6层615",
-      "current_balance": 562.02,
-      "last_updated": "20260516"
-    },
-    "81303": {
-      "room_name": "17栋第18层1806",
-      "current_balance": 276.98,
-      "last_updated": "20260516"
-    },
-    "31429": {
-      "room_name": "17栋第2层208",
-      "current_balance": 435.41,
-      "last_updated": "20260516"
-    },
-    "23055": {
-      "room_name": "17栋第2层211",
-      "current_balance": 32.84,
-      "last_updated": "20260516"
-    },
-    "93410": {
-      "room_name": "17栋第11层1111",
-      "current_balance": 416.07,
       "last_updated": "20260516"
     },
     "26972": {
@@ -2378,49 +723,9 @@
       "current_balance": 93.83,
       "last_updated": "20260516"
     },
-    "38714": {
-      "room_name": "17栋第3层312",
-      "current_balance": 2.89,
-      "last_updated": "20260516"
-    },
-    "26622": {
-      "room_name": "17栋第2层223",
-      "current_balance": 7.18,
-      "last_updated": "20260516"
-    },
-    "54895": {
-      "room_name": "17栋第14层1410",
-      "current_balance": 112.66,
-      "last_updated": "20260516"
-    },
-    "13816": {
-      "room_name": "17栋第4层407",
-      "current_balance": 39.95,
-      "last_updated": "20260516"
-    },
-    "13493": {
-      "room_name": "17栋第7层716",
-      "current_balance": 431.47,
-      "last_updated": "20260516"
-    },
-    "18281": {
-      "room_name": "17栋第9层917",
-      "current_balance": 133.83,
-      "last_updated": "20260516"
-    },
-    "88105": {
-      "room_name": "17栋第6层612",
-      "current_balance": 14.58,
-      "last_updated": "20260516"
-    },
     "93376": {
       "room_name": "17栋第17层1713",
       "current_balance": 87.29,
-      "last_updated": "20260516"
-    },
-    "91100": {
-      "room_name": "17栋第4层415",
-      "current_balance": 776.74,
       "last_updated": "20260516"
     },
     "56071": {
@@ -2428,34 +733,9 @@
       "current_balance": 112.66,
       "last_updated": "20260516"
     },
-    "88023": {
-      "room_name": "17栋第4层407",
-      "current_balance": 39.95,
-      "last_updated": "20260516"
-    },
-    "64686": {
-      "room_name": "17栋第4层405",
-      "current_balance": 496.16,
-      "last_updated": "20260516"
-    },
-    "88085": {
-      "room_name": "17栋第6层623",
-      "current_balance": 40.45,
-      "last_updated": "20260516"
-    },
     "63365": {
       "room_name": "17栋第16层1616",
       "current_balance": 528.89,
-      "last_updated": "20260516"
-    },
-    "13063": {
-      "room_name": "17栋第12层1203",
-      "current_balance": 728.3,
-      "last_updated": "20260516"
-    },
-    "15025": {
-      "room_name": "17栋第3层318",
-      "current_balance": 212.07,
       "last_updated": "20260516"
     },
     "77274": {
@@ -2463,59 +743,9 @@
       "current_balance": 426.07,
       "last_updated": "20260516"
     },
-    "17451": {
-      "room_name": "17栋第9层921",
-      "current_balance": 179.77,
-      "last_updated": "20260516"
-    },
-    "92447": {
-      "room_name": "17栋第4层409",
-      "current_balance": 667.3,
-      "last_updated": "20260516"
-    },
-    "57387": {
-      "room_name": "17栋第15层1503",
-      "current_balance": 62.43,
-      "last_updated": "20260516"
-    },
-    "93034": {
-      "room_name": "17栋第3层315",
-      "current_balance": 36.0,
-      "last_updated": "20260516"
-    },
     "25709": {
       "room_name": "17栋第2层215",
       "current_balance": 537.82,
-      "last_updated": "20260516"
-    },
-    "57305": {
-      "room_name": "17栋第10层1015",
-      "current_balance": 57.55,
-      "last_updated": "20260516"
-    },
-    "86474": {
-      "room_name": "17栋第6层623",
-      "current_balance": 40.45,
-      "last_updated": "20260516"
-    },
-    "96689": {
-      "room_name": "17栋第15层1511",
-      "current_balance": 264.45,
-      "last_updated": "20260516"
-    },
-    "35290": {
-      "room_name": "17栋第4层402",
-      "current_balance": 559.6,
-      "last_updated": "20260516"
-    },
-    "39144": {
-      "room_name": "17栋第4层403",
-      "current_balance": 133.23,
-      "last_updated": "20260516"
-    },
-    "26191": {
-      "room_name": "17栋第3层301",
-      "current_balance": 207.34,
       "last_updated": "20260516"
     },
     "31558": {
@@ -2528,59 +758,14 @@
       "current_balance": 703.76,
       "last_updated": "20260516"
     },
-    "23994": {
-      "room_name": "17栋第9层906",
-      "current_balance": 7.3,
-      "last_updated": "20260516"
-    },
     "27169": {
       "room_name": "17栋第11层1107",
       "current_balance": 46.22,
       "last_updated": "20260516"
     },
-    "27155": {
-      "room_name": "17栋第11层1107",
-      "current_balance": 46.22,
-      "last_updated": "20260516"
-    },
-    "94615": {
-      "room_name": "17栋第11层1123",
-      "current_balance": 63.22,
-      "last_updated": "20260516"
-    },
-    "83340": {
-      "room_name": "17栋第6层620",
-      "current_balance": 19.33,
-      "last_updated": "20260516"
-    },
-    "27249": {
-      "room_name": "17栋第14层1419",
-      "current_balance": 197.18,
-      "last_updated": "20260516"
-    },
-    "25121": {
-      "room_name": "17栋第2层206",
-      "current_balance": 30.51,
-      "last_updated": "20260516"
-    },
-    "27102": {
-      "room_name": "17栋第7层716",
-      "current_balance": 431.47,
-      "last_updated": "20260516"
-    },
-    "92007": {
-      "room_name": "17栋第10层1017",
-      "current_balance": 584.52,
-      "last_updated": "20260516"
-    },
     "90347": {
       "room_name": "17栋第2层207",
       "current_balance": 53.57,
-      "last_updated": "20260516"
-    },
-    "62835": {
-      "room_name": "17栋第10层1007",
-      "current_balance": 722.36,
       "last_updated": "20260516"
     },
     "33949": {
@@ -2593,39 +778,14 @@
       "current_balance": 229.27,
       "last_updated": "20260516"
     },
-    "99827": {
-      "room_name": "17栋第12层1210",
-      "current_balance": 560.72,
-      "last_updated": "20260516"
-    },
     "94217": {
       "room_name": "16栋第16层1623",
       "current_balance": 4.61,
       "last_updated": "20260516"
     },
-    "26542": {
-      "room_name": "17栋第9层921",
-      "current_balance": 179.77,
-      "last_updated": "20260516"
-    },
-    "92210": {
-      "room_name": "17栋第10层1012",
-      "current_balance": 665.42,
-      "last_updated": "20260516"
-    },
     "24703": {
       "room_name": "0223",
       "current_balance": 7.18,
-      "last_updated": "20260516"
-    },
-    "49645": {
-      "room_name": "17栋第3层323",
-      "current_balance": 46.75,
-      "last_updated": "20260516"
-    },
-    "77983": {
-      "room_name": "17栋第5层521",
-      "current_balance": 535.71,
       "last_updated": "20260516"
     },
     "88036": {
@@ -2638,46 +798,6 @@
       "current_balance": 672.87,
       "last_updated": "20260516"
     },
-    "29264": {
-      "room_name": "17栋第6层623",
-      "current_balance": 40.45,
-      "last_updated": "20260516"
-    },
-    "83051": {
-      "room_name": "17栋第13层1309",
-      "current_balance": 634.94,
-      "last_updated": "20260516"
-    },
-    "90189": {
-      "room_name": "17栋第10层1003",
-      "current_balance": 144.64,
-      "last_updated": "20260516"
-    },
-    "86486": {
-      "room_name": "17栋第11层1117",
-      "current_balance": 580.45,
-      "last_updated": "20260516"
-    },
-    "59772": {
-      "room_name": "17栋第3层323",
-      "current_balance": 46.75,
-      "last_updated": "20260516"
-    },
-    "92354": {
-      "room_name": "17栋第5层522",
-      "current_balance": 410.28,
-      "last_updated": "20260516"
-    },
-    "42768": {
-      "room_name": "17栋第15层1507",
-      "current_balance": 48.59,
-      "last_updated": "20260516"
-    },
-    "89126": {
-      "room_name": "17栋第5层504",
-      "current_balance": 218.33,
-      "last_updated": "20260516"
-    },
     "59814": {
       "room_name": "17栋第18层1821",
       "current_balance": 269.94,
@@ -2688,34 +808,9 @@
       "current_balance": 463.91,
       "last_updated": "20260516"
     },
-    "54954": {
-      "room_name": "17栋第5层501",
-      "current_balance": 31.98,
-      "last_updated": "20260516"
-    },
-    "82751": {
-      "room_name": "17栋第17层1721",
-      "current_balance": 34.43,
-      "last_updated": "20260516"
-    },
-    "88871": {
-      "room_name": "17栋第6层619",
-      "current_balance": 570.03,
-      "last_updated": "20260516"
-    },
     "68826": {
       "room_name": "17栋第7层723",
       "current_balance": 121.55,
-      "last_updated": "20260516"
-    },
-    "11621": {
-      "room_name": "17栋第5层507",
-      "current_balance": 114.3,
-      "last_updated": "20260516"
-    },
-    "44087": {
-      "room_name": "17栋第11层1117",
-      "current_balance": 580.45,
       "last_updated": "20260516"
     },
     "25686": {
@@ -2723,49 +818,9 @@
       "current_balance": 675.18,
       "last_updated": "20260516"
     },
-    "23897": {
-      "room_name": "17栋第8层807",
-      "current_balance": 4.05,
-      "last_updated": "20260516"
-    },
-    "12185": {
-      "room_name": "17栋第15层1507",
-      "current_balance": 48.59,
-      "last_updated": "20260516"
-    },
-    "90605": {
-      "room_name": "17栋第6层617",
-      "current_balance": 6.2,
-      "last_updated": "20260516"
-    },
-    "90633": {
-      "room_name": "17栋第3层317",
-      "current_balance": 140.56,
-      "last_updated": "20260516"
-    },
-    "14885": {
-      "room_name": "17栋第4层419",
-      "current_balance": 108.2,
-      "last_updated": "20260516"
-    },
-    "86814": {
-      "room_name": "17栋第10层1023",
-      "current_balance": 9.87,
-      "last_updated": "20260516"
-    },
     "27384": {
       "room_name": "17栋第3层313",
       "current_balance": 394.58,
-      "last_updated": "20260516"
-    },
-    "34174": {
-      "room_name": "17栋第4层404",
-      "current_balance": 119.69,
-      "last_updated": "20260516"
-    },
-    "13906": {
-      "room_name": "17栋第7层712",
-      "current_balance": 6.59,
       "last_updated": "20260516"
     },
     "61381": {
@@ -2773,89 +828,9 @@
       "current_balance": 617.48,
       "last_updated": "20260516"
     },
-    "95357": {
-      "room_name": "17栋第7层717",
-      "current_balance": 290.14,
-      "last_updated": "20260516"
-    },
-    "17019": {
-      "room_name": "17栋第2层204",
-      "current_balance": 133.39,
-      "last_updated": "20260516"
-    },
-    "79296": {
-      "room_name": "17栋第4层417",
-      "current_balance": 588.74,
-      "last_updated": "20260516"
-    },
-    "92004": {
-      "room_name": "17栋第5层506",
-      "current_balance": 14.14,
-      "last_updated": "20260516"
-    },
-    "25536": {
-      "room_name": "17栋第11层1122",
-      "current_balance": 315.89,
-      "last_updated": "20260516"
-    },
-    "34153": {
-      "room_name": "17栋第10层1021",
-      "current_balance": 685.63,
-      "last_updated": "20260516"
-    },
-    "91419": {
-      "room_name": "17栋第6层610",
-      "current_balance": 641.12,
-      "last_updated": "20260516"
-    },
-    "59571": {
-      "room_name": "17栋第7层721",
-      "current_balance": 702.74,
-      "last_updated": "20260516"
-    },
-    "44443": {
-      "room_name": "17栋第10层1003",
-      "current_balance": 144.64,
-      "last_updated": "20260516"
-    },
     "25297": {
       "room_name": "17栋第10层1015",
       "current_balance": 57.55,
-      "last_updated": "20260516"
-    },
-    "20773": {
-      "room_name": "17栋第2层212",
-      "current_balance": 649.35,
-      "last_updated": "20260516"
-    },
-    "91466": {
-      "room_name": "17栋第10层1011",
-      "current_balance": 463.91,
-      "last_updated": "20260516"
-    },
-    "78109": {
-      "room_name": "17栋第7层722",
-      "current_balance": 29.29,
-      "last_updated": "20260516"
-    },
-    "25285": {
-      "room_name": "17栋第7层711",
-      "current_balance": 988.35,
-      "last_updated": "20260516"
-    },
-    "62088": {
-      "room_name": "17栋第11层1118",
-      "current_balance": 75.43,
-      "last_updated": "20260516"
-    },
-    "39019": {
-      "room_name": "17栋第10层1011",
-      "current_balance": 463.91,
-      "last_updated": "20260516"
-    },
-    "89836": {
-      "room_name": "17栋第3层316",
-      "current_balance": 118.48,
       "last_updated": "20260516"
     },
     "33505": {
@@ -2863,54 +838,14 @@
       "current_balance": 74.53,
       "last_updated": "20260516"
     },
-    "82761": {
-      "room_name": "17栋第6层622",
-      "current_balance": 788.36,
-      "last_updated": "20260516"
-    },
-    "12184": {
-      "room_name": "17栋第18层1820",
-      "current_balance": 291.86,
-      "last_updated": "20260516"
-    },
-    "89833": {
-      "room_name": "17栋第6层607",
-      "current_balance": 88.65,
-      "last_updated": "20260516"
-    },
     "97946": {
       "room_name": "17栋第18层1802",
       "current_balance": 61.95,
       "last_updated": "20260516"
     },
-    "72245": {
-      "room_name": "17栋第4层406",
-      "current_balance": 48.4,
-      "last_updated": "20260516"
-    },
     "62513": {
       "room_name": "17栋第1层104",
       "current_balance": 157.61,
-      "last_updated": "20260516"
-    },
-    "23609": {
-      "room_name": "17栋第14层1414",
-      "current_balance": 24.0,
-      "last_updated": "20260516"
-    },
-    "91527": {
-      "room_name": "17栋第4层404",
-      "current_balance": 119.69,
-      "last_updated": "20260516"
-    },
-    "27752": {
-      "room_name": "17栋第3层306",
-      "current_balance": 492.32,
-      "last_updated": "20260516"
-    },
-    "25191": {
-      "room_name": "17栋第7层706",
-      "current_balance": 27.47,
       "last_updated": "20260516"
     },
     "33638": {
@@ -2923,89 +858,14 @@
       "current_balance": 346.64,
       "last_updated": "20260516"
     },
-    "22787": {
-      "room_name": "17栋第12层1208",
-      "current_balance": 829.43,
-      "last_updated": "20260516"
-    },
-    "24455": {
-      "room_name": "17栋第2层221",
-      "current_balance": 286.11,
-      "last_updated": "20260516"
-    },
-    "40405": {
-      "room_name": "17栋第6层614",
-      "current_balance": 20.85,
-      "last_updated": "20260516"
-    },
-    "77279": {
-      "room_name": "17栋第7层723",
-      "current_balance": 121.55,
-      "last_updated": "20260516"
-    },
-    "90843": {
-      "room_name": "17栋第12层1201",
-      "current_balance": 287.52,
-      "last_updated": "20260516"
-    },
     "48373": {
       "room_name": "17栋第13层1311",
       "current_balance": 555.12,
       "last_updated": "20260516"
     },
-    "12659": {
-      "room_name": "17栋第13层1311",
-      "current_balance": 555.12,
-      "last_updated": "20260516"
-    },
-    "22855": {
-      "room_name": "17栋第2层212",
-      "current_balance": 649.35,
-      "last_updated": "20260516"
-    },
-    "92353": {
-      "room_name": "17栋第5层522",
-      "current_balance": 410.28,
-      "last_updated": "20260516"
-    },
-    "32023": {
-      "room_name": "17栋第6层613",
-      "current_balance": 845.12,
-      "last_updated": "20260516"
-    },
-    "44705": {
-      "room_name": "17栋第2层218",
-      "current_balance": 662.59,
-      "last_updated": "20260516"
-    },
-    "87752": {
-      "room_name": "17栋第7层718",
-      "current_balance": 550.39,
-      "last_updated": "20260516"
-    },
-    "90902": {
-      "room_name": "17栋第10层1010",
-      "current_balance": 60.43,
-      "last_updated": "20260516"
-    },
-    "12383": {
-      "room_name": "17栋第18层1821",
-      "current_balance": 269.94,
-      "last_updated": "20260516"
-    },
     "56585": {
       "room_name": "17栋第16层1621",
       "current_balance": 860.87,
-      "last_updated": "20260516"
-    },
-    "20937": {
-      "room_name": "17栋第3层305",
-      "current_balance": 118.28,
-      "last_updated": "20260516"
-    },
-    "23767": {
-      "room_name": "17栋第8层815",
-      "current_balance": 524.64,
       "last_updated": "20260516"
     },
     "68291": {
@@ -3018,24 +878,9 @@
       "current_balance": 264.45,
       "last_updated": "20260516"
     },
-    "12247": {
-      "room_name": "17栋第4层401",
-      "current_balance": 703.76,
-      "last_updated": "20260516"
-    },
-    "60504": {
-      "room_name": "17栋第17层1706",
-      "current_balance": 40.17,
-      "last_updated": "20260516"
-    },
     "90973": {
       "room_name": "17栋第1层101",
       "current_balance": 301.74,
-      "last_updated": "20260516"
-    },
-    "30022": {
-      "room_name": "17栋第10层1005",
-      "current_balance": 382.75,
       "last_updated": "20260516"
     },
     "43889": {
@@ -3043,39 +888,9 @@
       "current_balance": 40.17,
       "last_updated": "20260516"
     },
-    "25260": {
-      "room_name": "17栋第9层920",
-      "current_balance": 599.56,
-      "last_updated": "20260516"
-    },
-    "14454": {
-      "room_name": "17栋第11层1108",
-      "current_balance": 324.6,
-      "last_updated": "20260516"
-    },
-    "91417": {
-      "room_name": "17栋第6层610",
-      "current_balance": 641.12,
-      "last_updated": "20260516"
-    },
     "28104": {
       "room_name": "17栋第8层801",
       "current_balance": 128.17,
-      "last_updated": "20260516"
-    },
-    "12238": {
-      "room_name": "17栋第17层1718",
-      "current_balance": 313.7,
-      "last_updated": "20260516"
-    },
-    "12086": {
-      "room_name": "17栋第12层1217",
-      "current_balance": 60.32,
-      "last_updated": "20260516"
-    },
-    "94584": {
-      "room_name": "17栋第5层517",
-      "current_balance": 516.91,
       "last_updated": "20260516"
     },
     "12901": {
@@ -3093,44 +908,9 @@
       "current_balance": 6.59,
       "last_updated": "20260516"
     },
-    "91175": {
-      "room_name": "17栋第15层1507",
-      "current_balance": 48.59,
-      "last_updated": "20260516"
-    },
     "27191": {
       "room_name": "17栋第9层911",
       "current_balance": 7.21,
-      "last_updated": "20260516"
-    },
-    "91061": {
-      "room_name": "17栋第9层918",
-      "current_balance": 284.22,
-      "last_updated": "20260516"
-    },
-    "58773": {
-      "room_name": "17栋第13层1323",
-      "current_balance": 247.39,
-      "last_updated": "20260516"
-    },
-    "37227": {
-      "room_name": "17栋第5层518",
-      "current_balance": 96.32,
-      "last_updated": "20260516"
-    },
-    "77897": {
-      "room_name": "17栋第8层802",
-      "current_balance": 146.17,
-      "last_updated": "20260516"
-    },
-    "26808": {
-      "room_name": "17栋第12层1215",
-      "current_balance": 371.95,
-      "last_updated": "20260516"
-    },
-    "36289": {
-      "room_name": "17栋第9层910",
-      "current_balance": 1446.19,
       "last_updated": "20260516"
     },
     "94531": {
@@ -3143,99 +923,14 @@
       "current_balance": 1207.48,
       "last_updated": "20260516"
     },
-    "16520": {
-      "room_name": "17栋第7层719",
-      "current_balance": 460.26,
-      "last_updated": "20260516"
-    },
-    "37310": {
-      "room_name": "17栋第2层202",
-      "current_balance": 101.86,
-      "last_updated": "20260516"
-    },
     "79089": {
       "room_name": "17栋第10层1018",
       "current_balance": 277.36,
       "last_updated": "20260516"
     },
-    "53834": {
-      "room_name": "17栋第11层1106",
-      "current_balance": 1161.01,
-      "last_updated": "20260516"
-    },
-    "23869": {
-      "room_name": "17栋第8层819",
-      "current_balance": 623.78,
-      "last_updated": "20260516"
-    },
-    "12336": {
-      "room_name": "17栋第12层1207",
-      "current_balance": 134.15,
-      "last_updated": "20260516"
-    },
-    "15421": {
-      "room_name": "17栋第5层522",
-      "current_balance": 410.28,
-      "last_updated": "20260516"
-    },
-    "61015": {
-      "room_name": "17栋第17层1702",
-      "current_balance": 68.94,
-      "last_updated": "20260516"
-    },
-    "89079": {
-      "room_name": "17栋第10层1001",
-      "current_balance": 156.59,
-      "last_updated": "20260516"
-    },
-    "78551": {
-      "room_name": "17栋第4层403",
-      "current_balance": 133.23,
-      "last_updated": "20260516"
-    },
-    "42238": {
-      "room_name": "17栋第4层402",
-      "current_balance": 559.6,
-      "last_updated": "20260516"
-    },
-    "26395": {
-      "room_name": "17栋第7层707",
-      "current_balance": 410.42,
-      "last_updated": "20260516"
-    },
-    "78652": {
-      "room_name": "17栋第4层419",
-      "current_balance": 108.2,
-      "last_updated": "20260516"
-    },
     "59077": {
       "room_name": "17栋第16层1606",
       "current_balance": 280.62,
-      "last_updated": "20260516"
-    },
-    "61832": {
-      "room_name": "17栋第13层1322",
-      "current_balance": 267.73,
-      "last_updated": "20260516"
-    },
-    "70603": {
-      "room_name": "17栋第15层1503",
-      "current_balance": 62.43,
-      "last_updated": "20260516"
-    },
-    "54011": {
-      "room_name": "17栋第5层501",
-      "current_balance": 31.98,
-      "last_updated": "20260516"
-    },
-    "75086": {
-      "room_name": "17栋第6层622",
-      "current_balance": 788.36,
-      "last_updated": "20260516"
-    },
-    "90891": {
-      "room_name": "17栋第10层1010",
-      "current_balance": 60.43,
       "last_updated": "20260516"
     },
     "78188": {
@@ -3263,34 +958,14 @@
       "current_balance": 498.53,
       "last_updated": "20260516"
     },
-    "62860": {
-      "room_name": "17栋第14层1421",
-      "current_balance": 244.67,
-      "last_updated": "20260516"
-    },
     "62497": {
       "room_name": "17栋第13层1304",
       "current_balance": 55.57,
       "last_updated": "20260516"
     },
-    "20803": {
-      "room_name": "17栋第3层305",
-      "current_balance": 118.28,
-      "last_updated": "20260516"
-    },
     "30270": {
       "room_name": "17栋第9层923",
       "current_balance": 35.41,
-      "last_updated": "20260516"
-    },
-    "62764": {
-      "room_name": "17栋第2层208",
-      "current_balance": 435.41,
-      "last_updated": "20260516"
-    },
-    "12970": {
-      "room_name": "17栋第3层307",
-      "current_balance": 15.19,
       "last_updated": "20260516"
     },
     "66813": {
@@ -3303,84 +978,9 @@
       "current_balance": 565.7,
       "last_updated": "20260516"
     },
-    "72769": {
-      "room_name": "17栋第4层406",
-      "current_balance": 48.4,
-      "last_updated": "20260516"
-    },
-    "53922": {
-      "room_name": "17栋第11层1109",
-      "current_balance": 371.36,
-      "last_updated": "20260516"
-    },
-    "91590": {
-      "room_name": "17栋第5层519",
-      "current_balance": 406.31,
-      "last_updated": "20260516"
-    },
-    "85396": {
-      "room_name": "17栋第13层1310",
-      "current_balance": 432.83,
-      "last_updated": "20260516"
-    },
-    "23922": {
-      "room_name": "17栋第3层311",
-      "current_balance": 257.58,
-      "last_updated": "20260516"
-    },
-    "14429": {
-      "room_name": "17栋第15层1506",
-      "current_balance": 990.45,
-      "last_updated": "20260516"
-    },
-    "90338": {
-      "room_name": "17栋第2层215",
-      "current_balance": 537.82,
-      "last_updated": "20260516"
-    },
-    "60282": {
-      "room_name": "17栋第18层1819",
-      "current_balance": 7.15,
-      "last_updated": "20260516"
-    },
-    "90850": {
-      "room_name": "17栋第10层1020",
-      "current_balance": 286.77,
-      "last_updated": "20260516"
-    },
-    "40397": {
-      "room_name": "17栋第14层1403",
-      "current_balance": 257.96,
-      "last_updated": "20260516"
-    },
-    "13314": {
-      "room_name": "17栋第13层1322",
-      "current_balance": 267.73,
-      "last_updated": "20260516"
-    },
-    "62195": {
-      "room_name": "17栋第5层507",
-      "current_balance": 114.3,
-      "last_updated": "20260516"
-    },
-    "63611": {
-      "room_name": "17栋第11层1104",
-      "current_balance": 517.55,
-      "last_updated": "20260516"
-    },
-    "94323": {
-      "room_name": "17栋第16层1619",
-      "current_balance": 2.64,
-      "last_updated": "20260516"
-    },
     "90467": {
       "room_name": "17栋第15层1515",
       "current_balance": 426.07,
-      "last_updated": "20260516"
-    },
-    "94693": {
-      "room_name": "17栋第2层202",
-      "current_balance": 101.86,
       "last_updated": "20260516"
     },
     "90515": {
@@ -3388,49 +988,9 @@
       "current_balance": 36.0,
       "last_updated": "20260516"
     },
-    "11794": {
-      "room_name": "17栋第10层1012",
-      "current_balance": 665.42,
-      "last_updated": "20260516"
-    },
-    "59723": {
-      "room_name": "17栋第13层1323",
-      "current_balance": 247.39,
-      "last_updated": "20260516"
-    },
-    "92829": {
-      "room_name": "17栋第5层510",
-      "current_balance": 263.92,
-      "last_updated": "20260516"
-    },
     "27490": {
       "room_name": "0710",
       "current_balance": 869.26,
-      "last_updated": "20260516"
-    },
-    "92306": {
-      "room_name": "17栋第16层1609",
-      "current_balance": 7.02,
-      "last_updated": "20260516"
-    },
-    "15284": {
-      "room_name": "17栋第5层504",
-      "current_balance": 218.33,
-      "last_updated": "20260516"
-    },
-    "21857": {
-      "room_name": "17栋第10层1009",
-      "current_balance": 811.71,
-      "last_updated": "20260516"
-    },
-    "90101": {
-      "room_name": "17栋第9层919",
-      "current_balance": 141.37,
-      "last_updated": "20260516"
-    },
-    "59876": {
-      "room_name": "17栋第14层1414",
-      "current_balance": 24.0,
       "last_updated": "20260516"
     },
     "87378": {
@@ -3448,11 +1008,6 @@
       "current_balance": 286.75,
       "last_updated": "20260516"
     },
-    "43067": {
-      "room_name": "17栋第3层323",
-      "current_balance": 46.75,
-      "last_updated": "20260516"
-    },
     "26116": {
       "room_name": "17栋第9层922",
       "current_balance": 441.26,
@@ -3468,44 +1023,9 @@
       "current_balance": 173.98,
       "last_updated": "20260516"
     },
-    "33816": {
-      "room_name": "17栋第11层1122",
-      "current_balance": 315.89,
-      "last_updated": "20260516"
-    },
-    "75023": {
-      "room_name": "17栋第7层722",
-      "current_balance": 29.29,
-      "last_updated": "20260516"
-    },
-    "35318": {
-      "room_name": "17栋第11层1101",
-      "current_balance": 279.53,
-      "last_updated": "20260516"
-    },
-    "59856": {
-      "room_name": "17栋第14层1404",
-      "current_balance": 514.99,
-      "last_updated": "20260516"
-    },
     "58216": {
       "room_name": "0410",
       "current_balance": 617.48,
-      "last_updated": "20260516"
-    },
-    "58201": {
-      "room_name": "17栋第5层515",
-      "current_balance": 511.31,
-      "last_updated": "20260516"
-    },
-    "35399": {
-      "room_name": "17栋第8层812",
-      "current_balance": 539.92,
-      "last_updated": "20260516"
-    },
-    "12605": {
-      "room_name": "17栋第14层1401",
-      "current_balance": 711.16,
       "last_updated": "20260516"
     },
     "37804": {
@@ -3518,11 +1038,6 @@
       "current_balance": 332.57,
       "last_updated": "20260516"
     },
-    "32658": {
-      "room_name": "17栋第4层404",
-      "current_balance": 119.69,
-      "last_updated": "20260516"
-    },
     "29366": {
       "room_name": "17栋第9层915",
       "current_balance": 30.18,
@@ -3533,29 +1048,9 @@
       "current_balance": 599.56,
       "last_updated": "20260516"
     },
-    "89201": {
-      "room_name": "17栋第10层1022",
-      "current_balance": 551.53,
-      "last_updated": "20260516"
-    },
     "89258": {
       "room_name": "17栋第3层310",
       "current_balance": 226.36,
-      "last_updated": "20260516"
-    },
-    "26900": {
-      "room_name": "17栋第8层823",
-      "current_balance": 21.79,
-      "last_updated": "20260516"
-    },
-    "34398": {
-      "room_name": "17栋第10层1006",
-      "current_balance": 3.48,
-      "last_updated": "20260516"
-    },
-    "73115": {
-      "room_name": "17栋第10层1023",
-      "current_balance": 9.87,
       "last_updated": "20260516"
     },
     "27834": {
@@ -3563,49 +1058,14 @@
       "current_balance": 461.64,
       "last_updated": "20260516"
     },
-    "72146": {
-      "room_name": "17栋第10层1023",
-      "current_balance": 9.87,
-      "last_updated": "20260516"
-    },
-    "58887": {
-      "room_name": "17栋第11层1110",
-      "current_balance": 586.44,
-      "last_updated": "20260516"
-    },
-    "90632": {
-      "room_name": "17栋第12层1218",
-      "current_balance": 903.87,
-      "last_updated": "20260516"
-    },
     "12262": {
       "room_name": "0419",
       "current_balance": 108.2,
       "last_updated": "20260516"
     },
-    "90377": {
-      "room_name": "17栋第3层310",
-      "current_balance": 226.36,
-      "last_updated": "20260516"
-    },
     "72353": {
       "room_name": "17栋第8层804",
       "current_balance": 128.58,
-      "last_updated": "20260516"
-    },
-    "90959": {
-      "room_name": "17栋第12层1211",
-      "current_balance": 48.96,
-      "last_updated": "20260516"
-    },
-    "90060": {
-      "room_name": "17栋第3层319",
-      "current_balance": 430.1,
-      "last_updated": "20260516"
-    },
-    "26246": {
-      "room_name": "17栋第8层805",
-      "current_balance": 1348.82,
       "last_updated": "20260516"
     },
     "65056": {
@@ -3618,11 +1078,6 @@
       "current_balance": 14.69,
       "last_updated": "20260516"
     },
-    "25378": {
-      "room_name": "17栋第8层820",
-      "current_balance": 579.83,
-      "last_updated": "20260516"
-    },
     "15857": {
       "room_name": "17栋第13层1316",
       "current_balance": 282.91,
@@ -3633,34 +1088,9 @@
       "current_balance": 757.98,
       "last_updated": "20260516"
     },
-    "29008": {
-      "room_name": "17栋第18层1815",
-      "current_balance": 73.78,
-      "last_updated": "20260516"
-    },
-    "99209": {
-      "room_name": "17栋第17层1703",
-      "current_balance": 121.59,
-      "last_updated": "20260516"
-    },
-    "26329": {
-      "room_name": "17栋第9层922",
-      "current_balance": 441.26,
-      "last_updated": "20260516"
-    },
-    "88658": {
-      "room_name": "17栋第11层1102",
-      "current_balance": 567.7,
-      "last_updated": "20260516"
-    },
     "16637": {
       "room_name": "17栋第8层813",
       "current_balance": 6.23,
-      "last_updated": "20260516"
-    },
-    "26300": {
-      "room_name": "17栋第8层801",
-      "current_balance": 128.17,
       "last_updated": "20260516"
     },
     "51394": {
@@ -3673,19 +1103,9 @@
       "current_balance": 136.03,
       "last_updated": "20260516"
     },
-    "14694": {
-      "room_name": "17栋第6层602",
-      "current_balance": 69.29,
-      "last_updated": "20260516"
-    },
     "29823": {
       "room_name": "17栋第3层311",
       "current_balance": 257.58,
-      "last_updated": "20260516"
-    },
-    "59773": {
-      "room_name": "17栋第3层323",
-      "current_balance": 46.75,
       "last_updated": "20260516"
     },
     "39193": {
@@ -3693,69 +1113,14 @@
       "current_balance": 175.56,
       "last_updated": "20260516"
     },
-    "90446": {
-      "room_name": "17栋第10层1021",
-      "current_balance": 685.63,
-      "last_updated": "20260516"
-    },
-    "78549": {
-      "room_name": "17栋第11层1113",
-      "current_balance": 74.56,
-      "last_updated": "20260516"
-    },
-    "28162": {
-      "room_name": "17栋第9层920",
-      "current_balance": 599.56,
-      "last_updated": "20260516"
-    },
     "90649": {
       "room_name": "17栋第12层1218",
       "current_balance": 903.87,
       "last_updated": "20260516"
     },
-    "78127": {
-      "room_name": "17栋第10层1022",
-      "current_balance": 551.53,
-      "last_updated": "20260516"
-    },
     "77980": {
       "room_name": "17栋第5层505",
       "current_balance": 777.07,
-      "last_updated": "20260516"
-    },
-    "70714": {
-      "room_name": "17栋第9层919",
-      "current_balance": 141.37,
-      "last_updated": "20260516"
-    },
-    "89323": {
-      "room_name": "17栋第10层1001",
-      "current_balance": 156.59,
-      "last_updated": "20260516"
-    },
-    "53838": {
-      "room_name": "17栋第10层1014",
-      "current_balance": 599.35,
-      "last_updated": "20260516"
-    },
-    "88946": {
-      "room_name": "17栋第12层1212",
-      "current_balance": 389.56,
-      "last_updated": "20260516"
-    },
-    "58396": {
-      "room_name": "17栋第10层1018",
-      "current_balance": 277.36,
-      "last_updated": "20260516"
-    },
-    "28649": {
-      "room_name": "17栋第3层309",
-      "current_balance": 476.7,
-      "last_updated": "20260516"
-    },
-    "26085": {
-      "room_name": "17栋第10层1008",
-      "current_balance": 35.66,
       "last_updated": "20260516"
     },
     "34315": {
@@ -3773,39 +1138,9 @@
       "current_balance": 396.13,
       "last_updated": "20260516"
     },
-    "80607": {
-      "room_name": "17栋第8层814",
-      "current_balance": 681.08,
-      "last_updated": "20260516"
-    },
-    "60792": {
-      "room_name": "17栋第7层721",
-      "current_balance": 702.74,
-      "last_updated": "20260516"
-    },
-    "12763": {
-      "room_name": "17栋第2层207",
-      "current_balance": 53.57,
-      "last_updated": "20260516"
-    },
-    "11742": {
-      "room_name": "17栋第18层1803",
-      "current_balance": 60.79,
-      "last_updated": "20260516"
-    },
     "88537": {
       "room_name": "17栋第16层1604",
       "current_balance": 764.22,
-      "last_updated": "20260516"
-    },
-    "93633": {
-      "room_name": "17栋第14层1420",
-      "current_balance": 586.21,
-      "last_updated": "20260516"
-    },
-    "59533": {
-      "room_name": "17栋第4层411",
-      "current_balance": 441.14,
       "last_updated": "20260516"
     },
     "26580": {
@@ -3816,21 +1151,6 @@
     "49562": {
       "room_name": "17栋第3层314",
       "current_balance": 186.86,
-      "last_updated": "20260516"
-    },
-    "23604": {
-      "room_name": "17栋第4层401",
-      "current_balance": 703.76,
-      "last_updated": "20260516"
-    },
-    "14688": {
-      "room_name": "17栋第3层317",
-      "current_balance": 140.56,
-      "last_updated": "20260516"
-    },
-    "42093": {
-      "room_name": "17栋第10层1023",
-      "current_balance": 9.87,
       "last_updated": "20260516"
     },
     "76899": {
@@ -3848,49 +1168,14 @@
       "current_balance": 528.89,
       "last_updated": "20260516"
     },
-    "72073": {
-      "room_name": "17栋第13层1308",
-      "current_balance": 607.42,
-      "last_updated": "20260516"
-    },
-    "88004": {
-      "room_name": "17栋第12层1221",
-      "current_balance": 757.04,
-      "last_updated": "20260516"
-    },
     "94512": {
       "room_name": "17栋第12层1220",
       "current_balance": 224.25,
       "last_updated": "20260516"
     },
-    "89741": {
-      "room_name": "17栋第5层514",
-      "current_balance": 282.51,
-      "last_updated": "20260516"
-    },
-    "11371": {
-      "room_name": "17栋第17层1701",
-      "current_balance": 3.37,
-      "last_updated": "20260516"
-    },
-    "60384": {
-      "room_name": "17栋第12层1213",
-      "current_balance": 503.83,
-      "last_updated": "20260516"
-    },
     "28695": {
       "room_name": "17栋第2层222",
       "current_balance": 257.66,
-      "last_updated": "20260516"
-    },
-    "81969": {
-      "room_name": "17栋第11层1119",
-      "current_balance": 637.89,
-      "last_updated": "20260516"
-    },
-    "34360": {
-      "room_name": "17栋第4层418",
-      "current_balance": 780.52,
       "last_updated": "20260516"
     },
     "28636": {
@@ -3903,11 +1188,6 @@
       "current_balance": 607.42,
       "last_updated": "20260516"
     },
-    "61746": {
-      "room_name": "17栋第11层1118",
-      "current_balance": 75.43,
-      "last_updated": "20260516"
-    },
     "44110": {
       "room_name": "17栋第9层907",
       "current_balance": 16.45,
@@ -3918,84 +1198,14 @@
       "current_balance": 410.42,
       "last_updated": "20260516"
     },
-    "26897": {
-      "room_name": "17栋第8层823",
-      "current_balance": 21.79,
-      "last_updated": "20260516"
-    },
-    "22614": {
-      "room_name": "17栋第12层1208",
-      "current_balance": 829.43,
-      "last_updated": "20260516"
-    },
     "28516": {
       "room_name": "17栋第7层706",
       "current_balance": 27.47,
       "last_updated": "20260516"
     },
-    "90958": {
-      "room_name": "17栋第12层1211",
-      "current_balance": 48.96,
-      "last_updated": "20260516"
-    },
-    "28566": {
-      "room_name": "17栋第6层607",
-      "current_balance": 88.65,
-      "last_updated": "20260516"
-    },
-    "37149": {
-      "room_name": "17栋第8层822",
-      "current_balance": 7.67,
-      "last_updated": "20260516"
-    },
-    "34298": {
-      "room_name": "17栋第7层716",
-      "current_balance": 431.47,
-      "last_updated": "20260516"
-    },
-    "27133": {
-      "room_name": "17栋第8层816",
-      "current_balance": 367.35,
-      "last_updated": "20260516"
-    },
-    "91947": {
-      "room_name": "17栋第3层316",
-      "current_balance": 118.48,
-      "last_updated": "20260516"
-    },
-    "87686": {
-      "room_name": "17栋第5层503",
-      "current_balance": 129.85,
-      "last_updated": "20260516"
-    },
-    "90961": {
-      "room_name": "17栋第12层1211",
-      "current_balance": 48.96,
-      "last_updated": "20260516"
-    },
-    "99083": {
-      "room_name": "17栋第5层504",
-      "current_balance": 218.33,
-      "last_updated": "20260516"
-    },
-    "11268": {
-      "room_name": "17栋第10层1001",
-      "current_balance": 156.59,
-      "last_updated": "20260516"
-    },
     "94495": {
       "room_name": "17栋第11层1113",
       "current_balance": 74.56,
-      "last_updated": "20260516"
-    },
-    "25739": {
-      "room_name": "17栋第10层1013",
-      "current_balance": 85.35,
-      "last_updated": "20260516"
-    },
-    "34072": {
-      "room_name": "17栋第12层1221",
-      "current_balance": 757.04,
       "last_updated": "20260516"
     },
     "15730": {
@@ -4013,34 +1223,9 @@
       "current_balance": 140.56,
       "last_updated": "20260516"
     },
-    "41406": {
-      "room_name": "17栋第7层717",
-      "current_balance": 290.14,
-      "last_updated": "20260516"
-    },
-    "94334": {
-      "room_name": "17栋第5层502",
-      "current_balance": 332.57,
-      "last_updated": "20260516"
-    },
     "78390": {
       "room_name": "17栋第6层604",
       "current_balance": 486.06,
-      "last_updated": "20260516"
-    },
-    "37646": {
-      "room_name": "17栋第18层1816",
-      "current_balance": 105.43,
-      "last_updated": "20260516"
-    },
-    "27630": {
-      "room_name": "17栋第8层814",
-      "current_balance": 681.08,
-      "last_updated": "20260516"
-    },
-    "20279": {
-      "room_name": "17栋第8层808",
-      "current_balance": 46.3,
       "last_updated": "20260516"
     },
     "79086": {
@@ -4048,49 +1233,9 @@
       "current_balance": 197.18,
       "last_updated": "20260516"
     },
-    "19798": {
-      "room_name": "17栋第12层1216",
-      "current_balance": 591.23,
-      "last_updated": "20260516"
-    },
-    "50495": {
-      "room_name": "17栋第16层1608",
-      "current_balance": 345.37,
-      "last_updated": "20260516"
-    },
-    "63452": {
-      "room_name": "17栋第11层1109",
-      "current_balance": 371.36,
-      "last_updated": "20260516"
-    },
-    "59217": {
-      "room_name": "17栋第6层616",
-      "current_balance": 410.39,
-      "last_updated": "20260516"
-    },
-    "88997": {
-      "room_name": "17栋第6层614",
-      "current_balance": 20.85,
-      "last_updated": "20260516"
-    },
-    "13143": {
-      "room_name": "17栋第14层1405",
-      "current_balance": 865.42,
-      "last_updated": "20260516"
-    },
     "69459": {
       "room_name": "17栋第18层1806",
       "current_balance": 276.98,
-      "last_updated": "20260516"
-    },
-    "36091": {
-      "room_name": "17栋第1层103",
-      "current_balance": 286.97,
-      "last_updated": "20260516"
-    },
-    "58857": {
-      "room_name": "17栋第11层1108",
-      "current_balance": 324.6,
       "last_updated": "20260516"
     },
     "17842": {
@@ -4101,26 +1246,6 @@
     "88776": {
       "room_name": "17栋第5层507",
       "current_balance": 114.3,
-      "last_updated": "20260516"
-    },
-    "59572": {
-      "room_name": "17栋第7层721",
-      "current_balance": 702.74,
-      "last_updated": "20260516"
-    },
-    "79114": {
-      "room_name": "17栋第6层603",
-      "current_balance": 231.36,
-      "last_updated": "20260516"
-    },
-    "61105": {
-      "room_name": "17栋第7层722",
-      "current_balance": 29.29,
-      "last_updated": "20260516"
-    },
-    "97974": {
-      "room_name": "17栋第12层1208",
-      "current_balance": 829.43,
       "last_updated": "20260516"
     },
     "63491": {
@@ -4148,69 +1273,9 @@
       "current_balance": 776.74,
       "last_updated": "20260516"
     },
-    "39207": {
-      "room_name": "17栋第10层1012",
-      "current_balance": 665.42,
-      "last_updated": "20260516"
-    },
-    "11365": {
-      "room_name": "17栋第4层415",
-      "current_balance": 776.74,
-      "last_updated": "20260516"
-    },
-    "31589": {
-      "room_name": "17栋第2层211",
-      "current_balance": 32.84,
-      "last_updated": "20260516"
-    },
     "37799": {
       "room_name": "17栋第2层202",
       "current_balance": 101.86,
-      "last_updated": "20260516"
-    },
-    "27926": {
-      "room_name": "17栋第2层214",
-      "current_balance": 699.66,
-      "last_updated": "20260516"
-    },
-    "92578": {
-      "room_name": "17栋第3层316",
-      "current_balance": 118.48,
-      "last_updated": "20260516"
-    },
-    "91416": {
-      "room_name": "17栋第6层610",
-      "current_balance": 641.12,
-      "last_updated": "20260516"
-    },
-    "54197": {
-      "room_name": "17栋第18层1823",
-      "current_balance": 82.86,
-      "last_updated": "20260516"
-    },
-    "37765": {
-      "room_name": "17栋第15层1518",
-      "current_balance": 150.99,
-      "last_updated": "20260516"
-    },
-    "88317": {
-      "room_name": "17栋第6层603",
-      "current_balance": 231.36,
-      "last_updated": "20260516"
-    },
-    "91016": {
-      "room_name": "17栋第4层417",
-      "current_balance": 588.74,
-      "last_updated": "20260516"
-    },
-    "86430": {
-      "room_name": "17栋第2层207",
-      "current_balance": 53.57,
-      "last_updated": "20260516"
-    },
-    "93857": {
-      "room_name": "17栋第16层1609",
-      "current_balance": 7.02,
       "last_updated": "20260516"
     },
     "29354": {
@@ -4218,69 +1283,14 @@
       "current_balance": 550.39,
       "last_updated": "20260516"
     },
-    "89530": {
-      "room_name": "17栋第13层1312",
-      "current_balance": 659.59,
-      "last_updated": "20260516"
-    },
-    "14945": {
-      "room_name": "17栋第6层604",
-      "current_balance": 486.06,
-      "last_updated": "20260516"
-    },
-    "29979": {
-      "room_name": "17栋第8层804",
-      "current_balance": 128.58,
-      "last_updated": "20260516"
-    },
-    "37835": {
-      "room_name": "17栋第5层521",
-      "current_balance": 535.71,
-      "last_updated": "20260516"
-    },
-    "46100": {
-      "room_name": "17栋第2层220",
-      "current_balance": 114.11,
-      "last_updated": "20260516"
-    },
     "39812": {
       "room_name": "17栋第8层817",
       "current_balance": 315.91,
       "last_updated": "20260516"
     },
-    "25310": {
-      "room_name": "17栋第3层312",
-      "current_balance": 2.89,
-      "last_updated": "20260516"
-    },
-    "58109": {
-      "room_name": "17栋第12层1216",
-      "current_balance": 591.23,
-      "last_updated": "20260516"
-    },
-    "75404": {
-      "room_name": "17栋第6层622",
-      "current_balance": 788.36,
-      "last_updated": "20260516"
-    },
-    "60026": {
-      "room_name": "17栋第7层711",
-      "current_balance": 988.35,
-      "last_updated": "20260516"
-    },
     "49789": {
       "room_name": "17栋第10层1002",
       "current_balance": 813.15,
-      "last_updated": "20260516"
-    },
-    "78984": {
-      "room_name": "17栋第16层1620",
-      "current_balance": 498.53,
-      "last_updated": "20260516"
-    },
-    "27005": {
-      "room_name": "17栋第3层307",
-      "current_balance": 15.19,
       "last_updated": "20260516"
     },
     "77211": {
@@ -4293,39 +1303,9 @@
       "current_balance": 829.43,
       "last_updated": "20260516"
     },
-    "30601": {
-      "room_name": "17栋第12层1211",
-      "current_balance": 48.96,
-      "last_updated": "20260516"
-    },
-    "27678": {
-      "room_name": "17栋第10层1023",
-      "current_balance": 9.87,
-      "last_updated": "20260516"
-    },
-    "57368": {
-      "room_name": "17栋第15层1503",
-      "current_balance": 62.43,
-      "last_updated": "20260516"
-    },
     "49610": {
       "room_name": "17栋第14层1415",
       "current_balance": 386.67,
-      "last_updated": "20260516"
-    },
-    "79876": {
-      "room_name": "17栋第5层517",
-      "current_balance": 516.91,
-      "last_updated": "20260516"
-    },
-    "77930": {
-      "room_name": "17栋第6层602",
-      "current_balance": 69.29,
-      "last_updated": "20260516"
-    },
-    "27170": {
-      "room_name": "17栋第11层1107",
-      "current_balance": 46.22,
       "last_updated": "20260516"
     },
     "90308": {
@@ -4343,54 +1323,14 @@
       "current_balance": 9.87,
       "last_updated": "20260516"
     },
-    "53686": {
-      "room_name": "17栋第12层1209",
-      "current_balance": 704.99,
-      "last_updated": "20260516"
-    },
     "42865": {
       "room_name": "17栋第11层1117",
       "current_balance": 580.45,
       "last_updated": "20260516"
     },
-    "90390": {
-      "room_name": "17栋第5层512",
-      "current_balance": 588.79,
-      "last_updated": "20260516"
-    },
-    "77351": {
-      "room_name": "17栋第5层502",
-      "current_balance": 332.57,
-      "last_updated": "20260516"
-    },
-    "90570": {
-      "room_name": "17栋第4层419",
-      "current_balance": 108.2,
-      "last_updated": "20260516"
-    },
     "42156": {
       "room_name": "17栋第6层607",
       "current_balance": 88.65,
-      "last_updated": "20260516"
-    },
-    "12607": {
-      "room_name": "17栋第11层1116",
-      "current_balance": 411.68,
-      "last_updated": "20260516"
-    },
-    "60825": {
-      "room_name": "17栋第9层913",
-      "current_balance": 521.21,
-      "last_updated": "20260516"
-    },
-    "59201": {
-      "room_name": "17栋第8层806",
-      "current_balance": 917.28,
-      "last_updated": "20260516"
-    },
-    "30718": {
-      "room_name": "17栋第2层201",
-      "current_balance": 107.13,
       "last_updated": "20260516"
     },
     "26457": {
@@ -4403,54 +1343,14 @@
       "current_balance": 584.52,
       "last_updated": "20260516"
     },
-    "53138": {
-      "room_name": "17栋第12层1207",
-      "current_balance": 134.15,
-      "last_updated": "20260516"
-    },
-    "38115": {
-      "room_name": "17栋第17层1706",
-      "current_balance": 40.17,
-      "last_updated": "20260516"
-    },
     "61325": {
       "room_name": "17栋第14层1402",
       "current_balance": 31.28,
       "last_updated": "20260516"
     },
-    "94501": {
-      "room_name": "17栋第12层1215",
-      "current_balance": 371.95,
-      "last_updated": "20260516"
-    },
     "90887": {
       "room_name": "17栋第5层515",
       "current_balance": 511.31,
-      "last_updated": "20260516"
-    },
-    "15679": {
-      "room_name": "17栋第5层519",
-      "current_balance": 406.31,
-      "last_updated": "20260516"
-    },
-    "14883": {
-      "room_name": "17栋第5层512",
-      "current_balance": 588.79,
-      "last_updated": "20260516"
-    },
-    "53631": {
-      "room_name": "17栋第14层1410",
-      "current_balance": 112.66,
-      "last_updated": "20260516"
-    },
-    "15013": {
-      "room_name": "17栋第5层515",
-      "current_balance": 511.31,
-      "last_updated": "20260516"
-    },
-    "86290": {
-      "room_name": "17栋第11层1101",
-      "current_balance": 279.53,
       "last_updated": "20260516"
     },
     "33398": {
@@ -4468,84 +1368,14 @@
       "current_balance": 179.47,
       "last_updated": "20260516"
     },
-    "44182": {
-      "room_name": "17栋第3层311",
-      "current_balance": 257.58,
-      "last_updated": "20260516"
-    },
-    "82478": {
-      "room_name": "17栋第11层1119",
-      "current_balance": 637.89,
-      "last_updated": "20260516"
-    },
     "58133": {
       "room_name": "17栋第7层701",
       "current_balance": 819.13,
       "last_updated": "20260516"
     },
-    "71652": {
-      "room_name": "17栋第10层1004",
-      "current_balance": 59.89,
-      "last_updated": "20260516"
-    },
     "91679": {
       "room_name": "17栋第13层1309",
       "current_balance": 634.94,
-      "last_updated": "20260516"
-    },
-    "13635": {
-      "room_name": "17栋第7层714",
-      "current_balance": 298.6,
-      "last_updated": "20260516"
-    },
-    "63579": {
-      "room_name": "17栋第11层1120",
-      "current_balance": 74.53,
-      "last_updated": "20260516"
-    },
-    "45283": {
-      "room_name": "17栋第3层315",
-      "current_balance": 36.0,
-      "last_updated": "20260516"
-    },
-    "92618": {
-      "room_name": "17栋第12层1211",
-      "current_balance": 48.96,
-      "last_updated": "20260516"
-    },
-    "90310": {
-      "room_name": "17栋第9层914",
-      "current_balance": 672.87,
-      "last_updated": "20260516"
-    },
-    "94499": {
-      "room_name": "17栋第6层608",
-      "current_balance": 1104.02,
-      "last_updated": "20260516"
-    },
-    "68182": {
-      "room_name": "17栋第7层705",
-      "current_balance": 255.36,
-      "last_updated": "20260516"
-    },
-    "92399": {
-      "room_name": "17栋第7层703",
-      "current_balance": 207.17,
-      "last_updated": "20260516"
-    },
-    "34159": {
-      "room_name": "17栋第2层213",
-      "current_balance": 87.26,
-      "last_updated": "20260516"
-    },
-    "16232": {
-      "room_name": "17栋第6层617",
-      "current_balance": 6.2,
-      "last_updated": "20260516"
-    },
-    "31812": {
-      "room_name": "17栋第5层518",
-      "current_balance": 96.32,
       "last_updated": "20260516"
     },
     "51605": {
@@ -4558,44 +1388,9 @@
       "current_balance": 641.12,
       "last_updated": "20260516"
     },
-    "12572": {
-      "room_name": "17栋第12层1222",
-      "current_balance": 14.69,
-      "last_updated": "20260516"
-    },
-    "35965": {
-      "room_name": "17栋第7层703",
-      "current_balance": 207.17,
-      "last_updated": "20260516"
-    },
     "24411": {
       "room_name": "17栋第2层203",
       "current_balance": 10.76,
-      "last_updated": "20260516"
-    },
-    "16225": {
-      "room_name": "17栋第11层1120",
-      "current_balance": 74.53,
-      "last_updated": "20260516"
-    },
-    "88541": {
-      "room_name": "17栋第10层1018",
-      "current_balance": 277.36,
-      "last_updated": "20260516"
-    },
-    "26760": {
-      "room_name": "17栋第9层907",
-      "current_balance": 16.45,
-      "last_updated": "20260516"
-    },
-    "62644": {
-      "room_name": "17栋第17层1710",
-      "current_balance": 421.73,
-      "last_updated": "20260516"
-    },
-    "18506": {
-      "room_name": "17栋第2层214",
-      "current_balance": 699.66,
       "last_updated": "20260516"
     },
     "27682": {
@@ -4608,29 +1403,9 @@
       "current_balance": 15.49,
       "last_updated": "20260516"
     },
-    "58080": {
-      "room_name": "17栋第11层1114",
-      "current_balance": 686.63,
-      "last_updated": "20260516"
-    },
-    "77348": {
-      "room_name": "17栋第9层901",
-      "current_balance": 359.04,
-      "last_updated": "20260516"
-    },
     "89962": {
       "room_name": "17栋第13层1314",
       "current_balance": 43.28,
-      "last_updated": "20260516"
-    },
-    "16354": {
-      "room_name": "17栋第15层1512",
-      "current_balance": 88.35,
-      "last_updated": "20260516"
-    },
-    "61745": {
-      "room_name": "17栋第11层1118",
-      "current_balance": 75.43,
       "last_updated": "20260516"
     },
     "13325": {
@@ -4638,49 +1413,9 @@
       "current_balance": 267.26,
       "last_updated": "20260516"
     },
-    "95086": {
-      "room_name": "17栋第10层1009",
-      "current_balance": 811.71,
-      "last_updated": "20260516"
-    },
-    "29100": {
-      "room_name": "17栋第17层1723",
-      "current_balance": 162.02,
-      "last_updated": "20260516"
-    },
-    "57784": {
-      "room_name": "17栋第15层1504",
-      "current_balance": 348.03,
-      "last_updated": "20260516"
-    },
     "91394": {
       "room_name": "17栋第9层918",
       "current_balance": 284.22,
-      "last_updated": "20260516"
-    },
-    "26776": {
-      "room_name": "17栋第2层214",
-      "current_balance": 699.66,
-      "last_updated": "20260516"
-    },
-    "90960": {
-      "room_name": "17栋第12层1211",
-      "current_balance": 48.96,
-      "last_updated": "20260516"
-    },
-    "72284": {
-      "room_name": "17栋第6层607",
-      "current_balance": 88.65,
-      "last_updated": "20260516"
-    },
-    "63775": {
-      "room_name": "17栋第14层1403",
-      "current_balance": 257.96,
-      "last_updated": "20260516"
-    },
-    "38705": {
-      "room_name": "17栋第13层1308",
-      "current_balance": 607.42,
       "last_updated": "20260516"
     },
     "55002": {
@@ -4688,49 +1423,14 @@
       "current_balance": 782.29,
       "last_updated": "20260516"
     },
-    "32144": {
-      "room_name": "17栋第3层323",
-      "current_balance": 46.75,
-      "last_updated": "20260516"
-    },
     "34326": {
       "room_name": "17栋第8层821",
       "current_balance": 30.97,
       "last_updated": "20260516"
     },
-    "88729": {
-      "room_name": "17栋第7层712",
-      "current_balance": 6.59,
-      "last_updated": "20260516"
-    },
-    "38598": {
-      "room_name": "17栋第2层209",
-      "current_balance": 346.64,
-      "last_updated": "20260516"
-    },
-    "14212": {
-      "room_name": "17栋第3层318",
-      "current_balance": 212.07,
-      "last_updated": "20260516"
-    },
-    "11554": {
-      "room_name": "17栋第16层1620",
-      "current_balance": 498.53,
-      "last_updated": "20260516"
-    },
     "12636": {
       "room_name": "17栋第18层1819",
       "current_balance": 7.15,
-      "last_updated": "20260516"
-    },
-    "69968": {
-      "room_name": "17栋第4层405",
-      "current_balance": 496.16,
-      "last_updated": "20260516"
-    },
-    "27695": {
-      "room_name": "17栋第4层420",
-      "current_balance": 6.33,
       "last_updated": "20260516"
     },
     "36956": {
@@ -4758,49 +1458,9 @@
       "current_balance": 43.63,
       "last_updated": "20260516"
     },
-    "71800": {
-      "room_name": "17栋第1层103",
-      "current_balance": 286.97,
-      "last_updated": "20260516"
-    },
-    "26712": {
-      "room_name": "17栋第6层615",
-      "current_balance": 562.02,
-      "last_updated": "20260516"
-    },
-    "78019": {
-      "room_name": "17栋第11层1116",
-      "current_balance": 411.68,
-      "last_updated": "20260516"
-    },
-    "27485": {
-      "room_name": "17栋第8层813",
-      "current_balance": 6.23,
-      "last_updated": "20260516"
-    },
-    "18275": {
-      "room_name": "17栋第17层1715",
-      "current_balance": 599.03,
-      "last_updated": "20260516"
-    },
-    "13987": {
-      "room_name": "17栋第16层1607",
-      "current_balance": 136.03,
-      "last_updated": "20260516"
-    },
     "28888": {
       "room_name": "17栋第8层807",
       "current_balance": 4.05,
-      "last_updated": "20260516"
-    },
-    "79386": {
-      "room_name": "17栋第16层1616",
-      "current_balance": 528.89,
-      "last_updated": "20260516"
-    },
-    "75702": {
-      "room_name": "17栋第11层1109",
-      "current_balance": 371.36,
       "last_updated": "20260516"
     },
     "30107": {
@@ -4813,39 +1473,9 @@
       "current_balance": 605.12,
       "last_updated": "20260516"
     },
-    "89063": {
-      "room_name": "17栋第10层1010",
-      "current_balance": 60.43,
-      "last_updated": "20260516"
-    },
-    "62330": {
-      "room_name": "17栋第14层1403",
-      "current_balance": 257.96,
-      "last_updated": "20260516"
-    },
-    "18392": {
-      "room_name": "17栋第12层1220",
-      "current_balance": 224.25,
-      "last_updated": "20260516"
-    },
     "53778": {
       "room_name": "17栋第13层1307",
       "current_balance": 78.64,
-      "last_updated": "20260516"
-    },
-    "12411": {
-      "room_name": "17栋第5层517",
-      "current_balance": 516.91,
-      "last_updated": "20260516"
-    },
-    "50562": {
-      "room_name": "17栋第14层1422",
-      "current_balance": 38.73,
-      "last_updated": "20260516"
-    },
-    "11654": {
-      "room_name": "17栋第3层316",
-      "current_balance": 118.48,
       "last_updated": "20260516"
     },
     "84232": {
@@ -4853,24 +1483,9 @@
       "current_balance": 516.91,
       "last_updated": "20260516"
     },
-    "27314": {
-      "room_name": "17栋第9层915",
-      "current_balance": 30.18,
-      "last_updated": "20260516"
-    },
     "99072": {
       "room_name": "17栋第9层901",
       "current_balance": 359.04,
-      "last_updated": "20260516"
-    },
-    "43679": {
-      "room_name": "17栋第10层1012",
-      "current_balance": 665.42,
-      "last_updated": "20260516"
-    },
-    "72261": {
-      "room_name": "17栋第12层1222",
-      "current_balance": 14.69,
       "last_updated": "20260516"
     },
     "93343": {
@@ -4878,19 +1493,9 @@
       "current_balance": 115.09,
       "last_updated": "20260516"
     },
-    "90076": {
-      "room_name": "17栋第3层319",
-      "current_balance": 430.1,
-      "last_updated": "20260516"
-    },
     "72925": {
       "room_name": "17栋第11层1118",
       "current_balance": 75.43,
-      "last_updated": "20260516"
-    },
-    "57434": {
-      "room_name": "17栋第10层1010",
-      "current_balance": 60.43,
       "last_updated": "20260516"
     },
     "30926": {
@@ -4898,59 +1503,9 @@
       "current_balance": 528.48,
       "last_updated": "20260516"
     },
-    "38242": {
-      "room_name": "17栋第14层1402",
-      "current_balance": 31.28,
-      "last_updated": "20260516"
-    },
-    "81819": {
-      "room_name": "17栋第2层215",
-      "current_balance": 537.82,
-      "last_updated": "20260516"
-    },
-    "24786": {
-      "room_name": "17栋第12层1214",
-      "current_balance": 565.7,
-      "last_updated": "20260516"
-    },
-    "30923": {
-      "room_name": "17栋第2层201",
-      "current_balance": 107.13,
-      "last_updated": "20260516"
-    },
     "29346": {
       "room_name": "17栋第17层1712",
       "current_balance": 100.4,
-      "last_updated": "20260516"
-    },
-    "27480": {
-      "room_name": "17栋第8层817",
-      "current_balance": 315.91,
-      "last_updated": "20260516"
-    },
-    "77196": {
-      "room_name": "17栋第12层1209",
-      "current_balance": 704.99,
-      "last_updated": "20260516"
-    },
-    "27575": {
-      "room_name": "17栋第8层812",
-      "current_balance": 539.92,
-      "last_updated": "20260516"
-    },
-    "10623": {
-      "room_name": "17栋第5层510",
-      "current_balance": 263.92,
-      "last_updated": "20260516"
-    },
-    "14166": {
-      "room_name": "17栋第6层605",
-      "current_balance": 402.76,
-      "last_updated": "20260516"
-    },
-    "13829": {
-      "room_name": "17栋第14层1422",
-      "current_balance": 38.73,
       "last_updated": "20260516"
     },
     "50096": {
@@ -4958,64 +1513,9 @@
       "current_balance": 521.21,
       "last_updated": "20260516"
     },
-    "92320": {
-      "room_name": "17栋第10层1003",
-      "current_balance": 144.64,
-      "last_updated": "20260516"
-    },
-    "88971": {
-      "room_name": "17栋第10层1021",
-      "current_balance": 685.63,
-      "last_updated": "20260516"
-    },
     "13707": {
       "room_name": "17栋第15层1522",
       "current_balance": 371.97,
-      "last_updated": "20260516"
-    },
-    "14208": {
-      "room_name": "17栋第13层1307",
-      "current_balance": 78.64,
-      "last_updated": "20260516"
-    },
-    "28345": {
-      "room_name": "17栋第6层603",
-      "current_balance": 231.36,
-      "last_updated": "20260516"
-    },
-    "22598": {
-      "room_name": "17栋第6层602",
-      "current_balance": 69.29,
-      "last_updated": "20260516"
-    },
-    "30371": {
-      "room_name": "17栋第3层314",
-      "current_balance": 186.86,
-      "last_updated": "20260516"
-    },
-    "99268": {
-      "room_name": "17栋第2层217",
-      "current_balance": 103.03,
-      "last_updated": "20260516"
-    },
-    "89935": {
-      "room_name": "17栋第7层718",
-      "current_balance": 550.39,
-      "last_updated": "20260516"
-    },
-    "27719": {
-      "room_name": "17栋第6层601",
-      "current_balance": 97.03,
-      "last_updated": "20260516"
-    },
-    "37200": {
-      "room_name": "17栋第7层701",
-      "current_balance": 819.13,
-      "last_updated": "20260516"
-    },
-    "51169": {
-      "room_name": "17栋第17层1706",
-      "current_balance": 40.17,
       "last_updated": "20260516"
     },
     "14310": {
@@ -5023,24 +1523,9 @@
       "current_balance": 254.65,
       "last_updated": "20260516"
     },
-    "28485": {
-      "room_name": "17栋第14层1403",
-      "current_balance": 257.96,
-      "last_updated": "20260516"
-    },
     "70645": {
       "room_name": "17栋第14层1421",
       "current_balance": 244.67,
-      "last_updated": "20260516"
-    },
-    "28508": {
-      "room_name": "17栋第11层1119",
-      "current_balance": 637.89,
-      "last_updated": "20260516"
-    },
-    "74747": {
-      "room_name": "17栋第2层207",
-      "current_balance": 53.57,
       "last_updated": "20260516"
     },
     "65093": {
@@ -5048,24 +1533,9 @@
       "current_balance": 59.89,
       "last_updated": "20260516"
     },
-    "93145": {
-      "room_name": "17栋第4层405",
-      "current_balance": 496.16,
-      "last_updated": "20260516"
-    },
-    "15105": {
-      "room_name": "17栋第11层1103",
-      "current_balance": 727.53,
-      "last_updated": "20260516"
-    },
     "47383": {
       "room_name": "0408",
       "current_balance": 648.12,
-      "last_updated": "20260516"
-    },
-    "88411": {
-      "room_name": "17栋第5层521",
-      "current_balance": 535.71,
       "last_updated": "20260516"
     },
     "42878": {
@@ -5073,19 +1543,9 @@
       "current_balance": 372.54,
       "last_updated": "20260516"
     },
-    "59196": {
-      "room_name": "17栋第17层1704",
-      "current_balance": 965.67,
-      "last_updated": "20260516"
-    },
     "30763": {
       "room_name": "17栋第10层1006",
       "current_balance": 3.48,
-      "last_updated": "20260516"
-    },
-    "77266": {
-      "room_name": "17栋第8层812",
-      "current_balance": 539.92,
       "last_updated": "20260516"
     },
     "41407": {
@@ -5096,16 +1556,6 @@
     "87173": {
       "room_name": "17栋第8层812",
       "current_balance": 539.92,
-      "last_updated": "20260516"
-    },
-    "52565": {
-      "room_name": "17栋第15层1516",
-      "current_balance": 183.05,
-      "last_updated": "20260516"
-    },
-    "77293": {
-      "room_name": "17栋第3层303",
-      "current_balance": 372.54,
       "last_updated": "20260516"
     },
     "49254": {
@@ -5123,16 +1573,6 @@
       "current_balance": 780.52,
       "last_updated": "20260516"
     },
-    "90460": {
-      "room_name": "17栋第5层516",
-      "current_balance": 278.35,
-      "last_updated": "20260516"
-    },
-    "71777": {
-      "room_name": "17栋第12层1210",
-      "current_balance": 560.72,
-      "last_updated": "20260516"
-    },
     "89754": {
       "room_name": "17栋第4层404",
       "current_balance": 119.69,
@@ -5143,59 +1583,9 @@
       "current_balance": 827.6,
       "last_updated": "20260516"
     },
-    "89303": {
-      "room_name": "17栋第9层914",
-      "current_balance": 672.87,
-      "last_updated": "20260516"
-    },
-    "30281": {
-      "room_name": "17栋第5层502",
-      "current_balance": 332.57,
-      "last_updated": "20260516"
-    },
-    "39280": {
-      "room_name": "17栋第7层713",
-      "current_balance": 676.92,
-      "last_updated": "20260516"
-    },
-    "91067": {
-      "room_name": "17栋第11层1120",
-      "current_balance": 74.53,
-      "last_updated": "20260516"
-    },
-    "41544": {
-      "room_name": "17栋第3层310",
-      "current_balance": 226.36,
-      "last_updated": "20260516"
-    },
-    "49398": {
-      "room_name": "17栋第18层1821",
-      "current_balance": 269.94,
-      "last_updated": "20260516"
-    },
-    "98609": {
-      "room_name": "17栋第15层1511",
-      "current_balance": 264.45,
-      "last_updated": "20260516"
-    },
-    "93243": {
-      "room_name": "17栋第5层514",
-      "current_balance": 282.51,
-      "last_updated": "20260516"
-    },
     "61061": {
       "room_name": "17栋第4层416",
       "current_balance": 664.66,
-      "last_updated": "20260516"
-    },
-    "89902": {
-      "room_name": "17栋第11层1116",
-      "current_balance": 411.68,
-      "last_updated": "20260516"
-    },
-    "91461": {
-      "room_name": "17栋第5层503",
-      "current_balance": 129.85,
       "last_updated": "20260516"
     },
     "59417": {
@@ -5203,69 +1593,14 @@
       "current_balance": 324.6,
       "last_updated": "20260516"
     },
-    "15157": {
-      "room_name": "17栋第15层1503",
-      "current_balance": 62.43,
-      "last_updated": "20260516"
-    },
-    "88404": {
-      "room_name": "17栋第5层523",
-      "current_balance": 235.63,
-      "last_updated": "20260516"
-    },
-    "26711": {
-      "room_name": "17栋第2层217",
-      "current_balance": 103.03,
-      "last_updated": "20260516"
-    },
     "28719": {
       "room_name": "17栋第8层820",
       "current_balance": 579.83,
       "last_updated": "20260516"
     },
-    "89186": {
-      "room_name": "17栋第8层812",
-      "current_balance": 539.92,
-      "last_updated": "20260516"
-    },
-    "60260": {
-      "room_name": "17栋第5层520",
-      "current_balance": 539.99,
-      "last_updated": "20260516"
-    },
-    "25987": {
-      "room_name": "17栋第3层308",
-      "current_balance": 5.03,
-      "last_updated": "20260516"
-    },
-    "15564": {
-      "room_name": "17栋第5层509",
-      "current_balance": 173.98,
-      "last_updated": "20260516"
-    },
     "17483": {
       "room_name": "0422",
       "current_balance": 555.28,
-      "last_updated": "20260516"
-    },
-    "25090": {
-      "room_name": "17栋第6层618",
-      "current_balance": 500.29,
-      "last_updated": "20260516"
-    },
-    "27596": {
-      "room_name": "17栋第8层812",
-      "current_balance": 539.92,
-      "last_updated": "20260516"
-    },
-    "48892": {
-      "room_name": "17栋第10层1004",
-      "current_balance": 59.89,
-      "last_updated": "20260516"
-    },
-    "78155": {
-      "room_name": "17栋第12层1209",
-      "current_balance": 704.99,
       "last_updated": "20260516"
     },
     "25286": {
@@ -5278,49 +1613,9 @@
       "current_balance": 460.26,
       "last_updated": "20260516"
     },
-    "60638": {
-      "room_name": "17栋第17层1703",
-      "current_balance": 121.59,
-      "last_updated": "20260516"
-    },
-    "48085": {
-      "room_name": "17栋第10层1004",
-      "current_balance": 59.89,
-      "last_updated": "20260516"
-    },
     "27880": {
       "room_name": "17栋第2层220",
       "current_balance": 114.11,
-      "last_updated": "20260516"
-    },
-    "54546": {
-      "room_name": "17栋第17层1723",
-      "current_balance": 162.02,
-      "last_updated": "20260516"
-    },
-    "60871": {
-      "room_name": "17栋第18层1810",
-      "current_balance": 782.29,
-      "last_updated": "20260516"
-    },
-    "10885": {
-      "room_name": "17栋第5层522",
-      "current_balance": 410.28,
-      "last_updated": "20260516"
-    },
-    "27968": {
-      "room_name": "17栋第14层1404",
-      "current_balance": 514.99,
-      "last_updated": "20260516"
-    },
-    "79355": {
-      "room_name": "17栋第12层1210",
-      "current_balance": 560.72,
-      "last_updated": "20260516"
-    },
-    "11722": {
-      "room_name": "17栋第15层1502",
-      "current_balance": 636.94,
       "last_updated": "20260516"
     },
     "91609": {
@@ -5328,69 +1623,14 @@
       "current_balance": 10.78,
       "last_updated": "20260516"
     },
-    "25379": {
-      "room_name": "17栋第8层818",
-      "current_balance": 660.68,
-      "last_updated": "20260516"
-    },
-    "79179": {
-      "room_name": "17栋第6层609",
-      "current_balance": 688.02,
-      "last_updated": "20260516"
-    },
-    "24831": {
-      "room_name": "17栋第12层1214",
-      "current_balance": 565.7,
-      "last_updated": "20260516"
-    },
     "38599": {
       "room_name": "0209",
       "current_balance": 346.64,
       "last_updated": "20260516"
     },
-    "78320": {
-      "room_name": "17栋第6层605",
-      "current_balance": 402.76,
-      "last_updated": "20260516"
-    },
-    "84887": {
-      "room_name": "17栋第12层1203",
-      "current_balance": 728.3,
-      "last_updated": "20260516"
-    },
-    "89662": {
-      "room_name": "17栋第12层1219",
-      "current_balance": 51.44,
-      "last_updated": "20260516"
-    },
-    "97566": {
-      "room_name": "17栋第8层822",
-      "current_balance": 7.67,
-      "last_updated": "20260516"
-    },
-    "90361": {
-      "room_name": "17栋第7层723",
-      "current_balance": 121.55,
-      "last_updated": "20260516"
-    },
-    "35984": {
-      "room_name": "17栋第9层910",
-      "current_balance": 1446.19,
-      "last_updated": "20260516"
-    },
     "44757": {
       "room_name": "17栋第5层514",
       "current_balance": 282.51,
-      "last_updated": "20260516"
-    },
-    "94811": {
-      "room_name": "17栋第11层1117",
-      "current_balance": 580.45,
-      "last_updated": "20260516"
-    },
-    "32042": {
-      "room_name": "17栋第10层1001",
-      "current_balance": 156.59,
       "last_updated": "20260516"
     },
     "89650": {
@@ -5403,29 +1643,9 @@
       "current_balance": 215.45,
       "last_updated": "20260516"
     },
-    "38170": {
-      "room_name": "17栋第12层1223",
-      "current_balance": 203.54,
-      "last_updated": "20260516"
-    },
-    "54089": {
-      "room_name": "17栋第13层1311",
-      "current_balance": 555.12,
-      "last_updated": "20260516"
-    },
-    "82334": {
-      "room_name": "17栋第17层1721",
-      "current_balance": 34.43,
-      "last_updated": "20260516"
-    },
     "61116": {
       "room_name": "0616",
       "current_balance": 410.39,
-      "last_updated": "20260516"
-    },
-    "16652": {
-      "room_name": "17栋第13层1310",
-      "current_balance": 432.83,
       "last_updated": "20260516"
     },
     "60478": {
@@ -5433,74 +1653,9 @@
       "current_balance": 456.3,
       "last_updated": "20260516"
     },
-    "24446": {
-      "room_name": "17栋第3层304",
-      "current_balance": 490.58,
-      "last_updated": "20260516"
-    },
-    "90839": {
-      "room_name": "17栋第12层1202",
-      "current_balance": 229.27,
-      "last_updated": "20260516"
-    },
-    "52168": {
-      "room_name": "17栋第17层1706",
-      "current_balance": 40.17,
-      "last_updated": "20260516"
-    },
-    "25518": {
-      "room_name": "17栋第8层821",
-      "current_balance": 30.97,
-      "last_updated": "20260516"
-    },
-    "56651": {
-      "room_name": "17栋第11层1106",
-      "current_balance": 1161.01,
-      "last_updated": "20260516"
-    },
     "92417": {
       "room_name": "17栋第14层1414",
       "current_balance": 24.0,
-      "last_updated": "20260516"
-    },
-    "35922": {
-      "room_name": "17栋第6层604",
-      "current_balance": 486.06,
-      "last_updated": "20260516"
-    },
-    "83966": {
-      "room_name": "17栋第13层1312",
-      "current_balance": 659.59,
-      "last_updated": "20260516"
-    },
-    "37773": {
-      "room_name": "17栋第8层810",
-      "current_balance": 243.04,
-      "last_updated": "20260516"
-    },
-    "62342": {
-      "room_name": "17栋第16层1613",
-      "current_balance": 396.13,
-      "last_updated": "20260516"
-    },
-    "89043": {
-      "room_name": "17栋第12层1207",
-      "current_balance": 134.15,
-      "last_updated": "20260516"
-    },
-    "35469": {
-      "room_name": "17栋第18层1807",
-      "current_balance": 679.82,
-      "last_updated": "20260516"
-    },
-    "18359": {
-      "room_name": "17栋第6层622",
-      "current_balance": 788.36,
-      "last_updated": "20260516"
-    },
-    "50956": {
-      "room_name": "17栋第4层416",
-      "current_balance": 664.66,
       "last_updated": "20260516"
     },
     "60360": {
@@ -5508,34 +1663,14 @@
       "current_balance": 503.83,
       "last_updated": "20260516"
     },
-    "28594": {
-      "room_name": "17栋第8层805",
-      "current_balance": 1348.82,
-      "last_updated": "20260516"
-    },
     "94289": {
       "room_name": "17栋第3层306",
       "current_balance": 492.32,
       "last_updated": "20260516"
     },
-    "81029": {
-      "room_name": "17栋第8层802",
-      "current_balance": 146.17,
-      "last_updated": "20260516"
-    },
     "48982": {
       "room_name": "17栋第3层318",
       "current_balance": 212.07,
-      "last_updated": "20260516"
-    },
-    "90779": {
-      "room_name": "17栋第7层713",
-      "current_balance": 676.92,
-      "last_updated": "20260516"
-    },
-    "90059": {
-      "room_name": "17栋第6层607",
-      "current_balance": 88.65,
       "last_updated": "20260516"
     },
     "91173": {
@@ -5548,49 +1683,9 @@
       "current_balance": 588.74,
       "last_updated": "20260516"
     },
-    "88396": {
-      "room_name": "17栋第9层918",
-      "current_balance": 284.22,
-      "last_updated": "20260516"
-    },
-    "13580": {
-      "room_name": "17栋第13层1313",
-      "current_balance": 143.75,
-      "last_updated": "20260516"
-    },
-    "26773": {
-      "room_name": "17栋第11层1121",
-      "current_balance": 546.6,
-      "last_updated": "20260516"
-    },
     "91460": {
       "room_name": "17栋第6层612",
       "current_balance": 14.58,
-      "last_updated": "20260516"
-    },
-    "11295": {
-      "room_name": "17栋第6层614",
-      "current_balance": 20.85,
-      "last_updated": "20260516"
-    },
-    "23529": {
-      "room_name": "17栋第13层1317",
-      "current_balance": 162.89,
-      "last_updated": "20260516"
-    },
-    "24451": {
-      "room_name": "17栋第2层203",
-      "current_balance": 10.76,
-      "last_updated": "20260516"
-    },
-    "50300": {
-      "room_name": "17栋第4层411",
-      "current_balance": 441.14,
-      "last_updated": "20260516"
-    },
-    "38549": {
-      "room_name": "17栋第12层1222",
-      "current_balance": 14.69,
       "last_updated": "20260516"
     },
     "59577": {
@@ -5598,29 +1693,9 @@
       "current_balance": 586.44,
       "last_updated": "20260516"
     },
-    "27659": {
-      "room_name": "17栋第2层205",
-      "current_balance": 757.98,
-      "last_updated": "20260516"
-    },
-    "11564": {
-      "room_name": "17栋第5层509",
-      "current_balance": 173.98,
-      "last_updated": "20260516"
-    },
     "89095": {
       "room_name": "17栋第16层1612",
       "current_balance": 164.76,
-      "last_updated": "20260516"
-    },
-    "57280": {
-      "room_name": "17栋第16层1602",
-      "current_balance": 45.92,
-      "last_updated": "20260516"
-    },
-    "90078": {
-      "room_name": "17栋第10层1018",
-      "current_balance": 277.36,
       "last_updated": "20260516"
     },
     "39143": {
@@ -5628,19 +1703,9 @@
       "current_balance": 327.68,
       "last_updated": "20260516"
     },
-    "95225": {
-      "room_name": "17栋第8层804",
-      "current_balance": 128.58,
-      "last_updated": "20260516"
-    },
     "41830": {
       "room_name": "17栋第12层1209",
       "current_balance": 704.99,
-      "last_updated": "20260516"
-    },
-    "36876": {
-      "room_name": "17栋第9层923",
-      "current_balance": 35.41,
       "last_updated": "20260516"
     },
     "12007": {
@@ -5653,34 +1718,9 @@
       "current_balance": 435.41,
       "last_updated": "20260516"
     },
-    "91442": {
-      "room_name": "17栋第5层509",
-      "current_balance": 173.98,
-      "last_updated": "20260516"
-    },
-    "59542": {
-      "room_name": "17栋第11层1105",
-      "current_balance": 780.62,
-      "last_updated": "20260516"
-    },
     "37698": {
       "room_name": "17栋第3层312",
       "current_balance": 2.89,
-      "last_updated": "20260516"
-    },
-    "60343": {
-      "room_name": "17栋第8层806",
-      "current_balance": 917.28,
-      "last_updated": "20260516"
-    },
-    "12130": {
-      "room_name": "17栋第3层321",
-      "current_balance": 19.32,
-      "last_updated": "20260516"
-    },
-    "26060": {
-      "room_name": "17栋第3层322",
-      "current_balance": 11.3,
       "last_updated": "20260516"
     },
     "91744": {
@@ -5693,59 +1733,9 @@
       "current_balance": 125.54,
       "last_updated": "20260516"
     },
-    "23182": {
-      "room_name": "17栋第17层1719",
-      "current_balance": 1222.13,
-      "last_updated": "20260516"
-    },
-    "37660": {
-      "room_name": "17栋第2层221",
-      "current_balance": 286.11,
-      "last_updated": "20260516"
-    },
-    "78527": {
-      "room_name": "17栋第16层1606",
-      "current_balance": 280.62,
-      "last_updated": "20260516"
-    },
-    "27159": {
-      "room_name": "17栋第3层320",
-      "current_balance": 77.56,
-      "last_updated": "20260516"
-    },
-    "61513": {
-      "room_name": "17栋第14层1412",
-      "current_balance": 100.08,
-      "last_updated": "20260516"
-    },
     "26584": {
       "room_name": "17栋第2层216",
       "current_balance": 365.72,
-      "last_updated": "20260516"
-    },
-    "92352": {
-      "room_name": "17栋第11层1119",
-      "current_balance": 637.89,
-      "last_updated": "20260516"
-    },
-    "89376": {
-      "room_name": "17栋第10层1009",
-      "current_balance": 811.71,
-      "last_updated": "20260516"
-    },
-    "57581": {
-      "room_name": "17栋第13层1316",
-      "current_balance": 282.91,
-      "last_updated": "20260516"
-    },
-    "19811": {
-      "room_name": "17栋第8层809",
-      "current_balance": 386.2,
-      "last_updated": "20260516"
-    },
-    "16958": {
-      "room_name": "17栋第11层1122",
-      "current_balance": 315.89,
       "last_updated": "20260516"
     },
     "36690": {
@@ -5753,94 +1743,9 @@
       "current_balance": 524.64,
       "last_updated": "20260516"
     },
-    "13110": {
-      "room_name": "17栋第11层1108",
-      "current_balance": 324.6,
-      "last_updated": "20260516"
-    },
-    "29826": {
-      "room_name": "17栋第9层909",
-      "current_balance": 396.44,
-      "last_updated": "20260516"
-    },
-    "30667": {
-      "room_name": "17栋第7层707",
-      "current_balance": 410.42,
-      "last_updated": "20260516"
-    },
-    "27110": {
-      "room_name": "17栋第8层816",
-      "current_balance": 367.35,
-      "last_updated": "20260516"
-    },
-    "99163": {
-      "room_name": "17栋第6层617",
-      "current_balance": 6.2,
-      "last_updated": "20260516"
-    },
-    "68329": {
-      "room_name": "17栋第14层1410",
-      "current_balance": 112.66,
-      "last_updated": "20260516"
-    },
-    "62830": {
-      "room_name": "17栋第16层1614",
-      "current_balance": 83.65,
-      "last_updated": "20260516"
-    },
     "90523": {
       "room_name": "17栋第17层1716",
       "current_balance": 164.62,
-      "last_updated": "20260516"
-    },
-    "38080": {
-      "room_name": "17栋第6层618",
-      "current_balance": 500.29,
-      "last_updated": "20260516"
-    },
-    "82993": {
-      "room_name": "17栋第5层505",
-      "current_balance": 777.07,
-      "last_updated": "20260516"
-    },
-    "11035": {
-      "room_name": "17栋第15层1523",
-      "current_balance": 115.09,
-      "last_updated": "20260516"
-    },
-    "36562": {
-      "room_name": "17栋第4层409",
-      "current_balance": 667.3,
-      "last_updated": "20260516"
-    },
-    "82762": {
-      "room_name": "17栋第6层611",
-      "current_balance": 809.05,
-      "last_updated": "20260516"
-    },
-    "94674": {
-      "room_name": "17栋第4层406",
-      "current_balance": 48.4,
-      "last_updated": "20260516"
-    },
-    "30539": {
-      "room_name": "17栋第7层704",
-      "current_balance": 216.64,
-      "last_updated": "20260516"
-    },
-    "30828": {
-      "room_name": "17栋第10层1016",
-      "current_balance": 528.48,
-      "last_updated": "20260516"
-    },
-    "57693": {
-      "room_name": "17栋第6层611",
-      "current_balance": 809.05,
-      "last_updated": "20260516"
-    },
-    "17458": {
-      "room_name": "17栋第7层702",
-      "current_balance": 744.82,
       "last_updated": "20260516"
     },
     "72449": {
@@ -5858,64 +1763,14 @@
       "current_balance": 493.49,
       "last_updated": "20260516"
     },
-    "90004": {
-      "room_name": "17栋第15层1509",
-      "current_balance": 92.68,
-      "last_updated": "20260516"
-    },
-    "89577": {
-      "room_name": "17栋第11层1111",
-      "current_balance": 416.07,
-      "last_updated": "20260516"
-    },
     "36146": {
       "room_name": "17栋第3层322",
       "current_balance": 11.3,
       "last_updated": "20260516"
     },
-    "26084": {
-      "room_name": "17栋第10层1008",
-      "current_balance": 35.66,
-      "last_updated": "20260516"
-    },
-    "59530": {
-      "room_name": "17栋第11层1105",
-      "current_balance": 780.62,
-      "last_updated": "20260516"
-    },
-    "79098": {
-      "room_name": "17栋第10层1005",
-      "current_balance": 382.75,
-      "last_updated": "20260516"
-    },
-    "27656": {
-      "room_name": "17栋第9层901",
-      "current_balance": 359.04,
-      "last_updated": "20260516"
-    },
-    "78116": {
-      "room_name": "17栋第5层503",
-      "current_balance": 129.85,
-      "last_updated": "20260516"
-    },
-    "90131": {
-      "room_name": "17栋第12层1203",
-      "current_balance": 728.3,
-      "last_updated": "20260516"
-    },
-    "52223": {
-      "room_name": "17栋第5层515",
-      "current_balance": 511.31,
-      "last_updated": "20260516"
-    },
     "26415": {
       "room_name": "17栋第8层803",
       "current_balance": 286.75,
-      "last_updated": "20260516"
-    },
-    "90637": {
-      "room_name": "17栋第7层712",
-      "current_balance": 6.59,
       "last_updated": "20260516"
     },
     "26301": {
@@ -5928,79 +1783,14 @@
       "current_balance": 637.89,
       "last_updated": "20260516"
     },
-    "35742": {
-      "room_name": "17栋第17层1709",
-      "current_balance": 193.47,
-      "last_updated": "20260516"
-    },
     "78446": {
       "room_name": "0508",
       "current_balance": 764.32,
       "last_updated": "20260516"
     },
-    "31486": {
-      "room_name": "17栋第13层1314",
-      "current_balance": 43.28,
-      "last_updated": "20260516"
-    },
-    "58701": {
-      "room_name": "17栋第12层1206",
-      "current_balance": 185.9,
-      "last_updated": "20260516"
-    },
-    "51037": {
-      "room_name": "17栋第7层705",
-      "current_balance": 255.36,
-      "last_updated": "20260516"
-    },
-    "90819": {
-      "room_name": "17栋第12层1202",
-      "current_balance": 229.27,
-      "last_updated": "20260516"
-    },
-    "58834": {
-      "room_name": "17栋第18层1822",
-      "current_balance": 77.82,
-      "last_updated": "20260516"
-    },
     "13917": {
       "room_name": "17栋第3层316",
       "current_balance": 118.48,
-      "last_updated": "20260516"
-    },
-    "42978": {
-      "room_name": "17栋第10层1006",
-      "current_balance": 3.48,
-      "last_updated": "20260516"
-    },
-    "25355": {
-      "room_name": "17栋第7层704",
-      "current_balance": 216.64,
-      "last_updated": "20260516"
-    },
-    "93306": {
-      "room_name": "17栋第14层1416",
-      "current_balance": 507.43,
-      "last_updated": "20260516"
-    },
-    "90428": {
-      "room_name": "17栋第2层222",
-      "current_balance": 257.66,
-      "last_updated": "20260516"
-    },
-    "77347": {
-      "room_name": "17栋第9层901",
-      "current_balance": 359.04,
-      "last_updated": "20260516"
-    },
-    "62851": {
-      "room_name": "17栋第11层1106",
-      "current_balance": 1161.01,
-      "last_updated": "20260516"
-    },
-    "15276": {
-      "room_name": "17栋第5层518",
-      "current_balance": 96.32,
       "last_updated": "20260516"
     },
     "93500": {
@@ -6013,34 +1803,9 @@
       "current_balance": 372.54,
       "last_updated": "20260516"
     },
-    "10688": {
-      "room_name": "17栋第13层1321",
-      "current_balance": 237.5,
-      "last_updated": "20260516"
-    },
     "91637": {
       "room_name": "17栋第10层1021",
       "current_balance": 685.63,
-      "last_updated": "20260516"
-    },
-    "14318": {
-      "room_name": "17栋第6层615",
-      "current_balance": 562.02,
-      "last_updated": "20260516"
-    },
-    "25368": {
-      "room_name": "17栋第2层216",
-      "current_balance": 365.72,
-      "last_updated": "20260516"
-    },
-    "78239": {
-      "room_name": "17栋第9层903",
-      "current_balance": 786.79,
-      "last_updated": "20260516"
-    },
-    "23027": {
-      "room_name": "17栋第7层709",
-      "current_balance": 675.18,
       "last_updated": "20260516"
     },
     "92584": {
@@ -6048,39 +1813,14 @@
       "current_balance": 811.71,
       "last_updated": "20260516"
     },
-    "21311": {
-      "room_name": "17栋第3层310",
-      "current_balance": 226.36,
-      "last_updated": "20260516"
-    },
-    "49196": {
-      "room_name": "17栋第5层520",
-      "current_balance": 539.99,
-      "last_updated": "20260516"
-    },
     "61488": {
       "room_name": "17栋第15层1506",
       "current_balance": 990.45,
       "last_updated": "20260516"
     },
-    "75566": {
-      "room_name": "17栋第17层1716",
-      "current_balance": 164.62,
-      "last_updated": "20260516"
-    },
     "29977": {
       "room_name": "17栋第10层1010",
       "current_balance": 60.43,
-      "last_updated": "20260516"
-    },
-    "95887": {
-      "room_name": "17栋第8层804",
-      "current_balance": 128.58,
-      "last_updated": "20260516"
-    },
-    "77679": {
-      "room_name": "17栋第10层1011",
-      "current_balance": 463.91,
       "last_updated": "20260516"
     },
     "60346": {
@@ -6093,26 +1833,6 @@
       "current_balance": 247.39,
       "last_updated": "20260516"
     },
-    "78886": {
-      "room_name": "17栋第6层609",
-      "current_balance": 688.02,
-      "last_updated": "20260516"
-    },
-    "71870": {
-      "room_name": "17栋第4层422",
-      "current_balance": 555.28,
-      "last_updated": "20260516"
-    },
-    "95170": {
-      "room_name": "17栋第13层1319",
-      "current_balance": 202.08,
-      "last_updated": "20260516"
-    },
-    "82480": {
-      "room_name": "17栋第17层1717",
-      "current_balance": 314.55,
-      "last_updated": "20260516"
-    },
     "60911": {
       "room_name": "1805",
       "current_balance": 170.87,
@@ -6123,19 +1843,9 @@
       "current_balance": 2.64,
       "last_updated": "20260516"
     },
-    "25116": {
-      "room_name": "17栋第8层807",
-      "current_balance": 4.05,
-      "last_updated": "20260516"
-    },
     "31307": {
       "room_name": "17栋第15层1509",
       "current_balance": 92.68,
-      "last_updated": "20260516"
-    },
-    "90371": {
-      "room_name": "17栋第11层1117",
-      "current_balance": 580.45,
       "last_updated": "20260516"
     },
     "14762": {
@@ -6143,29 +1853,9 @@
       "current_balance": 431.47,
       "last_updated": "20260516"
     },
-    "61521": {
-      "room_name": "17栋第6层606",
-      "current_balance": 520.24,
-      "last_updated": "20260516"
-    },
-    "91513": {
-      "room_name": "17栋第11层1121",
-      "current_balance": 546.6,
-      "last_updated": "20260516"
-    },
     "78082": {
       "room_name": "17栋第11层1102",
       "current_balance": 567.7,
-      "last_updated": "20260516"
-    },
-    "78204": {
-      "room_name": "17栋第10层1011",
-      "current_balance": 463.91,
-      "last_updated": "20260516"
-    },
-    "90026": {
-      "room_name": "17栋第5层518",
-      "current_balance": 96.32,
       "last_updated": "20260516"
     },
     "52820": {
@@ -6178,24 +1868,9 @@
       "current_balance": 87.39,
       "last_updated": "20260516"
     },
-    "96406": {
-      "room_name": "17栋第14层1414",
-      "current_balance": 24.0,
-      "last_updated": "20260516"
-    },
     "25953": {
       "room_name": "17栋第8层816",
       "current_balance": 367.35,
-      "last_updated": "20260516"
-    },
-    "57526": {
-      "room_name": "17栋第15层1504",
-      "current_balance": 348.03,
-      "last_updated": "20260516"
-    },
-    "83949": {
-      "room_name": "17栋第13层1312",
-      "current_balance": 659.59,
       "last_updated": "20260516"
     },
     "63771": {
@@ -6218,11 +1893,6 @@
       "current_balance": 649.35,
       "last_updated": "20260516"
     },
-    "12731": {
-      "room_name": "17栋第5层519",
-      "current_balance": 406.31,
-      "last_updated": "20260516"
-    },
     "30711": {
       "room_name": "17栋第8层806",
       "current_balance": 917.28,
@@ -6233,49 +1903,9 @@
       "current_balance": 35.66,
       "last_updated": "20260516"
     },
-    "40303": {
-      "room_name": "17栋第15层1521",
-      "current_balance": 99.98,
-      "last_updated": "20260516"
-    },
     "14099": {
       "room_name": "0413",
       "current_balance": 267.26,
-      "last_updated": "20260516"
-    },
-    "94919": {
-      "room_name": "17栋第15层1522",
-      "current_balance": 371.97,
-      "last_updated": "20260516"
-    },
-    "17957": {
-      "room_name": "17栋第8层801",
-      "current_balance": 128.17,
-      "last_updated": "20260516"
-    },
-    "78788": {
-      "room_name": "17栋第18层1803",
-      "current_balance": 60.79,
-      "last_updated": "20260516"
-    },
-    "24916": {
-      "room_name": "17栋第12层1218",
-      "current_balance": 903.87,
-      "last_updated": "20260516"
-    },
-    "90957": {
-      "room_name": "17栋第12层1211",
-      "current_balance": 48.96,
-      "last_updated": "20260516"
-    },
-    "97884": {
-      "room_name": "17栋第13层1319",
-      "current_balance": 202.08,
-      "last_updated": "20260516"
-    },
-    "56692": {
-      "room_name": "17栋第18层1818",
-      "current_balance": 158.1,
       "last_updated": "20260516"
     },
     "17961": {
@@ -6293,24 +1923,9 @@
       "current_balance": 490.58,
       "last_updated": "20260516"
     },
-    "90753": {
-      "room_name": "17栋第5层505",
-      "current_balance": 777.07,
-      "last_updated": "20260516"
-    },
     "15842": {
       "room_name": "17栋第16层1602",
       "current_balance": 45.92,
-      "last_updated": "20260516"
-    },
-    "77339": {
-      "room_name": "17栋第12层1217",
-      "current_balance": 60.32,
-      "last_updated": "20260516"
-    },
-    "88969": {
-      "room_name": "17栋第6层614",
-      "current_balance": 20.85,
       "last_updated": "20260516"
     },
     "24081": {
@@ -6318,19 +1933,9 @@
       "current_balance": 48.96,
       "last_updated": "20260516"
     },
-    "30008": {
-      "room_name": "17栋第4层419",
-      "current_balance": 108.2,
-      "last_updated": "20260516"
-    },
     "58152": {
       "room_name": "17栋第15层1502",
       "current_balance": 636.94,
-      "last_updated": "20260516"
-    },
-    "60342": {
-      "room_name": "17栋第8层806",
-      "current_balance": 917.28,
       "last_updated": "20260516"
     },
     "24923": {
@@ -6338,59 +1943,9 @@
       "current_balance": 520.24,
       "last_updated": "20260516"
     },
-    "62877": {
-      "room_name": "17栋第4层410",
-      "current_balance": 617.48,
-      "last_updated": "20260516"
-    },
-    "27491": {
-      "room_name": "17栋第7层710",
-      "current_balance": 869.26,
-      "last_updated": "20260516"
-    },
-    "94931": {
-      "room_name": "17栋第8层811",
-      "current_balance": 261.95,
-      "last_updated": "20260516"
-    },
     "22680": {
       "room_name": "17栋第12层1217",
       "current_balance": 60.32,
-      "last_updated": "20260516"
-    },
-    "25494": {
-      "room_name": "17栋第7层708",
-      "current_balance": 919.31,
-      "last_updated": "20260516"
-    },
-    "16274": {
-      "room_name": "17栋第12层1202",
-      "current_balance": 229.27,
-      "last_updated": "20260516"
-    },
-    "94137": {
-      "room_name": "17栋第9层916",
-      "current_balance": 730.08,
-      "last_updated": "20260516"
-    },
-    "19680": {
-      "room_name": "17栋第1层102",
-      "current_balance": 306.84,
-      "last_updated": "20260516"
-    },
-    "28394": {
-      "room_name": "17栋第12层1213",
-      "current_balance": 503.83,
-      "last_updated": "20260516"
-    },
-    "85583": {
-      "room_name": "17栋第14层1413",
-      "current_balance": 285.17,
-      "last_updated": "20260516"
-    },
-    "26536": {
-      "room_name": "17栋第8层820",
-      "current_balance": 579.83,
       "last_updated": "20260516"
     },
     "88446": {
@@ -6398,34 +1953,9 @@
       "current_balance": 140.56,
       "last_updated": "20260516"
     },
-    "13181": {
-      "room_name": "17栋第18层1818",
-      "current_balance": 158.1,
-      "last_updated": "20260516"
-    },
-    "91495": {
-      "room_name": "17栋第3层319",
-      "current_balance": 430.1,
-      "last_updated": "20260516"
-    },
-    "47653": {
-      "room_name": "17栋第5层515",
-      "current_balance": 511.31,
-      "last_updated": "20260516"
-    },
     "25547": {
       "room_name": "17栋第10层1013",
       "current_balance": 85.35,
-      "last_updated": "20260516"
-    },
-    "91655": {
-      "room_name": "17栋第10层1021",
-      "current_balance": 685.63,
-      "last_updated": "20260516"
-    },
-    "93237": {
-      "room_name": "17栋第10层1023",
-      "current_balance": 9.87,
       "last_updated": "20260516"
     },
     "30024": {
@@ -6438,29 +1968,9 @@
       "current_balance": 216.64,
       "last_updated": "20260516"
     },
-    "28512": {
-      "room_name": "17栋第7层706",
-      "current_balance": 27.47,
-      "last_updated": "20260516"
-    },
-    "72150": {
-      "room_name": "17栋第7层712",
-      "current_balance": 6.59,
-      "last_updated": "20260516"
-    },
     "75490": {
       "room_name": "17栋第15层1512",
       "current_balance": 88.35,
-      "last_updated": "20260516"
-    },
-    "42886": {
-      "room_name": "17栋第16层1619",
-      "current_balance": 2.64,
-      "last_updated": "20260516"
-    },
-    "84076": {
-      "room_name": "17栋第6层602",
-      "current_balance": 69.29,
       "last_updated": "20260516"
     },
     "31865": {
@@ -6473,64 +1983,14 @@
       "current_balance": 63.22,
       "last_updated": "20260516"
     },
-    "30971": {
-      "room_name": "17栋第12层1221",
-      "current_balance": 757.04,
-      "last_updated": "20260516"
-    },
-    "31170": {
-      "room_name": "17栋第12层1218",
-      "current_balance": 903.87,
-      "last_updated": "20260516"
-    },
-    "16859": {
-      "room_name": "17栋第11层1109",
-      "current_balance": 371.36,
-      "last_updated": "20260516"
-    },
-    "87527": {
-      "room_name": "17栋第5层511",
-      "current_balance": 347.15,
-      "last_updated": "20260516"
-    },
-    "32361": {
-      "room_name": "17栋第2层222",
-      "current_balance": 257.66,
-      "last_updated": "20260516"
-    },
     "88119": {
       "room_name": "17栋第10层1005",
       "current_balance": 382.75,
       "last_updated": "20260516"
     },
-    "42543": {
-      "room_name": "17栋第11层1115",
-      "current_balance": 758.33,
-      "last_updated": "20260516"
-    },
-    "74403": {
-      "room_name": "17栋第8层812",
-      "current_balance": 539.92,
-      "last_updated": "20260516"
-    },
     "60060": {
       "room_name": "17栋第11层1106",
       "current_balance": 1161.01,
-      "last_updated": "20260516"
-    },
-    "94740": {
-      "room_name": "17栋第13层1305",
-      "current_balance": 41.06,
-      "last_updated": "20260516"
-    },
-    "91171": {
-      "room_name": "17栋第17层1714",
-      "current_balance": 93.83,
-      "last_updated": "20260516"
-    },
-    "99053": {
-      "room_name": "17栋第12层1212",
-      "current_balance": 389.56,
       "last_updated": "20260516"
     },
     "62993": {
@@ -6543,36 +2003,6 @@
       "current_balance": 207.34,
       "last_updated": "20260516"
     },
-    "91041": {
-      "room_name": "17栋第5层510",
-      "current_balance": 263.92,
-      "last_updated": "20260516"
-    },
-    "50492": {
-      "room_name": "17栋第16层1602",
-      "current_balance": 45.92,
-      "last_updated": "20260516"
-    },
-    "43069": {
-      "room_name": "17栋第16层1616",
-      "current_balance": 528.89,
-      "last_updated": "20260516"
-    },
-    "25098": {
-      "room_name": "17栋第3层320",
-      "current_balance": 77.56,
-      "last_updated": "20260516"
-    },
-    "24498": {
-      "room_name": "17栋第8层819",
-      "current_balance": 623.78,
-      "last_updated": "20260516"
-    },
-    "42000": {
-      "room_name": "17栋第2层216",
-      "current_balance": 365.72,
-      "last_updated": "20260516"
-    },
     "26452": {
       "room_name": "17栋第16层1603",
       "current_balance": 254.65,
@@ -6583,69 +2013,14 @@
       "current_balance": 845.12,
       "last_updated": "20260516"
     },
-    "71244": {
-      "room_name": "17栋第11层1120",
-      "current_balance": 74.53,
-      "last_updated": "20260516"
-    },
     "57675": {
       "room_name": "17栋第12层1216",
       "current_balance": 591.23,
       "last_updated": "20260516"
     },
-    "11294": {
-      "room_name": "17栋第6层614",
-      "current_balance": 20.85,
-      "last_updated": "20260516"
-    },
-    "16903": {
-      "room_name": "17栋第11层1109",
-      "current_balance": 371.36,
-      "last_updated": "20260516"
-    },
-    "89742": {
-      "room_name": "17栋第3层310",
-      "current_balance": 226.36,
-      "last_updated": "20260516"
-    },
-    "87421": {
-      "room_name": "17栋第4层408",
-      "current_balance": 648.12,
-      "last_updated": "20260516"
-    },
-    "34069": {
-      "room_name": "17栋第9层912",
-      "current_balance": 7.81,
-      "last_updated": "20260516"
-    },
-    "30559": {
-      "room_name": "17栋第13层1319",
-      "current_balance": 202.08,
-      "last_updated": "20260516"
-    },
-    "90363": {
-      "room_name": "17栋第5层512",
-      "current_balance": 588.79,
-      "last_updated": "20260516"
-    },
-    "54094": {
-      "room_name": "17栋第13层1316",
-      "current_balance": 282.91,
-      "last_updated": "20260516"
-    },
     "25099": {
       "room_name": "17栋第8层822",
       "current_balance": 7.67,
-      "last_updated": "20260516"
-    },
-    "85340": {
-      "room_name": "17栋第16层1607",
-      "current_balance": 136.03,
-      "last_updated": "20260516"
-    },
-    "24103": {
-      "room_name": "17栋第2层204",
-      "current_balance": 133.39,
       "last_updated": "20260516"
     },
     "89459": {
@@ -6658,11 +2033,6 @@
       "current_balance": 19.32,
       "last_updated": "20260516"
     },
-    "62976": {
-      "room_name": "17栋第12层1206",
-      "current_balance": 185.9,
-      "last_updated": "20260516"
-    },
     "84474": {
       "room_name": "17栋第5层518",
       "current_balance": 96.32,
@@ -6673,34 +2043,9 @@
       "current_balance": 1446.19,
       "last_updated": "20260516"
     },
-    "11550": {
-      "room_name": "17栋第7层716",
-      "current_balance": 431.47,
-      "last_updated": "20260516"
-    },
-    "27007": {
-      "room_name": "17栋第9层923",
-      "current_balance": 35.41,
-      "last_updated": "20260516"
-    },
-    "36965": {
-      "room_name": "17栋第17层1717",
-      "current_balance": 314.55,
-      "last_updated": "20260516"
-    },
     "91747": {
       "room_name": "17栋第12层1215",
       "current_balance": 371.95,
-      "last_updated": "20260516"
-    },
-    "29406": {
-      "room_name": "17栋第9层922",
-      "current_balance": 441.26,
-      "last_updated": "20260516"
-    },
-    "90572": {
-      "room_name": "17栋第11层1122",
-      "current_balance": 315.89,
       "last_updated": "20260516"
     },
     "89399": {
@@ -6708,39 +2053,9 @@
       "current_balance": 108.2,
       "last_updated": "20260516"
     },
-    "14724": {
-      "room_name": "17栋第5层511",
-      "current_balance": 347.15,
-      "last_updated": "20260516"
-    },
-    "57473": {
-      "room_name": "17栋第18层1817",
-      "current_balance": 132.06,
-      "last_updated": "20260516"
-    },
-    "14102": {
-      "room_name": "17栋第14层1419",
-      "current_balance": 197.18,
-      "last_updated": "20260516"
-    },
-    "94733": {
-      "room_name": "17栋第4层408",
-      "current_balance": 648.12,
-      "last_updated": "20260516"
-    },
-    "84296": {
-      "room_name": "17栋第7层723",
-      "current_balance": 121.55,
-      "last_updated": "20260516"
-    },
     "91502": {
       "room_name": "17栋第11层1121",
       "current_balance": 546.6,
-      "last_updated": "20260516"
-    },
-    "56197": {
-      "room_name": "17栋第6层605",
-      "current_balance": 402.76,
       "last_updated": "20260516"
     },
     "27509": {
@@ -6748,29 +2063,9 @@
       "current_balance": 869.26,
       "last_updated": "20260516"
     },
-    "91522": {
-      "room_name": "17栋第18层1814",
-      "current_balance": 501.56,
-      "last_updated": "20260516"
-    },
-    "42801": {
-      "room_name": "17栋第13层1316",
-      "current_balance": 282.91,
-      "last_updated": "20260516"
-    },
-    "29810": {
-      "room_name": "17栋第4层408",
-      "current_balance": 648.12,
-      "last_updated": "20260516"
-    },
     "13498": {
       "room_name": "1519",
       "current_balance": 1207.48,
-      "last_updated": "20260516"
-    },
-    "58460": {
-      "room_name": "17栋第11层1103",
-      "current_balance": 727.53,
       "last_updated": "20260516"
     },
     "13461": {
@@ -6778,24 +2073,9 @@
       "current_balance": 681.61,
       "last_updated": "20260516"
     },
-    "74732": {
-      "room_name": "17栋第6层623",
-      "current_balance": 40.45,
-      "last_updated": "20260516"
-    },
     "89118": {
       "room_name": "17栋第4层417",
       "current_balance": 588.74,
-      "last_updated": "20260516"
-    },
-    "90531": {
-      "room_name": "17栋第10层1016",
-      "current_balance": 528.48,
-      "last_updated": "20260516"
-    },
-    "28980": {
-      "room_name": "17栋第4层407",
-      "current_balance": 39.95,
       "last_updated": "20260516"
     },
     "43052": {
@@ -6803,64 +2083,9 @@
       "current_balance": 73.78,
       "last_updated": "20260516"
     },
-    "31117": {
-      "room_name": "17栋第8层809",
-      "current_balance": 386.2,
-      "last_updated": "20260516"
-    },
     "90558": {
       "room_name": "17栋第9层903",
       "current_balance": 786.79,
-      "last_updated": "20260516"
-    },
-    "12668": {
-      "room_name": "17栋第4层416",
-      "current_balance": 664.66,
-      "last_updated": "20260516"
-    },
-    "58856": {
-      "room_name": "17栋第11层1108",
-      "current_balance": 324.6,
-      "last_updated": "20260516"
-    },
-    "87996": {
-      "room_name": "17栋第6层605",
-      "current_balance": 402.76,
-      "last_updated": "20260516"
-    },
-    "26346": {
-      "room_name": "17栋第3层302",
-      "current_balance": 280.96,
-      "last_updated": "20260516"
-    },
-    "16560": {
-      "room_name": "17栋第6层616",
-      "current_balance": 410.39,
-      "last_updated": "20260516"
-    },
-    "77307": {
-      "room_name": "17栋第6层613",
-      "current_balance": 845.12,
-      "last_updated": "20260516"
-    },
-    "61590": {
-      "room_name": "17栋第14层1407",
-      "current_balance": 91.19,
-      "last_updated": "20260516"
-    },
-    "34154": {
-      "room_name": "17栋第10层1021",
-      "current_balance": 685.63,
-      "last_updated": "20260516"
-    },
-    "14387": {
-      "room_name": "17栋第12层1202",
-      "current_balance": 229.27,
-      "last_updated": "20260516"
-    },
-    "82413": {
-      "room_name": "17栋第11层1123",
-      "current_balance": 63.22,
       "last_updated": "20260516"
     },
     "11500": {
@@ -6871,11 +2096,6 @@
     "72244": {
       "room_name": "17栋第11层1104",
       "current_balance": 517.55,
-      "last_updated": "20260516"
-    },
-    "53953": {
-      "room_name": "17栋第3层315",
-      "current_balance": 36.0,
       "last_updated": "20260516"
     },
     "55384": {
@@ -6903,11 +2123,6 @@
       "current_balance": 461.64,
       "last_updated": "20260516"
     },
-    "33250": {
-      "room_name": "17栋第2层219",
-      "current_balance": 38.29,
-      "last_updated": "20260516"
-    },
     "26252": {
       "room_name": "17栋第9层908",
       "current_balance": 726.54,
@@ -6916,46 +2131,6 @@
     "56136": {
       "room_name": "17栋第17层1715",
       "current_balance": 599.03,
-      "last_updated": "20260516"
-    },
-    "91247": {
-      "room_name": "17栋第11层1102",
-      "current_balance": 567.7,
-      "last_updated": "20260516"
-    },
-    "91685": {
-      "room_name": "17栋第17层1722",
-      "current_balance": 267.61,
-      "last_updated": "20260516"
-    },
-    "56650": {
-      "room_name": "17栋第11层1106",
-      "current_balance": 1161.01,
-      "last_updated": "20260516"
-    },
-    "82759": {
-      "room_name": "17栋第4层412",
-      "current_balance": 910.41,
-      "last_updated": "20260516"
-    },
-    "32286": {
-      "room_name": "17栋第2层222",
-      "current_balance": 257.66,
-      "last_updated": "20260516"
-    },
-    "75567": {
-      "room_name": "17栋第6层623",
-      "current_balance": 40.45,
-      "last_updated": "20260516"
-    },
-    "25023": {
-      "room_name": "17栋第12层1204",
-      "current_balance": 652.68,
-      "last_updated": "20260516"
-    },
-    "88939": {
-      "room_name": "17栋第10层1023",
-      "current_balance": 9.87,
       "last_updated": "20260516"
     },
     "91572": {
@@ -6973,34 +2148,9 @@
       "current_balance": 501.56,
       "last_updated": "20260516"
     },
-    "92643": {
-      "room_name": "17栋第11层1104",
-      "current_balance": 517.55,
-      "last_updated": "20260516"
-    },
     "85684": {
       "room_name": "17栋第5层519",
       "current_balance": 406.31,
-      "last_updated": "20260516"
-    },
-    "27242": {
-      "room_name": "17栋第10层1008",
-      "current_balance": 35.66,
-      "last_updated": "20260516"
-    },
-    "92575": {
-      "room_name": "17栋第5层513",
-      "current_balance": 711.08,
-      "last_updated": "20260516"
-    },
-    "89995": {
-      "room_name": "17栋第5层518",
-      "current_balance": 96.32,
-      "last_updated": "20260516"
-    },
-    "75682": {
-      "room_name": "17栋第8层814",
-      "current_balance": 681.08,
       "last_updated": "20260516"
     },
     "90545": {
@@ -7011,26 +2161,6 @@
     "24196": {
       "room_name": "17栋第3层319",
       "current_balance": 430.1,
-      "last_updated": "20260516"
-    },
-    "25414": {
-      "room_name": "17栋第3层301",
-      "current_balance": 207.34,
-      "last_updated": "20260516"
-    },
-    "83069": {
-      "room_name": "17栋第13层1309",
-      "current_balance": 634.94,
-      "last_updated": "20260516"
-    },
-    "29442": {
-      "room_name": "17栋第11层1113",
-      "current_balance": 74.56,
-      "last_updated": "20260516"
-    },
-    "89898": {
-      "room_name": "17栋第11层1116",
-      "current_balance": 411.68,
       "last_updated": "20260516"
     }
   }

@@ -1,16 +1,11 @@
 {
   "building": "1幢",
   "campus": "仙林校区",
-  "total_rooms": 25,
+  "total_rooms": 17,
   "rooms": {
     "98798": {
       "room_name": "1B114",
       "current_balance": 161.51,
-      "last_updated": "20260516"
-    },
-    "99820": {
-      "room_name": "1B112",
-      "current_balance": 98.38,
       "last_updated": "20260516"
     },
     "98799": {
@@ -21,11 +16,6 @@
     "98890": {
       "room_name": "1B115",
       "current_balance": 195.46,
-      "last_updated": "20260516"
-    },
-    "98987": {
-      "room_name": "1A112",
-      "current_balance": 244.58,
       "last_updated": "20260516"
     },
     "99892": {
@@ -53,11 +43,6 @@
       "current_balance": 161.51,
       "last_updated": "20260516"
     },
-    "99064": {
-      "room_name": "1B115",
-      "current_balance": 195.46,
-      "last_updated": "20260516"
-    },
     "99012": {
       "room_name": "1A104",
       "current_balance": 67.69,
@@ -73,19 +58,9 @@
       "current_balance": 166.68,
       "last_updated": "20260516"
     },
-    "99941": {
-      "room_name": "1A121",
-      "current_balance": 43.15,
-      "last_updated": "20260516"
-    },
     "98813": {
       "room_name": "1B111",
       "current_balance": 413.55,
-      "last_updated": "20260516"
-    },
-    "98988": {
-      "room_name": "1A112",
-      "current_balance": 244.58,
       "last_updated": "20260516"
     },
     "98965": {
@@ -93,24 +68,9 @@
       "current_balance": 16.53,
       "last_updated": "20260516"
     },
-    "99940": {
-      "room_name": "1A121",
-      "current_balance": 43.15,
-      "last_updated": "20260516"
-    },
-    "98852": {
-      "room_name": "1A115",
-      "current_balance": 35.22,
-      "last_updated": "20260516"
-    },
     "99019": {
       "room_name": "1B113",
       "current_balance": 38.73,
-      "last_updated": "20260516"
-    },
-    "98868": {
-      "room_name": "1B118",
-      "current_balance": 92.99,
       "last_updated": "20260516"
     },
     "98811": {

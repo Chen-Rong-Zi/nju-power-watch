@@ -1,18 +1,8 @@
 {
   "building": "教超二层",
   "campus": "鼓楼校区",
-  "total_rooms": 32,
+  "total_rooms": 19,
   "rooms": {
-    "42743": {
-      "room_name": "207房间",
-      "current_balance": 559.98,
-      "last_updated": "20260516"
-    },
-    "27062": {
-      "room_name": "218房间",
-      "current_balance": 87.89,
-      "last_updated": "20260516"
-    },
     "40031": {
       "room_name": "220房间",
       "current_balance": 463.96,
@@ -23,39 +13,9 @@
       "current_balance": 106.69,
       "last_updated": "20260516"
     },
-    "33154": {
-      "room_name": "224房间",
-      "current_balance": 244.79,
-      "last_updated": "20260516"
-    },
-    "34211": {
-      "room_name": "220房间",
-      "current_balance": 463.96,
-      "last_updated": "20260516"
-    },
-    "40050": {
-      "room_name": "220房间",
-      "current_balance": 463.96,
-      "last_updated": "20260516"
-    },
-    "95570": {
-      "room_name": "201房间",
-      "current_balance": 42.1,
-      "last_updated": "20260516"
-    },
     "33462": {
       "room_name": "226房间",
       "current_balance": 77.18,
-      "last_updated": "20260516"
-    },
-    "40049": {
-      "room_name": "220房间",
-      "current_balance": 463.96,
-      "last_updated": "20260516"
-    },
-    "47232": {
-      "room_name": "220房间",
-      "current_balance": 463.96,
       "last_updated": "20260516"
     },
     "37303": {
@@ -68,11 +28,6 @@
       "current_balance": 329.89,
       "last_updated": "20260516"
     },
-    "43793": {
-      "room_name": "210房间",
-      "current_balance": 129.31,
-      "last_updated": "20260516"
-    },
     "70065": {
       "room_name": "213房间",
       "current_balance": 37.8,
@@ -81,11 +36,6 @@
     "12074": {
       "room_name": "217房间",
       "current_balance": 14.79,
-      "last_updated": "20260516"
-    },
-    "37849": {
-      "room_name": "210房间",
-      "current_balance": 129.31,
       "last_updated": "20260516"
     },
     "33279": {
@@ -113,11 +63,6 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "44973": {
-      "room_name": "222房间",
-      "current_balance": 106.69,
-      "last_updated": "20260516"
-    },
     "19725": {
       "room_name": "218房间",
       "current_balance": 87.89,
@@ -138,11 +83,6 @@
       "current_balance": 75.14,
       "last_updated": "20260516"
     },
-    "16269": {
-      "room_name": "201房间",
-      "current_balance": 42.1,
-      "last_updated": "20260516"
-    },
     "17369": {
       "room_name": "219房间",
       "current_balance": 80.4,
@@ -156,11 +96,6 @@
     "33260": {
       "room_name": "202房间",
       "current_balance": 30.22,
-      "last_updated": "20260516"
-    },
-    "82564": {
-      "room_name": "220房间",
-      "current_balance": 463.96,
       "last_updated": "20260516"
     }
   }

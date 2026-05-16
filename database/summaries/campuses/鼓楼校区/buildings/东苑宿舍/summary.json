@@ -1,7 +1,7 @@
 {
   "building": "东苑宿舍",
   "campus": "鼓楼校区",
-  "total_rooms": 45,
+  "total_rooms": 36,
   "rooms": {
     "64459": {
       "room_name": "203",
@@ -103,11 +103,6 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "67466": {
-      "room_name": "203",
-      "current_balance": 104.62,
-      "last_updated": "20260516"
-    },
     "72010": {
       "room_name": "105-1",
       "current_balance": 44.52,
@@ -116,11 +111,6 @@
     "64376": {
       "room_name": "305-2",
       "current_balance": 87.7,
-      "last_updated": "20260516"
-    },
-    "68268": {
-      "room_name": "201-2",
-      "current_balance": 61.8,
       "last_updated": "20260516"
     },
     "64258": {
@@ -134,11 +124,6 @@
       "last_updated": "20260516"
     },
     "64709": {
-      "room_name": "平房03",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "64368": {
       "room_name": "平房03",
       "current_balance": 0.0,
       "last_updated": "20260516"
@@ -163,24 +148,9 @@
       "current_balance": 131.07,
       "last_updated": "20260516"
     },
-    "73281": {
-      "room_name": "平房03",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "71937": {
       "room_name": "102-1",
       "current_balance": 59.08,
-      "last_updated": "20260516"
-    },
-    "64290": {
-      "room_name": "平房05",
-      "current_balance": 51.55,
-      "last_updated": "20260516"
-    },
-    "64693": {
-      "room_name": "平房01",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "67046": {
@@ -188,19 +158,9 @@
       "current_balance": 82.44,
       "last_updated": "20260516"
     },
-    "65645": {
-      "room_name": "102-2",
-      "current_balance": 55.15,
-      "last_updated": "20260516"
-    },
     "66304": {
       "room_name": "2040",
       "current_balance": 21.88,
-      "last_updated": "20260516"
-    },
-    "68391": {
-      "room_name": "304",
-      "current_balance": 24.81,
       "last_updated": "20260516"
     },
     "65078": {
@@ -221,11 +181,6 @@
     "64481": {
       "room_name": "105-3",
       "current_balance": 31.48,
-      "last_updated": "20260516"
-    },
-    "66244": {
-      "room_name": "206-1",
-      "current_balance": 131.07,
       "last_updated": "20260516"
     }
   }

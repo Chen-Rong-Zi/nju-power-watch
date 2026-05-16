@@ -1,7 +1,7 @@
 {
   "building": "一二食堂",
   "campus": "浦口校区",
-  "total_rooms": 8,
+  "total_rooms": 6,
   "rooms": {
     "98612": {
       "room_name": "103",
@@ -23,11 +23,6 @@
       "current_balance": 180.6,
       "last_updated": "20260516"
     },
-    "96915": {
-      "room_name": "101",
-      "current_balance": 180.6,
-      "last_updated": "20260516"
-    },
     "63480": {
       "room_name": "202商户",
       "current_balance": 7.7,
@@ -36,11 +31,6 @@
     "56370": {
       "room_name": "206商户",
       "current_balance": 78.2,
-      "last_updated": "20260516"
-    },
-    "60979": {
-      "room_name": "207商户",
-      "current_balance": 175.1,
       "last_updated": "20260516"
     }
   }

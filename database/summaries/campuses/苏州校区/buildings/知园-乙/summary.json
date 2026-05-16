@@ -1,7 +1,7 @@
 {
   "building": "知园-乙",
   "campus": "苏州校区",
-  "total_rooms": 70,
+  "total_rooms": 50,
   "rooms": {
     "42726": {
       "room_name": "乙606",
@@ -16,11 +16,6 @@
     "70264": {
       "room_name": "乙412",
       "current_balance": 23.5,
-      "last_updated": "20260516"
-    },
-    "96272": {
-      "room_name": "乙615",
-      "current_balance": 54.96,
       "last_updated": "20260516"
     },
     "42554": {
@@ -43,39 +38,14 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "95256": {
-      "room_name": "乙308",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "98143": {
       "room_name": "乙601",
       "current_balance": 27.84,
       "last_updated": "20260516"
     },
-    "70387": {
-      "room_name": "乙412",
-      "current_balance": 23.5,
-      "last_updated": "20260516"
-    },
     "28207": {
       "room_name": "乙205",
       "current_balance": 61.8,
-      "last_updated": "20260516"
-    },
-    "76307": {
-      "room_name": "乙210",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "71328": {
-      "room_name": "乙316",
-      "current_balance": 49.07,
-      "last_updated": "20260516"
-    },
-    "68014": {
-      "room_name": "乙217",
-      "current_balance": 0.0,
       "last_updated": "20260516"
     },
     "97555": {
@@ -98,28 +68,13 @@
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
-    "69037": {
-      "room_name": "乙212",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "96293": {
       "room_name": "乙701",
       "current_balance": 580.98,
       "last_updated": "20260516"
     },
-    "43544": {
-      "room_name": "乙211",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
     "17822": {
       "room_name": "乙209",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "61763": {
-      "room_name": "乙201",
       "current_balance": 0.0,
       "last_updated": "20260516"
     },
@@ -141,16 +96,6 @@
     "97473": {
       "room_name": "乙603",
       "current_balance": 173.54,
-      "last_updated": "20260516"
-    },
-    "19480": {
-      "room_name": "乙201",
-      "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "62419": {
-      "room_name": "乙514",
-      "current_balance": 559.14,
       "last_updated": "20260516"
     },
     "28199": {
@@ -181,11 +126,6 @@
     "65779": {
       "room_name": "乙405",
       "current_balance": 9.93,
-      "last_updated": "20260516"
-    },
-    "97554": {
-      "room_name": "乙605",
-      "current_balance": 29.94,
       "last_updated": "20260516"
     },
     "17809": {
@@ -228,44 +168,14 @@
       "current_balance": 3.03,
       "last_updated": "20260516"
     },
-    "62452": {
-      "room_name": "乙506",
-      "current_balance": 86.95,
-      "last_updated": "20260516"
-    },
-    "42767": {
-      "room_name": "乙405",
-      "current_balance": 9.93,
-      "last_updated": "20260516"
-    },
-    "97474": {
-      "room_name": "乙603",
-      "current_balance": 173.54,
-      "last_updated": "20260516"
-    },
-    "62453": {
-      "room_name": "乙506",
-      "current_balance": 86.95,
-      "last_updated": "20260516"
-    },
     "96289": {
       "room_name": "乙614",
       "current_balance": 180.44,
       "last_updated": "20260516"
     },
-    "87337": {
-      "room_name": "乙412",
-      "current_balance": 23.5,
-      "last_updated": "20260516"
-    },
     "66314": {
       "room_name": "乙302",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "63841": {
-      "room_name": "乙202",
-      "current_balance": 3.03,
       "last_updated": "20260516"
     },
     "96275": {
@@ -288,11 +198,6 @@
       "current_balance": 21.2,
       "last_updated": "20260516"
     },
-    "96294": {
-      "room_name": "乙701",
-      "current_balance": 580.98,
-      "last_updated": "20260516"
-    },
     "99875": {
       "room_name": "乙506",
       "current_balance": 86.95,
@@ -306,11 +211,6 @@
     "98005": {
       "room_name": "乙514",
       "current_balance": 559.14,
-      "last_updated": "20260516"
-    },
-    "98050": {
-      "room_name": "乙601",
-      "current_balance": 27.84,
       "last_updated": "20260516"
     },
     "27789": {

@@ -1,13 +1,8 @@
 {
   "building": "四期食堂",
   "campus": "仙林校区",
-  "total_rooms": 24,
+  "total_rooms": 18,
   "rooms": {
-    "65263": {
-      "room_name": "十二食堂 二层公共总公摊",
-      "current_balance": 69.35,
-      "last_updated": "20260516"
-    },
     "69006": {
       "room_name": "十二食堂 春虾秋蟹2ALC5",
       "current_balance": 73.16,
@@ -26,11 +21,6 @@
     "72644": {
       "room_name": "十二食堂 应急照明",
       "current_balance": 288.45,
-      "last_updated": "20260516"
-    },
-    "64881": {
-      "room_name": "十一食堂 煎饼1",
-      "current_balance": 503.07,
       "last_updated": "20260516"
     },
     "94259": {
@@ -58,11 +48,6 @@
       "current_balance": 22.14,
       "last_updated": "20260516"
     },
-    "66581": {
-      "room_name": "十二食堂 二层公共总公摊",
-      "current_balance": 69.35,
-      "last_updated": "20260516"
-    },
     "32450": {
       "room_name": "春虾秋蟹",
       "current_balance": 0.0,
@@ -71,11 +56,6 @@
     "65479": {
       "room_name": "十一食堂 小陶小笼包",
       "current_balance": 0.0,
-      "last_updated": "20260516"
-    },
-    "37152": {
-      "room_name": "佑来乐",
-      "current_balance": 92.5,
       "last_updated": "20260516"
     },
     "32453": {
@@ -111,16 +91,6 @@
     "55004": {
       "room_name": "佑来乐",
       "current_balance": 92.5,
-      "last_updated": "20260516"
-    },
-    "40307": {
-      "room_name": "佑来乐",
-      "current_balance": 92.5,
-      "last_updated": "20260516"
-    },
-    "64885": {
-      "room_name": "十一食堂 特色风味",
-      "current_balance": 522.79,
       "last_updated": "20260516"
     }
   }

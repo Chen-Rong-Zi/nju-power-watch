@@ -1,7 +1,7 @@
 {
   "building": "仙林九食堂",
   "campus": "仙林校区",
-  "total_rooms": 18,
+  "total_rooms": 13,
   "rooms": {
     "32748": {
       "room_name": "冉阔门口",
@@ -38,11 +38,6 @@
       "current_balance": 6721.37,
       "last_updated": "20260516"
     },
-    "30243": {
-      "room_name": "巨百江南洗碗间",
-      "current_balance": 235.48,
-      "last_updated": "20260516"
-    },
     "30230": {
       "room_name": "江南小镇空调",
       "current_balance": 4.23,
@@ -53,22 +48,7 @@
       "current_balance": 79.24,
       "last_updated": "20260516"
     },
-    "32749": {
-      "room_name": "冉阔仓库照明总表",
-      "current_balance": 327.72,
-      "last_updated": "20260516"
-    },
     "32458": {
-      "room_name": "桃源村（321门口）",
-      "current_balance": 435.07,
-      "last_updated": "20260516"
-    },
-    "29903": {
-      "room_name": "巨百餐饮（315门口）",
-      "current_balance": 131.22,
-      "last_updated": "20260516"
-    },
-    "42225": {
       "room_name": "桃源村（321门口）",
       "current_balance": 435.07,
       "last_updated": "20260516"
@@ -76,11 +56,6 @@
     "34864": {
       "room_name": "巨百江南洗碗间",
       "current_balance": 235.48,
-      "last_updated": "20260516"
-    },
-    "44974": {
-      "room_name": "麦当劳冷库",
-      "current_balance": 6721.37,
       "last_updated": "20260516"
     },
     "32747": {
