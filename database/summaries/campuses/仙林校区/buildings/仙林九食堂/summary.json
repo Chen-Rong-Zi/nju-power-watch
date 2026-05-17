@@ -1,16 +1,16 @@
 {
   "building": "仙林九食堂",
   "campus": "仙林校区",
-  "total_rooms": 13,
+  "total_rooms": 15,
   "rooms": {
     "32748": {
       "room_name": "冉阔门口",
-      "current_balance": 396.94,
+      "current_balance": 392.47,
       "last_updated": "20260517"
     },
     "40947": {
       "room_name": "冉阔仓库照明总表",
-      "current_balance": 316.61,
+      "current_balance": 308.21,
       "last_updated": "20260517"
     },
     "31579": {
@@ -20,12 +20,12 @@
     },
     "22670": {
       "room_name": "巨百佐乌香锅（317门口）",
-      "current_balance": 286.59,
+      "current_balance": 280.78,
       "last_updated": "20260517"
     },
     "17158": {
       "room_name": "巨百餐饮（315门口）",
-      "current_balance": 121.16,
+      "current_balance": 113.57,
       "last_updated": "20260517"
     },
     "32731": {
@@ -35,7 +35,7 @@
     },
     "34635": {
       "room_name": "麦当劳冷库",
-      "current_balance": 6680.19,
+      "current_balance": 6662.17,
       "last_updated": "20260517"
     },
     "30230": {
@@ -45,27 +45,37 @@
     },
     "32837": {
       "room_name": "江南小镇（325门口）",
-      "current_balance": 76.49,
+      "current_balance": 74.54,
       "last_updated": "20260517"
     },
     "32458": {
       "room_name": "桃源村（321门口）",
-      "current_balance": 429.1,
+      "current_balance": 423.95,
       "last_updated": "20260517"
     },
     "34864": {
       "room_name": "巨百江南洗碗间",
-      "current_balance": 226.97,
+      "current_balance": 219.8,
       "last_updated": "20260517"
     },
     "32747": {
       "room_name": "冉阔冰箱",
-      "current_balance": 61.05,
+      "current_balance": 60.67,
       "last_updated": "20260517"
     },
     "40718": {
       "room_name": "桃源村（319门口）",
-      "current_balance": 595.17,
+      "current_balance": 587.48,
+      "last_updated": "20260517"
+    },
+    "2200": {
+      "room_name": "巨百佐乌香锅空调",
+      "current_balance": 0.0,
+      "last_updated": "20260517"
+    },
+    "2175": {
+      "room_name": "巨佰佐鸟空调",
+      "current_balance": 0.0,
       "last_updated": "20260517"
     }
   }

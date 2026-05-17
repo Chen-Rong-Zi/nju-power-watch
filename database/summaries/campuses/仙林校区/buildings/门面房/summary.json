@@ -1,16 +1,16 @@
 {
   "building": "门面房",
   "campus": "仙林校区",
-  "total_rooms": 26,
+  "total_rooms": 31,
   "rooms": {
     "17193": {
       "room_name": "星巴克",
-      "current_balance": 440.62,
+      "current_balance": 438.19,
       "last_updated": "20260517"
     },
     "63361": {
       "room_name": "咖啡厅(政府楼)",
-      "current_balance": 1747.73,
+      "current_balance": 1683.0,
       "last_updated": "20260517"
     },
     "37581": {
@@ -20,7 +20,7 @@
     },
     "71304": {
       "room_name": "几米图文（5幢）",
-      "current_balance": 653.86,
+      "current_balance": 593.23,
       "last_updated": "20260517"
     },
     "92839": {
@@ -30,7 +30,7 @@
     },
     "37372": {
       "room_name": "中超超市（23幢）",
-      "current_balance": 2033.46,
+      "current_balance": 1960.83,
       "last_updated": "20260517"
     },
     "37501": {
@@ -40,12 +40,12 @@
     },
     "39074": {
       "room_name": "电信（5幢）",
-      "current_balance": 335.91,
+      "current_balance": 335.71,
       "last_updated": "20260517"
     },
     "30410": {
       "room_name": "大唐仓库（5幢）",
-      "current_balance": 1686.71,
+      "current_balance": 1686.7,
       "last_updated": "20260517"
     },
     "69461": {
@@ -60,12 +60,12 @@
     },
     "34844": {
       "room_name": "卫星水果超市（5幢）",
-      "current_balance": 8298.28,
+      "current_balance": 8164.45,
       "last_updated": "20260517"
     },
     "44963": {
       "room_name": "水吧（第四食堂）",
-      "current_balance": 736.61,
+      "current_balance": 615.06,
       "last_updated": "20260517"
     },
     "12543": {
@@ -75,7 +75,7 @@
     },
     "44511": {
       "room_name": "瑞幸咖啡（23幢）",
-      "current_balance": 387.04,
+      "current_balance": 381.63,
       "last_updated": "20260517"
     },
     "68020": {
@@ -85,7 +85,7 @@
     },
     "68677": {
       "room_name": "雅园水果店（10栋）",
-      "current_balance": 2811.99,
+      "current_balance": 2755.49,
       "last_updated": "20260517"
     },
     "58465": {
@@ -115,12 +115,12 @@
     },
     "57200": {
       "room_name": "22栋快递柜",
-      "current_balance": 46.17,
+      "current_balance": 42.15,
       "last_updated": "20260517"
     },
     "28135": {
       "room_name": "哈尼家（22幢）",
-      "current_balance": 49.4,
+      "current_balance": 48.02,
       "last_updated": "20260517"
     },
     "26253": {
@@ -130,6 +130,31 @@
     },
     "49625": {
       "room_name": "联通（5幢）",
+      "current_balance": 0.0,
+      "last_updated": "20260517"
+    },
+    "7931": {
+      "room_name": "大唐文化(2幢)",
+      "current_balance": 7093.12,
+      "last_updated": "20260517"
+    },
+    "101519": {
+      "room_name": "07栋快递柜",
+      "current_balance": 226.86,
+      "last_updated": "20260517"
+    },
+    "5659": {
+      "room_name": "0137",
+      "current_balance": 0.0,
+      "last_updated": "20260517"
+    },
+    "4215": {
+      "room_name": "理发店（22幢）",
+      "current_balance": 97.59,
+      "last_updated": "20260517"
+    },
+    "1362": {
+      "room_name": "一鸣奶吧（3幢）",
       "current_balance": 0.0,
       "last_updated": "20260517"
     }

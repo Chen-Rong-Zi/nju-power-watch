@@ -1,7 +1,7 @@
 {
   "building": "1幢",
   "campus": "仙林校区",
-  "total_rooms": 17,
+  "total_rooms": 28,
   "rooms": {
     "98798": {
       "room_name": "1B114",
@@ -15,7 +15,7 @@
     },
     "98890": {
       "room_name": "1B115",
-      "current_balance": 194.43,
+      "current_balance": 194.26,
       "last_updated": "20260517"
     },
     "99892": {
@@ -50,7 +50,7 @@
     },
     "99764": {
       "room_name": "1A105",
-      "current_balance": 0.0,
+      "current_balance": 18.24,
       "last_updated": "20260517"
     },
     "99086": {
@@ -60,17 +60,17 @@
     },
     "98813": {
       "room_name": "1B111",
-      "current_balance": 403.73,
+      "current_balance": 400.39,
       "last_updated": "20260517"
     },
     "98965": {
       "room_name": "1B117",
-      "current_balance": 16.47,
+      "current_balance": 16.45,
       "last_updated": "20260517"
     },
     "99019": {
       "room_name": "1B113",
-      "current_balance": 38.07,
+      "current_balance": 37.65,
       "last_updated": "20260517"
     },
     "98811": {
@@ -85,7 +85,62 @@
     },
     "99973": {
       "room_name": "1B109",
-      "current_balance": 59.54,
+      "current_balance": 59.48,
+      "last_updated": "20260517"
+    },
+    "101187": {
+      "room_name": "1A119",
+      "current_balance": 134.07,
+      "last_updated": "20260517"
+    },
+    "100501": {
+      "room_name": "1A113",
+      "current_balance": 106.31,
+      "last_updated": "20260517"
+    },
+    "100584": {
+      "room_name": "1B110",
+      "current_balance": 39.77,
+      "last_updated": "20260517"
+    },
+    "100865": {
+      "room_name": "1A116",
+      "current_balance": 19.51,
+      "last_updated": "20260517"
+    },
+    "101534": {
+      "room_name": "1A114",
+      "current_balance": 23.57,
+      "last_updated": "20260517"
+    },
+    "101852": {
+      "room_name": "A117",
+      "current_balance": 19.66,
+      "last_updated": "20260517"
+    },
+    "100700": {
+      "room_name": "1A118",
+      "current_balance": 84.18,
+      "last_updated": "20260517"
+    },
+    "101128": {
+      "room_name": "1A120",
+      "current_balance": 164.01,
+      "last_updated": "20260517"
+    },
+    "100639": {
+      "room_name": "1A106",
+      "current_balance": 72.82,
+      "last_updated": "20260517"
+    },
+    "101223": {
+      "room_name": "1A102",
+      "current_balance": 10.82,
+      "last_updated": "20260517"
+    },
+    "100706": {
+      "room_name": "A112",
+      "current_balance": 243.9,
       "last_updated": "20260517"
     }
   }

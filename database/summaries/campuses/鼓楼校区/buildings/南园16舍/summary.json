@@ -1,11 +1,11 @@
 {
   "building": "南园16舍",
   "campus": "鼓楼校区",
-  "total_rooms": 23,
+  "total_rooms": 27,
   "rooms": {
     "98012": {
       "room_name": "322",
-      "current_balance": 70.82,
+      "current_balance": 70.74,
       "last_updated": "20260517"
     },
     "83304": {
@@ -15,42 +15,42 @@
     },
     "97807": {
       "room_name": "512",
-      "current_balance": 23.24,
+      "current_balance": 21.08,
       "last_updated": "20260517"
     },
     "91437": {
       "room_name": "218",
-      "current_balance": 119.92,
+      "current_balance": 119.01,
       "last_updated": "20260517"
     },
     "83634": {
       "room_name": "220",
-      "current_balance": 14.57,
+      "current_balance": 12.89,
       "last_updated": "20260517"
     },
     "94338": {
       "room_name": "212",
-      "current_balance": 24.47,
+      "current_balance": 22.57,
       "last_updated": "20260517"
     },
     "92059": {
       "room_name": "414",
-      "current_balance": 37.98,
+      "current_balance": 37.58,
       "last_updated": "20260517"
     },
     "93114": {
       "room_name": "222",
-      "current_balance": 24.67,
+      "current_balance": 22.54,
       "last_updated": "20260517"
     },
     "84487": {
       "room_name": "510",
-      "current_balance": 58.86,
+      "current_balance": 54.23,
       "last_updated": "20260517"
     },
     "92130": {
       "room_name": "606",
-      "current_balance": 267.89,
+      "current_balance": 265.36,
       "last_updated": "20260517"
     },
     "93107": {
@@ -60,47 +60,47 @@
     },
     "84014": {
       "room_name": "502",
-      "current_balance": 34.59,
+      "current_balance": 34.18,
       "last_updated": "20260517"
     },
     "88706": {
       "room_name": "602",
-      "current_balance": 174.3,
+      "current_balance": 172.18,
       "last_updated": "20260517"
     },
     "97569": {
       "room_name": "426",
-      "current_balance": 42.99,
+      "current_balance": 37.93,
       "last_updated": "20260517"
     },
     "96236": {
       "room_name": "608",
-      "current_balance": 14.28,
+      "current_balance": 14.19,
       "last_updated": "20260517"
     },
     "96364": {
       "room_name": "402",
-      "current_balance": 300.97,
+      "current_balance": 299.38,
       "last_updated": "20260517"
     },
     "92810": {
       "room_name": "612",
-      "current_balance": 182.73,
+      "current_balance": 178.94,
       "last_updated": "20260517"
     },
     "98371": {
       "room_name": "518",
-      "current_balance": 35.76,
+      "current_balance": 26.85,
       "last_updated": "20260517"
     },
     "17658": {
       "room_name": "610",
-      "current_balance": 82.14,
+      "current_balance": 79.3,
       "last_updated": "20260517"
     },
     "88998": {
       "room_name": "312",
-      "current_balance": 17.1,
+      "current_balance": 16.99,
       "last_updated": "20260517"
     },
     "95995": {
@@ -110,12 +110,32 @@
     },
     "87788": {
       "room_name": "506",
-      "current_balance": 8.11,
+      "current_balance": 7.65,
       "last_updated": "20260517"
     },
     "91445": {
       "room_name": "416",
-      "current_balance": 294.69,
+      "current_balance": 293.27,
+      "last_updated": "20260517"
+    },
+    "101002": {
+      "room_name": "216",
+      "current_balance": 77.13,
+      "last_updated": "20260517"
+    },
+    "101443": {
+      "room_name": "316",
+      "current_balance": 24.04,
+      "last_updated": "20260517"
+    },
+    "101008": {
+      "room_name": "508",
+      "current_balance": 0.31,
+      "last_updated": "20260517"
+    },
+    "101009": {
+      "room_name": "310",
+      "current_balance": 61.6,
       "last_updated": "20260517"
     }
   }
