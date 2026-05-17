@@ -101,43 +101,44 @@ class QueryError:
     UNKNOWN = "未知错误"
 
 
-async def query_single_with_retry(session: aiohttp.ClientSession, room_id: str, cookies: dict, show_retry: bool = True) -> dict:
+async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp.ClientSession, room_id: str, cookies: dict, show_retry: bool = True) -> dict:
     """带重试的异步查询单个宿舍电费"""
     url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
     last_error = None
 
     for attempt in range(MAX_RETRIES):
         try:
-            async with session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=30)) as response:
-                if response.status == 404:
-                    last_error = {"id": room_id, "error": QueryError.NOT_FOUND, "error_type": "not_found", "success": False}
-                    break
-                elif response.status == 401 or response.status == 403:
-                    last_error = {"id": room_id, "error": QueryError.AUTH_FAILED, "error_type": "auth_failed", "success": False}
-                    break
-                elif response.status >= 500:
-                    last_error = {"id": room_id, "error": f"{QueryError.HTTP_ERROR}({response.status})", "error_type": "http_error", "success": False}
-                elif response.status != 200:
-                    last_error = {"id": room_id, "error": f"{QueryError.HTTP_ERROR}({response.status})", "error_type": "http_error", "success": False}
-                else:
-                    html = await response.text()
-
-                    # 检查是否需要登录
-                    if "login" in html.lower() or "登录" in html:
+            async with semaphore:
+                async with session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=30)) as response:
+                    if response.status == 404:
+                        last_error = {"id": room_id, "error": QueryError.NOT_FOUND, "error_type": "not_found", "success": False}
+                        break
+                    elif response.status == 401 or response.status == 403:
                         last_error = {"id": room_id, "error": QueryError.AUTH_FAILED, "error_type": "auth_failed", "success": False}
                         break
+                    elif response.status >= 500:
+                        last_error = {"id": room_id, "error": f"{QueryError.HTTP_ERROR}({response.status})", "error_type": "http_error", "success": False}
+                    elif response.status != 200:
+                        last_error = {"id": room_id, "error": f"{QueryError.HTTP_ERROR}({response.status})", "error_type": "http_error", "success": False}
+                    else:
+                        html = await response.text()
 
-                    # 解析 HTML
-                    result = parse_html(html)
+                        # 检查是否需要登录
+                        if "login" in html.lower() or "登录" in html:
+                            last_error = {"id": room_id, "error": QueryError.AUTH_FAILED, "error_type": "auth_failed", "success": False}
+                            break
 
-                    # 检查是否解析成功
-                    if not result.get("剩余电量"):
-                        last_error = {"id": room_id, "error": QueryError.PARSE_ERROR, "error_type": "parse_error", "success": False}
-                        raise aiohttp.ClientConnectorError
+                        # 解析 HTML
+                        result = parse_html(html)
 
-                    result["id"] = room_id
-                    result["success"] = True
-                    return result
+                        # 检查是否解析成功
+                        if not result.get("剩余电量"):
+                            last_error = {"id": room_id, "error": QueryError.PARSE_ERROR, "error_type": "parse_error", "success": False}
+                            raise aiohttp.ClientConnectorError
+
+                        result["id"] = room_id
+                        result["success"] = True
+                        return result
 
         except asyncio.TimeoutError:
             last_error = {"id": room_id, "error": QueryError.TIMEOUT, "error_type": "timeout", "success": False}
@@ -190,8 +191,7 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
 
     # 包装查询函数，使用信号量控制并发
     async def limited_query(session, room_id):
-        async with semaphore:
-            return await query_single_with_retry(session, room_id, cookies, show_progress)
+        return await query_single_with_retry(semaphore, session, room_id, cookies, show_progress)
 
     connector = aiohttp.TCPConnector(limit=max_concurrent)
     async with aiohttp.ClientSession(connector=connector) as session:
@@ -212,6 +212,8 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
                 pending.add(asyncio.create_task(task))
             except StopAsyncIteration:
                 break
+        # async for coro in tasks_gen:
+            # pending.add(asyncio.create_task(coro))
 
         # 处理完成的任务，同时补充新任务
         while pending:
