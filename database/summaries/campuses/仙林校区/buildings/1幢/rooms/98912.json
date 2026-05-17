@@ -3,10 +3,11 @@
   "room_name": "B114",
   "campus": "仙林校区",
   "building": "1幢",
-  "current_balance": 161.51,
+  "current_balance": 161.0,
   "balance_history": {
     "20260515": 162.06,
-    "20260516": 161.51
+    "20260516": 161.51,
+    "20260517": 161.0
   },
-  "last_updated": "20260516"
+  "last_updated": "20260517"
 }

@@ -3,10 +3,11 @@
   "room_name": "21栋第3层323",
   "campus": "仙林校区",
   "building": "21幢",
-  "current_balance": 5.15,
+  "current_balance": 0.0,
   "balance_history": {
     "20260515": 9.88,
-    "20260516": 5.15
+    "20260516": 5.15,
+    "20260517": 0.0
   },
-  "last_updated": "20260516"
+  "last_updated": "20260517"
 }

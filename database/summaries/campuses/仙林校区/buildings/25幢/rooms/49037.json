@@ -3,10 +3,11 @@
   "room_name": "25栋第5层504",
   "campus": "仙林校区",
   "building": "25幢",
-  "current_balance": 0.0,
+  "current_balance": 0.66,
   "balance_history": {
     "20260515": 3.14,
-    "20260516": 0.0
+    "20260516": 0.0,
+    "20260517": 0.66
   },
-  "last_updated": "20260516"
+  "last_updated": "20260517"
 }

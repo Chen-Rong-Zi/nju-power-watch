@@ -3,10 +3,11 @@
   "room_name": "甲205",
   "campus": "苏州校区",
   "building": "勇园-甲",
-  "current_balance": 65.54,
+  "current_balance": 65.0,
   "balance_history": {
     "20260515": 65.87,
-    "20260516": 65.54
+    "20260516": 65.54,
+    "20260517": 65.0
   },
-  "last_updated": "20260516"
+  "last_updated": "20260517"
 }
