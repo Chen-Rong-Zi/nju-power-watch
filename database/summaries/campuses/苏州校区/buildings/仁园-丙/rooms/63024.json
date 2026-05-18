@@ -3,11 +3,12 @@
   "room_name": "丙509",
   "campus": "苏州校区",
   "building": "仁园-丙",
-  "current_balance": 165.39,
+  "current_balance": 165.0,
   "balance_history": {
     "20260515": 166.47,
     "20260516": 165.98,
-    "20260517": 165.39
+    "20260517": 165.39,
+    "20260518": 165.0
   },
-  "last_updated": "20260517"
+  "last_updated": "20260518"
 }

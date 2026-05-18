@@ -3,15 +3,15 @@
   "campus": "仙林校区",
   "total_rooms": 2,
   "rooms": {
-    "97183": {
-      "room_name": "九食堂 江南小镇（325门口）",
-      "current_balance": 74.54,
-      "last_updated": "20260517"
-    },
     "101782": {
       "room_name": "麦当劳冷库",
-      "current_balance": 6662.17,
-      "last_updated": "20260517"
+      "current_balance": 6642.02,
+      "last_updated": "20260518"
+    },
+    "97183": {
+      "room_name": "九食堂 江南小镇（325门口）",
+      "current_balance": 73.89,
+      "last_updated": "20260518"
     }
   }
 }

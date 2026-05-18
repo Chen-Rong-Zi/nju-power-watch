@@ -3,11 +3,12 @@
   "room_name": "617",
   "campus": "浦口校区",
   "building": "13栋宿舍",
-  "current_balance": 299.1,
+  "current_balance": 299.0,
   "balance_history": {
     "20260515": 303.8,
     "20260516": 303.2,
-    "20260517": 299.1
+    "20260517": 299.1,
+    "20260518": 299.0
   },
-  "last_updated": "20260517"
+  "last_updated": "20260518"
 }

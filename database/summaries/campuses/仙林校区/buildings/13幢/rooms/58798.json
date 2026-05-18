@@ -3,11 +3,12 @@
   "room_name": "408房间",
   "campus": "仙林校区",
   "building": "13幢",
-  "current_balance": 819.67,
+  "current_balance": 819.0,
   "balance_history": {
     "20260515": 828.21,
     "20260516": 825.57,
-    "20260517": 819.67
+    "20260517": 819.67,
+    "20260518": 819.0
   },
-  "last_updated": "20260517"
+  "last_updated": "20260518"
 }

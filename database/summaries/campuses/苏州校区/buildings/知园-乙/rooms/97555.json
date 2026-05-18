@@ -3,11 +3,12 @@
   "room_name": "乙605",
   "campus": "苏州校区",
   "building": "知园-乙",
-  "current_balance": 29.37,
+  "current_balance": 29.0,
   "balance_history": {
     "20260515": 30.47,
     "20260516": 29.94,
-    "20260517": 29.37
+    "20260517": 29.37,
+    "20260518": 29.0
   },
-  "last_updated": "20260517"
+  "last_updated": "20260518"
 }

@@ -3,11 +3,12 @@
   "room_name": "222",
   "campus": "鼓楼校区",
   "building": "陶园二栋",
-  "current_balance": 810.35,
+  "current_balance": 810.0,
   "balance_history": {
     "20260515": 817.59,
     "20260516": 814.83,
-    "20260517": 810.35
+    "20260517": 810.35,
+    "20260518": 810.0
   },
-  "last_updated": "20260517"
+  "last_updated": "20260518"
 }
