@@ -66,3 +66,23 @@ Thumbs.db
 htmlcov/
 .tox/
 .hypothesis/
+
+# Node.js / JavaScript (for frontend analytics features)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+dist/
+build/
+.cache/
+.parcel-cache/
+.npm
+.eslintcache
+
+# Frontend build artifacts
+*.min.js
+*.min.css
+.source_map/
