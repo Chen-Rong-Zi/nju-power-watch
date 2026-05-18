@@ -77,6 +77,8 @@ function createRankingCard(rank, index) {
     var card = document.createElement('div');
     card.className = 'ranking-card';
     card.dataset.roomId = rank.roomId;
+    card.dataset.roomName = rank.roomName;
+    card.style.cursor = 'pointer';
 
     var isTop3 = index < 3;
     card.innerHTML =
@@ -87,7 +89,42 @@ function createRankingCard(rank, index) {
         '</div>' +
         '<div class="rank-value">' + formatValue(rank.currentBalance) + ' 度</div>';
 
+    // T032: Add click-to-detail navigation
+    card.addEventListener('click', function() {
+        navigateToRoomDetail(rank.roomId, rank.roomName);
+    });
+
     return card;
+}
+
+/**
+ * T032: Navigate to room detail page
+ * Sets the room selection and navigates to home page to show details
+ */
+function navigateToRoomDetail(roomId, roomName) {
+    // Get current selections
+    var campusSelect = document.getElementById('rankings-campus-select');
+    var buildingSelect = document.getElementById('rankings-building-select');
+
+    if (!campusSelect || !buildingSelect) return;
+
+    var campus = campusSelect.value;
+    var building = buildingSelect.value;
+
+    if (!campus || !building) return;
+
+    // Store navigation info in state for the home page to pick up
+    if (typeof state !== 'undefined') {
+        state.pendingRoomNavigation = {
+            campus: campus,
+            building: building,
+            roomId: roomId,
+            roomName: roomName
+        };
+    }
+
+    // Navigate to home page which will handle the room selection
+    window.location.hash = '/';
 }
 
 function formatValue(value) {

@@ -285,6 +285,22 @@ function initWarningsPageContent(container) {
                     '<p>加载预警数据...</p>' +
                 '</div>' +
             '</div>' +
+
+            // T096: Subscription management section
+            '<div class="analytics-card" style="margin-top: 30px;">' +
+                '<h3>🔔 我的订阅</h3>' +
+                '<div id="subscription-management">' +
+                    '<p style="color: #666;">选择房间后可订阅预警通知</p>' +
+                '</div>' +
+            '</div>' +
+
+            // T097: Alert history section
+            '<div class="analytics-card" style="margin-top: 20px;">' +
+                '<h3>📋 预警历史</h3>' +
+                '<div id="alert-history-container">' +
+                    '<p style="color: #666;">暂无预警记录</p>' +
+                '</div>' +
+            '</div>' +
         '</div>';
 
     // Add filter handlers
@@ -300,7 +316,70 @@ function initWarningsPageContent(container) {
 
     // Load data
     loadWarningsData();
+    loadSubscriptionManagement();
+    loadAlertHistory();
 }
+
+/**
+ * T096: Load subscription management UI
+ */
+function loadSubscriptionManagement() {
+    var container = document.getElementById('subscription-management');
+    if (!container) return;
+
+    var subscriptions = [];
+    if (typeof getAlertSubscriptions === 'function') {
+        subscriptions = getAlertSubscriptions();
+    }
+
+    if (subscriptions.length === 0) {
+        container.innerHTML = '<p style="color: #666;">暂无订阅，请在房间详情页订阅预警</p>';
+        return;
+    }
+
+    var html = '<div style="display: flex; flex-direction: column; gap: 12px;">';
+
+    subscriptions.forEach(function(sub) {
+        html +=
+            '<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px;">' +
+                '<div>' +
+                    '<div style="font-weight: 600;">' + sub.roomName + '</div>' +
+                    '<div style="font-size: 0.85rem; color: #666;">' + sub.campus + ' - ' + sub.building + '</div>' +
+                '</div>' +
+                '<button class="btn" onclick="unsubscribeFromWarnings(\'' + sub.roomId + '\')">取消订阅</button>' +
+            '</div>';
+    });
+
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+/**
+ * Unsubscribe from warnings
+ */
+function unsubscribeFromWarnings(roomId) {
+    if (typeof removeAlertSubscription === 'function') {
+        removeAlertSubscription(roomId);
+        loadSubscriptionManagement();
+    }
+}
+
+/**
+ * T097: Load alert history
+ */
+function loadAlertHistory() {
+    var container = document.getElementById('alert-history-container');
+    if (!container) return;
+
+    if (typeof createAlertHistoryDisplay === 'function') {
+        container.innerHTML = createAlertHistoryDisplay();
+    } else {
+        container.innerHTML = '<p style="color: #666;">暂无预警记录</p>';
+    }
+}
+
+// Make functions globally available
+window.unsubscribeFromWarnings = unsubscribeFromWarnings;
 
 // Make filterWarnings available globally
 window.filterWarnings = filterWarnings;

@@ -323,49 +323,173 @@ async function loadBuildingHeatmap(campus, building) {
 
         container.innerHTML = '<h3 style="margin-bottom: 15px;">🏢 楼层用电分布</h3>';
 
-        // Create simple floor visualization
-        var floorContainer = document.createElement('div');
-        floorContainer.style.display = 'flex';
-        floorContainer.style.flexDirection = 'column';
-        floorContainer.style.gap = '8px';
-
-        // Calculate min/max for color mapping
-        var balances = floorList.map(function(f) { return f.avgBalance; });
-        var minBalance = Math.min.apply(null, balances);
-        var maxBalance = Math.max.apply(null, balances);
-
-        floorList.forEach(function(floor) {
-            var ratio = maxBalance === minBalance ? 0.5 : (floor.avgBalance - minBalance) / (maxBalance - minBalance);
-
-            // Green to Yellow to Red
-            var color;
-            if (ratio < 0.5) {
-                var g = 174;
-                var r = Math.floor(255 * (ratio * 2));
-                color = 'rgb(' + r + ', ' + g + ', 86)';
-            } else {
-                var r = 255;
-                var g = Math.floor(174 * (1 - (ratio - 0.5) * 2));
-                color = 'rgb(' + r + ', ' + g + ', 86)';
-            }
-
-            var floorDiv = document.createElement('div');
-            floorDiv.style.cssText = 'padding: 15px; border-radius: 8px; background: ' + color + '; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;';
-            floorDiv.innerHTML = floor.floor + '层 - 平均余额: ' + floor.avgBalance.toFixed(1) + '度 (' + floor.roomCount + '间)';
-
-            floorDiv.addEventListener('click', function() {
-                showFloorRoomsModal(floor);
-            });
-
-            floorContainer.appendChild(floorDiv);
-        });
-
-        container.appendChild(floorContainer);
+        // T038: Try to use ECharts for heatmap visualization
+        if (typeof echarts !== 'undefined' && floorList.length >= 3) {
+            createEChartsHeatmap(container, floorList);
+        } else {
+            // Fallback to simple div visualization
+            createSimpleHeatmap(container, floorList);
+        }
 
     } catch (error) {
         console.error('Error loading building heatmap:', error);
         container.innerHTML = '<div class="empty-state"><p>加载失败</p></div>';
     }
+}
+
+/**
+ * T038: Create ECharts heatmap visualization
+ */
+function createEChartsHeatmap(container, floorList) {
+    // Create chart container
+    var chartContainer = document.createElement('div');
+    chartContainer.id = 'echarts-heatmap';
+    chartContainer.style.width = '100%';
+    chartContainer.style.height = Math.max(300, floorList.length * 40) + 'px';
+    container.appendChild(chartContainer);
+
+    // Prepare data for ECharts
+    var floorNumbers = floorList.map(function(f) { return f.floor + '层'; });
+    var avgBalances = floorList.map(function(f) { return f.avgBalance.toFixed(1); });
+    var roomCounts = floorList.map(function(f) { return f.roomCount; });
+
+    // Calculate color range
+    var minBalance = Math.min.apply(null, floorList.map(function(f) { return f.avgBalance; }));
+    var maxBalance = Math.max.apply(null, floorList.map(function(f) { return f.avgBalance; }));
+
+    // Initialize ECharts
+    var chart = echarts.init(chartContainer);
+
+    var option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' },
+            formatter: function(params) {
+                var data = params[0];
+                var floor = floorList[data.dataIndex];
+                return '<strong>' + floor.floor + '层</strong><br/>' +
+                       '平均余额: ' + floor.avgBalance.toFixed(1) + ' 度<br/>' +
+                       '房间数: ' + floor.roomCount + ' 间';
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            name: '平均余额 (度)',
+            axisLabel: { formatter: '{value}' }
+        },
+        yAxis: {
+            type: 'category',
+            data: floorNumbers.reverse(),
+            axisLabel: { fontWeight: 'bold' }
+        },
+        series: [{
+            name: '平均余额',
+            type: 'bar',
+            data: avgBalances.reverse().map(function(val, idx) {
+                var floor = floorList[floorList.length - 1 - idx];
+                var ratio = maxBalance === minBalance ? 0.5 :
+                    (floor.avgBalance - minBalance) / (maxBalance - minBalance);
+
+                // Color gradient: red (low) -> yellow -> green (high)
+                var color;
+                if (ratio < 0.5) {
+                    var r = 231;
+                    var g = Math.floor(76 + 149 * ratio * 2);
+                    var b = 60;
+                    color = 'rgb(' + r + ',' + g + ',' + b + ')';
+                } else {
+                    var r = Math.floor(231 - 178 * (ratio - 0.5) * 2);
+                    var g = 225;
+                    var b = 96;
+                    color = 'rgb(' + r + ',' + g + ',' + b + ')';
+                }
+
+                return {
+                    value: parseFloat(val),
+                    itemStyle: {
+                        color: color,
+                        borderRadius: 4
+                    }
+                };
+            }),
+            barWidth: '60%',
+            label: {
+                show: true,
+                position: 'right',
+                formatter: '{c} 度'
+            },
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)'
+                }
+            }
+        }]
+    };
+
+    chart.setOption(option);
+
+    // Click handler for floor details
+    chart.on('click', function(params) {
+        var floor = floorList[floorList.length - 1 - params.dataIndex];
+        if (floor) {
+            showFloorRoomsModal(floor);
+        }
+    });
+
+    // Resize handler
+    window.addEventListener('resize', function() {
+        chart.resize();
+    });
+}
+
+/**
+ * Simple div-based heatmap (fallback when ECharts not available)
+ */
+function createSimpleHeatmap(container, floorList) {
+    var floorContainer = document.createElement('div');
+    floorContainer.style.display = 'flex';
+    floorContainer.style.flexDirection = 'column';
+    floorContainer.style.gap = '8px';
+
+    var balances = floorList.map(function(f) { return f.avgBalance; });
+    var minBalance = Math.min.apply(null, balances);
+    var maxBalance = Math.max.apply(null, balances);
+
+    floorList.forEach(function(floor) {
+        var ratio = maxBalance === minBalance ? 0.5 : (floor.avgBalance - minBalance) / (maxBalance - minBalance);
+
+        // Green to Yellow to Red
+        var color;
+        if (ratio < 0.5) {
+            var g = 174;
+            var r = Math.floor(255 * (ratio * 2));
+            color = 'rgb(' + r + ', ' + g + ', 86)';
+        } else {
+            var r = 255;
+            var g = Math.floor(174 * (1 - (ratio - 0.5) * 2));
+            color = 'rgb(' + r + ', ' + g + ', 86)';
+        }
+
+        var floorDiv = document.createElement('div');
+        floorDiv.style.cssText = 'padding: 15px; border-radius: 8px; background: ' + color + '; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;';
+        floorDiv.innerHTML = floor.floor + '层 - 平均余额: ' + floor.avgBalance.toFixed(1) + '度 (' + floor.roomCount + '间)';
+
+        floorDiv.addEventListener('click', function() {
+            showFloorRoomsModal(floor);
+        });
+
+        floorContainer.appendChild(floorDiv);
+    });
+
+    container.appendChild(floorContainer);
 }
 
 /**

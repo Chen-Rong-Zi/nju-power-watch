@@ -308,7 +308,154 @@ function displayRoomInfo(roomData) {
     if (roomEl) roomEl.textContent = roomData.room_name;
     if (recordsEl) recordsEl.textContent = Object.keys(roomData.balance_history).length;
 
+    // T022: Add warning badge indicator based on current balance
+    const roomInfoEl = $('room-info');
+    if (roomInfoEl) {
+        // Remove existing warning badge
+        const existingBadge = roomInfoEl.querySelector('.warning-indicator');
+        if (existingBadge) existingBadge.remove();
+
+        const balance = roomData.current_balance || Object.values(roomData.balance_history).pop() || 0;
+        let warningLevel = null;
+        let warningText = null;
+
+        if (balance < 10) {
+            warningLevel = 'red';
+            warningText = '🔴 紧急: 余额严重不足';
+        } else if (balance < 30) {
+            warningLevel = 'orange';
+            warningText = '🟠 警告: 余额偏低';
+        } else if (balance < 50) {
+            warningLevel = 'yellow';
+            warningText = '🟡 提醒: 注意用电';
+        }
+
+        if (warningLevel) {
+            const badge = document.createElement('div');
+            badge.className = 'warning-indicator warning-badge ' + warningLevel;
+            badge.style.cssText = 'margin-top: 15px; padding: 10px 16px; border-radius: 8px; font-size: 0.95rem;';
+            badge.textContent = warningText + ' (' + balance.toFixed(1) + '度)';
+            roomInfoEl.appendChild(badge);
+        }
+    }
+
+    // T057/T066: Add recharge suggestions and pattern analysis
+    displayAnalyticsCards(roomData);
+
     show('room-info');
+}
+
+/**
+ * Display analytics cards (recharge suggestions and patterns)
+ */
+function displayAnalyticsCards(roomData) {
+    // Find or create analytics container
+    let analyticsContainer = document.getElementById('analytics-cards-container');
+
+    if (!analyticsContainer) {
+        analyticsContainer = document.createElement('section');
+        analyticsContainer.id = 'analytics-cards-container';
+        analyticsContainer.className = 'analytics-section';
+        analyticsContainer.style.cssText = 'margin-top: 30px;';
+
+        // Insert after chart section
+        const chartSection = $('chart-section');
+        if (chartSection && chartSection.parentNode) {
+            chartSection.parentNode.insertBefore(analyticsContainer, chartSection.nextSibling);
+        }
+    }
+
+    // Clear previous content
+    analyticsContainer.innerHTML = '';
+
+    // Check if we have enough data
+    const historyLength = Object.keys(roomData.balance_history || {}).length;
+    if (historyLength < 7) {
+        analyticsContainer.innerHTML = '<p style="color: #666; text-align: center;">需要至少7天数据才能显示智能分析</p>';
+        return;
+    }
+
+    // Add recharge suggestions card
+    if (typeof createRechargeCard === 'function') {
+        const rechargeCard = document.createElement('div');
+        rechargeCard.innerHTML = createRechargeCard(roomData);
+        analyticsContainer.appendChild(rechargeCard.firstElementChild);
+    }
+
+    // Add pattern analysis card
+    if (typeof createPatternDisplay === 'function') {
+        const patternCard = document.createElement('div');
+        patternCard.innerHTML = createPatternDisplay(roomData);
+        analyticsContainer.appendChild(patternCard.firstElementChild);
+
+        // Initialize radar chart if ECharts is available
+        if (typeof analyzePatterns === 'function' && typeof initPatternRadarChart === 'function') {
+            const analysis = analyzePatterns(roomData);
+            setTimeout(function() {
+                initPatternRadarChart(analysis);
+            }, 100);
+        }
+    }
+
+    // T085: Add cost prediction card
+    if (typeof createCostPredictionCard === 'function') {
+        const costCard = document.createElement('div');
+        costCard.innerHTML = createCostPredictionCard(roomData);
+        analyticsContainer.appendChild(costCard.firstElementChild);
+    }
+
+    // T088: Add saving suggestions
+    if (typeof createSavingSuggestionsCard === 'function') {
+        const savingCard = document.createElement('div');
+        savingCard.innerHTML = createSavingSuggestionsCard(roomData);
+        analyticsContainer.appendChild(savingCard.firstElementChild);
+    }
+
+    // T095: Add subscription button
+    if (typeof createSubscriptionButton === 'function') {
+        const subDiv = document.createElement('div');
+        subDiv.innerHTML = createSubscriptionButton(
+            roomData.campus,
+            roomData.building,
+            roomData.room_id,
+            roomData.room_name
+        );
+        analyticsContainer.appendChild(subDiv.firstElementChild);
+    }
+
+    // T106: Add achievements display
+    if (typeof createAchievementsDisplay === 'function') {
+        // Load building data for comparison
+        loadBuildingDataForAchievements(roomData.campus, roomData.building, roomData);
+    }
+
+    // T107: Add challenges display
+    if (typeof createChallengesDisplay === 'function') {
+        const challengeDiv = document.createElement('div');
+        challengeDiv.innerHTML = createChallengesDisplay(roomData);
+        analyticsContainer.appendChild(challengeDiv.firstElementChild);
+    }
+}
+
+/**
+ * Load building data for achievements comparison
+ */
+async function loadBuildingDataForAchievements(campus, building, roomData) {
+    try {
+        const resp = await fetch('./database/summaries/campuses/' + campus + '/buildings/' + building + '/summary.json');
+        const buildingData = await resp.json();
+
+        if (typeof createAchievementsDisplay === 'function') {
+            const analyticsContainer = document.getElementById('analytics-cards-container');
+            if (analyticsContainer) {
+                const achievementDiv = document.createElement('div');
+                achievementDiv.innerHTML = createAchievementsDisplay(roomData, buildingData);
+                analyticsContainer.appendChild(achievementDiv.firstElementChild);
+            }
+        }
+    } catch (e) {
+        console.error('Error loading building data for achievements:', e);
+    }
 }
 
 function updateChart(roomData, days) {
@@ -509,6 +656,41 @@ function showHomePage() {
 
     const navMenu = document.querySelector('.nav-menu');
     if (navMenu) navMenu.style.display = 'flex';
+
+    // T032: Handle pending room navigation from rankings
+    if (state.pendingRoomNavigation) {
+        var nav = state.pendingRoomNavigation;
+        state.pendingRoomNavigation = null;
+
+        // Set campus
+        var campusSelect = $('campus-select');
+        if (campusSelect) {
+            campusSelect.value = nav.campus;
+            // Trigger change event
+            var event = new Event('change');
+            campusSelect.dispatchEvent(event);
+
+            // Wait for buildings to load, then set building and room
+            setTimeout(async function() {
+                var buildingSelect = $('building-select');
+                if (buildingSelect) {
+                    buildingSelect.value = nav.building;
+                    var buildingEvent = new Event('change');
+                    buildingSelect.dispatchEvent(buildingEvent);
+
+                    // Wait for rooms to load, then set room
+                    setTimeout(async function() {
+                        var roomSelect = $('room-select');
+                        if (roomSelect) {
+                            roomSelect.value = nav.roomId;
+                            var roomEvent = new Event('change');
+                            roomSelect.dispatchEvent(roomEvent);
+                        }
+                    }, 500);
+                }
+            }, 300);
+        }
+    }
 }
 
 function updateNavActive(page) {
