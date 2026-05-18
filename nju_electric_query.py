@@ -24,7 +24,7 @@ from typing import Optional
 DEFAULT_COOKIE_FILE = "/tmp/cookie.json"
 
 # 重试配置
-MAX_RETRIES = 3
+MAX_RETRIES = 5
 RETRY_DELAY = 2  # 失败后等待秒数
 RETRY_BACKOFF = 1.5  # 指数退避倍数
 
@@ -204,16 +204,16 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
         tasks_gen = task_generator()
         pending = set()
 
-        # 初始填充：先提交一批任务
-        batch_size = max_concurrent * 2
-        for _ in range(min(batch_size, total)):
-            try:
-                task = await tasks_gen.__anext__()
-                pending.add(asyncio.create_task(task))
-            except StopAsyncIteration:
-                break
-        # async for coro in tasks_gen:
-            # pending.add(asyncio.create_task(coro))
+        # # 初始填充：先提交一批任务
+        # batch_size = max_concurrent * 2
+        # for _ in range(min(batch_size, total)):
+        #     try:
+        #         task = await tasks_gen.__anext__()
+        #         pending.add(asyncio.create_task(task))
+        #     except StopAsyncIteration:
+        #         break
+        async for coro in tasks_gen:
+            pending.add(asyncio.create_task(coro))
 
         # 处理完成的任务，同时补充新任务
         while pending:

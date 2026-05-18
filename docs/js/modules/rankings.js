@@ -27,7 +27,10 @@ function calculateRankings(buildingData, category, days) {
     });
 
     // Sort by rank value
-    var sortOrder = category === 'savers' || category === 'low' ? 'asc' : 'desc';
+    // - low (余额不足): 升序，余额低的排前面
+    // - savers (节能模范): 降序，余额高的排前面
+    // - high (高耗电): 降序，rankValue = 500 - balance，余额低的排前面
+    var sortOrder = category === 'low' ? 'asc' : 'desc';
     rankedRooms.sort(function(a, b) {
         if (sortOrder === 'desc') return b.rankValue - a.rankValue;
         return a.rankValue - b.rankValue;
