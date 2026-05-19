@@ -209,3 +209,171 @@ function selectRechargeAmount(amount) {
 
 // Make function available globally
 window.selectRechargeAmount = selectRechargeAmount;
+
+// ============================================================================
+// T023: Consumption-based Recharge Display Utilities
+// ============================================================================
+
+/**
+ * Format recharge event for display in consumption perspective.
+ * @param {Object} event - Recharge event object
+ * @returns {string} - Formatted string
+ */
+function formatRechargeEventForConsumption(event) {
+    if (!event) return '无充值记录';
+
+    var amount = (event.recharge_amount || 0).toFixed(1) + ' kWh';
+    var date = event.estimated_date || '未知日期';
+    var confidence = formatRechargeConfidence(event.confidence);
+
+    return date + ': ' + amount + ' (' + confidence + ')';
+}
+
+/**
+ * Format confidence level for display.
+ * @param {string} confidence - Confidence level (high/medium/low)
+ * @returns {string} - Formatted confidence string
+ */
+function formatRechargeConfidence(confidence) {
+    var labels = {
+        high: '高置信度',
+        medium: '中置信度',
+        low: '低置信度'
+    };
+    return labels[confidence] || '未知';
+}
+
+/**
+ * Calculate recharge statistics from events.
+ * @param {Object[]} events - Array of recharge events
+ * @returns {Object} - Statistics object
+ */
+function calculateRechargeStatsFromEvents(events) {
+    if (!events || events.length === 0) {
+        return {
+            total: 0,
+            count: 0,
+            average: 0,
+            lastRecharge: null
+        };
+    }
+
+    var total = 0;
+    for (var i = 0; i < events.length; i++) {
+        total += events[i].recharge_amount || 0;
+    }
+
+    var count = events.length;
+    var average = total / count;
+
+    // Sort by date descending
+    var sorted = events.slice().sort(function(a, b) {
+        return (b.estimated_date || '').localeCompare(a.estimated_date || '');
+    });
+
+    return {
+        total: total,
+        count: count,
+        average: average,
+        lastRecharge: sorted[0] || null,
+        firstRecharge: sorted[sorted.length - 1] || null
+    };
+}
+
+/**
+ * Create recharge history table HTML for consumption perspective.
+ * @param {Object[]} events - Recharge events
+ * @param {number} limit - Maximum rows to show
+ * @returns {string} - HTML string
+ */
+function createConsumptionRechargeTable(events, limit) {
+    limit = limit || 10;
+    if (!events || events.length === 0) {
+        return '<p class="empty-message">暂无充值记录</p>';
+    }
+
+    var sorted = events.slice()
+        .sort(function(a, b) {
+            return (b.estimated_date || '').localeCompare(a.estimated_date || '');
+        })
+        .slice(0, limit);
+
+    var rows = '';
+    for (var i = 0; i < sorted.length; i++) {
+        var event = sorted[i];
+        var date = event.estimated_date || '--';
+        var amount = (event.recharge_amount || 0).toFixed(1);
+        var balanceBefore = (event.balance_before || 0).toFixed(1);
+        var balanceAfter = (event.balance_after || 0).toFixed(1);
+        var confidenceClass = 'confidence--' + (event.confidence || 'low');
+
+        rows += '<tr class="recharge-row">' +
+            '<td class="date-cell">' + date + '</td>' +
+            '<td class="amount-cell">' + amount + ' kWh</td>' +
+            '<td class="balance-cell">' + balanceBefore + ' → ' + balanceAfter + '</td>' +
+            '<td class="confidence-cell"><span class="confidence-badge ' + confidenceClass + '">' +
+                formatRechargeConfidence(event.confidence) + '</span></td>' +
+        '</tr>';
+    }
+
+    return '<table class="recharge-table">' +
+        '<thead><tr><th>日期</th><th>充值量</th><th>余额变化</th><th>置信度</th></tr></thead>' +
+        '<tbody>' + rows + '</tbody></table>';
+}
+
+/**
+ * Create recharge summary card HTML for consumption perspective.
+ * @param {Object} stats - Recharge statistics
+ * @returns {string} - HTML string
+ */
+function createConsumptionRechargeSummaryCard(stats) {
+    if (!stats || stats.count === 0) {
+        return '<div class="recharge-summary-card">' +
+            '<h3>充值统计</h3>' +
+            '<p class="empty-message">暂无充值记录</p>' +
+        '</div>';
+    }
+
+    var lastRechargeHtml = '';
+    if (stats.lastRecharge) {
+        lastRechargeHtml = '<div class="summary-stat">' +
+            '<span class="stat-label">最近充值</span>' +
+            '<span class="stat-value">' + (stats.lastRecharge.estimated_date || '--') + '</span>' +
+        '</div>';
+    }
+
+    return '<div class="recharge-summary-card">' +
+        '<h3>充值统计</h3>' +
+        '<div class="summary-stats">' +
+            '<div class="summary-stat">' +
+                '<span class="stat-label">总充值量</span>' +
+                '<span class="stat-value">' + stats.total.toFixed(1) + ' kWh</span>' +
+            '</div>' +
+            '<div class="summary-stat">' +
+                '<span class="stat-label">充值次数</span>' +
+                '<span class="stat-value">' + stats.count + ' 次</span>' +
+            '</div>' +
+            '<div class="summary-stat">' +
+                '<span class="stat-label">平均充值</span>' +
+                '<span class="stat-value">' + stats.average.toFixed(1) + ' kWh</span>' +
+            '</div>' +
+            lastRechargeHtml +
+        '</div>' +
+    '</div>';
+}
+
+// Export for ES6 modules if supported
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        calculateDaysUntilEmpty: calculateDaysUntilEmpty,
+        calculateDailyConsumption: calculateDailyConsumption,
+        generateRechargeSuggestions: generateRechargeSuggestions,
+        createRechargeCard: createRechargeCard,
+        // New consumption-based functions
+        formatRechargeEventForConsumption: formatRechargeEventForConsumption,
+        formatRechargeConfidence: formatRechargeConfidence,
+        calculateRechargeStatsFromEvents: calculateRechargeStatsFromEvents,
+        createConsumptionRechargeTable: createConsumptionRechargeTable,
+        createConsumptionRechargeSummaryCard: createConsumptionRechargeSummaryCard
+    };
+}

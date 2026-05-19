@@ -3,6 +3,236 @@
  * Floor electricity consumption heatmap visualization
  */
 
+// ============================================================================
+// T042: Consumption Intensity Heatmap Functions
+// ============================================================================
+
+/**
+ * Calculate floor consumption averages for heatmap.
+ * @param {Object} buildingData - Building aggregate data with floors
+ * @returns {Object} - Floor consumption data
+ */
+function calculateFloorConsumptionAverages(buildingData) {
+    const floors = {};
+
+    if (!buildingData || !buildingData.floors) {
+        return floors;
+    }
+
+    for (const floor of buildingData.floors) {
+        const floorNum = floor.floor_number;
+        floors[floorNum] = {
+            floor: floorNum,
+            roomCount: floor.room_count,
+            totalConsumption: floor.total_consumption,
+            avgConsumption: floor.avg_consumption,
+            anomalyCount: floor.anomaly_rooms ? floor.anomaly_rooms.length : 0
+        };
+    }
+
+    return floors;
+}
+
+/**
+ * Create consumption intensity heatmap using ECharts.
+ * @param {HTMLElement} container - Container element
+ * @param {Object[]} floorsData - Floor consumption data array
+ */
+function createConsumptionIntensityHeatmap(container, floorsData) {
+    if (!container || typeof echarts === 'undefined') return;
+
+    // Clear previous content
+    container.innerHTML = '';
+
+    // Create chart container
+    const chartContainer = document.createElement('div');
+    chartContainer.style.width = '100%';
+    chartContainer.style.height = Math.max(300, floorsData.length * 40) + 'px';
+    container.appendChild(chartContainer);
+
+    // Sort floors by floor number
+    const sortedFloors = [...floorsData].sort((a, b) => a.floor - b.floor);
+
+    // Prepare data
+    const floorLabels = sortedFloors.map(f => f.floor + '层');
+    const consumptionValues = sortedFloors.map(f => f.avgConsumption);
+
+    // Calculate color range
+    const values = consumptionValues.filter(v => v > 0);
+    const minVal = values.length > 0 ? Math.min(...values) : 0;
+    const maxVal = values.length > 0 ? Math.max(...values) : 1;
+
+    // Initialize chart
+    const chart = echarts.init(chartContainer);
+
+    const option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' },
+            formatter: function(params) {
+                const data = params[0];
+                const floor = sortedFloors[data.dataIndex];
+                return '<strong>' + floor.floor + '层</strong><br/>' +
+                       '平均消耗: ' + floor.avgConsumption.toFixed(2) + ' kWh/天<br/>' +
+                       '总消耗: ' + floor.totalConsumption.toFixed(1) + ' kWh<br/>' +
+                       '房间数: ' + floor.roomCount + ' 间' +
+                       (floor.anomalyCount > 0 ? '<br/>异常: ' + floor.anomalyCount + ' 间' : '');
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            name: '平均消耗 (kWh/天)',
+            axisLabel: { formatter: '{value}' }
+        },
+        yAxis: {
+            type: 'category',
+            data: floorLabels.reverse(),
+            axisLabel: { fontWeight: 'bold' }
+        },
+        series: [{
+            name: '平均消耗',
+            type: 'bar',
+            data: consumptionValues.reverse().map((val, idx) => {
+                // Color gradient: green (low) -> yellow -> red (high)
+                let color;
+                if (maxVal === minVal) {
+                    color = '#667eea';
+                } else {
+                    const ratio = (val - minVal) / (maxVal - minVal);
+                    if (ratio < 0.5) {
+                        const g = Math.floor(200 + 55 * ratio * 2);
+                        color = 'rgb(76, ' + g + ', 80)';
+                    } else {
+                        const r = Math.floor(76 + 179 * (ratio - 0.5) * 2);
+                        color = 'rgb(' + r + ', 200, 80)';
+                    }
+                }
+
+                return {
+                    value: val,
+                    itemStyle: {
+                        color: color,
+                        borderRadius: 4
+                    }
+                };
+            }),
+            barWidth: '60%',
+            label: {
+                show: true,
+                position: 'right',
+                formatter: function(params) {
+                    return params.value.toFixed(2) + ' kWh';
+                }
+            },
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)'
+                }
+            }
+        }]
+    };
+
+    chart.setOption(option);
+
+    // Resize handler
+    window.addEventListener('resize', function() {
+        chart.resize();
+    });
+
+    return chart;
+}
+
+/**
+ * Load and display consumption heatmap for a building.
+ * @param {string} campus - Campus name
+ * @param {string} building - Building name
+ * @param {HTMLElement} container - Container element
+ */
+async function loadConsumptionHeatmap(campus, building, container) {
+    if (!container) return;
+
+    container.innerHTML = '<div class="loading"><div class="spinner"></div><p>加载消耗热图...</p></div>';
+
+    try {
+        const response = await fetch('./database/consumption/building/' + campus + '_' + building + '.json');
+        if (!response.ok) {
+            container.innerHTML = '<div class="empty-state"><p>暂无消耗数据</p></div>';
+            return;
+        }
+
+        const buildingData = await response.json();
+        const floorsData = calculateFloorConsumptionAverages(buildingData);
+        const floorList = Object.values(floorsData);
+
+        if (floorList.length === 0) {
+            container.innerHTML = '<div class="empty-state"><p>无法提取楼层数据</p></div>';
+            return;
+        }
+
+        container.innerHTML = '<h3 style="margin-bottom: 15px;">📊 楼层消耗热图</h3>';
+
+        if (typeof echarts !== 'undefined') {
+            createConsumptionIntensityHeatmap(container, floorList);
+        } else {
+            // Fallback to simple visualization
+            createSimpleConsumptionHeatmap(container, floorList);
+        }
+
+    } catch (error) {
+        console.error('Error loading consumption heatmap:', error);
+        container.innerHTML = '<div class="empty-state"><p>加载失败</p></div>';
+    }
+}
+
+/**
+ * Create simple div-based consumption heatmap (fallback).
+ * @param {HTMLElement} container - Container element
+ * @param {Object[]} floorList - Floor data array
+ */
+function createSimpleConsumptionHeatmap(container, floorList) {
+    const floorContainer = document.createElement('div');
+    floorContainer.style.display = 'flex';
+    floorContainer.style.flexDirection = 'column';
+    floorContainer.style.gap = '8px';
+
+    const values = floorList.map(f => f.avgConsumption);
+    const minVal = Math.min(...values);
+    const maxVal = Math.max(...values);
+
+    floorList.forEach(floor => {
+        const ratio = maxVal === minVal ? 0.5 : (floor.avgConsumption - minVal) / (maxVal - minVal);
+
+        // Green to Yellow to Red color
+        let color;
+        if (ratio < 0.5) {
+            const g = 200;
+            const r = Math.floor(76 + 179 * ratio * 2);
+            color = 'rgb(' + r + ', ' + g + ', 80)';
+        } else {
+            const r = 255;
+            const g = Math.floor(255 - 55 * (ratio - 0.5) * 2);
+            color = 'rgb(' + r + ', ' + g + ', 80)';
+        }
+
+        const floorDiv = document.createElement('div');
+        floorDiv.style.cssText = 'padding: 15px; border-radius: 8px; background: ' + color + '; color: white; font-weight: bold; cursor: pointer; transition: transform 0.2s;';
+        floorDiv.innerHTML = floor.floor + '层 - 平均: ' + floor.avgConsumption.toFixed(2) + ' kWh/天 (' + floor.roomCount + '间)' +
+            (floor.anomalyCount > 0 ? ' ⚠️ 异常' + floor.anomalyCount + '间' : '');
+
+        floorContainer.appendChild(floorDiv);
+    });
+
+    container.appendChild(floorContainer);
+}
+
 /**
  * Extract floor number from room name
  * Supports multiple formats based on database analysis (15,104 rooms total):

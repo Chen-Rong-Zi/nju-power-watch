@@ -11,6 +11,14 @@ const WARNING_THRESHOLDS = {
     ABNORMAL: { stdDevMultiplier: 2 }
 };
 
+// T040: Consumption-based warning thresholds
+const CONSUMPTION_THRESHOLDS = {
+    HIGH_RATE: 5.0,        // kWh/day - High consumption rate warning
+    VERY_HIGH_RATE: 8.0,   // kWh/day - Very high consumption warning
+    RAPID_DEPLETION: 3,    // days - Days until depletion for urgent warning
+    ANOMALY_Z_SCORE: 2.0   // Z-score threshold for anomaly detection
+};
+
 // Store all warnings for filtering
 let allWarnings = [];
 
@@ -68,6 +76,236 @@ function detectWarnings(roomData) {
     }
 
     return warnings.sort(function(a, b) { return a.priority - b.priority; });
+}
+
+// ============================================================================
+// T040: Consumption-Based Warning Detection
+// ============================================================================
+
+/**
+ * Detect consumption-based warnings for a room.
+ * @param {Object} roomData - Room data with consumption records
+ * @param {Object} buildingStats - Building statistics for comparison
+ * @returns {Array} - Array of consumption warnings
+ */
+function detectConsumptionWarnings(roomData, buildingStats) {
+    const warnings = [];
+
+    // Get prediction data if available
+    const prediction = roomData.prediction || {};
+    const dailyRate = prediction.daily_rate || 0;
+    const daysUntilDepletion = prediction.days_until_depletion || 999;
+    const isAnomaly = prediction.is_anomaly || false;
+    const zScore = prediction.anomaly_z_score || 0;
+
+    // High consumption rate warning
+    if (dailyRate >= CONSUMPTION_THRESHOLDS.VERY_HIGH_RATE) {
+        warnings.push({
+            level: 'red',
+            type: 'high-consumption',
+            title: '消耗量异常高',
+            message: '日均消耗 ' + dailyRate.toFixed(1) + ' kWh，远超平均水平',
+            roomId: roomData.room_id || roomData.roomId,
+            roomName: roomData.room_name || roomData.roomName,
+            value: dailyRate,
+            priority: 1,
+            category: 'consumption'
+        });
+    } else if (dailyRate >= CONSUMPTION_THRESHOLDS.HIGH_RATE) {
+        warnings.push({
+            level: 'orange',
+            type: 'high-consumption',
+            title: '消耗量偏高',
+            message: '日均消耗 ' + dailyRate.toFixed(1) + ' kWh，建议关注用电',
+            roomId: roomData.room_id || roomData.roomId,
+            roomName: roomData.room_name || roomData.roomName,
+            value: dailyRate,
+            priority: 2,
+            category: 'consumption'
+        });
+    }
+
+    // Rapid depletion warning (will run out soon)
+    if (daysUntilDepletion <= CONSUMPTION_THRESHOLDS.RAPID_DEPLETION && daysUntilDepletion > 0) {
+        warnings.push({
+            level: 'red',
+            type: 'rapid-depletion',
+            title: '电量即将耗尽',
+            message: '按当前消耗速度，仅剩 ' + Math.ceil(daysUntilDepletion) + ' 天电量',
+            roomId: roomData.room_id || roomData.roomId,
+            roomName: roomData.room_name || roomData.roomName,
+            value: daysUntilDepletion,
+            priority: 1,
+            category: 'consumption'
+        });
+    }
+
+    // Anomaly detection warning
+    if (isAnomaly && Math.abs(zScore) >= CONSUMPTION_THRESHOLDS.ANOMALY_Z_SCORE) {
+        const direction = zScore > 0 ? '高于' : '低于';
+        warnings.push({
+            level: Math.abs(zScore) >= 3 ? 'red' : 'orange',
+            type: 'anomaly',
+            title: '消耗模式异常',
+            message: '消耗量 ' + direction + '平均水平 ' + Math.abs(zScore).toFixed(1) + ' 个标准差',
+            roomId: roomData.room_id || roomData.roomId,
+            roomName: roomData.room_name || roomData.roomName,
+            value: zScore,
+            priority: 2,
+            category: 'consumption'
+        });
+    }
+
+    return warnings;
+}
+
+/**
+ * Load consumption-based warnings from building aggregates.
+ * @param {string} campus - Campus name
+ * @param {string} building - Building name
+ * @returns {Promise<Array>} - Array of consumption warnings
+ */
+async function loadConsumptionWarnings(campus, building) {
+    const warnings = [];
+
+    try {
+        const response = await fetch('./database/consumption/building/' + campus + '_' + building + '.json');
+        if (!response.ok) return warnings;
+
+        const data = await response.json();
+        const anomalyRooms = data.anomaly_rooms || [];
+
+        for (const anomaly of anomalyRooms) {
+            const severity = Math.abs(anomaly.z_score) >= 3 ? 'red' : 'orange';
+            const direction = anomaly.z_score > 0 ? '高于' : '低于';
+
+            warnings.push({
+                level: severity,
+                type: 'consumption-anomaly',
+                title: '消耗异常房间',
+                message: anomaly.room_name + ' 消耗量 ' + direction + '平均 ' + Math.abs(anomaly.z_score).toFixed(1) + 'σ',
+                roomId: anomaly.room_id,
+                roomName: anomaly.room_name,
+                value: anomaly.consumption,
+                priority: Math.abs(anomaly.z_score) >= 3 ? 1 : 2,
+                category: 'consumption',
+                campus: campus,
+                building: building
+            });
+        }
+    } catch (error) {
+        console.error('Error loading consumption warnings:', error);
+    }
+
+    return warnings;
+}
+
+/**
+ * Create consumption warning card HTML.
+ * @param {Object} warning - Warning object
+ * @returns {string} - HTML string
+ */
+function createConsumptionWarningCard(warning) {
+    const levelClass = 'warning-card ' + warning.level;
+    const levelLabels = { red: '紧急', orange: '警告', yellow: '提醒' };
+
+    return '<div class="' + levelClass + '" data-room-id="' + warning.roomId + '">' +
+        '<div class="warning-header">' +
+            '<span class="warning-badge ' + warning.level + '">' + (levelLabels[warning.level] || warning.level) + '</span>' +
+            '<span class="warning-room">' + warning.roomName + '</span>' +
+        '</div>' +
+        '<div class="warning-title">' + warning.title + '</div>' +
+        '<div class="warning-details">' + warning.message + '</div>' +
+        (warning.campus ? '<div class="warning-location">' + warning.campus + ' - ' + warning.building + '</div>' : '') +
+    '</div>';
+}
+
+/**
+ * Initialize consumption warnings section.
+ * @param {HTMLElement} container - Container element
+ */
+function initConsumptionWarningsSection(container) {
+    const section = document.createElement('div');
+    section.className = 'consumption-warnings-section';
+    section.innerHTML =
+        '<h3 style="margin-bottom: 15px;">⚡ 消耗量预警</h3>' +
+        '<p style="color: #666; margin-bottom: 15px;">基于消耗数据分析的异常提醒</p>' +
+        '<div id="consumption-warnings-list"></div>';
+
+    container.appendChild(section);
+
+    // Load consumption warnings from all buildings
+    loadAllConsumptionWarnings();
+}
+
+/**
+ * Load consumption warnings from all campuses and buildings.
+ */
+async function loadAllConsumptionWarnings() {
+    const listEl = document.getElementById('consumption-warnings-list');
+    if (!listEl) return;
+
+    listEl.innerHTML = '<div class="loading"><div class="spinner"></div><p>加载消耗预警...</p></div>';
+
+    const allWarnings = [];
+
+    try {
+        // Load overview to get all campuses
+        const overviewResp = await fetch('./database/consumption/overview.json');
+        if (!overviewResp.ok) {
+            listEl.innerHTML = '<p class="empty-message">暂无消耗数据</p>';
+            return;
+        }
+
+        const overview = await overviewResp.json();
+        const campuses = overview.campuses || [];
+
+        // Load warnings from each campus
+        for (const campusSummary of campuses) {
+            const campusResp = await fetch('./database/consumption/campus/' + encodeURIComponent(campusSummary.campus_name) + '.json');
+            if (!campusResp.ok) continue;
+
+            const campusData = await campusResp.json();
+            const buildings = campusData.buildings || [];
+
+            // Check buildings with high anomaly count
+            for (const building of buildings) {
+                if (building.anomaly_count > 0) {
+                    const buildingWarnings = await loadConsumptionWarnings(
+                        campusSummary.campus_name,
+                        building.building_name
+                    );
+                    allWarnings.push(...buildingWarnings);
+                }
+            }
+        }
+
+        // Sort by priority
+        allWarnings.sort((a, b) => a.priority - b.priority);
+
+        // Render warnings
+        if (allWarnings.length === 0) {
+            listEl.innerHTML = '<div class="empty-state"><div class="empty-icon">✅</div><p>所有房间消耗正常</p></div>';
+            return;
+        }
+
+        listEl.innerHTML = '';
+        allWarnings.slice(0, 20).forEach(warning => {
+            const cardDiv = document.createElement('div');
+            cardDiv.innerHTML = createConsumptionWarningCard(warning);
+            listEl.appendChild(cardDiv.firstElementChild);
+        });
+
+        // Add summary
+        const summary = document.createElement('p');
+        summary.style.cssText = 'color: #666; font-size: 0.85rem; margin-top: 15px;';
+        summary.textContent = '共发现 ' + allWarnings.length + ' 个消耗异常房间';
+        listEl.appendChild(summary);
+
+    } catch (error) {
+        console.error('Error loading consumption warnings:', error);
+        listEl.innerHTML = '<p class="error">加载消耗预警失败</p>';
+    }
 }
 
 /**
