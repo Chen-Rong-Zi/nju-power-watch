@@ -225,6 +225,130 @@ const DataService = {
   },
 
   /**
+   * 批量获取房间历史数据（并行请求，带并发控制）
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string[]} roomIds 房间ID列表
+   * @param {number} concurrency 并发数（默认10）
+   * @param {Function} onProgress 进度回调 (loaded, total)
+   */
+  async batchGetRoomHistory(campusName, buildingName, roomIds, concurrency = 10, onProgress = null) {
+    const results = new Map();
+    let loaded = 0;
+
+    // 分批处理
+    for (let i = 0; i < roomIds.length; i += concurrency) {
+      const batch = roomIds.slice(i, i + concurrency);
+
+      // 并行请求当前批次
+      const batchPromises = batch.map(async roomId => {
+        const cacheKey = `${campusName}/${buildingName}/${roomId}`;
+
+        // 检查缓存
+        if (this._roomCache.has(cacheKey)) {
+          loaded++;
+          if (onProgress) onProgress(loaded, roomIds.length);
+          return { roomId, data: this._roomCache.get(cacheKey) };
+        }
+
+        try {
+          const response = await fetch(
+            `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${roomId}.json`
+          );
+          const rawData = await response.json();
+
+          // 转换历史数据
+          const history = [];
+          if (rawData.balance_history) {
+            for (const [date, balance] of Object.entries(rawData.balance_history)) {
+              history.push({
+                date,
+                electricity: balance,
+                formattedDate: this.formatDate(date)
+              });
+            }
+            history.sort((a, b) => a.date.localeCompare(b.date));
+
+            // 计算每日消耗
+            for (let j = 1; j < history.length; j++) {
+              const prev = history[j - 1];
+              const curr = history[j];
+              curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+            }
+          }
+
+          const data = {
+            ...rawData,
+            history,
+            dailyConsumption: history.length > 1 ? history[history.length - 1].consumption : 0,
+            avgConsumption: this.calculateAvgConsumption(history)
+          };
+
+          this._roomCache.set(cacheKey, data);
+          loaded++;
+          if (onProgress) onProgress(loaded, roomIds.length);
+
+          return { roomId, data };
+        } catch (error) {
+          loaded++;
+          if (onProgress) onProgress(loaded, roomIds.length);
+          return { roomId, data: null, error };
+        }
+      });
+
+      // 等待当前批次完成
+      const batchResults = await Promise.all(batchPromises);
+      for (const { roomId, data } of batchResults) {
+        if (data) results.set(roomId, data);
+      }
+    }
+
+    return results;
+  },
+
+  /**
+   * 快速获取楼栋耗电量排行（优化版）
+   * 使用批量并行请求，带并发控制
+   */
+  async getBuildingConsumptionRankingFast(campusName, buildingName, date = null, onProgress = null) {
+    const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
+    if (!buildingSummary || !buildingSummary.rooms) return [];
+
+    const roomIds = Object.keys(buildingSummary.rooms);
+    const roomMap = buildingSummary.rooms;
+
+    // 批量获取房间数据
+    const roomDataMap = await this.batchGetRoomHistory(
+      campusName,
+      buildingName,
+      roomIds,
+      15, // 并发数
+      onProgress
+    );
+
+    // 构建排行数据
+    const rankings = [];
+    for (const roomId of roomIds) {
+      const roomInfo = roomMap[roomId];
+      const roomData = roomDataMap.get(roomId);
+
+      if (roomData && roomData.history && roomData.history.length > 0) {
+        const lastEntry = roomData.history[roomData.history.length - 1];
+        rankings.push({
+          roomId,
+          roomName: roomInfo.room_name,
+          consumption: lastEntry?.consumption || 0,
+          balance: roomInfo.current_balance,
+          avgConsumption: roomData.avgConsumption,
+          history: roomData.history
+        });
+      }
+    }
+
+    return rankings;
+  },
+
+  /**
    * 获取楼栋耗电量排行
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名

@@ -1234,19 +1234,22 @@
       document.getElementById('pagination').style.display = 'none';
       updateCacheStatus('计算中...', true);
 
-      // 获取所有房间
-      const rooms = await DataService.getRooms(state.campus, state.building);
+      // 获取楼栋信息（包含房间列表）
+      const buildingSummary = await DataService.getBuildingSummary(state.campus, state.building);
 
       // 检查是否被取消
       if (thisLoadId !== state.currentLoadId) {
-        console.log('请求已取消（获取房间后）');
+        console.log('请求已取消（获取楼栋后）');
         return;
       }
 
-      if (!rooms || rooms.length === 0) {
+      if (!buildingSummary || !buildingSummary.rooms) {
         showNoDataState('该楼栋暂无房间数据');
         return;
       }
+
+      const roomMap = buildingSummary.rooms;
+      const roomIds = Object.keys(roomMap);
 
       // 如果需要动画，显示进度条和空列表
       const progressEl = document.getElementById('animation-progress');
@@ -1259,61 +1262,65 @@
         listEl.innerHTML = '';
       }
 
-      // 动态前20名列表（用于动画展示）
-      let currentTop20 = [];
+      // 动态前10名列表（用于动画展示）
+      let currentTop10 = [];
       // 所有有效数据
       const allRankings = [];
 
-      // 逐个处理房间，实时更新前20名（快速计算，不阻塞）
-      for (let i = 0; i < rooms.length; i++) {
-        const room = rooms[i];
-        const roomKey = `${state.campus}/${state.building}/${room.id}`;
+      // 使用批量并行请求获取房间数据
+      // 每批15个并行请求，带进度回调
+      const roomDataMap = await DataService.batchGetRoomHistory(
+        state.campus,
+        state.building,
+        roomIds,
+        15, // 并发数
+        (loaded, total) => {
+          // 检查是否被取消
+          if (thisLoadId !== state.currentLoadId) return;
 
-        // 尝试从缓存获取房间历史数据
-        let history = roomDataCache.get(roomKey);
-        if (!history) {
-          history = await DataService.getRoomHistory(state.campus, state.building, room.id);
-          if (history) {
-            roomDataCache.set(roomKey, history);
+          // 更新进度条
+          if (!hasAnimationShown) {
+            const progress = (loaded / total) * 100;
+            progressText.textContent = `正在计算 ${loaded}/${total} 房间...`;
+            progressFill.style.width = progress + '%';
           }
         }
+      );
 
-        // 检查是否被取消
-        if (thisLoadId !== state.currentLoadId) {
-          console.log('请求已取消（计算过程中）');
-          return;
-        }
+      // 检查是否被取消
+      if (thisLoadId !== state.currentLoadId) {
+        console.log('请求已取消（批量获取后）');
+        return;
+      }
+
+      // 处理所有房间数据，计算消耗量
+      for (const roomId of roomIds) {
+        const roomInfo = roomMap[roomId];
+        const roomData = roomDataMap.get(roomId);
 
         // 计算对应日期的消耗量
         let consumption = null;
-        if (history && history.history && history.history.length > 0) {
-          consumption = calculateConsumption(history.history, state.date);
-        }
-
-        // 更新进度条（不阻塞）
-        if (!hasAnimationShown) {
-          const progress = ((i + 1) / rooms.length) * 100;
-          progressText.textContent = `正在计算 ${i + 1}/${rooms.length} 房间...`;
-          progressFill.style.width = progress + '%';
+        if (roomData && roomData.history && roomData.history.length > 0) {
+          consumption = calculateConsumption(roomData.history, state.date);
         }
 
         if (consumption !== null) {
           const item = {
-            room: room.name,
-            roomId: room.id,
+            room: roomInfo.room_name,
+            roomId: roomId,
             consumption: consumption,
-            balance: room.currentBalance,
+            balance: roomInfo.current_balance,
             campus: state.campus,
-            building: state.building
+            building: state.building,
+            history: roomData?.history
           };
           allRankings.push(item);
 
-          // 如果需要动画，实时更新前20名显示（不等待动画）
+          // 如果需要动画，更新前10名显示
           if (!hasAnimationShown) {
-            const inserted = insertIntoTop20(currentTop20, item);
+            const inserted = insertIntoTop10(currentTop10, item);
             if (inserted) {
-              // 只有真正进入前20名时才渲染，高亮新进入的房间
-              renderTop20Immediate(currentTop20, listEl, item.roomId);
+              renderTop10Immediate(currentTop10, listEl, item.roomId);
             }
           }
         }
@@ -1355,31 +1362,31 @@
       updateCacheStatus('已缓存', false);
     }
 
-    // ==================== 将房间插入前20名列表 ====================
-    function insertIntoTop20(top20, item) {
-      // 检查是否应该进入前20名
-      if (top20.length < 20) {
-        top20.push(item);
-        top20.sort((a, b) => b.consumption - a.consumption);
+    // ==================== 将房间插入前10名列表 ====================
+    function insertIntoTop10(top10, item) {
+      // 检查是否应该进入前10名
+      if (top10.length < 10) {
+        top10.push(item);
+        top10.sort((a, b) => b.consumption - a.consumption);
         return true;
       }
       // 检查是否比当前最后一名高
-      const minConsumption = top20[top20.length - 1].consumption;
+      const minConsumption = top10[top10.length - 1].consumption;
       if (item.consumption > minConsumption) {
-        top20.push(item);
-        top20.sort((a, b) => b.consumption - a.consumption);
-        top20.pop(); // 移除最后一名
+        top10.push(item);
+        top10.sort((a, b) => b.consumption - a.consumption);
+        top10.pop(); // 移除最后一名
         return true;
       }
       return false;
     }
 
-    // ==================== 即时渲染前20名（新进入的房间高亮） ====================
-    function renderTop20Immediate(top20, listEl, newRoomId = null) {
-      // 渲染当前前20名
+    // ==================== 即时渲染前10名（新进入的房间高亮） ====================
+    function renderTop10Immediate(top10, listEl, newRoomId = null) {
+      // 渲染当前前10名
       let html = '';
-      for (let i = 0; i < top20.length; i++) {
-        const item = top20[i];
+      for (let i = 0; i < top10.length; i++) {
+        const item = top10[i];
         const rank = i + 1;
         const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
         const isNew = item.roomId === newRoomId;
