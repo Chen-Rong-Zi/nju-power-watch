@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "电费监控系统首页",
+  "entry": "electricity-monitor-index.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-05-20T12:32:27.906Z",
+  "updatedAt": "2026-05-20T12:32:27.858Z",
+  "sourceSkillId": "live-artifact",
+  "metadata": {
+    "identifier": "electricity-monitor-index",
+    "artifactType": "text/html",
+    "inferred": false
+  }
+}

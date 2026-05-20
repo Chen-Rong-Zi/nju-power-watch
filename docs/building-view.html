@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>楼栋视角 · 电费监控</title>
+  <style>
+    :root {
+      --bg: oklch(97% 0.003 250);
+      --surface: oklch(100% 0 0);
+      --fg: oklch(20% 0.015 250);
+      --muted: oklch(50% 0.012 250);
+      --border: oklch(90% 0.006 250);
+      --accent: oklch(55% 0.15 160);
+      --warning: oklch(65% 0.18 50);
+      --danger: oklch(55% 0.20 25);
+      --success: oklch(60% 0.14 145);
+
+      --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+      --font-mono: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
+
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 导航 */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: color-mix(in oklch, var(--bg) 85%, transparent);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topnav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--fg);
+    }
+
+    /* 主内容 */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* 选择器 */
+    .selector-bar {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .selector-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .selector-label {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    .selector {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      font-family: var(--font-body);
+      font-size: 14px;
+      min-width: 160px;
+    }
+    .selector:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* 日期选择器 */
+    .date-selector {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .date-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .date-btn:hover {
+      border-color: var(--accent);
+    }
+    .date-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .date-btn-custom {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .date-btn-custom input {
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      width: 110px;
+      cursor: pointer;
+    }
+    .date-btn-custom input:focus {
+      outline: none;
+    }
+
+    /* 用户位次卡片 */
+    .user-rank-card {
+      background: linear-gradient(135deg, color-mix(in oklch, var(--accent) 12%, transparent), var(--surface));
+      border: 2px solid color-mix(in oklch, var(--accent) 40%, transparent);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      display: none;
+    }
+    .user-rank-card.show { display: block; }
+    .user-rank-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .user-rank-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .user-rank-info h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 4px;
+    }
+    .user-rank-info p {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+    .user-rank-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .user-rank-stat {
+      text-align: center;
+    }
+    .user-rank-stat-value {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .user-rank-stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* 统计摘要 */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 800px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .stat-value.accent { color: var(--accent); }
+
+    /* 排行榜卡片 */
+    .ranking-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .ranking-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .ranking-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0;
+    }
+    .ranking-meta {
+      color: var(--muted);
+      font-size: 13px;
+      font-family: var(--font-mono);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* 缓存指示器 */
+    .cache-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: color-mix(in oklch, var(--success) 12%, transparent);
+      color: var(--success);
+      border-radius: 999px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+    }
+    .cache-indicator.loading {
+      background: color-mix(in oklch, var(--accent) 12%, transparent);
+      color: var(--accent);
+    }
+
+    /* 排序按钮 */
+    .sort-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .sort-btn:hover {
+      border-color: var(--accent);
+    }
+    .sort-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .sort-icon {
+      font-size: 12px;
+      transition: transform 0.2s;
+    }
+    .sort-btn.desc .sort-icon {
+      transform: rotate(180deg);
+    }
+
+    /* 排行项 */
+    .ranking-item {
+      display: grid;
+      grid-template-columns: 60px 1fr 100px;
+      gap: 16px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .ranking-item:last-child {
+      border-bottom: none;
+    }
+    .ranking-item:hover {
+      background: color-mix(in oklch, var(--accent) 5%, transparent);
+      transform: translateX(4px);
+    }
+    .ranking-item.user-room {
+      background: color-mix(in oklch, var(--accent) 10%, transparent);
+      border-left: 4px solid var(--accent);
+    }
+
+    /* 排名徽章 */
+    .rank-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .rank-1 { background: linear-gradient(135deg, #ffd700, #ffb700); color: #7c5e00; }
+    .rank-2 { background: linear-gradient(135deg, #c0c0c0, #a8a8a8); color: #555; }
+    .rank-3 { background: linear-gradient(135deg, #cd7f32, #b8722c); color: #fff; }
+    .rank-other { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+
+    /* 房间信息 */
+    .room-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .room-name {
+      font-weight: 500;
+      font-size: 15px;
+    }
+    .room-id {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* 消耗量 */
+    .consumption {
+      text-align: right;
+    }
+    .consumption-value {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .consumption-unit {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* 排行动画 */
+    .ranking-item.animating {
+      animation: slideInRank 0.4s ease-out forwards;
+    }
+    @keyframes slideInRank {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* 新进入前20名的高亮动画 */
+    .ranking-item.new-entry {
+      animation: highlightNew 1s ease-out;
+      background: linear-gradient(90deg, color-mix(in oklch, var(--accent) 15%, transparent), transparent) !important;
+    }
+    @keyframes highlightNew {
+      0% {
+        background: color-mix(in oklch, var(--accent) 30%, transparent);
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+      100% {
+        background: transparent;
+        transform: scale(1);
+        box-shadow: none;
+      }
+    }
+
+    /* 动画进度条 */
+    .animation-progress {
+      padding: 16px 24px;
+      background: color-mix(in oklch, var(--accent) 5%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+    .animation-progress-text {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .animation-progress-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .animation-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), color-mix(in oklch, var(--accent) 70%, var(--success)));
+      border-radius: 3px;
+      transition: width 0.1s ease;
+    }
+
+    /* 分页 */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .page-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .page-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+    }
+    .page-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .page-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .page-info {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--muted);
+      padding: 0 12px;
+    }
+    .page-jump {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 16px;
+    }
+    .page-jump-input {
+      width: 60px;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      text-align: center;
+    }
+    .page-jump-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* 空状态 */
+    .empty-state {
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .empty-text {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* 无数据状态 */
+    .no-data-state {
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .no-data-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .no-data-text {
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .no-data-hint {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    /* 详情面板 */
+    .detail-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .detail-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .detail-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 600px;
+      height: 100%;
+      background: var(--bg);
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .detail-overlay.show .detail-panel {
+      transform: translateX(0);
+    }
+    .detail-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .detail-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .detail-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0;
+    }
+    .detail-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: var(--border);
+      color: var(--fg);
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .detail-close:hover {
+      background: var(--danger);
+      color: white;
+    }
+    .detail-subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    .detail-content {
+      padding: 24px;
+      flex: 1;
+    }
+    .detail-balance-card {
+      background: linear-gradient(135deg, var(--accent), color-mix(in oklch, var(--accent) 80%, black));
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .detail-balance-label {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+    .detail-balance-value {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 700;
+    }
+    .detail-balance-status {
+      font-size: 13px;
+      margin-top: 8px;
+      opacity: 0.9;
+    }
+    .detail-section {
+      margin-bottom: 24px;
+    }
+    .detail-section-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .detail-chart-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      height: 200px;
+      position: relative;
+    }
+    .detail-chart-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .detail-chart-tab {
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .detail-chart-tab.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .detail-prediction-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .detail-prediction-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .detail-prediction-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .detail-prediction-value {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .detail-prediction-value.warning {
+      color: var(--warning);
+    }
+    .detail-prediction-value.danger {
+      color: var(--danger);
+    }
+    .detail-analogy-card {
+      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .detail-analogy-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .detail-analogy-icon {
+      font-size: 32px;
+    }
+    .detail-analogy-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      color: #166534;
+    }
+    .detail-analogy-text {
+      font-size: 15px;
+      color: #15803d;
+      line-height: 1.6;
+    }
+    .detail-suggestion-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .detail-suggestion-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-suggestion-row:last-child {
+      border-bottom: none;
+    }
+    .detail-suggestion-label {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .detail-suggestion-value {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .detail-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      color: var(--muted);
+    }
+    .detail-loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <span class="logo">⚡ 电费监控</span>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="room-view.html">我的房间</a>
+        <a href="building-view.html" class="active">楼栋视角</a>
+        <a href="campus-view.html">校区视角</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <!-- 选择器 -->
+    <div class="selector-bar">
+      <div class="selector-group">
+        <label class="selector-label">校区</label>
+        <select class="selector" id="campus-select">
+          <option value="">请选择校区</option>
+        </select>
+      </div>
+      <div class="selector-group">
+        <label class="selector-label">楼栋</label>
+        <select class="selector" id="building-select" disabled>
+          <option value="">请先选择校区</option>
+        </select>
+      </div>
+      <div class="selector-group">
+        <label class="selector-label">日期</label>
+        <div class="date-selector">
+          <button class="date-btn active" data-date="today">今日</button>
+          <button class="date-btn" data-date="yesterday">昨日</button>
+          <button class="date-btn" data-date="week">本周平均</button>
+          <div class="date-btn date-btn-custom">
+            <span>📅</span>
+            <input type="date" id="custom-date" title="选择日期">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 用户位次卡片 -->
+    <div class="user-rank-card" id="user-rank-card">
+      <div class="user-rank-header">
+        <div class="user-rank-badge" id="user-rank-badge">--</div>
+        <div class="user-rank-info">
+          <h3>您的房间排名</h3>
+          <p id="user-rank-room">--</p>
+        </div>
+      </div>
+      <div class="user-rank-stats">
+        <div class="user-rank-stat">
+          <div class="user-rank-stat-value" id="user-rank-pos">--</div>
+          <div class="user-rank-stat-label">排名</div>
+        </div>
+        <div class="user-rank-stat">
+          <div class="user-rank-stat-value" id="user-rank-consumption">--</div>
+          <div class="user-rank-stat-label">当日消耗</div>
+        </div>
+        <div class="user-rank-stat">
+          <div class="user-rank-stat-value" id="user-rank-percentile">--</div>
+          <div class="user-rank-stat-label">超过房间</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 统计摘要 -->
+    <div class="stats-row" id="stats-row" style="display: none;">
+      <div class="stat-card">
+        <div class="stat-label">楼栋总消耗</div>
+        <div class="stat-value accent" id="stat-total">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">房间总数</div>
+        <div class="stat-value" id="stat-rooms">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">平均消耗</div>
+        <div class="stat-value" id="stat-avg">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">最高消耗</div>
+        <div class="stat-value" id="stat-max">--</div>
+      </div>
+    </div>
+
+    <!-- 排行榜 -->
+    <div class="ranking-card">
+      <div class="ranking-header">
+        <div>
+          <h2 class="ranking-title">耗电量排行榜</h2>
+          <p class="ranking-meta" id="ranking-meta">按消耗量从高到低排序</p>
+        </div>
+        <div class="header-actions">
+          <button class="sort-btn desc active" id="sort-btn" onclick="toggleSortOrder()">
+            <span class="sort-icon">↓</span>
+            <span id="sort-text">耗电量高→低</span>
+          </button>
+          <div class="cache-indicator" id="cache-status">
+            <span>●</span>
+            <span id="cache-text">等待选择</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 动画进度 -->
+      <div class="animation-progress" id="animation-progress" style="display: none;">
+        <div class="animation-progress-text" id="animation-progress-text">正在计算前 20 名...</div>
+        <div class="animation-progress-bar">
+          <div class="animation-progress-fill" id="animation-progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- 排行榜列表 -->
+      <div class="ranking-list" id="ranking-list"></div>
+
+      <!-- 分页 -->
+      <div class="pagination" id="pagination" style="display: none;">
+        <button class="page-btn" id="first-page" onclick="goToPage(1)">首页</button>
+        <button class="page-btn" id="prev-page" onclick="prevPage()">上一页</button>
+        <span class="page-info" id="page-info">第 1 页 / 共 1 页</span>
+        <button class="page-btn" id="next-page" onclick="nextPage()">下一页</button>
+        <button class="page-btn" id="last-page" onclick="goToPage(-1)">末页</button>
+        <div class="page-jump">
+          <span style="color: var(--muted); font-size: 13px;">跳至</span>
+          <input type="number" class="page-jump-input" id="page-jump-input" min="1" value="1">
+          <span style="color: var(--muted); font-size: 13px;">页</span>
+          <button class="page-btn" onclick="jumpToPage()">跳转</button>
+        </div>
+      </div>
+
+      <!-- 无数据状态 -->
+      <div class="no-data-state" id="no-data-state" style="display: none;">
+        <div class="no-data-icon">📅</div>
+        <div class="no-data-text">该日期暂无数据</div>
+        <div class="no-data-hint" id="no-data-hint">请尝试选择其他日期</div>
+      </div>
+
+      <!-- 空状态 -->
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">🏢</div>
+        <div class="empty-text">请选择校区和楼栋查看排行榜</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 房间详情面板 -->
+  <div class="detail-overlay" id="detail-overlay" onclick="closeDetailPanel(event)">
+    <div class="detail-panel" id="detail-panel" onclick="event.stopPropagation()">
+      <div class="detail-header">
+        <div class="detail-title-row">
+          <h2 class="detail-title" id="detail-title">房间详情</h2>
+          <button class="detail-close" onclick="closeDetailPanel()">&times;</button>
+        </div>
+        <div class="detail-subtitle" id="detail-subtitle"></div>
+      </div>
+      <div class="detail-content" id="detail-content">
+        <!-- 动态内容 -->
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/data-service.js"></script>
+  <script>
+    // ==================== 状态管理 ====================
+    const state = {
+      campus: null,
+      building: null,
+      date: 'today',
+      sortDesc: true,
+      currentPage: 1,
+      itemsPerPage: 20,
+      userConfig: null,
+      currentLoadId: 0  // 用于追踪和取消旧请求/动画
+    };
+
+    // 三级缓存
+    const roomDataCache = new Map();      // 缓存房间历史数据: key = "校区/楼栋/房间ID"
+    const consumptionCache = new Map();    // 缓存计算结果: key = "校区/楼栋/日期"
+
+    // 动画展示记录（持久化到 localStorage）
+    const ANIMATION_SHOWN_KEY = 'electricity_animation_shown';
+    function getAnimationShownSet() {
+      try {
+        const stored = localStorage.getItem(ANIMATION_SHOWN_KEY);
+        return stored ? new Set(JSON.parse(stored)) : new Set();
+      } catch {
+        return new Set();
+      }
+    }
+    function saveAnimationShownSet(set) {
+      try {
+        localStorage.setItem(ANIMATION_SHOWN_KEY, JSON.stringify([...set]));
+      } catch {}
+    }
+    function markAnimationShown(cacheKey) {
+      const set = getAnimationShownSet();
+      set.add(cacheKey);
+      saveAnimationShownSet(set);
+    }
+    function hasAnimationBeenShown(cacheKey) {
+      return getAnimationShownSet().has(cacheKey);
+    }
+
+    // ==================== 初始化 ====================
+    document.addEventListener('DOMContentLoaded', async () => {
+      state.userConfig = DataService.getUserConfig();
+      await initCampusSelect();
+      restoreStateFromUrl();
+      setupEventListeners();
+    });
+
+    // ==================== URL 状态管理 ====================
+    async function restoreStateFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const campus = params.get('campus');
+      const building = params.get('building');
+      const date = params.get('date');
+      const sortDesc = params.get('sortDesc');
+      const page = params.get('page');
+
+      if (campus) {
+        state.campus = campus;
+        document.getElementById('campus-select').value = campus;
+
+        // 等待楼栋选项加载完成
+        await onCampusChange({ target: { value: campus } });
+
+        if (building) {
+          state.building = building;
+
+          // 等待 DOM 更新
+          await new Promise(resolve => requestAnimationFrame(resolve));
+
+          const buildingSelect = document.getElementById('building-select');
+          // 检查选项是否存在
+          const optionExists = Array.from(buildingSelect.options).some(opt => opt.value === building);
+
+          if (optionExists) {
+            buildingSelect.value = building;
+
+            if (date) {
+              state.date = date;
+              setActiveDateButton(date);
+            }
+            if (sortDesc !== null) {
+              state.sortDesc = sortDesc === 'true';
+              updateSortButton();
+            }
+            if (page) {
+              state.currentPage = parseInt(page) || 1;
+            }
+
+            // 加载排行榜（不播放动画，因为是从返回恢复的）
+            await loadRanking();
+          }
+        }
+      }
+    }
+
+    function saveStateToUrl() {
+      const params = new URLSearchParams();
+      if (state.campus) params.set('campus', state.campus);
+      if (state.building) params.set('building', state.building);
+      if (state.date) params.set('date', state.date);
+      params.set('sortDesc', state.sortDesc);
+      params.set('page', state.currentPage);
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.replaceState({}, '', newUrl);
+    }
+
+    function setActiveDateButton(date) {
+      document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+      if (date === 'today' || date === 'yesterday' || date === 'week') {
+        const btn = document.querySelector(`.date-btn[data-date="${date}"]`);
+        if (btn) btn.classList.add('active');
+      } else {
+        document.getElementById('custom-date').value = date;
+        document.getElementById('custom-date').parentElement.classList.add('active');
+      }
+    }
+
+    // ==================== 事件监听 ====================
+    function setupEventListeners() {
+      document.getElementById('campus-select').addEventListener('change', onCampusChange);
+      document.getElementById('building-select').addEventListener('change', onBuildingChange);
+
+      document.querySelectorAll('.date-btn[data-date]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.date = btn.dataset.date;
+          state.currentPage = 1;
+          saveStateToUrl();
+          // 取消之前的请求并加载新数据
+          state.currentLoadId++;
+          hideProgressAndResetList();
+          if (state.campus && state.building) loadRanking();
+        });
+      });
+
+      document.getElementById('custom-date').addEventListener('change', (e) => {
+        document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+        e.target.parentElement.classList.add('active');
+        state.date = e.target.value;
+        state.currentPage = 1;
+        saveStateToUrl();
+        // 取消之前的请求并加载新数据
+        state.currentLoadId++;
+        hideProgressAndResetList();
+        if (state.campus && state.building) loadRanking();
+      });
+    }
+
+    // ==================== 校区/楼栋选择 ====================
+    async function initCampusSelect() {
+      const campuses = await DataService.getCampuses();
+      const select = document.getElementById('campus-select');
+      campuses.forEach(campus => {
+        const option = document.createElement('option');
+        option.value = campus;
+        option.textContent = campus;
+        select.appendChild(option);
+      });
+    }
+
+    async function onCampusChange(e) {
+      // 取消之前的请求/动画
+      state.currentLoadId++;
+      hideProgressAndResetList();
+
+      state.campus = e.target.value;
+      state.currentPage = 1;
+      if (!state.campus) {
+        showEmptyState();
+        return;
+      }
+
+      const buildingSelect = document.getElementById('building-select');
+      buildingSelect.innerHTML = '<option value="">加载中...</option>';
+      buildingSelect.disabled = true;
+
+      const buildings = await DataService.getBuildings(state.campus);
+      if (buildings && buildings.length > 0) {
+        buildingSelect.innerHTML = '<option value="">请选择楼栋</option>';
+        buildings.forEach(b => {
+          const option = document.createElement('option');
+          option.value = b.name;
+          option.textContent = b.name;
+          buildingSelect.appendChild(option);
+        });
+        buildingSelect.disabled = false;
+      }
+
+      saveStateToUrl();
+      showEmptyState();
+    }
+
+    async function onBuildingChange(e) {
+      // 取消之前的请求/动画
+      state.currentLoadId++;
+      hideProgressAndResetList();
+
+      state.building = e.target.value;
+      state.currentPage = 1;
+      saveStateToUrl();
+      if (state.building) {
+        await loadRanking();
+      } else {
+        showEmptyState();
+      }
+    }
+
+    // 隐藏进度条并重置排行榜列表
+    function hideProgressAndResetList() {
+      const progressEl = document.getElementById('animation-progress');
+      const listEl = document.getElementById('ranking-list');
+      if (progressEl) progressEl.style.display = 'none';
+      if (listEl) listEl.innerHTML = '';
+      // 同时隐藏统计和分页
+      const statsRow = document.getElementById('stats-row');
+      const pagination = document.getElementById('pagination');
+      const userRankCard = document.getElementById('user-rank-card');
+      if (statsRow) statsRow.style.display = 'none';
+      if (pagination) pagination.style.display = 'none';
+      if (userRankCard) userRankCard.classList.remove('show');
+    }
+
+    // ==================== 排序切换 ====================
+    function toggleSortOrder() {
+      state.sortDesc = !state.sortDesc;
+      state.currentPage = 1;
+      updateSortButton();
+      saveStateToUrl();
+      renderCurrentPage();
+    }
+
+    function updateSortButton() {
+      const btn = document.getElementById('sort-btn');
+      const text = document.getElementById('sort-text');
+      if (state.sortDesc) {
+        btn.classList.add('desc', 'active');
+        text.textContent = '耗电量高→低';
+      } else {
+        btn.classList.remove('desc');
+        btn.classList.add('active');
+        text.textContent = '耗电量低→高';
+      }
+      document.getElementById('ranking-meta').textContent =
+        state.sortDesc ? '按消耗量从高到低排序' : '按消耗量从低到高排序';
+    }
+
+    // ==================== 核心加载逻辑 ====================
+    async function loadRanking() {
+      // 增加loadId，用于取消旧请求
+      const thisLoadId = ++state.currentLoadId;
+      const cacheKey = `${state.campus}/${state.building}/${state.date}`;
+      const hasAnimationShown = hasAnimationBeenShown(cacheKey);
+
+      // 检查是否有缓存
+      if (consumptionCache.has(cacheKey)) {
+        updateCacheStatus('已缓存', false);
+        displayRankingFromCache(cacheKey);
+        return;
+      }
+
+      // 显示加载状态
+      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('no-data-state').style.display = 'none';
+      document.getElementById('stats-row').style.display = 'none';
+      document.getElementById('user-rank-card').classList.remove('show');
+      document.getElementById('pagination').style.display = 'none';
+      updateCacheStatus('计算中...', true);
+
+      // 获取所有房间
+      const rooms = await DataService.getRooms(state.campus, state.building);
+
+      // 检查是否被取消
+      if (thisLoadId !== state.currentLoadId) {
+        console.log('请求已取消（获取房间后）');
+        return;
+      }
+
+      if (!rooms || rooms.length === 0) {
+        showNoDataState('该楼栋暂无房间数据');
+        return;
+      }
+
+      // 如果需要动画，显示进度条和空列表
+      const progressEl = document.getElementById('animation-progress');
+      const progressText = document.getElementById('animation-progress-text');
+      const progressFill = document.getElementById('animation-progress-fill');
+      const listEl = document.getElementById('ranking-list');
+
+      if (!hasAnimationShown) {
+        progressEl.style.display = 'block';
+        listEl.innerHTML = '';
+      }
+
+      // 动态前20名列表（用于动画展示）
+      let currentTop20 = [];
+      // 所有有效数据
+      const allRankings = [];
+
+      // 逐个处理房间，实时更新前20名（快速计算，不阻塞）
+      for (let i = 0; i < rooms.length; i++) {
+        const room = rooms[i];
+        const roomKey = `${state.campus}/${state.building}/${room.id}`;
+
+        // 尝试从缓存获取房间历史数据
+        let history = roomDataCache.get(roomKey);
+        if (!history) {
+          history = await DataService.getRoomHistory(state.campus, state.building, room.id);
+          if (history) {
+            roomDataCache.set(roomKey, history);
+          }
+        }
+
+        // 检查是否被取消
+        if (thisLoadId !== state.currentLoadId) {
+          console.log('请求已取消（计算过程中）');
+          return;
+        }
+
+        // 计算对应日期的消耗量
+        let consumption = null;
+        if (history && history.history && history.history.length > 0) {
+          consumption = calculateConsumption(history.history, state.date);
+        }
+
+        // 更新进度条（不阻塞）
+        if (!hasAnimationShown) {
+          const progress = ((i + 1) / rooms.length) * 100;
+          progressText.textContent = `正在计算 ${i + 1}/${rooms.length} 房间...`;
+          progressFill.style.width = progress + '%';
+        }
+
+        if (consumption !== null) {
+          const item = {
+            room: room.name,
+            roomId: room.id,
+            consumption: consumption,
+            balance: room.currentBalance,
+            campus: state.campus,
+            building: state.building
+          };
+          allRankings.push(item);
+
+          // 如果需要动画，实时更新前20名显示（不等待动画）
+          if (!hasAnimationShown) {
+            const inserted = insertIntoTop20(currentTop20, item);
+            if (inserted) {
+              // 只有真正进入前20名时才渲染，高亮新进入的房间
+              renderTop20Immediate(currentTop20, listEl, item.roomId);
+            }
+          }
+        }
+      }
+
+      // 检查是否被取消
+      if (thisLoadId !== state.currentLoadId) {
+        return;
+      }
+
+      // 检查是否有有效数据
+      if (allRankings.length === 0) {
+        showNoDataState(`${getDateDisplayText(state.date)} 暂无耗电数据`);
+        return;
+      }
+
+      // 最终排序所有数据
+      allRankings.sort((a, b) => b.consumption - a.consumption);
+      allRankings.forEach((r, idx) => r.rank = idx + 1);
+
+      // 缓存结果
+      consumptionCache.set(cacheKey, allRankings);
+      markAnimationShown(cacheKey);
+
+      // 隐藏进度条
+      if (!hasAnimationShown) {
+        progressText.textContent = '计算完成';
+        await sleep(500);
+        progressEl.style.display = 'none';
+      }
+
+      // 再次检查是否被取消
+      if (thisLoadId !== state.currentLoadId) {
+        return;
+      }
+
+      // 显示结果
+      displayRanking(allRankings);
+      updateCacheStatus('已缓存', false);
+    }
+
+    // ==================== 将房间插入前20名列表 ====================
+    function insertIntoTop20(top20, item) {
+      // 检查是否应该进入前20名
+      if (top20.length < 20) {
+        top20.push(item);
+        top20.sort((a, b) => b.consumption - a.consumption);
+        return true;
+      }
+      // 检查是否比当前最后一名高
+      const minConsumption = top20[top20.length - 1].consumption;
+      if (item.consumption > minConsumption) {
+        top20.push(item);
+        top20.sort((a, b) => b.consumption - a.consumption);
+        top20.pop(); // 移除最后一名
+        return true;
+      }
+      return false;
+    }
+
+    // ==================== 即时渲染前20名（新进入的房间高亮） ====================
+    function renderTop20Immediate(top20, listEl, newRoomId = null) {
+      // 渲染当前前20名
+      let html = '';
+      for (let i = 0; i < top20.length; i++) {
+        const item = top20[i];
+        const rank = i + 1;
+        const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
+        const isNew = item.roomId === newRoomId;
+        const isUserRoom = state.userConfig &&
+          state.userConfig.campus === state.campus &&
+          state.userConfig.building === state.building &&
+          item.roomId === state.userConfig.roomId;
+
+        html += `
+          <div class="ranking-item ${rankClass} ${isNew ? 'new-entry' : ''}"
+               data-room-id="${item.roomId}"
+               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomId}', '${item.room}')"
+               style="cursor: pointer;">
+            <div class="rank-badge">#${rank}</div>
+            <div class="room-info">
+              <span class="room-name">${item.room}</span>
+              ${isUserRoom ? '<span class="user-badge">我的房间</span>' : ''}
+            </div>
+            <div class="consumption-value">${item.consumption.toFixed(2)} <span class="unit">度</span></div>
+          </div>
+        `;
+      }
+      listEl.innerHTML = html;
+    }
+
+    // ==================== 计算指定日期的消耗量 ====================
+    function calculateConsumption(history, dateType) {
+      if (!history || history.length === 0) return null;
+
+      if (dateType === 'today') {
+        const today = history[history.length - 1];
+        return today?.consumption ?? null;
+      } else if (dateType === 'yesterday') {
+        const yesterday = history[history.length - 2];
+        return yesterday?.consumption ?? null;
+      } else if (dateType === 'week') {
+        const weekData = history.slice(-7);
+        if (weekData.length === 0) return null;
+        const sum = weekData.reduce((s, h) => s + (h.consumption || 0), 0);
+        return sum / weekData.length;
+      } else {
+        // 自定义日期
+        const target = history.find(h => h.date === dateType || h.formattedDate === dateType);
+        return target?.consumption ?? null;
+      }
+    }
+
+    // ==================== 显示排行榜 ====================
+    async function displayRanking(rankings) {
+      document.getElementById('stats-row').style.display = 'grid';
+
+      // 统计
+      const totalConsumption = rankings.reduce((sum, r) => sum + r.consumption, 0);
+      const avg = totalConsumption / rankings.length;
+      const max = Math.max(...rankings.map(r => r.consumption));
+
+      document.getElementById('stat-total').textContent = totalConsumption.toFixed(1) + '度';
+      document.getElementById('stat-rooms').textContent = rankings.length;
+      document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
+      document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
+
+      // 显示用户位次
+      await showUserRankCard(rankings);
+
+      // 渲染当前页
+      renderCurrentPage();
+    }
+
+    // ==================== 从缓存显示 ====================
+    function displayRankingFromCache(cacheKey) {
+      const rankings = consumptionCache.get(cacheKey);
+      if (rankings) {
+        displayRanking(rankings);
+      }
+    }
+
+    // ==================== 渲染当前页 ====================
+    function renderCurrentPage() {
+      const cacheKey = `${state.campus}/${state.building}/${state.date}`;
+      const rankings = consumptionCache.get(cacheKey);
+      if (!rankings) return;
+
+      const listEl = document.getElementById('ranking-list');
+      listEl.innerHTML = '';
+
+      // 根据排序顺序处理
+      const displayRankings = state.sortDesc ? rankings : [...rankings].reverse();
+
+      // 分页计算
+      const totalPages = Math.ceil(displayRankings.length / state.itemsPerPage);
+      state.currentPage = Math.max(1, Math.min(state.currentPage, totalPages));
+
+      const startIdx = (state.currentPage - 1) * state.itemsPerPage;
+      const endIdx = startIdx + state.itemsPerPage;
+      const pageItems = displayRankings.slice(startIdx, endIdx);
+
+      // 渲染项目
+      pageItems.forEach(item => {
+        const displayRank = state.sortDesc ? item.rank : (rankings.length - item.rank + 1);
+        const rankClass = displayRank <= 3 ? `rank-${displayRank}` : 'rank-other';
+        const isUserRoom = state.userConfig &&
+          state.userConfig.campus === state.campus &&
+          state.userConfig.building === state.building &&
+          item.roomId === state.userConfig.roomId;
+
+        const html = `
+          <div class="ranking-item ${isUserRoom ? 'user-room' : ''}"
+               data-room-id="${item.roomId}"
+               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomId}', '${item.room}')">
+            <div class="rank-badge ${rankClass}">${displayRank}</div>
+            <div class="room-info">
+              <div class="room-name">${item.room}${isUserRoom ? ' (我的房间)' : ''}</div>
+              <div class="room-id">ID: ${item.roomId}</div>
+            </div>
+            <div class="consumption">
+              <div class="consumption-value">${item.consumption.toFixed(2)}</div>
+              <div class="consumption-unit">度/日</div>
+            </div>
+          </div>
+        `;
+        listEl.insertAdjacentHTML('beforeend', html);
+      });
+
+      // 更新分页控件
+      updatePagination(totalPages);
+    }
+
+    // ==================== 分页控制 ====================
+    function updatePagination(totalPages) {
+      const paginationEl = document.getElementById('pagination');
+      paginationEl.style.display = 'flex';
+
+      document.getElementById('page-info').textContent = `第 ${state.currentPage} 页 / 共 ${totalPages} 页`;
+      document.getElementById('page-jump-input').value = state.currentPage;
+      document.getElementById('page-jump-input').max = totalPages;
+
+      document.getElementById('first-page').disabled = state.currentPage === 1;
+      document.getElementById('prev-page').disabled = state.currentPage === 1;
+      document.getElementById('next-page').disabled = state.currentPage === totalPages;
+      document.getElementById('last-page').disabled = state.currentPage === totalPages;
+    }
+
+    function prevPage() {
+      if (state.currentPage > 1) {
+        state.currentPage--;
+        saveStateToUrl();
+        renderCurrentPage();
+      }
+    }
+
+    function nextPage() {
+      const cacheKey = `${state.campus}/${state.building}/${state.date}`;
+      const rankings = consumptionCache.get(cacheKey);
+      if (!rankings) return;
+
+      const totalPages = Math.ceil(rankings.length / state.itemsPerPage);
+      if (state.currentPage < totalPages) {
+        state.currentPage++;
+        saveStateToUrl();
+        renderCurrentPage();
+      }
+    }
+
+    function goToPage(page) {
+      const cacheKey = `${state.campus}/${state.building}/${state.date}`;
+      const rankings = consumptionCache.get(cacheKey);
+      if (!rankings) return;
+
+      const totalPages = Math.ceil(rankings.length / state.itemsPerPage);
+      if (page === -1) page = totalPages; // 末页
+      state.currentPage = Math.max(1, Math.min(page, totalPages));
+      saveStateToUrl();
+      renderCurrentPage();
+    }
+
+    function jumpToPage() {
+      const input = document.getElementById('page-jump-input');
+      const page = parseInt(input.value);
+      if (!isNaN(page) && page >= 1) {
+        goToPage(page);
+      }
+    }
+
+    // ==================== 用户位次卡片 ====================
+    async function showUserRankCard(rankings) {
+      // 检查用户是否配置了房间
+      if (!state.userConfig) {
+        document.getElementById('user-rank-card').classList.remove('show');
+        return;
+      }
+
+      const card = document.getElementById('user-rank-card');
+
+      // 检查是否在同一楼栋
+      const isSameBuilding = state.userConfig.campus === state.campus &&
+                             state.userConfig.building === state.building;
+
+      // 在排行榜中查找用户房间
+      let userRoomData = rankings.find(r => r.roomId === state.userConfig.roomId);
+      let estimatedRank = null;
+
+      // 如果用户房间不在排行榜中，尝试获取数据并估算位次
+      if (!userRoomData && isSameBuilding) {
+        // 尝试获取用户房间的历史数据
+        const roomHistory = await DataService.getRoomHistory(state.campus, state.building, state.userConfig.roomId);
+
+        if (roomHistory && roomHistory.history) {
+          const consumption = calculateConsumption(roomHistory.history, state.date);
+
+          if (consumption !== null) {
+            // 估算位次：找到第一个消耗量小于用户消耗量的位置
+            const sortedRankings = [...rankings].sort((a, b) => b.consumption - a.consumption);
+            estimatedRank = sortedRankings.findIndex(r => r.consumption < consumption) + 1;
+
+            if (estimatedRank === 0) {
+              // 用户消耗量比所有人都大
+              estimatedRank = 1;
+            }
+
+            userRoomData = {
+              room: state.userConfig.roomName,
+              roomId: state.userConfig.roomId,
+              consumption: consumption,
+              rank: estimatedRank,
+              estimated: true
+            };
+          }
+        }
+      } else if (!userRoomData) {
+        // 用户不在同一楼栋，不显示位次卡片
+        document.getElementById('user-rank-card').classList.remove('show');
+        return;
+      }
+
+      // 显示卡片
+      card.classList.add('show');
+
+      const rank = userRoomData.rank;
+      const isEstimated = userRoomData.estimated;
+
+      document.getElementById('user-rank-badge').textContent = isEstimated ? `~${rank}` : rank;
+      document.getElementById('user-rank-room').textContent =
+        userRoomData.room + (isEstimated ? ' (估算位次)' : '');
+      document.getElementById('user-rank-pos').textContent =
+        isEstimated ? `约 #${rank}` : `#${rank}`;
+      document.getElementById('user-rank-consumption').textContent =
+        userRoomData.consumption.toFixed(2) + '度';
+
+      const percentile = Math.round((1 - rank / rankings.length) * 100);
+      document.getElementById('user-rank-percentile').textContent =
+        Math.max(0, percentile) + '%';
+    }
+
+    // ==================== 房间详情面板 ====================
+    async function viewRoomDetail(campus, building, roomId, roomName) {
+      const overlay = document.getElementById('detail-overlay');
+      const title = document.getElementById('detail-title');
+      const subtitle = document.getElementById('detail-subtitle');
+      const content = document.getElementById('detail-content');
+
+      // 设置标题
+      title.textContent = roomName || '房间详情';
+      subtitle.textContent = `${campus} · ${building}`;
+
+      // 显示加载状态
+      content.innerHTML = `
+        <div class="detail-loading">
+          <div class="detail-loading-spinner"></div>
+          <div>正在加载房间数据...</div>
+        </div>
+      `;
+      overlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+
+      // 获取房间数据
+      try {
+        const history = await DataService.getRoomHistory(campus, building, roomId);
+        if (!history) {
+          content.innerHTML = `
+            <div class="detail-loading">
+              <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
+              <div>未找到该房间的数据</div>
+            </div>
+          `;
+          return;
+        }
+
+        renderDetailContent(history, roomName);
+      } catch (error) {
+        console.error('加载房间详情失败:', error);
+        content.innerHTML = `
+          <div class="detail-loading">
+            <div style="font-size: 48px; margin-bottom: 16px;">❌</div>
+            <div>加载失败，请重试</div>
+          </div>
+        `;
+      }
+    }
+
+    function closeDetailPanel(event) {
+      if (event && event.target !== event.currentTarget) return;
+      const overlay = document.getElementById('detail-overlay');
+      overlay.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    // ESC键关闭面板
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeDetailPanel();
+      }
+    });
+
+    // ==================== 渲染详情内容 ====================
+    function renderDetailContent(history, roomName) {
+      const content = document.getElementById('detail-content');
+      const data = history.history || [];
+
+      if (data.length === 0) {
+        content.innerHTML = `
+          <div class="detail-loading">
+            <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
+            <div>暂无历史数据</div>
+          </div>
+        `;
+        return;
+      }
+
+      // 计算统计数据（兼容 electricity 和 balance 两种字段名）
+      const latest = data[data.length - 1];
+      const balance = latest?.electricity ?? latest?.balance ?? 0;
+      const consumption = latest?.consumption ?? 0;
+
+      // 计算日均消耗（最近7天）
+      const recentData = data.slice(-7);
+      const avgConsumption = recentData.reduce((sum, d) => sum + (d.consumption || 0), 0) / recentData.length;
+
+      // 预测可用天数
+      const daysRemaining = avgConsumption > 0 ? Math.floor(balance / avgConsumption) : 999;
+      const exhaustDate = new Date();
+      exhaustDate.setDate(exhaustDate.getDate() + daysRemaining);
+
+      // 状态判断
+      let statusText = '电量充足';
+      let statusClass = '';
+      if (balance < 10) {
+        statusText = '电量不足，请尽快充值';
+        statusClass = 'danger';
+      } else if (balance < 30) {
+        statusText = '电量偏低，建议充值';
+        statusClass = 'warning';
+      }
+
+      // 生成直观描述
+      const analogy = getConsumptionAnalogy(consumption);
+
+      // 充值建议
+      const suggestAmount = Math.ceil(avgConsumption * 30);
+      const suggest30Days = Math.ceil(avgConsumption * 30);
+
+      content.innerHTML = `
+        <!-- 余额卡片 -->
+        <div class="detail-balance-card">
+          <div class="detail-balance-label">当前余额</div>
+          <div class="detail-balance-value">${balance.toFixed(1)} <span style="font-size: 18px;">度</span></div>
+          <div class="detail-balance-status">${statusText}</div>
+        </div>
+
+        <!-- 今日消耗直观描述 -->
+        ${consumption > 0 ? `
+        <div class="detail-analogy-card">
+          <div class="detail-analogy-header">
+            <span class="detail-analogy-icon">${analogy.icon}</span>
+            <span class="detail-analogy-title">今日耗电量直观感受</span>
+          </div>
+          <div class="detail-analogy-text">${analogy.text}</div>
+        </div>
+        ` : ''}
+
+        <!-- 趋势图 -->
+        <div class="detail-section">
+          <h3 class="detail-section-title">📈 电费变化趋势</h3>
+          <div class="detail-chart-tabs">
+            <button class="detail-chart-tab active" onclick="renderDetailChart(7)">7天</button>
+            <button class="detail-chart-tab" onclick="renderDetailChart(30)">30天</button>
+            <button class="detail-chart-tab" onclick="renderDetailChart(${data.length})">全部</button>
+          </div>
+          <div class="detail-chart-container" id="detail-chart"></div>
+        </div>
+
+        <!-- 预测预警 -->
+        <div class="detail-section">
+          <h3 class="detail-section-title">🔮 预测预警</h3>
+          <div class="detail-prediction-grid">
+            <div class="detail-prediction-card">
+              <div class="detail-prediction-label">预计可用天数</div>
+              <div class="detail-prediction-value ${daysRemaining <= 7 ? 'danger' : daysRemaining <= 14 ? 'warning' : ''}">
+                ${daysRemaining >= 999 ? '∞' : daysRemaining + '天'}
+              </div>
+            </div>
+            <div class="detail-prediction-card">
+              <div class="detail-prediction-label">预计耗尽日期</div>
+              <div class="detail-prediction-value">
+                ${daysRemaining >= 999 ? '——' : exhaustDate.toLocaleDateString('zh-CN')}
+              </div>
+            </div>
+            <div class="detail-prediction-card">
+              <div class="detail-prediction-label">日均消耗</div>
+              <div class="detail-prediction-value">${avgConsumption.toFixed(2)}度</div>
+            </div>
+            <div class="detail-prediction-card">
+              <div class="detail-prediction-label">今日消耗</div>
+              <div class="detail-prediction-value">${consumption.toFixed(2)}度</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 充值建议 -->
+        <div class="detail-section">
+          <h3 class="detail-section-title">💡 充值建议</h3>
+          <div class="detail-suggestion-card">
+            <div class="detail-suggestion-row">
+              <span class="detail-suggestion-label">建议充值（按30天计算）</span>
+              <span class="detail-suggestion-value">${suggestAmount}度</span>
+            </div>
+            <div class="detail-suggestion-row">
+              <span class="detail-suggestion-label">预计30天消耗</span>
+              <span class="detail-suggestion-value">${suggest30Days}度</span>
+            </div>
+            <div class="detail-suggestion-row">
+              <span class="detail-suggestion-label">按日均消耗计算</span>
+              <span class="detail-suggestion-value">${avgConsumption.toFixed(1)}度/天</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // 渲染图表
+      setTimeout(() => renderDetailChart(7), 100);
+
+      // 保存数据供图表切换使用
+      window._detailChartData = data;
+    }
+
+    function renderDetailChart(days) {
+      // 更新标签状态
+      document.querySelectorAll('.detail-chart-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.textContent.includes(days) ||
+            (days === window._detailChartData?.length && tab.textContent === '全部')) {
+          tab.classList.add('active');
+        }
+      });
+
+      const container = document.getElementById('detail-chart');
+      if (!container || !window._detailChartData) return;
+
+      const data = window._detailChartData.slice(-days);
+      if (data.length === 0) return;
+
+      const width = container.offsetWidth - 32;
+      const height = container.offsetHeight - 40;
+
+      // 计算范围（兼容 electricity 和 balance 两种字段名）
+      const balances = data.map(d => d.electricity ?? d.balance ?? 0);
+      const maxBalance = Math.max(...balances);
+      const minBalance = Math.min(...balances);
+      const range = maxBalance - minBalance || 1;
+
+      // 绘制SVG
+      let svg = `<svg width="${width}" height="${height}" style="overflow: visible;">`;
+
+      // 绘制网格线
+      for (let i = 0; i <= 4; i++) {
+        const y = i * (height - 20) / 4 + 10;
+        svg += `<line x1="0" y1="${y}" x2="${width}" y2="${y}" stroke="var(--border)" stroke-dasharray="4"/>`;
+      }
+
+      // 绘制数据点
+      const points = [];
+      data.forEach((d, i) => {
+        const x = (i / (data.length - 1)) * width;
+        const value = d.electricity ?? d.balance ?? 0;
+        const y = height - 20 - ((value - minBalance) / range) * (height - 40);
+        points.push(`${x},${y}`);
+      });
+
+      // 绘制曲线
+      svg += `<polyline points="${points.join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2"/>`;
+
+      // 绘制数据点
+      data.forEach((d, i) => {
+        const x = (i / (data.length - 1)) * width;
+        const value = d.electricity ?? d.balance ?? 0;
+        const y = height - 20 - ((value - minBalance) / range) * (height - 40);
+        svg += `<circle cx="${x}" cy="${y}" r="4" fill="var(--accent)"/>`;
+      });
+
+      // 绘制日期标签
+      const labelInterval = Math.ceil(data.length / 5);
+      data.forEach((d, i) => {
+        if (i % labelInterval === 0 || i === data.length - 1) {
+          const x = (i / (data.length - 1)) * width;
+          svg += `<text x="${x}" y="${height}" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="var(--font-mono)">${(d.formattedDate || d.date).slice(5)}</text>`;
+        }
+      });
+
+      svg += '</svg>';
+      container.innerHTML = svg;
+    }
+
+    // ==================== 耗电量直观描述 ====================
+    function getConsumptionAnalogy(consumption) {
+      if (consumption <= 0.5) {
+        return {
+          icon: '💡',
+          text: `${consumption.toFixed(2)}度电可以让一个10W LED灯泡连续照明约${Math.round(consumption * 100)}小时`
+        };
+      } else if (consumption <= 2) {
+        return {
+          icon: '📱',
+          text: `${consumption.toFixed(2)}度电可以充满约${Math.round(consumption * 5)}部手机（以3000mAh电池计算）`
+        };
+      } else if (consumption <= 5) {
+        return {
+          icon: '💧',
+          text: `${consumption.toFixed(2)}度电可以烧开约${Math.round(consumption * 8)}升水（从20°C加热到100°C）`
+        };
+      } else if (consumption <= 10) {
+        return {
+          icon: '💻',
+          text: `${consumption.toFixed(2)}度电可以让一台笔记本电脑连续运行约${Math.round(consumption * 8)}小时（以50W功耗计算）`
+        };
+      } else if (consumption <= 20) {
+        return {
+          icon: '❄️',
+          text: `${consumption.toFixed(2)}度电可以让一台1匹空调运行约${Math.round(consumption / 1.2)}小时`
+        };
+      } else if (consumption <= 50) {
+        return {
+          icon: '🚗',
+          text: `${consumption.toFixed(2)}度电相当于燃烧约${Math.round(consumption * 0.4)}kg标准煤所产生的能量`
+        };
+      } else {
+        return {
+          icon: '🏭',
+          text: `${consumption.toFixed(2)}度电相当于燃烧约${Math.round(consumption * 0.4)}kg标准煤，可供一个普通家庭使用约${Math.round(consumption / 10)}天`
+        };
+      }
+    }
+
+    // ==================== 状态显示 ====================
+    function showEmptyState() {
+      document.getElementById('ranking-list').innerHTML = '';
+      document.getElementById('empty-state').style.display = 'block';
+      document.getElementById('no-data-state').style.display = 'none';
+      document.getElementById('animation-progress').style.display = 'none';
+      document.getElementById('stats-row').style.display = 'none';
+      document.getElementById('pagination').style.display = 'none';
+      document.getElementById('user-rank-card').classList.remove('show');
+      updateCacheStatus('等待选择', false);
+    }
+
+    function showNoDataState(message) {
+      document.getElementById('ranking-list').innerHTML = '';
+      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('no-data-state').style.display = 'block';
+      document.getElementById('no-data-text').textContent = message || '该日期暂无数据';
+      document.getElementById('animation-progress').style.display = 'none';
+      document.getElementById('stats-row').style.display = 'none';
+      document.getElementById('pagination').style.display = 'none';
+      document.getElementById('user-rank-card').classList.remove('show');
+      updateCacheStatus('无数据', false);
+    }
+
+    function updateCacheStatus(text, loading) {
+      const indicator = document.getElementById('cache-status');
+      document.getElementById('cache-text').textContent = text;
+      indicator.className = loading ? 'cache-indicator loading' : 'cache-indicator';
+    }
+
+    function getDateDisplayText(dateType) {
+      if (dateType === 'today') return '今日';
+      if (dateType === 'yesterday') return '昨日';
+      if (dateType === 'week') return '本周';
+      return dateType;
+    }
+
+    // ==================== 工具函数 ====================
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  </script>
+</body>
+</html>

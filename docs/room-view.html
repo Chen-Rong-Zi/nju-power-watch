@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的房间 · 电费监控</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: oklch(97% 0.003 250);
+      --surface: oklch(100% 0 0);
+      --fg: oklch(20% 0.015 250);
+      --muted: oklch(50% 0.012 250);
+      --border: oklch(90% 0.006 250);
+      --accent: oklch(55% 0.15 160);
+      --warning: oklch(65% 0.18 50);
+      --danger: oklch(55% 0.20 25);
+      --success: oklch(60% 0.14 145);
+
+      --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+      --font-mono: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
+
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 导航 */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: color-mix(in oklch, var(--bg) 85%, transparent);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topnav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--fg);
+    }
+
+    /* 主内容 */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* 房间信息卡片 */
+    .room-hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .room-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .room-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0 0 8px;
+    }
+    .room-meta {
+      color: var(--muted);
+      font-size: 14px;
+      font-family: var(--font-mono);
+    }
+    .balance-badge {
+      background: var(--accent);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    /* 统计卡片 */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .stat-value.accent { color: var(--accent); }
+    .stat-value.warning { color: var(--warning); }
+    .stat-value.danger { color: var(--danger); }
+
+    /* 图表区域 */
+    .chart-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+    .chart-controls {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn:hover {
+      background: var(--fg);
+      color: var(--surface);
+    }
+    .btn.active {
+      background: var(--fg);
+      color: var(--surface);
+      border-color: var(--fg);
+    }
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+
+    /* 预测预警 */
+    .prediction-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 800px) {
+      .prediction-section { grid-template-columns: 1fr; }
+    }
+    .prediction-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .warning-card {
+      border-color: var(--warning);
+      background: linear-gradient(135deg, color-mix(in oklch, var(--warning) 8%, transparent), var(--surface));
+    }
+    .danger-card {
+      border-color: var(--danger);
+      background: linear-gradient(135deg, color-mix(in oklch, var(--danger) 8%, transparent), var(--surface));
+    }
+    .prediction-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    .prediction-icon.warning {
+      background: color-mix(in oklch, var(--warning) 15%, transparent);
+    }
+    .prediction-icon.danger {
+      background: color-mix(in oklch, var(--danger) 15%, transparent);
+    }
+    .prediction-icon.info {
+      background: color-mix(in oklch, var(--accent) 15%, transparent);
+    }
+    .prediction-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 8px;
+    }
+    .prediction-text {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+    .prediction-highlight {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    /* 耗电量直观描述 */
+    .analogy-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .analogy-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 24px;
+    }
+    .analogy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .analogy-item {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+    }
+    .analogy-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    .analogy-value {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .analogy-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* 充值预估 */
+    .recharge-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .recharge-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .recharge-option {
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .recharge-option:hover {
+      border-color: var(--accent);
+    }
+    .recharge-option.selected {
+      border-color: var(--accent);
+      background: color-mix(in oklch, var(--accent) 8%, transparent);
+    }
+    .recharge-amount {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .recharge-days {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    /* 统计卡片悬浮tooltip */
+    .stat-card-hover {
+      position: relative;
+      cursor: pointer;
+    }
+    .stat-card-hover:hover {
+      border-color: var(--accent);
+    }
+    .consumption-tooltip {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--fg);
+      color: var(--surface);
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .consumption-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--fg);
+    }
+    .stat-card-hover:hover .consumption-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+    .tooltip-icon {
+      font-size: 18px;
+      margin-right: 8px;
+    }
+    .tooltip-value {
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    /* 单一直观描述卡片 */
+    .main-analogy-card {
+      background: linear-gradient(135deg, color-mix(in oklch, var(--accent) 10%, transparent), var(--surface));
+      border: 2px solid color-mix(in oklch, var(--accent) 35%, transparent);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      margin-bottom: 24px;
+      text-align: center;
+      box-shadow: var(--shadow), 0 0 0 1px color-mix(in oklch, var(--accent) 5%, transparent);
+      position: relative;
+      overflow: hidden;
+    }
+    .main-analogy-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), color-mix(in oklch, var(--accent) 60%, var(--success)));
+    }
+    .main-analogy-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .main-analogy-card-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+    .main-analogy-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      display: inline-block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .main-analogy-value {
+      font-family: var(--font-display);
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .main-analogy-label {
+      color: var(--fg);
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .main-analogy-desc {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .main-analogy-consumption {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* 配置面板 */
+    .config-panel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      width: 90%;
+      max-width: 480px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      z-index: 200;
+      display: none;
+    }
+    .config-panel.show { display: block; }
+    .config-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 199;
+      display: none;
+    }
+    .config-overlay.show { display: block; }
+    .config-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      font-family: var(--font-body);
+      font-size: 15px;
+    }
+    .form-select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .btn-primary:hover {
+      background: color-mix(in oklch, var(--accent) 85%, black);
+    }
+
+    /* 搜索结果 */
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-top: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .search-result-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .search-result-item:last-child {
+      border-bottom: none;
+    }
+    .search-result-item:hover {
+      background: color-mix(in oklch, var(--accent) 8%, transparent);
+    }
+    .search-result-main {
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .search-result-sub {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+    .form-group {
+      position: relative;
+    }
+    #config-search {
+      cursor: text;
+    }
+
+    /* 初始加载遮罩 */
+    .initial-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease-out;
+    }
+    .initial-loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loading-content {
+      text-align: center;
+    }
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loading-text {
+      color: var(--muted);
+      font-size: 14px;
+      font-family: var(--font-mono);
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <span class="logo">⚡ 电费监控</span>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="room-view.html" class="active">我的房间</a>
+        <a href="building-view.html">楼栋视角</a>
+        <a href="campus-view.html">校区视角</a>
+      </div>
+      <button class="btn" id="btn-config">⚙️ 设置房间</button>
+    </div>
+  </nav>
+
+  <!-- 初始加载遮罩 -->
+  <div class="initial-loading" id="initial-loading">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">加载中...</div>
+    </div>
+  </div>
+
+  <main class="main">
+    <!-- 房间信息 -->
+    <section class="room-hero" id="room-info" style="display: none;">
+      <div class="room-header">
+        <div>
+          <h1 class="room-title" id="room-name">--</h1>
+          <p class="room-meta"><span id="room-campus">--</span> · <span id="room-building">--</span></p>
+        </div>
+        <div class="balance-badge" id="current-balance">--度</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card stat-card-hover" id="stat-avg-card">
+          <div class="consumption-tooltip" id="stat-avg-tooltip">
+            <span class="tooltip-icon">💡</span>
+            <span class="tooltip-value" id="stat-avg-analogy">--</span>
+          </div>
+          <div class="stat-label">日均消耗</div>
+          <div class="stat-value" id="stat-avg">--</div>
+        </div>
+        <div class="stat-card stat-card-hover" id="stat-week-card">
+          <div class="consumption-tooltip" id="stat-week-tooltip">
+            <span class="tooltip-icon">🔥</span>
+            <span class="tooltip-value" id="stat-week-analogy">--</span>
+          </div>
+          <div class="stat-label">本周消耗</div>
+          <div class="stat-value accent" id="stat-week">--</div>
+        </div>
+        <div class="stat-card stat-card-hover" id="stat-days-card">
+          <div class="consumption-tooltip" id="stat-days-tooltip">
+            <span class="tooltip-icon">📅</span>
+            <span class="tooltip-value" id="stat-days-analogy">--</span>
+          </div>
+          <div class="stat-label">预计可用</div>
+          <div class="stat-value" id="stat-days">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">最低余额</div>
+          <div class="stat-value" id="stat-min">--</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 未配置提示 -->
+    <section class="room-hero" id="no-config" style="display: none;">
+      <div style="text-align: center; padding: 40px 0;">
+        <div style="font-size: 48px; margin-bottom: 16px;">🏠</div>
+        <h1 class="room-title" style="margin-bottom: 8px;">尚未配置房间</h1>
+        <p class="room-meta" style="margin-bottom: 24px;">配置您的房间后，即可查看个性化电费数据</p>
+        <button class="btn btn-primary" onclick="showConfig()">立即配置</button>
+      </div>
+    </section>
+
+    <!-- 趋势图 -->
+    <section class="chart-section" id="chart-section" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">电费变化趋势</h2>
+        <div class="chart-controls">
+          <button class="btn active" data-range="7">7天</button>
+          <button class="btn" data-range="30">30天</button>
+          <button class="btn" data-range="all">全部</button>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="trend-chart"></canvas>
+      </div>
+    </section>
+
+    <!-- 预测预警 -->
+    <section class="prediction-section" id="prediction-section" style="display: none;">
+      <div class="prediction-card warning-card">
+        <div class="prediction-icon warning">⚠️</div>
+        <h3 class="prediction-title">电量预警</h3>
+        <p class="prediction-text">
+          当前余额预计可使用 <span class="prediction-highlight" id="predict-days">--</span> 天，
+          将于 <span class="prediction-highlight" id="predict-date">--</span> 耗尽
+        </p>
+      </div>
+      <div class="prediction-card">
+        <div class="prediction-icon info">📊</div>
+        <h3 class="prediction-title">用电分析</h3>
+        <p class="prediction-text">
+          近期日均消耗 <span class="prediction-highlight" id="predict-avg">--</span> 度，
+          较上周 <span class="prediction-highlight" id="predict-change">--</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 耗电量直观描述 -->
+    <section class="main-analogy-card" id="main-analogy-card" style="display: none;">
+      <div class="main-analogy-card-header">
+        <span class="main-analogy-card-title">⚡ 今日耗电量直观感受</span>
+      </div>
+      <div class="main-analogy-icon" id="main-analogy-icon">💡</div>
+      <div class="main-analogy-value" id="main-analogy-value">--</div>
+      <div class="main-analogy-label" id="main-analogy-label">--</div>
+      <div class="main-analogy-desc">
+        今日耗电 <span class="main-analogy-consumption" id="main-analogy-consumption">--</span> 度
+        <span id="main-analogy-extra"></span>
+      </div>
+    </section>
+
+    <!-- 充值预估 -->
+    <section class="recharge-section" id="recharge-section" style="display: none;">
+      <h2 class="section-title">充值建议</h2>
+      <p style="color: var(--muted); font-size: 14px; margin: 8px 0 0;">根据您的用电习惯，选择合适的充值金额</p>
+      <div class="recharge-options" id="recharge-options">
+        <!-- 动态填充 -->
+      </div>
+    </section>
+  </main>
+
+  <!-- 配置面板 -->
+  <div class="config-overlay" id="config-overlay"></div>
+  <div class="config-panel" id="config-panel">
+    <h3 class="config-title">配置您的房间</h3>
+    <div class="form-group">
+      <label class="form-label">快速搜索 <span style="color: var(--muted); font-weight: 400;">(如: 仙林 1 101 或 1-101)</span></label>
+      <input type="text" class="form-select" id="config-search" placeholder="输入校区、楼栋、房间号...">
+      <div class="search-results" id="search-results" style="display: none;"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">校区</label>
+      <select class="form-select" id="config-campus">
+        <option value="">请选择校区</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">楼栋</label>
+      <select class="form-select" id="config-building" disabled>
+        <option value="">请先选择校区</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">房间</label>
+      <select class="form-select" id="config-room" disabled>
+        <option value="">请先选择楼栋</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" id="btn-save-config">保存配置</button>
+  </div>
+
+  <script src="js/data-service.js"></script>
+  <script>
+    // 能耗类比数据（分层显示）
+    const ENERGY_ANALOGIES = [
+      { icon: '💧', factor: 10, unit: '升', label: '可烧开的水', range: [0, 1], desc: '相当于用电热水壶烧开这些水' },
+      { icon: '💡', factor: 100, unit: '小时', label: 'LED灯照明', range: [0.5, 3], desc: '可点亮10W LED灯持续照明' },
+      { icon: '📱', factor: 67, unit: '次', label: '手机充满电', range: [1, 5], desc: '可为智能手机完整充电' },
+      { icon: '💻', factor: 20, unit: '小时', label: '笔记本工作', range: [2, 8], desc: '可供笔记本电脑持续工作' },
+      { icon: '❄️', factor: 1, unit: '小时', label: '空调制冷', range: [5, 15], desc: '可供1.5匹空调运行' },
+      { icon: '🧺', factor: 2, unit: '次', label: '洗衣机洗衣', range: [3, 10], desc: '可用洗衣机洗衣服' },
+      { icon: '🚲', factor: 50, unit: '公里', label: '电动车骑行', range: [1, 20], desc: '可骑行电动自行车行驶' },
+      { icon: '🪵', factor: 0.22, unit: 'kg', label: '木材燃烧', range: [0, Infinity], desc: '相当于燃烧木材释放的能量' },
+      { icon: '📺', factor: 10, unit: '小时', label: '电视观看', range: [0.5, 10], desc: '可观看电视节目' },
+      { icon: '🔥', factor: 3.6, unit: 'MJ', label: '热量单位', range: [0, Infinity], desc: '相当于释放的热量' }
+    ];
+
+    // 根据消耗量选择最合适的类比
+    function selectBestAnalogy(kwh) {
+      if (!kwh || kwh <= 0) return ENERGY_ANALOGIES[0];
+
+      // 优先选择范围匹配的类比
+      const matched = ENERGY_ANALOGIES.find(a => kwh >= a.range[0] && kwh < a.range[1]);
+      if (matched) return matched;
+
+      // 默认返回木材燃烧（通用类比）
+      return ENERGY_ANALOGIES[7];
+    }
+
+    // 生成直观描述文本
+    function generateAnalogyText(kwh) {
+      const analogy = selectBestAnalogy(kwh);
+      const value = (kwh * analogy.factor).toFixed(1);
+      return `${analogy.icon} ${value} ${analogy.unit} · ${analogy.desc}`;
+    }
+
+    // 状态
+    let userConfig = null;
+    let chartInstance = null;
+    let mockData = [];
+    let allRoomsCache = null; // 缓存所有房间数据用于搜索
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', async () => {
+      await initCampusSelect();
+      // 延迟加载：只在用户打开配置面板时才预加载房间数据
+      await loadUserConfig();
+      setupEventListeners();
+      // 隐藏加载遮罩，显示正确的视图
+      hideInitialLoading();
+    });
+
+    // 隐藏初始加载遮罩
+    function hideInitialLoading() {
+      const loading = document.getElementById('initial-loading');
+      if (loading) {
+        loading.classList.add('hidden');
+        setTimeout(() => loading.remove(), 300);
+      }
+    }
+
+    // 预加载所有房间数据用于搜索（延迟到需要时才执行）
+    let allRoomsLoading = false;
+    async function preloadAllRooms() {
+      if (allRoomsCache || allRoomsLoading) return;
+      allRoomsLoading = true;
+
+      allRoomsCache = [];
+      const campuses = await DataService.getCampuses();
+
+      for (const campus of campuses) {
+        const buildings = await DataService.getBuildings(campus);
+        if (!buildings) continue;
+
+        for (const building of buildings) {
+          const rooms = await DataService.getRooms(campus, building.name);
+          if (!rooms) continue;
+
+          rooms.forEach(room => {
+            allRoomsCache.push({
+              campus,
+              building: building.name,
+              roomId: room.id,
+              roomName: room.name,
+              // 用于搜索的简化名称
+              searchKey: `${campus} ${building.name} ${room.name} ${room.id}`.toLowerCase()
+            });
+          });
+        }
+      }
+      allRoomsLoading = false;
+    }
+
+    // 模糊搜索算法
+    function fuzzyMatch(text, query) {
+      text = text.toLowerCase();
+      query = query.toLowerCase();
+
+      // 支持空格分隔的多个搜索词
+      const queryParts = query.split(/[\s\-]+/).filter(p => p.length > 0);
+
+      // 所有搜索词都必须匹配
+      return queryParts.every(part => text.includes(part));
+    }
+
+    // 执行搜索
+    async function performSearch(query) {
+      if (!query || query.length < 1) {
+        document.getElementById('search-results').style.display = 'none';
+        return [];
+      }
+
+      // 如果数据未加载，先加载
+      if (!allRoomsCache) {
+        showSearchLoading();
+        await preloadAllRooms();
+      }
+
+      if (!allRoomsCache) return [];
+
+      const results = allRoomsCache
+        .filter(room => fuzzyMatch(room.searchKey, query))
+        .slice(0, 20); // 限制结果数量
+
+      return results;
+    }
+
+    // 显示搜索加载状态
+    function showSearchLoading() {
+      const container = document.getElementById('search-results');
+      container.innerHTML = `
+        <div class="search-result-item" style="justify-content: center; color: var(--muted);">
+          <span>正在加载房间数据...</span>
+        </div>
+      `;
+      container.style.display = 'block';
+    }
+
+    // 显示搜索结果
+    function showSearchResults(results) {
+      const container = document.getElementById('search-results');
+
+      if (results.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.innerHTML = results.map(r => `
+        <div class="search-result-item" onclick="selectSearchResult('${r.campus}', '${r.building}', '${r.roomId}', '${r.roomName}')">
+          <div class="search-result-main">${r.roomName}</div>
+          <div class="search-result-sub">${r.campus} · ${r.building}</div>
+        </div>
+      `).join('');
+
+      container.style.display = 'block';
+    }
+
+    // 选择搜索结果
+    async function selectSearchResult(campus, building, roomId, roomName) {
+      // 隐藏搜索结果
+      document.getElementById('search-results').style.display = 'none';
+      document.getElementById('config-search').value = `${campus} · ${building} · ${roomName}`;
+
+      // 设置校区
+      document.getElementById('config-campus').value = campus;
+
+      // 加载楼栋选项并设置
+      await onCampusChange({ target: { value: campus } });
+
+      // 等待DOM更新
+      await new Promise(resolve => requestAnimationFrame(resolve));
+
+      // 设置楼栋
+      document.getElementById('config-building').value = building;
+
+      // 加载房间选项并设置
+      await onBuildingChange({ target: { value: building } });
+
+      // 等待DOM更新
+      await new Promise(resolve => requestAnimationFrame(resolve));
+
+      // 设置房间
+      document.getElementById('config-room').value = roomId;
+    }
+
+    // 加载校区
+    async function initCampusSelect() {
+      const campuses = await DataService.getCampuses();
+      const select = document.getElementById('config-campus');
+      campuses.forEach(campus => {
+        const option = document.createElement('option');
+        option.value = campus;
+        option.textContent = campus;
+        select.appendChild(option);
+      });
+    }
+
+    // 加载用户配置
+    async function loadUserConfig() {
+      userConfig = DataService.getUserConfig();
+      if (userConfig) {
+        hideConfig();
+        await loadRoomData();
+      } else {
+        // 显示未配置提示
+        showNoConfigView();
+      }
+    }
+
+    // 显示未配置视图
+    function showNoConfigView() {
+      const noConfig = document.getElementById('no-config');
+      noConfig.style.display = 'block';
+      noConfig.style.opacity = '0';
+      noConfig.style.transform = 'translateY(10px)';
+      requestAnimationFrame(() => {
+        noConfig.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+        noConfig.style.opacity = '1';
+        noConfig.style.transform = 'translateY(0)';
+      });
+    }
+
+    // 加载房间数据
+    async function loadRoomData() {
+      if (!userConfig) return;
+
+      // 显示房间信息
+      document.getElementById('no-config').style.display = 'none';
+      const roomInfo = document.getElementById('room-info');
+      roomInfo.style.display = 'block';
+      roomInfo.style.opacity = '0';
+      roomInfo.style.transform = 'translateY(10px)';
+
+      document.getElementById('chart-section').style.display = 'block';
+      document.getElementById('prediction-section').style.display = 'grid';
+      document.getElementById('main-analogy-card').style.display = 'block';
+      document.getElementById('recharge-section').style.display = 'block';
+
+      // 添加淡入动画
+      requestAnimationFrame(() => {
+        roomInfo.style.transition = 'opacity 0.3s ease-out, transform 0.3s ease-out';
+        roomInfo.style.opacity = '1';
+        roomInfo.style.transform = 'translateY(0)';
+      });
+
+      // 填充房间信息
+      document.getElementById('room-name').textContent = userConfig.roomName;
+      document.getElementById('room-campus').textContent = userConfig.campus;
+      document.getElementById('room-building').textContent = userConfig.building;
+
+      // 从真实数据加载
+      const roomData = await DataService.getRoomHistory(
+        userConfig.campus,
+        userConfig.building,
+        userConfig.roomId
+      );
+
+      if (roomData && roomData.history && roomData.history.length > 0) {
+        // 使用真实数据
+        mockData = roomData.history.map(h => ({
+          date: h.formattedDate,
+          balance: h.electricity,
+          consumption: h.consumption || 0
+        }));
+      } else {
+        // 回退到模拟数据
+        generateMockData();
+      }
+      updateUI();
+    }
+
+    // 生成模拟数据
+    function generateMockData() {
+      mockData = [];
+      let balance = 150 + Math.random() * 100;
+      const today = new Date();
+
+      for (let i = 60; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const consumption = 1 + Math.random() * 4;
+        balance = Math.max(10, balance - consumption + (Math.random() > 0.9 ? 50 + Math.random() * 100 : 0));
+
+        mockData.push({
+          date: date.toISOString().slice(0, 10),
+          balance: balance,
+          consumption: consumption
+        });
+      }
+    }
+
+    // 更新界面
+    function updateUI() {
+      const latest = mockData[mockData.length - 1];
+      const weekData = mockData.slice(-7);
+
+      // 当前余额
+      document.getElementById('current-balance').textContent = latest.balance.toFixed(1) + '度';
+
+      // 统计数据
+      const avgConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0) / 7;
+      const weekConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0);
+      const estimatedDays = Math.floor(latest.balance / avgConsumption);
+
+      document.getElementById('stat-avg').textContent = avgConsumption.toFixed(1) + '度';
+      document.getElementById('stat-week').textContent = weekConsumption.toFixed(1) + '度';
+      document.getElementById('stat-days').textContent = estimatedDays + '天';
+      document.getElementById('stat-min').textContent = Math.min(...mockData.map(d => d.balance)).toFixed(1) + '度';
+
+      // 更新悬浮tooltip的直观描述
+      document.getElementById('stat-avg-analogy').textContent = generateAnalogyText(avgConsumption);
+      document.getElementById('stat-week-analogy').textContent = generateAnalogyText(weekConsumption);
+      document.getElementById('stat-days-analogy').textContent = `预计可用至 ${estimatedDays} 天后`;
+
+      // 预测
+      const predictDate = new Date();
+      predictDate.setDate(predictDate.getDate() + estimatedDays);
+      document.getElementById('predict-days').textContent = estimatedDays;
+      document.getElementById('predict-date').textContent = predictDate.toLocaleDateString('zh-CN');
+
+      const lastWeekAvg = mockData.slice(-14, -7).reduce((sum, d) => sum + d.consumption, 0) / 7;
+      const change = ((avgConsumption - lastWeekAvg) / lastWeekAvg * 100).toFixed(0);
+      document.getElementById('predict-avg').textContent = avgConsumption.toFixed(1);
+      document.getElementById('predict-change').textContent = (change > 0 ? '+' : '') + change + '%';
+
+      // 耗电量类比（单一分层显示）
+      updateMainAnalogy(latest.consumption);
+
+      // 充值建议
+      updateRechargeOptions(avgConsumption);
+
+      // 更新图表
+      updateChart(7);
+    }
+
+    // 更新主要直观描述卡片（分层显示）
+    function updateMainAnalogy(consumption) {
+      const analogy = selectBestAnalogy(consumption);
+      const value = (consumption * analogy.factor).toFixed(1);
+
+      document.getElementById('main-analogy-icon').textContent = analogy.icon;
+      document.getElementById('main-analogy-value').textContent = `${value} ${analogy.unit}`;
+      document.getElementById('main-analogy-label').textContent = analogy.label;
+      document.getElementById('main-analogy-consumption').textContent = consumption.toFixed(2);
+      document.getElementById('main-analogy-extra').textContent = ` · ${analogy.desc}`;
+    }
+
+    // 充值建议
+    function updateRechargeOptions(avgConsumption) {
+      const container = document.getElementById('recharge-options');
+      const options = [30, 50, 100, 200];
+
+      container.innerHTML = options.map(amount => {
+        const days = Math.floor(amount / avgConsumption);
+        return `
+          <div class="recharge-option" data-amount="${amount}">
+            <div class="recharge-amount">${amount}度</div>
+            <div class="recharge-days">约用 ${days} 天</div>
+          </div>
+        `;
+      }).join('');
+
+      // 点击选择
+      container.querySelectorAll('.recharge-option').forEach(el => {
+        el.addEventListener('click', () => {
+          container.querySelectorAll('.recharge-option').forEach(e => e.classList.remove('selected'));
+          el.classList.add('selected');
+        });
+      });
+    }
+
+    // 更新图表
+    function updateChart(range) {
+      const data = range === 'all' ? mockData : mockData.slice(-range);
+      const ctx = document.getElementById('trend-chart').getContext('2d');
+
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.map(d => d.date.slice(5)),
+          datasets: [{
+            label: '电量余额',
+            data: data.map(d => d.balance),
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1a1a1a',
+              titleFont: { family: 'system-ui', size: 14, weight: '600' },
+              bodyFont: { family: 'monospace', size: 13 },
+              padding: 16,
+              displayColors: false,
+              layout: { padding: 8 },
+              callbacks: {
+                title: (items) => {
+                  const idx = items[0].dataIndex;
+                  return '📅 ' + data[idx].date;
+                },
+                label: (ctx) => {
+                  const idx = ctx.dataIndex;
+                  const item = data[idx];
+                  const balance = item.balance.toFixed(1);
+                  const consumption = item.consumption ? item.consumption.toFixed(2) : '0.00';
+                  return [
+                    `余额: ${balance} 度`,
+                    `消耗: ${consumption} 度`
+                  ];
+                },
+                afterBody: (ctx) => {
+                  const idx = ctx[0].dataIndex;
+                  const item = data[idx];
+                  if (item.consumption && item.consumption > 0) {
+                    const analogy = selectBestAnalogy(item.consumption);
+                    const value = (item.consumption * analogy.factor).toFixed(1);
+                    return [
+                      '',
+                      `💡 直观感受:`,
+                      `${analogy.icon} ${value} ${analogy.unit} · ${analogy.label}`
+                    ];
+                  }
+                  return '';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'monospace', size: 11 } }
+            },
+            y: {
+              grid: { color: 'rgba(0,0,0,0.05)' },
+              ticks: { font: { family: 'monospace', size: 11 } }
+            }
+          }
+        }
+      });
+    }
+
+    // 事件监听
+    function setupEventListeners() {
+      // 图表范围切换
+      document.querySelectorAll('.chart-controls .btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.chart-controls .btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          updateChart(parseInt(btn.dataset.range) || 'all');
+        });
+      });
+
+      // 配置按钮
+      document.getElementById('btn-config').addEventListener('click', showConfig);
+      document.getElementById('config-overlay').addEventListener('click', hideConfig);
+      document.getElementById('btn-save-config').addEventListener('click', saveConfig);
+
+      // 级联选择
+      document.getElementById('config-campus').addEventListener('change', onCampusChange);
+      document.getElementById('config-building').addEventListener('change', onBuildingChange);
+
+      // 搜索输入
+      const searchInput = document.getElementById('config-search');
+      let searchTimeout = null;
+
+      searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(async () => {
+          const results = await performSearch(e.target.value);
+          showSearchResults(results);
+        }, 200);
+      });
+
+      searchInput.addEventListener('focus', async (e) => {
+        if (e.target.value) {
+          const results = await performSearch(e.target.value);
+          showSearchResults(results);
+        }
+      });
+
+      // 点击其他地方隐藏搜索结果
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.form-group')) {
+          document.getElementById('search-results').style.display = 'none';
+        }
+      });
+    }
+
+    // 校区变更
+    async function onCampusChange(e) {
+      const campus = e.target.value;
+      if (!campus) return;
+
+      const buildingSelect = document.getElementById('config-building');
+      buildingSelect.innerHTML = '<option value="">加载中...</option>';
+      buildingSelect.disabled = false;
+
+      const buildings = await DataService.getBuildings(campus);
+      if (buildings && buildings.length > 0) {
+        buildingSelect.innerHTML = '<option value="">请选择楼栋</option>';
+        buildings.forEach(b => {
+          const option = document.createElement('option');
+          option.value = b.name;
+          option.textContent = b.name;
+          buildingSelect.appendChild(option);
+        });
+      }
+    }
+
+    // 楼栋变更
+    async function onBuildingChange(e) {
+      const building = e.target.value;
+      const campus = document.getElementById('config-campus').value;
+      if (!building || !campus) return;
+
+      const roomSelect = document.getElementById('config-room');
+      roomSelect.innerHTML = '<option value="">加载中...</option>';
+      roomSelect.disabled = false;
+
+      const rooms = await DataService.getRooms(campus, building);
+      if (rooms && rooms.length > 0) {
+        roomSelect.innerHTML = '<option value="">请选择房间</option>';
+        rooms.slice(0, 200).forEach(room => {
+          const option = document.createElement('option');
+          option.value = room.id;
+          option.textContent = room.name;
+          option.dataset.name = room.name;
+          roomSelect.appendChild(option);
+        });
+      }
+    }
+
+    // 保存配置
+    function saveConfig() {
+      const campus = document.getElementById('config-campus').value;
+      const building = document.getElementById('config-building').value;
+      const roomSelect = document.getElementById('config-room');
+      const roomId = roomSelect.value;
+      const roomName = roomSelect.options[roomSelect.selectedIndex]?.dataset.name || roomId;
+
+      if (!campus || !building || !roomId) {
+        alert('请完整填写所有选项');
+        return;
+      }
+
+      userConfig = { campus, building, roomId, roomName };
+      DataService.setUserConfig(userConfig);
+      hideConfig();
+      loadRoomData();
+    }
+
+    // 显示/隐藏配置
+    function showConfig() {
+      document.getElementById('config-panel').classList.add('show');
+      document.getElementById('config-overlay').classList.add('show');
+      // 打开配置面板时预加载房间数据
+      preloadAllRooms();
+    }
+
+    function hideConfig() {
+      document.getElementById('config-panel').classList.remove('show');
+      document.getElementById('config-overlay').classList.remove('show');
+    }
+  </script>
+</body>
+</html>

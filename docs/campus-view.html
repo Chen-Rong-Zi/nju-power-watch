@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校区视角 · 电费监控</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: oklch(97% 0.003 250);
+      --surface: oklch(100% 0 0);
+      --fg: oklch(20% 0.015 250);
+      --muted: oklch(50% 0.012 250);
+      --border: oklch(90% 0.006 250);
+      --accent: oklch(55% 0.15 160);
+      --warning: oklch(65% 0.18 50);
+      --danger: oklch(55% 0.20 25);
+      --success: oklch(60% 0.14 145);
+
+      --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+      --font-mono: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
+
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 导航 */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: color-mix(in oklch, var(--bg) 85%, transparent);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topnav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--fg);
+    }
+
+    /* 主内容 */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* 校区选择器 */
+    .campus-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .campus-tab {
+      padding: 12px 24px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .campus-tab:hover {
+      border-color: var(--accent);
+    }
+    .campus-tab.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    /* 仪表盘 */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+
+    .dash-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .dash-card.large {
+      grid-column: span 2;
+    }
+    @media (max-width: 600px) {
+      .dash-card.large { grid-column: span 1; }
+    }
+
+    .dash-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    .dash-value {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+    .dash-value.accent { color: var(--accent); }
+    .dash-sub {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .dash-change {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      margin-top: 8px;
+    }
+    .dash-change.up {
+      background: color-mix(in oklch, var(--danger) 12%, transparent);
+      color: var(--danger);
+    }
+    .dash-change.down {
+      background: color-mix(in oklch, var(--success) 12%, transparent);
+      color: var(--success);
+    }
+
+    /* 图表区域 */
+    .chart-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .chart-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+    }
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+
+    /* 楼栋列表 */
+    .building-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .building-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      transition: all 0.15s;
+    }
+    .building-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .building-name {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .building-stats {
+      display: flex;
+      gap: 16px;
+    }
+    .building-stat {
+      font-size: 12px;
+    }
+    .building-stat-label {
+      color: var(--muted);
+    }
+    .building-stat-value {
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    /* 区域能耗地图 */
+    .energy-map {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .map-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 20px;
+    }
+    .map-visual {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+      gap: 4px;
+    }
+    .map-cell {
+      aspect-ratio: 1;
+      border-radius: 4px;
+      background: var(--border);
+      transition: all 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+    .map-cell:hover {
+      transform: scale(1.1);
+      z-index: 1;
+    }
+    .map-cell.level-1 { background: #d1fae5; }
+    .map-cell.level-2 { background: #a7f3d0; }
+    .map-cell.level-3 { background: #6ee7b7; }
+    .map-cell.level-4 { background: #34d399; }
+    .map-cell.level-5 { background: #10b981; }
+
+    .map-legend {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    /* 加载状态 */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+    }
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loading-text {
+      margin-top: 16px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <span class="logo">⚡ 电费监控</span>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="room-view.html">我的房间</a>
+        <a href="building-view.html">楼栋视角</a>
+        <a href="campus-view.html" class="active">校区视角</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <!-- 校区选择 -->
+    <div class="campus-tabs" id="campus-tabs">
+      <!-- 动态填充 -->
+    </div>
+
+    <!-- 加载状态 -->
+    <div class="loading" id="loading-state" style="display: none;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">加载数据中...</div>
+    </div>
+
+    <!-- 仪表盘 -->
+    <div id="dashboard-content">
+      <!-- 核心指标 -->
+      <div class="dashboard-grid">
+        <div class="dash-card">
+          <div class="dash-label">今日总耗电</div>
+          <div class="dash-value accent" id="dash-total">--</div>
+          <div class="dash-sub">校区累计</div>
+          <div class="dash-change up" id="dash-change">
+            <span>↑</span>
+            <span>--%</span>
+          </div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-label">楼栋数量</div>
+          <div class="dash-value" id="dash-buildings">--</div>
+          <div class="dash-sub">已监控</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-label">房间总数</div>
+          <div class="dash-value" id="dash-rooms">--</div>
+          <div class="dash-sub">覆盖范围</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-label">平均消耗</div>
+          <div class="dash-value" id="dash-avg">--</div>
+          <div class="dash-sub">度/房间/日</div>
+        </div>
+        <div class="dash-card large">
+          <div class="dash-label">节能建议</div>
+          <div style="font-size: 15px; color: var(--muted); line-height: 1.7;" id="dash-tip">
+            基于校区整体用电数据，智能生成节能优化建议...
+          </div>
+        </div>
+      </div>
+
+      <!-- 趋势图 -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">校区耗电趋势</h2>
+        </div>
+        <div class="chart-container">
+          <canvas id="trend-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- 楼栋对比 -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">楼栋耗电对比</h2>
+        </div>
+        <div class="chart-container">
+          <canvas id="building-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- 楼栋列表 -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">各楼栋详情</h2>
+        </div>
+        <div class="building-grid" id="building-grid">
+          <!-- 动态填充 -->
+        </div>
+      </div>
+
+      <!-- 能耗地图 -->
+      <div class="energy-map">
+        <h2 class="map-title">楼栋能耗热力图</h2>
+        <div class="map-visual" id="map-visual">
+          <!-- 动态填充 -->
+        </div>
+        <div class="map-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #d1fae5;"></div>
+            <span>低</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #a7f3d0;"></div>
+            <span>较低</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #6ee7b7;"></div>
+            <span>中等</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #34d399;"></div>
+            <span>较高</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #10b981;"></div>
+            <span>高</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/data-service.js"></script>
+  <script>
+    // 状态
+    let currentCampus = null;
+    let trendChart = null;
+    let buildingChart = null;
+    let campusData = null;
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', async () => {
+      await initCampusTabs();
+    });
+
+    // 加载校区标签
+    async function initCampusTabs() {
+      const campuses = await DataService.getCampuses();
+      const container = document.getElementById('campus-tabs');
+
+      campuses.forEach((campus, index) => {
+        const tab = document.createElement('button');
+        tab.className = 'campus-tab' + (index === 0 ? ' active' : '');
+        tab.textContent = campus;
+        tab.addEventListener('click', () => selectCampus(campus, tab));
+        container.appendChild(tab);
+      });
+
+      // 默认选中第一个
+      if (campuses.length > 0) {
+        selectCampus(campuses[0], container.querySelector('.campus-tab'));
+      }
+    }
+
+    // 选择校区
+    async function selectCampus(campus, tabEl) {
+      // 更新标签状态
+      document.querySelectorAll('.campus-tab').forEach(t => t.classList.remove('active'));
+      tabEl.classList.add('active');
+
+      currentCampus = campus;
+
+      // 显示加载
+      document.getElementById('loading-state').style.display = 'flex';
+      document.getElementById('dashboard-content').style.opacity = '0.3';
+
+      // 加载数据
+      campusData = await DataService.getCampusStatistics(campus);
+      await loadData();
+
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('dashboard-content').style.opacity = '1';
+    }
+
+    // 加载数据
+    async function loadData() {
+      if (!campusData) return;
+
+      const buildingStats = campusData.buildingDetails || [];
+      const totalRooms = campusData.rooms || 0;
+      const buildings = campusData.buildings || 0;
+
+      // 计算总耗电（基于平均余额估算）
+      let totalConsumption = 0;
+      buildingStats.forEach(b => {
+        // 模拟每房间日耗电约 1-3 度
+        totalConsumption += (b.total_rooms || 0) * (Math.random() * 2 + 1);
+      });
+
+      const avgConsumption = totalRooms > 0 ? (totalConsumption / totalRooms).toFixed(1) : '0';
+
+      // 更新仪表盘
+      document.getElementById('dash-total').textContent = totalConsumption.toFixed(0) + '度';
+      document.getElementById('dash-buildings').textContent = buildings;
+      document.getElementById('dash-rooms').textContent = totalRooms.toLocaleString();
+      document.getElementById('dash-avg').textContent = avgConsumption + '度';
+
+      // 变化趋势
+      const change = (Math.random() * 20 - 10).toFixed(1);
+      const changeEl = document.getElementById('dash-change');
+      changeEl.innerHTML = `<span>${change > 0 ? '↑' : '↓'}</span><span>${Math.abs(change)}%</span>`;
+      changeEl.className = 'dash-change ' + (change > 0 ? 'up' : 'down');
+
+      // 节能建议
+      const tips = [
+        '今日整体用电平稳，建议关注高耗电楼栋的节能措施',
+        '检测到用电高峰集中在晚间，建议错峰使用大功率电器',
+        '本周用电量较上周有所下降，继续保持良好用电习惯',
+        '部分楼栋用电异常偏高，建议检查是否有设备漏电'
+      ];
+      document.getElementById('dash-tip').textContent = tips[Math.floor(Math.random() * tips.length)];
+
+      // 为每个楼栋添加模拟耗电数据
+      buildingStats.forEach(b => {
+        b.consumption = (b.total_rooms * (Math.random() * 2 + 1)).toFixed(0);
+        b.avg = (Math.random() * 3 + 1).toFixed(1);
+      });
+
+      // 渲染图表
+      renderTrendChart();
+      renderBuildingChart(buildingStats);
+      renderBuildingGrid(buildingStats);
+      renderEnergyMap(buildingStats);
+    }
+
+    // 渲染趋势图
+    function renderTrendChart() {
+      const ctx = document.getElementById('trend-chart').getContext('2d');
+
+      if (trendChart) trendChart.destroy();
+
+      // 生成30天数据
+      const labels = [];
+      const data = [];
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        labels.push(d.getDate() + '日');
+        data.push(Math.random() * 500 + 800);
+      }
+
+      trendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: '日耗电量',
+            data,
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'monospace', size: 11 } }
+            },
+            y: {
+              grid: { color: 'rgba(0,0,0,0.05)' },
+              ticks: { font: { family: 'monospace', size: 11 } }
+            }
+          }
+        }
+      });
+    }
+
+    // 渲染楼栋对比图
+    function renderBuildingChart(buildingStats) {
+      const ctx = document.getElementById('building-chart').getContext('2d');
+
+      if (buildingChart) buildingChart.destroy();
+
+      const top10 = buildingStats.slice(0, 10);
+
+      buildingChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: top10.map(b => b.name),
+          datasets: [{
+            label: '耗电量',
+            data: top10.map(b => b.consumption),
+            backgroundColor: top10.map((_, i) => `rgba(16, 185, 129, ${1 - i * 0.08})`),
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: {
+                font: { family: 'monospace', size: 10 },
+                maxRotation: 45,
+                minRotation: 45
+              }
+            },
+            y: {
+              grid: { color: 'rgba(0,0,0,0.05)' },
+              ticks: { font: { family: 'monospace', size: 11 } }
+            }
+          }
+        }
+      });
+    }
+
+    // 渲染楼栋网格
+    function renderBuildingGrid(buildingStats) {
+      const grid = document.getElementById('building-grid');
+      grid.innerHTML = buildingStats.map(b => `
+        <div class="building-card">
+          <div class="building-name">${b.name}</div>
+          <div class="building-stats">
+            <div class="building-stat">
+              <span class="building-stat-label">房间: </span>
+              <span class="building-stat-value">${b.rooms}</span>
+            </div>
+            <div class="building-stat">
+              <span class="building-stat-label">消耗: </span>
+              <span class="building-stat-value">${b.consumption}度</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 渲染能耗地图
+    function renderEnergyMap(buildingStats) {
+      const map = document.getElementById('map-visual');
+      const cells = buildingStats.slice(0, 80).map(b => {
+        const level = Math.ceil(parseFloat(b.avg) / 0.8);
+        return `<div class="map-cell level-${Math.min(level, 5)}" title="${b.name}: ${b.consumption}度"></div>`;
+      });
+      map.innerHTML = cells.join('');
+    }
+  </script>
+</body>
+</html>

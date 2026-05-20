@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>房间详情 · 电费监控</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: oklch(97% 0.003 250);
+      --surface: oklch(100% 0 0);
+      --fg: oklch(20% 0.015 250);
+      --muted: oklch(50% 0.012 250);
+      --border: oklch(90% 0.006 250);
+      --accent: oklch(55% 0.15 160);
+      --warning: oklch(65% 0.18 50);
+      --danger: oklch(55% 0.20 25);
+      --success: oklch(60% 0.14 145);
+
+      --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+      --font-mono: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
+
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 导航 */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: color-mix(in oklch, var(--bg) 85%, transparent);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topnav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--fg);
+    }
+
+    /* 返回按钮 */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .back-btn:hover {
+      border-color: var(--accent);
+      background: color-mix(in oklch, var(--accent) 5%, transparent);
+    }
+
+    /* 主内容 */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* 房间信息卡片 */
+    .room-hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .room-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .room-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin: 0 0 8px;
+    }
+    .room-meta {
+      color: var(--muted);
+      font-size: 14px;
+      font-family: var(--font-mono);
+    }
+    .balance-badge {
+      background: var(--accent);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    /* 统计卡片 */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .stat-value.accent { color: var(--accent); }
+
+    /* 图表区域 */
+    .chart-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+    .chart-controls {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn:hover {
+      background: var(--fg);
+      color: var(--surface);
+    }
+    .btn.active {
+      background: var(--fg);
+      color: var(--surface);
+      border-color: var(--fg);
+    }
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+
+    /* 单一直观描述卡片 */
+    .main-analogy-card {
+      background: linear-gradient(135deg, color-mix(in oklch, var(--accent) 8%, transparent), var(--surface));
+      border: 2px solid color-mix(in oklch, var(--accent) 30%, transparent);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 24px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .main-analogy-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+    }
+    .main-analogy-value {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .main-analogy-label {
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .main-analogy-desc {
+      color: var(--fg);
+      font-size: 14px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* 加载状态 */
+    .loading-container {
+      text-align: center;
+      padding: 60px 24px;
+    }
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loading-text {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* 错误状态 */
+    .error-state {
+      text-align: center;
+      padding: 60px 24px;
+    }
+    .error-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .error-text {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <a href="building-view.html" class="back-btn">← 返回排行榜</a>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="room-view.html">我的房间</a>
+        <a href="building-view.html">楼栋视角</a>
+        <a href="campus-view.html">校区视角</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <!-- 加载状态 -->
+    <div class="loading-container" id="loading-container">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">正在加载房间数据...</div>
+    </div>
+
+    <!-- 错误状态 -->
+    <div class="error-state" id="error-state" style="display: none;">
+      <div class="error-icon">⚠️</div>
+      <div class="error-text">无法加载房间数据，请检查参数是否正确</div>
+      <a href="building-view.html" class="btn">返回排行榜</a>
+    </div>
+
+    <!-- 房间信息 -->
+    <section class="room-hero" id="room-info" style="display: none;">
+      <div class="room-header">
+        <div>
+          <h1 class="room-title" id="room-name">--</h1>
+          <p class="room-meta"><span id="room-campus">--</span> · <span id="room-building">--</span></p>
+        </div>
+        <div class="balance-badge" id="current-balance">--度</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">日均消耗</div>
+          <div class="stat-value" id="stat-avg">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">本周消耗</div>
+          <div class="stat-value accent" id="stat-week">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">最高日消耗</div>
+          <div class="stat-value" id="stat-max">--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">数据天数</div>
+          <div class="stat-value" id="stat-days">--</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 趋势图 -->
+    <section class="chart-section" id="chart-section" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">电费变化趋势</h2>
+        <div class="chart-controls">
+          <button class="btn active" data-range="7">7天</button>
+          <button class="btn" data-range="30">30天</button>
+          <button class="btn" data-range="all">全部</button>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="trend-chart"></canvas>
+      </div>
+    </section>
+
+    <!-- 耗电量直观描述 -->
+    <section class="main-analogy-card" id="main-analogy-card" style="display: none;">
+      <div class="main-analogy-icon" id="main-analogy-icon">💡</div>
+      <div class="main-analogy-value" id="main-analogy-value">--</div>
+      <div class="main-analogy-label" id="main-analogy-label">--</div>
+      <div class="main-analogy-desc" id="main-analogy-desc">今日耗电量直观感受</div>
+    </section>
+  </main>
+
+  <script src="js/data-service.js"></script>
+  <script>
+    // 能耗类比数据（分层显示）
+    const ENERGY_ANALOGIES = [
+      { icon: '💧', factor: 10, unit: '升', label: '可烧开的水', range: [0, 1], desc: '相当于用电热水壶烧开这些水' },
+      { icon: '💡', factor: 100, unit: '小时', label: 'LED灯照明', range: [0.5, 3], desc: '可点亮10W LED灯持续照明' },
+      { icon: '📱', factor: 67, unit: '次', label: '手机充满电', range: [1, 5], desc: '可为智能手机完整充电' },
+      { icon: '💻', factor: 20, unit: '小时', label: '笔记本工作', range: [2, 8], desc: '可供笔记本电脑持续工作' },
+      { icon: '❄️', factor: 1, unit: '小时', label: '空调制冷', range: [5, 15], desc: '可供1.5匹空调运行' },
+      { icon: '🧺', factor: 2, unit: '次', label: '洗衣机洗衣', range: [3, 10], desc: '可用洗衣机洗衣服' },
+      { icon: '🚲', factor: 50, unit: '公里', label: '电动车骑行', range: [1, 20], desc: '可骑行电动自行车行驶' },
+      { icon: '🪵', factor: 0.22, unit: 'kg', label: '木材燃烧', range: [0, Infinity], desc: '相当于燃烧木材释放的能量' },
+      { icon: '📺', factor: 10, unit: '小时', label: '电视观看', range: [0.5, 10], desc: '可观看电视节目' },
+      { icon: '🔥', factor: 3.6, unit: 'MJ', label: '热量单位', range: [0, Infinity], desc: '相当于释放的热量' }
+    ];
+
+    // 根据消耗量选择最合适的类比
+    function selectBestAnalogy(kwh) {
+      if (!kwh || kwh <= 0) return ENERGY_ANALOGIES[0];
+      const matched = ENERGY_ANALOGIES.find(a => kwh >= a.range[0] && kwh < a.range[1]);
+      if (matched) return matched;
+      return ENERGY_ANALOGIES[7];
+    }
+
+    // 生成直观描述文本
+    function generateAnalogyText(kwh) {
+      const analogy = selectBestAnalogy(kwh);
+      const value = (kwh * analogy.factor).toFixed(1);
+      return `${analogy.icon} ${value} ${analogy.unit} · ${analogy.desc}`;
+    }
+
+    // 状态
+    let chartInstance = null;
+    let roomData = [];
+    let params = {};
+
+    // 解析URL参数
+    function parseUrlParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      params = {
+        campus: urlParams.get('campus'),
+        building: urlParams.get('building'),
+        roomId: urlParams.get('roomId'),
+        roomName: urlParams.get('roomName') || '未知房间',
+        returnUrl: urlParams.get('returnUrl') // 获取返回URL
+      };
+
+      // 更新返回按钮链接
+      const backBtn = document.querySelector('.back-btn');
+      if (params.returnUrl) {
+        backBtn.href = decodeURIComponent(params.returnUrl);
+      }
+    }
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', async () => {
+      parseUrlParams();
+      setupEventListeners();
+
+      if (params.campus && params.building && params.roomId) {
+        await loadRoomData();
+      } else {
+        showError();
+      }
+    });
+
+    // 加载房间数据
+    async function loadRoomData() {
+      try {
+        const history = await DataService.getRoomHistory(
+          params.campus,
+          params.building,
+          params.roomId
+        );
+
+        if (history && history.history && history.history.length > 0) {
+          roomData = history.history.map(h => ({
+            date: h.formattedDate,
+            balance: h.electricity,
+            consumption: h.consumption || 0
+          }));
+          updateUI();
+        } else {
+          showError();
+        }
+      } catch (error) {
+        console.error('加载房间数据失败:', error);
+        showError();
+      }
+    }
+
+    // 更新界面
+    function updateUI() {
+      document.getElementById('loading-container').style.display = 'none';
+      document.getElementById('room-info').style.display = 'block';
+      document.getElementById('chart-section').style.display = 'block';
+      document.getElementById('main-analogy-card').style.display = 'block';
+
+      const latest = roomData[roomData.length - 1];
+      const weekData = roomData.slice(-7);
+
+      // 填充房间信息
+      document.getElementById('room-name').textContent = params.roomName;
+      document.getElementById('room-campus').textContent = params.campus;
+      document.getElementById('room-building').textContent = params.building;
+      document.getElementById('current-balance').textContent = latest.balance.toFixed(1) + '度';
+
+      // 统计数据
+      const avgConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0) / 7;
+      const weekConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0);
+      const maxConsumption = Math.max(...roomData.map(d => d.consumption));
+
+      document.getElementById('stat-avg').textContent = avgConsumption.toFixed(1) + '度';
+      document.getElementById('stat-week').textContent = weekConsumption.toFixed(1) + '度';
+      document.getElementById('stat-max').textContent = maxConsumption.toFixed(1) + '度';
+      document.getElementById('stat-days').textContent = roomData.length + '天';
+
+      // 直观描述
+      updateMainAnalogy(latest.consumption);
+
+      // 更新图表
+      updateChart(7);
+    }
+
+    // 更新主要直观描述卡片
+    function updateMainAnalogy(consumption) {
+      const analogy = selectBestAnalogy(consumption);
+      const value = (consumption * analogy.factor).toFixed(1);
+
+      document.getElementById('main-analogy-icon').textContent = analogy.icon;
+      document.getElementById('main-analogy-value').textContent = `${value} ${analogy.unit}`;
+      document.getElementById('main-analogy-label').textContent = analogy.label;
+      document.getElementById('main-analogy-desc').textContent = `今日耗电 ${consumption.toFixed(2)} 度 · ${analogy.desc}`;
+    }
+
+    // 更新图表
+    function updateChart(range) {
+      const data = range === 'all' ? roomData : roomData.slice(-range);
+      const ctx = document.getElementById('trend-chart').getContext('2d');
+
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.map(d => d.date.slice(5)),
+          datasets: [{
+            label: '电量余额',
+            data: data.map(d => d.balance),
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1a1a1a',
+              titleFont: { family: 'system-ui', size: 14 },
+              bodyFont: { family: 'monospace', size: 13 },
+              padding: 12,
+              displayColors: false,
+              callbacks: {
+                title: (items) => data[items[0].dataIndex].date,
+                label: (ctx) => {
+                  const item = data[ctx.dataIndex];
+                  const balance = item.balance.toFixed(1);
+                  const consumption = item.consumption ? item.consumption.toFixed(2) : '0.00';
+                  return `余额: ${balance} 度 | 消耗: ${consumption} 度`;
+                },
+                afterLabel: (ctx) => {
+                  const item = data[ctx.dataIndex];
+                  if (item.consumption && item.consumption > 0) {
+                    return generateAnalogyText(item.consumption);
+                  }
+                  return '';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'monospace', size: 11 } }
+            },
+            y: {
+              grid: { color: 'rgba(0,0,0,0.05)' },
+              ticks: { font: { family: 'monospace', size: 11 } }
+            }
+          }
+        }
+      });
+    }
+
+    // 显示错误
+    function showError() {
+      document.getElementById('loading-container').style.display = 'none';
+      document.getElementById('error-state').style.display = 'block';
+    }
+
+    // 事件监听
+    function setupEventListeners() {
+      document.querySelectorAll('.chart-controls .btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.chart-controls .btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          if (roomData.length > 0) {
+            updateChart(parseInt(btn.dataset.range) || 'all');
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

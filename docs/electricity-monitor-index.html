@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -15,16 +16,13 @@
       --warning: oklch(65% 0.18 50);
       --danger: oklch(55% 0.20 25);
       --success: oklch(60% 0.14 145);
-
       --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
       --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
       --font-mono: 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
-
       --radius: 12px;
       --radius-lg: 20px;
       --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
     }
-
     *, *::before, *::after { box-sizing: border-box; }
     html { -webkit-text-size-adjust: 100%; }
     body {
@@ -36,8 +34,6 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
-
-    /* 导航 */
     .topnav {
       position: sticky;
       top: 0;
@@ -75,8 +71,6 @@
     .nav-links a.active {
       color: var(--fg);
     }
-
-    /* Hero */
     .hero {
       max-width: 1200px;
       margin: 0 auto;
@@ -109,11 +103,51 @@
       max-width: 600px;
       margin: 0 auto 40px;
     }
-    .hero-actions {
+    .status-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin: 40px auto;
+      max-width: 600px;
+      box-shadow: var(--shadow);
+    }
+    .status-header {
       display: flex;
+      align-items: center;
       gap: 16px;
+      margin-bottom: 16px;
+    }
+    .status-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
+      font-size: 24px;
+    }
+    .status-icon.configured {
+      background: color-mix(in oklch, var(--success) 15%, transparent);
+    }
+    .status-icon.not-configured {
+      background: color-mix(in oklch, var(--accent) 15%, transparent);
+    }
+    .status-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+    }
+    .status-subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 4px 0 0;
+    }
+    .status-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
     }
     .btn {
       display: inline-flex;
@@ -145,8 +179,40 @@
     .btn-secondary:hover {
       border-color: var(--fg);
     }
-
-    /* 功能卡片 */
+    .stats-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 24px;
+      margin: 40px 0;
+    }
+    .stats-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      text-align: center;
+    }
+    @media (max-width: 800px) {
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-family: var(--font-mono);
+    }
     .features {
       max-width: 1200px;
       margin: 0 auto;
@@ -196,15 +262,9 @@
       font-size: 28px;
       margin-bottom: 20px;
     }
-    .feature-icon.room {
-      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-    }
-    .feature-icon.building {
-      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-    }
-    .feature-icon.campus {
-      background: linear-gradient(135deg, #fef3c7, #fde68a);
-    }
+    .feature-icon.room { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+    .feature-icon.building { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+    .feature-icon.campus { background: linear-gradient(135deg, #fef3c7, #fde68a); }
     .feature-title {
       font-family: var(--font-display);
       font-size: 20px;
@@ -232,92 +292,6 @@
     .feature-card:hover .feature-link::after {
       transform: translateX(4px);
     }
-
-    /* 状态卡片 */
-    .status-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      margin: 40px auto;
-      max-width: 600px;
-      box-shadow: var(--shadow);
-    }
-    .status-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .status-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-    }
-    .status-icon.configured {
-      background: color-mix(in oklch, var(--success) 15%, transparent);
-    }
-    .status-icon.not-configured {
-      background: color-mix(in oklch, var(--accent) 15%, transparent);
-    }
-    .status-title {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 600;
-      margin: 0;
-    }
-    .status-subtitle {
-      color: var(--muted);
-      font-size: 13px;
-      margin: 4px 0 0;
-    }
-    .status-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    /* 统计条 */
-    .stats-bar {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 40px 24px;
-      margin: 40px 0;
-    }
-    .stats-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 32px;
-      text-align: center;
-    }
-    @media (max-width: 800px) {
-      .stats-inner { grid-template-columns: repeat(2, 1fr); }
-    }
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .stat-value {
-      font-family: var(--font-display);
-      font-size: 36px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .stat-label {
-      color: var(--muted);
-      font-size: 13px;
-      font-family: var(--font-mono);
-    }
-
-    /* 页脚 */
     .pagefoot {
       max-width: 1200px;
       margin: 0 auto;
@@ -326,34 +300,6 @@
       color: var(--muted);
       font-size: 13px;
       border-top: 1px solid var(--border);
-    }
-
-    /* 加载动画 */
-    .redirect-overlay {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .redirect-spinner {
-      width: 48px;
-      height: 48px;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .redirect-text {
-      margin-top: 16px;
-      color: var(--muted);
-      font-size: 14px;
     }
   </style>
 </head>
@@ -369,61 +315,33 @@
       </div>
     </div>
   </nav>
-
-  <!-- 重定向覆盖层 -->
-  <div class="redirect-overlay" id="redirect-overlay" style="display: none;">
-    <div class="redirect-spinner"></div>
-    <div class="redirect-text">正在跳转到您的房间...</div>
-  </div>
-
   <main>
-    <!-- Hero -->
     <section class="hero">
-      <div class="hero-badge">
-        <span>●</span>
-        <span>实时监控</span>
-      </div>
+      <div class="hero-badge"><span>●</span><span>实时监控</span></div>
       <h1 class="hero-title">南京大学电费监控系统</h1>
       <p class="hero-subtitle">智能追踪您的用电情况，预测电量消耗，提供个性化的用电建议</p>
-
-      <!-- 用户状态卡片 -->
       <div class="status-card" id="status-card">
         <div class="status-header">
           <div class="status-icon not-configured" id="status-icon">🏠</div>
           <div>
-            <h3 class="status-title" id="status-title">--</h3>
-            <p class="status-subtitle" id="status-subtitle">--</p>
+            <h3 class="status-title" id="status-title">尚未配置房间</h3>
+            <p class="status-subtitle" id="status-subtitle">配置后可查看个性化电费数据</p>
           </div>
         </div>
         <div class="status-actions" id="status-actions">
-          <!-- 动态填充 -->
+          <a href="room-view.html" class="btn btn-primary">立即配置</a>
+          <a href="campus-view.html" class="btn btn-secondary">先逛逛校区</a>
         </div>
       </div>
     </section>
-
-    <!-- 统计条 -->
     <section class="stats-bar">
       <div class="stats-inner">
-        <div class="stat-item">
-          <div class="stat-value">4</div>
-          <div class="stat-label">校区覆盖</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">200+</div>
-          <div class="stat-label">楼栋监控</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">10万+</div>
-          <div class="stat-label">房间追踪</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">实时</div>
-          <div class="stat-label">数据更新</div>
-        </div>
+        <div class="stat-item"><div class="stat-value">4</div><div class="stat-label">校区覆盖</div></div>
+        <div class="stat-item"><div class="stat-value">200+</div><div class="stat-label">楼栋监控</div></div>
+        <div class="stat-item"><div class="stat-value">10万+</div><div class="stat-label">房间追踪</div></div>
+        <div class="stat-item"><div class="stat-value">实时</div><div class="stat-label">数据更新</div></div>
       </div>
     </section>
-
-    <!-- 功能卡片 -->
     <section class="features">
       <h2 class="section-title">选择您的视角</h2>
       <div class="feature-grid">
@@ -448,74 +366,41 @@
       </div>
     </section>
   </main>
-
   <footer class="pagefoot">
     <p>数据来源: NJU epay系统 · 自动更新: 每日 2:00 AM UTC</p>
     <p style="margin-top: 8px;">© 2026 南京大学电费监控系统</p>
   </footer>
-
-  <script src="js/data-service.js"></script>
   <script>
-    // 初始化
-    document.addEventListener('DOMContentLoaded', () => {
-      checkUserConfig();
-    });
-
-    // 检查用户配置
+    const DataService = {
+      getUserConfig() {
+        const stored = localStorage.getItem('electricity_user_config');
+        return stored ? JSON.parse(stored) : null;
+      },
+      clearUserConfig() {
+        localStorage.removeItem('electricity_user_config');
+      }
+    };
     function checkUserConfig() {
       const config = DataService.getUserConfig();
-
-      const statusCard = document.getElementById('status-card');
       const statusIcon = document.getElementById('status-icon');
       const statusTitle = document.getElementById('status-title');
       const statusSubtitle = document.getElementById('status-subtitle');
       const statusActions = document.getElementById('status-actions');
-
       if (config) {
-        // 已配置房间
         statusIcon.className = 'status-icon configured';
         statusIcon.textContent = '✓';
-        statusTitle.textContent = `${config.roomName}`;
-        statusSubtitle.textContent = `${config.campus} · ${config.building}`;
-
-        statusActions.innerHTML = `
-          <a href="room-view.html" class="btn btn-primary">进入我的房间</a>
-          <button class="btn btn-secondary" onclick="clearConfig()">更换房间</button>
-        `;
-
-        // 自动跳转提示（可选）
-        // showRedirectOverlay();
-      } else {
-        // 未配置房间
-        statusIcon.className = 'status-icon not-configured';
-        statusIcon.textContent = '🏠';
-        statusTitle.textContent = '尚未配置房间';
-        statusSubtitle.textContent = '配置后可查看个性化电费数据';
-
-        statusActions.innerHTML = `
-          <a href="room-view.html" class="btn btn-primary">立即配置</a>
-          <a href="campus-view.html" class="btn btn-secondary">先逛逛校区</a>
-        `;
+        statusTitle.textContent = config.roomName;
+        statusSubtitle.textContent = config.campus + ' · ' + config.building;
+        statusActions.innerHTML = '<a href="room-view.html" class="btn btn-primary">进入我的房间</a><button class="btn btn-secondary" onclick="clearConfig()">更换房间</button>';
       }
     }
-
-    // 清除配置
     function clearConfig() {
       if (confirm('确定要更换房间吗？')) {
         DataService.clearUserConfig();
-        checkUserConfig();
+        location.reload();
       }
     }
-
-    // 显示跳转覆盖层（如果需要自动跳转）
-    function showRedirectOverlay() {
-      const overlay = document.getElementById('redirect-overlay');
-      overlay.style.display = 'flex';
-
-      setTimeout(() => {
-        window.location.href = 'room-view.html';
-      }, 1500);
-    }
+    document.addEventListener('DOMContentLoaded', checkUserConfig);
   </script>
 </body>
 </html>
