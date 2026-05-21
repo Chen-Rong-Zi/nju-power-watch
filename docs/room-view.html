@@ -865,7 +865,7 @@
                 roomId: room.id,
                 roomName: room.name,
                 // 用于搜索的简化名称，包含房间名和ID以便搜索
-                searchKey: `${campus} ${building.name} ${room.name} ${room.id}`.toLowerCase()
+                searchKey: `${campus} ${building.name} ${room.name}`.toLowerCase()
               });
             });
           }
@@ -889,29 +889,7 @@
 
       // 所有搜索词都必须匹配
       return queryParts.every(part => {
-        // 1. 直接包含匹配
-        if (text.includes(part)) return true;
-
-        // 2. 提取文本中所有数字序列，检查是否包含搜索词
-        // 例如搜索 "211" 可以匹配 "4a211" 中的 "211"
-        const textNumbers = text.match(/\d+/g) || [];
-        if (textNumbers.some(num => num.includes(part))) return true;
-
-        // 3. 提取搜索词中的数字，检查文本是否包含
-        const queryNumbers = part.match(/\d+/g) || [];
-        if (queryNumbers.some(qn => text.includes(qn))) return true;
-
-        // 4. 特殊处理：检查房间名中的数字部分
-        // 例如 "4a211" 提取 "211"，检查是否与搜索词匹配
-        const roomMatches = text.match(/[a-z]*(\d+)/gi) || [];
-        for (const match of roomMatches) {
-          const numPart = match.replace(/[a-z]/gi, '');
-          if (numPart.includes(part) || part.includes(numPart)) {
-            return true;
-          }
-        }
-
-        return false;
+        return text.includes(part);
       });
     }
 
@@ -967,13 +945,9 @@
         .filter(room => {
           const match = fuzzyMatch(room.searchKey, query);
           return match;
-        })
-        .slice(0, 20); // 限制结果数量
+        }); // 限制结果数量
 
       console.log(`找到 ${results.length} 个结果`);
-      if (results.length > 0 && query === '211') {
-        console.log('搜索 "211" 的结果:', results.map(r => r.roomName).join(', '));
-      }
       return results;
     }
 
