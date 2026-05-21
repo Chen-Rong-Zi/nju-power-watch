@@ -225,90 +225,153 @@ const DataService = {
   },
 
   /**
-   * 批量获取房间历史数据（并行请求，带并发控制）
+   * 请求池模式 - 维护固定数量的并发请求
+   * 当一个请求完成时，立即开始下一个请求
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
    * @param {string[]} roomIds 房间ID列表
+   * @param {Function} onRoomLoaded 单个房间加载完成回调 (roomId, roomData, loaded, total)
+   * @param {number} poolSize 请求池大小（默认100）
+   */
+  async poolRoomHistory(campusName, buildingName, roomIds, onRoomLoaded, poolSize = 100) {
+    let loaded = 0;
+    const total = roomIds.length;
+    let currentIndex = 0;
+    const activeRequests = new Set();
+
+    // 处理单个房间的请求
+    const processRoom = async (roomId) => {
+      const cacheKey = `${campusName}/${buildingName}/${roomId}`;
+
+      // 检查缓存
+      if (this._roomCache.has(cacheKey)) {
+        const data = this._roomCache.get(cacheKey);
+        loaded++;
+        onRoomLoaded(roomId, data, loaded, total);
+        return { roomId, data };
+      }
+
+      try {
+        const response = await fetch(
+          `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${roomId}.json`
+        );
+        const rawData = await response.json();
+
+        // 转换历史数据
+        const history = [];
+        if (rawData.balance_history) {
+          for (const [date, balance] of Object.entries(rawData.balance_history)) {
+            history.push({
+              date,
+              electricity: balance,
+              formattedDate: this.formatDate(date)
+            });
+          }
+          history.sort((a, b) => a.date.localeCompare(b.date));
+
+          // 计算每日消耗
+          for (let j = 1; j < history.length; j++) {
+            const prev = history[j - 1];
+            const curr = history[j];
+            curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+          }
+        }
+
+        const data = {
+          ...rawData,
+          history,
+          dailyConsumption: history.length > 1 ? history[history.length - 1].consumption : 0,
+          avgConsumption: this.calculateAvgConsumption(history)
+        };
+
+        this._roomCache.set(cacheKey, data);
+        loaded++;
+        onRoomLoaded(roomId, data, loaded, total);
+
+        return { roomId, data };
+      } catch (error) {
+        loaded++;
+        onRoomLoaded(roomId, null, loaded, total);
+        return { roomId, data: null, error };
+      }
+    };
+
+    // 启动一个工作请求
+    const startNext = async () => {
+      if (currentIndex >= total) return null;
+
+      const roomIndex = currentIndex++;
+      const roomId = roomIds[roomIndex];
+
+      const promise = processRoom(roomId);
+      activeRequests.add(promise);
+
+      const result = await promise;
+      activeRequests.delete(promise);
+
+      // 当前请求完成后，立即启动下一个
+      if (currentIndex < total) {
+        startNext();
+      }
+
+      return result;
+    };
+
+    // 初始化：启动 poolSize 个并发请求
+    const initialCount = Math.min(poolSize, total);
+    for (let i = 0; i < initialCount; i++) {
+      startNext();
+    }
+
+    // 等待所有请求完成
+    while (loaded < total) {
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+  },
+
+  /**
+   * 流式获取房间历史数据 - 每获取一个房间就立即回调
+   * 支持实时计算和排序动画
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string[]} roomIds 房间ID列表
+   * @param {Function} onRoomLoaded 单个房间加载完成回调 (roomId, roomData)
    * @param {number} concurrency 并发数（默认10）
+   */
+  async streamRoomHistory(campusName, buildingName, roomIds, onRoomLoaded, concurrency = 100) {
+    // 使用请求池模式，更高效
+    return this.poolRoomHistory(campusName, buildingName, roomIds, onRoomLoaded, concurrency);
+  },
+
+  /**
+   * 批量获取房间历史数据（请求池模式，更高效）
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string[]} roomIds 房间ID列表
+   * @param {number} poolSize 请求池大小（默认100）
    * @param {Function} onProgress 进度回调 (loaded, total)
    */
-  async batchGetRoomHistory(campusName, buildingName, roomIds, concurrency = 10, onProgress = null) {
+  async batchGetRoomHistory(campusName, buildingName, roomIds, poolSize = 100, onProgress = null) {
     const results = new Map();
-    let loaded = 0;
 
-    // 分批处理
-    for (let i = 0; i < roomIds.length; i += concurrency) {
-      const batch = roomIds.slice(i, i + concurrency);
-
-      // 并行请求当前批次
-      const batchPromises = batch.map(async roomId => {
-        const cacheKey = `${campusName}/${buildingName}/${roomId}`;
-
-        // 检查缓存
-        if (this._roomCache.has(cacheKey)) {
-          loaded++;
-          if (onProgress) onProgress(loaded, roomIds.length);
-          return { roomId, data: this._roomCache.get(cacheKey) };
-        }
-
-        try {
-          const response = await fetch(
-            `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${roomId}.json`
-          );
-          const rawData = await response.json();
-
-          // 转换历史数据
-          const history = [];
-          if (rawData.balance_history) {
-            for (const [date, balance] of Object.entries(rawData.balance_history)) {
-              history.push({
-                date,
-                electricity: balance,
-                formattedDate: this.formatDate(date)
-              });
-            }
-            history.sort((a, b) => a.date.localeCompare(b.date));
-
-            // 计算每日消耗
-            for (let j = 1; j < history.length; j++) {
-              const prev = history[j - 1];
-              const curr = history[j];
-              curr.consumption = Math.max(0, prev.electricity - curr.electricity);
-            }
-          }
-
-          const data = {
-            ...rawData,
-            history,
-            dailyConsumption: history.length > 1 ? history[history.length - 1].consumption : 0,
-            avgConsumption: this.calculateAvgConsumption(history)
-          };
-
-          this._roomCache.set(cacheKey, data);
-          loaded++;
-          if (onProgress) onProgress(loaded, roomIds.length);
-
-          return { roomId, data };
-        } catch (error) {
-          loaded++;
-          if (onProgress) onProgress(loaded, roomIds.length);
-          return { roomId, data: null, error };
-        }
-      });
-
-      // 等待当前批次完成
-      const batchResults = await Promise.all(batchPromises);
-      for (const { roomId, data } of batchResults) {
+    // 使用请求池模式获取数据
+    await this.poolRoomHistory(
+      campusName,
+      buildingName,
+      roomIds,
+      (roomId, data, loaded, total) => {
         if (data) results.set(roomId, data);
-      }
-    }
+        if (onProgress) onProgress(loaded, total);
+      },
+      poolSize
+    );
 
     return results;
   },
 
   /**
-   * 快速获取楼栋耗电量排行（优化版）
-   * 使用批量并行请求，带并发控制
+   * 快速获取楼栋耗电量排行（请求池优化版）
+   * 使用请求池模式，始终保持100个并发请求
    */
   async getBuildingConsumptionRankingFast(campusName, buildingName, date = null, onProgress = null) {
     const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
@@ -317,12 +380,12 @@ const DataService = {
     const roomIds = Object.keys(buildingSummary.rooms);
     const roomMap = buildingSummary.rooms;
 
-    // 批量获取房间数据
+    // 使用请求池模式批量获取房间数据（100并发）
     const roomDataMap = await this.batchGetRoomHistory(
       campusName,
       buildingName,
       roomIds,
-      15, // 并发数
+      100, // 请求池大小
       onProgress
     );
 

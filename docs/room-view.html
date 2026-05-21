@@ -780,7 +780,7 @@
     <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" id="btn-save-config">保存配置</button>
   </div>
 
-  <script src="js/data-service.js"></script>
+  <script src="js/data-service.js?v=20260521-pool"></script>
   <script>
     // 能耗类比数据（分层显示）
     const ENERGY_ANALOGIES = [
@@ -846,30 +846,37 @@
       if (allRoomsCache || allRoomsLoading) return;
       allRoomsLoading = true;
 
-      allRoomsCache = [];
-      const campuses = await DataService.getCampuses();
+      try {
+        allRoomsCache = [];
+        const campuses = await DataService.getCampuses();
 
-      for (const campus of campuses) {
-        const buildings = await DataService.getBuildings(campus);
-        if (!buildings) continue;
+        for (const campus of campuses) {
+          const buildings = await DataService.getBuildings(campus);
+          if (!buildings) continue;
 
-        for (const building of buildings) {
-          const rooms = await DataService.getRooms(campus, building.name);
-          if (!rooms) continue;
+          for (const building of buildings) {
+            const rooms = await DataService.getRooms(campus, building.name);
+            if (!rooms) continue;
 
-          rooms.forEach(room => {
-            allRoomsCache.push({
-              campus,
-              building: building.name,
-              roomId: room.id,
-              roomName: room.name,
-              // 用于搜索的简化名称
-              searchKey: `${campus} ${building.name} ${room.name} ${room.id}`.toLowerCase()
+            rooms.forEach(room => {
+              allRoomsCache.push({
+                campus,
+                building: building.name,
+                roomId: room.id,
+                roomName: room.name,
+                // 用于搜索的简化名称，包含房间名和ID以便搜索
+                searchKey: `${campus} ${building.name} ${room.name} ${room.id}`.toLowerCase()
+              });
             });
-          });
+          }
         }
+        console.log(`预加载完成，共 ${allRoomsCache.length} 个房间`);
+      } catch (error) {
+        console.error('预加载房间数据失败:', error);
+        allRoomsCache = null;
+      } finally {
+        allRoomsLoading = false;
       }
-      allRoomsLoading = false;
     }
 
     // 模糊搜索算法
@@ -881,7 +888,50 @@
       const queryParts = query.split(/[\s\-]+/).filter(p => p.length > 0);
 
       // 所有搜索词都必须匹配
-      return queryParts.every(part => text.includes(part));
+      return queryParts.every(part => {
+        // 1. 直接包含匹配
+        if (text.includes(part)) return true;
+
+        // 2. 提取文本中所有数字序列，检查是否包含搜索词
+        // 例如搜索 "211" 可以匹配 "4a211" 中的 "211"
+        const textNumbers = text.match(/\d+/g) || [];
+        if (textNumbers.some(num => num.includes(part))) return true;
+
+        // 3. 提取搜索词中的数字，检查文本是否包含
+        const queryNumbers = part.match(/\d+/g) || [];
+        if (queryNumbers.some(qn => text.includes(qn))) return true;
+
+        // 4. 特殊处理：检查房间名中的数字部分
+        // 例如 "4a211" 提取 "211"，检查是否与搜索词匹配
+        const roomMatches = text.match(/[a-z]*(\d+)/gi) || [];
+        for (const match of roomMatches) {
+          const numPart = match.replace(/[a-z]/gi, '');
+          if (numPart.includes(part) || part.includes(numPart)) {
+            return true;
+          }
+        }
+
+        return false;
+      });
+    }
+
+    // 房间名排序函数
+    function sortRooms(rooms) {
+      return rooms.sort((a, b) => {
+        const nameA = a.name || a.id || '';
+        const nameB = b.name || b.id || '';
+
+        // 提取数字部分进行比较
+        const numA = parseInt(nameA.match(/\d+/)?.[0] || '999999');
+        const numB = parseInt(nameB.match(/\d+/)?.[0] || '999999');
+
+        // 如果数字相同，按字母顺序
+        if (numA === numB) {
+          return nameA.localeCompare(nameB, 'zh-CN');
+        }
+
+        return numA - numB;
+      });
     }
 
     // 执行搜索
@@ -897,12 +947,33 @@
         await preloadAllRooms();
       }
 
-      if (!allRoomsCache) return [];
+      if (!allRoomsCache) {
+        console.log('数据未加载完成');
+        return [];
+      }
+
+      console.log(`搜索 "${query}"，共 ${allRoomsCache.length} 个房间`);
+
+      // 测试搜索 "211" 是否能匹配到 "4a211"
+      if (query === '211') {
+        const testRoom = allRoomsCache.find(r => r.roomName && r.roomName.toLowerCase().includes('211'));
+        if (testRoom) {
+          console.log(`测试: 找到房间 ${testRoom.roomName}, searchKey: ${testRoom.searchKey}`);
+          console.log(`测试: fuzzyMatch 结果 = ${fuzzyMatch(testRoom.searchKey, '211')}`);
+        }
+      }
 
       const results = allRoomsCache
-        .filter(room => fuzzyMatch(room.searchKey, query))
+        .filter(room => {
+          const match = fuzzyMatch(room.searchKey, query);
+          return match;
+        })
         .slice(0, 20); // 限制结果数量
 
+      console.log(`找到 ${results.length} 个结果`);
+      if (results.length > 0 && query === '211') {
+        console.log('搜索 "211" 的结果:', results.map(r => r.roomName).join(', '));
+      }
       return results;
     }
 
@@ -926,14 +997,44 @@
         return;
       }
 
-      container.innerHTML = results.map(r => `
-        <div class="search-result-item" onclick="selectSearchResult('${r.campus}', '${r.building}', '${r.roomId}', '${r.roomName}')">
-          <div class="search-result-main">${r.roomName}</div>
-          <div class="search-result-sub">${r.campus} · ${r.building}</div>
-        </div>
-      `).join('');
+      container.innerHTML = results.map(r => {
+        // 使用 data 属性传递参数，避免特殊字符问题
+        const campus = escapeHtml(r.campus);
+        const building = escapeHtml(r.building);
+        const roomId = escapeHtml(r.roomId);
+        const roomName = escapeHtml(r.roomName);
+
+        return `
+          <div class="search-result-item"
+               data-campus="${campus}"
+               data-building="${building}"
+               data-room-id="${roomId}"
+               data-room-name="${roomName}">
+            <div class="search-result-main">${r.roomName}</div>
+            <div class="search-result-sub">${r.campus} · ${r.building}</div>
+          </div>
+        `;
+      }).join('');
+
+      // 绑定点击事件
+      container.querySelectorAll('.search-result-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const campus = item.dataset.campus;
+          const building = item.dataset.building;
+          const roomId = item.dataset.roomId;
+          const roomName = item.dataset.roomName;
+          selectSearchResult(campus, building, roomId, roomName);
+        });
+      });
 
       container.style.display = 'block';
+    }
+
+    // HTML 转义函数
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
 
     // 选择搜索结果
@@ -950,6 +1051,7 @@
 
       // 等待DOM更新
       await new Promise(resolve => requestAnimationFrame(resolve));
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       // 设置楼栋
       document.getElementById('config-building').value = building;
@@ -959,9 +1061,45 @@
 
       // 等待DOM更新
       await new Promise(resolve => requestAnimationFrame(resolve));
+      await new Promise(resolve => setTimeout(resolve, 50));
 
-      // 设置房间
-      document.getElementById('config-room').value = roomId;
+      // 设置房间 - 尝试多种匹配方式
+      const roomSelect = document.getElementById('config-room');
+      let found = false;
+
+      // 方式1: 直接匹配 roomId
+      if (roomSelect.querySelector(`option[value="${roomId}"]`)) {
+        roomSelect.value = roomId;
+        found = true;
+      }
+
+      // 方式2: 匹配 roomName
+      if (!found) {
+        const optionByName = roomSelect.querySelector(`option[data-name="${roomName}"]`);
+        if (optionByName) {
+          roomSelect.value = optionByName.value;
+          found = true;
+        }
+      }
+
+      // 方式3: 遍历查找包含 roomName 或 roomId 的选项
+      if (!found) {
+        for (const option of roomSelect.options) {
+          if (option.value === roomId ||
+              option.dataset.name === roomName ||
+              option.textContent === roomName ||
+              (roomId && option.value.includes(roomId)) ||
+              (roomName && option.textContent.includes(roomName))) {
+            roomSelect.value = option.value;
+            found = true;
+            break;
+          }
+        }
+      }
+
+      if (!found) {
+        console.warn('无法找到匹配的房间选项:', { campus, building, roomId, roomName });
+      }
     }
 
     // 加载校区
@@ -1316,8 +1454,10 @@
 
       const rooms = await DataService.getRooms(campus, building);
       if (rooms && rooms.length > 0) {
+        // 排序房间
+        const sortedRooms = sortRooms(rooms);
         roomSelect.innerHTML = '<option value="">请选择房间</option>';
-        rooms.slice(0, 200).forEach(room => {
+        sortedRooms.slice(0, 200).forEach(room => {
           const option = document.createElement('option');
           option.value = room.id;
           option.textContent = room.name;
