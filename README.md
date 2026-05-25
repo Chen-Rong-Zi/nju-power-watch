@@ -1,301 +1,81 @@
-# NJU Electricity Data Pipeline
+# ⚡ NJU 宿舍电费监控系统
 
-Automated daily electricity data collection and analysis for Nanjing University dormitories.
+南京大学宿舍电费数据采集、分析与可视化平台。自动从校园 epay 系统采集全校宿舍电量数据，提供多维度可视化看板。
 
-## Overview
-
-This project automates the collection, processing, and aggregation of electricity consumption data from the NJU epay system. It provides:
-
-- **Daily automated data collection** via GitHub Actions
-- **Data retention and archival** with 30-day rolling daily data and 365-day archives
-- **Pre-aggregated summaries** for fast frontend visualization
-- **Static architecture** - no backend server required
-
-## Features
-
-✅ Automated daily data collection at 2 AM UTC  
-✅ **Auto-login with captcha recognition** - no manual cookie updates needed  
-✅ Atomic batch operations with rollback on failure  
-✅ Cookie-based authentication with validation  
-✅ Monthly data archiving (tar.gz)  
-✅ Pre-computed statistics for frontend  
-✅ File-based JSON storage  
-✅ GitHub Actions automation  
-✅ **Data persistence via Git repository** - survives between workflow runs
-
-## Important: Data Persistence
-
-**How does data persist between GitHub Actions runs?**
-
-GitHub Actions每次运行都是全新环境，数据通过以下方式持久化：
-
-1. **只提交聚合数据**: 原始数据不提交，只提交 `database/summaries/`
-2. **历史数据合并**: 每次运行加载旧的 summary，与新数据合并后提交
-3. **完整历史保留**: **每个房间的 JSON 包含所有查询过的日期及余额**（无时间限制）
-4. **节省空间**: Summary 比原始数据小 97%（~5.5MB/年 vs ~182MB/年）
-
-**数据流**:
-```
-运行开始 → 检出仓库（包含完整历史 summary）
-       ↓
-查询新数据 → 写入原始 database/（临时）
-       ↓
-合并数据 → 加载旧 summary + 新数据 → 生成新 summary
-       ↓
-提交推送 → 只提交 summaries/（原始数据丢弃）
-```
-
-**空间估算**（500个房间）:
-- 1年：~5.5MB
-- 2年：~11MB
-- 5年：~27.5MB
-
-详见：[docs/data-persistence.md](docs/data-persistence.md)
-
-**关键配置**:
-- ✅ `database/{校区}/` **被** `.gitignore` 忽略（原始数据不提交）
-- ✅ `database/summaries/` **不**被忽略（聚合数据提交）
-- ✅ 每个 summary 包含**完整历史数据**（所有查询过的日期）
-
-## Quick Start
-
-### Test Frontend UI 🎨
-
-快速验证前端数据显示功能：
-
-```bash
-# 启动本地服务器
-python serve_frontend.py
-
-# 浏览器访问
-# http://localhost:8000/frontend/
-```
-
-**前端功能演示**：
-- ✅ 三级筛选：校区 → 楼栋 → 房间
-- ✅ 数据可视化：折线图显示电量变化趋势
-- ✅ 统计信息：当前余额、7日/30日平均、最高/最低值
-- ✅ 历史数据表格展示
-
-详见：[frontend/README.md](frontend/README.md)
-
-### Prerequisites
-
-- Python 3.8+
-- GitHub account with repository access
-- Valid NJU epay system cookie
-
-### Setup
-
-**GitHub Actions自动登录（推荐）**：
-
-每次查询前自动登录获取cookie，无需手动更新。
-
-1. **配置GitHub Secrets**:
-   - Go to repository Settings → Secrets → Actions
-   - Add the following 3 secrets:
-   
-   | Secret Name | Description | Example |
-   |------------|-------------|---------|
-   | `NJU_USERNAME` | 你的学号 | `201250000` |
-   | `NJU_PASSWORD` | 统一身份认证密码 | `your_password` |
-   | `YUNMA_TOKEN` | 云码API Token | `TA6djdhm0NC...` |
-   
-   **获取云码Token**: 注册 [zhuce.jfbym.com](https://zhuce.jfbym.com) → 用户中心 → Token
-
-2. **配置房间列表** (可选):
-   
-   ```bash
-   # 编辑 config/room_ids.txt
-   echo "53463" > config/room_ids.txt
-   echo "53464" >> config/room_ids.txt
-   ```
-
-3. **手动触发测试**:
-   - Go to Actions → Manual Electricity Query → Run workflow
-   - 查看运行日志确认自动登录成功
-
-**成本**: 云码验证码识别 ~0.01-0.03元/次，月成本 < 1元
-
-详见：[docs/github-actions-setup.md](docs/github-actions-setup.md)
+**🌐 在线体验**: [nju-power-watch.vercel.app](https://nju-power-watch.vercel.app)
 
 ---
 
-**本地手动登录（备用）**:
+## 功能一览
 
-如果需要手动获取cookie：
+### 用户房间视角
+- 查看房间历史电费趋势（折线图）
+- 电费预测与低余额预警
+- 日/周/月耗电量统计
+- 充值建议
+
+### 楼栋视角
+- 楼栋内各房间耗电量实时排行榜
+- 房间搜索与快速定位
+- 动态加载动画展示数据
+- 校区耗电趋势总览
+
+### 校区视角
+- 校区仪表盘总览：覆盖房间数、总余额、总消耗
+- 各楼栋耗电量排行榜
+- 校区整体耗电趋势图
+- 日期范围筛选
+
+## 系统架构
+
+```
+每日定时采集 → 数据聚合 → 静态 JSON 文件 → 前端可视化
+```
+
+- **数据采集**: 通过 GitHub Actions 每天自动登录 NJU epay 系统，获取全校房间电量数据
+- **存储**: 采用分层聚合结构（校区 → 楼栋 → 房间），兼顾查询效率与存储空间
+- **前端**: 纯静态 HTML/CSS/JS，无后端依赖，可部署到 Vercel / GitHub Pages
+- **图表**: Chart.js 驱动的可视化看板
+
+## 项目结构
+
+```
+docs/                      # 前端静态页面
+├── index.html             # 首页
+├── room-view.html         # 房间视角
+├── building-view.html     # 楼栋视角
+├── campus-view.html       # 校区视角
+├── js/
+│   ├── data-service.js    # 数据服务（缓存、聚合、加载）
+│   └── indexeddb-service.js
+└── database/summaries/    # 聚合数据文件
+    ├── overview.json
+    └── campuses/
+
+scripts/                   # 数据处理脚本
+├── aggregate_data.py
+├── generate_building_details.py
+└── ...
+
+.github/workflows/         # GitHub Actions 自动化
+```
+
+## 部署
+
+本项目完全静态化，前端可直接部署：
 
 ```bash
-# 安装依赖
-pip install -r requirements.txt
-
-# 配置登录信息
-echo "your_username" > /tmp/username
-echo "your_password" > /tmp/password
-echo "your_yunma_token" > /tmp/token
-
-# 自动登录
-python scripts/nju_auto_login.py
-
-# Cookie将保存到 /tmp/cookie.json
+# 本地预览
+python -m http.server 8000 --directory docs
 ```
 
-## Project Structure
+## 数据说明
 
-```
-.
-├── .github/workflows/      # GitHub Actions automation
-│   ├── daily-query.yml     # Scheduled daily collection
-│   ├── manual-query.yml    # Manual trigger workflow
-│   └── data-cleanup.yml    # Monthly cleanup/archival
-│
-├── scripts/                # Processing scripts
-│   ├── validate_cookie.py  # Cookie validation
-│   ├── rollback_failed_run.py  # Rollback on failure
-│   ├── cleanup_archives.py # Archive management
-│   └── aggregate_data.py   # Summary generation
-│
-├── config/
-│   └── room_ids.txt        # List of room IDs to query
-│
-├── database/               # Data storage (git-ignored)
-│   ├── [campus]/[building]/[room-id]/[date].json  # Daily data
-│   ├── archives/           # Monthly archives
-│   └── summaries/          # Hierarchical aggregated summaries
-│       ├── overview.json   # All campuses overview
-│       └── campuses/       # Campus → Building → Room hierarchy
-│
-├── logs/
-│   └── query_runs/         # Workflow execution logs
-│
-├── tests/                  # Test suite
-│   ├── unit/               # Unit tests
-│   └── integration/        # Integration tests
-│
-├── nju_electric_query.py   # Existing query script (unchanged)
-└── list_room_ids.py        # Existing room ID script (unchanged)
-```
+- 数据来源：NJU epay 系统
+- 更新频率：每日自动采集
+- 覆盖范围：4 个校区，106 栋楼，16,657 个房间
+- 存储格式：使用分层 JSON 聚合，原始数据按日期归档
 
-## Data Access
-
-### View Today's Data
-
-```bash
-# Find today's file
-find database -name "$(date +%Y%m%d).json"
-
-# View data
-cat database/仙林校区/19幢/19栋第16层1613-53463/$(date +%Y%m%d).json | jq
-```
-
-### View Summary
-
-```bash
-# View overview (all campuses)
-cat database/summaries/overview.json | jq
-
-# View specific campus
-cat database/summaries/campuses/仙林校区/summary.json | jq
-
-# View specific building
-cat database/summaries/campuses/仙林校区/buildings/19幢/summary.json | jq
-
-# View specific room
-cat database/summaries/campuses/仙林校区/buildings/19幢/rooms/53463.json | jq
-```
-
-### Extract Archives
-
-```bash
-# Extract specific month
-cd database/archives
-tar -xzf 2026-05.tar.gz
-```
-
-## Troubleshooting
-
-See [docs/troubleshooting.md](docs/troubleshooting.md) for common issues and solutions.
-
-## Development
-
-### Run Tests
-
-```bash
-# Install dev dependencies
-pip install -r requirements.txt
-
-# Run all tests
-pytest tests/
-
-# Run specific test file
-pytest tests/unit/test_validate_cookie.py -v
-```
-
-### Code Style
-
-```bash
-# Format code
-black scripts/
-
-# Lint code
-ruff check scripts/
-```
-
-## Architecture
-
-This project follows the **Data-Business Separation** principle:
-
-1. **Data Acquisition**: `nju_electric_query.py` (unchanged)
-2. **Data Processing**: `scripts/aggregate_data.py`, `scripts/cleanup_archives.py`
-3. **Presentation**: Static frontend consumes hierarchical summaries (future)
-
-**Data Flow**:
-```
-Daily Query → Raw JSON Files → Hierarchical Aggregation
-                                     ↓
-                            database/summaries/
-                            ├── overview.json (all campuses)
-                            └── campuses/
-                                └── {campus}/
-                                    ├── summary.json
-                                    └── buildings/
-                                        └── {building}/
-                                            ├── summary.json
-                                            └── rooms/{id}.json
-```
-
-See [docs/hierarchical-aggregation.md](docs/hierarchical-aggregation.md) for detailed usage.
-
-## Monitoring
-
-- GitHub Actions notifications on workflow failures
-- Logs stored in `logs/query_runs/`
-- Summary includes `query_success_rate` metric
-
-## Maintenance
-
-### Cookie Renewal (weekly)
-
-1. Login to https://epay.nju.edu.cn
-2. Export cookies as JSON
-3. Update `EPAY_COOKIE` secret in GitHub
-4. Verify with manual workflow trigger
-
-### Archive Management
-
-- Archives are created monthly (first day of month)
-- Archives older than 365 days are automatically deleted
-- Dry run available: trigger workflow with `dry_run: true`
-
-## License
+## 许可证
 
 MIT
-
-## Credits
-
-Built with:
-- Python 3.8+
-- aiohttp (async HTTP)
-- pandas/numpy (data processing)
-- pytest (testing)
-- GitHub Actions (automation)
