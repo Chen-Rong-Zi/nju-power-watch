@@ -926,6 +926,14 @@
       </div>
     </div>
 
+    <!-- 直观感受 -->
+    <div class="stats-row" id="analogy-row" style="display: none;">
+      <div class="stat-card" style="grid-column: 1 / -1; padding: 20px 24px;">
+        <div class="stat-label" style="margin-bottom: 10px;">⚡ 直观感受</div>
+        <div id="analogy-list" style="font-size: 14px; color: var(--muted); line-height: 1.8;"></div>
+      </div>
+    </div>
+
     <!-- 排行榜 -->
     <div class="ranking-card">
       <div class="ranking-header">
@@ -1263,9 +1271,11 @@
       const statsRow = document.getElementById('stats-row');
       const pagination = document.getElementById('pagination');
       const userRankCard = document.getElementById('user-rank-card');
+      const analogyRow = document.getElementById('analogy-row');
       if (statsRow) statsRow.style.display = 'none';
       if (pagination) pagination.style.display = 'none';
       if (userRankCard) userRankCard.classList.remove('show');
+      if (analogyRow) analogyRow.style.display = 'none';
     }
 
     // ==================== 排序切换 ====================
@@ -1791,6 +1801,17 @@
       document.getElementById('stat-rooms').textContent = rankings.length;
       document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
       document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
+
+      // 直观感受
+      const analogyRow = document.getElementById('analogy-row');
+      const analogyList = document.getElementById('analogy-list');
+      const items = EnergyAnalogies.getAll(totalConsumption, 2);
+      if (items.length > 0) {
+        analogyRow.style.display = 'grid';
+        analogyList.innerHTML = items.map(t => `<div style="margin-bottom: 4px;">🔄 ${t}</div>`).join('');
+      } else {
+        analogyRow.style.display = 'none';
+      }
 
       // 显示用户位次
       await showUserRankCard(rankings);

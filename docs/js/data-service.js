@@ -1655,7 +1655,58 @@ const DataService = {
   }
 };
 
+/**
+ * 耗电量的直观类比工具
+ * 将kWh转换为年轻人有感知的科技生活场景
+ */
+const EnergyAnalogies = {
+  _analogies: [
+    { min: 0.00001, label: kwh => `够iPhone 16 充满约 ${Math.round(kwh / 0.0135)} 次` },
+    { min: 0.001, label: kwh => `够ChatGPT回答约 ${Math.round(kwh / 0.00034)} 个问题` },
+    { min: 0.1, label: kwh => `够煮约 ${Math.round(kwh / 0.05)} 杯咖啡` },
+    { min: 0.1, label: kwh => `≈ 小米SU7跑 ${(kwh * 7).toFixed(0)} 公里（新街口→中山陵单程7公里）` },
+    { min: 5, label: kwh => `够特斯拉Optimus人形机器人高强度工作约 ${(kwh / 0.5).toFixed(0)} 小时` },
+    { min: 20, label: kwh => `够一台比特币矿机（蚂蚁S21 Pro）挖矿约 ${(kwh / 84 * 24).toFixed(0)} 小时` },
+    { min: 40, label: kwh => `≈ 小米SU7从南京开到上海（约${Math.round(kwh * 7)}公里）` },
+    { min: 100, label: kwh => `≈ 三口之家一个月的用电量` },
+    { min: 140, label: kwh => `≈ 小米SU7从南京开到北京（约${Math.round(kwh * 7)}公里）` },
+    { min: 200, label: kwh => `够100台特斯拉Optimus同时工作 ${(kwh / 50).toFixed(0)} 小时` },
+    { min: 1000, label: kwh => `够训练DeepSeek-R1回答约 ${Math.round(kwh / 0.01)} 道高中数学题` },
+    { min: 5000, label: kwh => `≈ 一辆小米SU7绕地球跑 ${((kwh * 7) / 40000).toFixed(1)} 圈` },
+    { min: 20000, label: kwh => `≈ 全球比特币网络 ${(kwh / 138000000000 * 365 * 24 * 60).toFixed(2)} 秒的耗电量` },
+    { min: 100000, label: kwh => `≈ DeepSeek-V3训练的 ${(kwh / 1087000 * 100).toFixed(1)}%（一次训练约108.7万度电）` },
+  ],
+
+  get(kwh) {
+    if (!kwh || kwh <= 0) return null;
+    for (const a of this._analogies) {
+      if (kwh >= a.min) return a.label(kwh);
+    }
+    return null;
+  },
+
+  getAll(kwh, max = 3) {
+    if (!kwh || kwh <= 0) return [];
+    const matches = this._analogies.filter(a => kwh >= a.min);
+    matches.sort((a, b) => b.min - a.min);
+    const pick = [];
+    const used = new Set();
+    for (const m of matches) {
+      const label = m.label(kwh);
+      const parts = label.split(' ');
+      const key = parts.length > 1 ? parts[0] + parts[1] : parts[0];
+      if (!used.has(key)) {
+        pick.push(label);
+        used.add(key);
+        if (pick.length >= max) break;
+      }
+    }
+    return pick.length > 0 ? pick : [matches[matches.length - 1].label(kwh)];
+  }
+};
+
 // 导出
 if (typeof window !== 'undefined') {
   window.DataService = DataService;
+  window.EnergyAnalogies = EnergyAnalogies;
 }

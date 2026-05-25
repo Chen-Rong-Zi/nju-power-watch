@@ -450,8 +450,11 @@
           <div class="dash-sub">度/房间/日</div>
         </div>
         <div class="dash-card large">
-          <div class="dash-label">节能建议</div>
-          <div style="font-size: 15px; color: var(--muted); line-height: 1.7;" id="dash-tip">
+          <div class="dash-label">⚡ 直观感受</div>
+          <div style="font-size: 14px; color: var(--muted); line-height: 1.8;" id="dash-analogies">
+            加载中...
+          </div>
+          <div style="font-size: 13px; color: color-mix(in oklch, var(--muted) 70%, transparent); line-height: 1.6; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);" id="dash-tip">
             基于校区整体用电数据，智能生成节能优化建议...
           </div>
         </div>
@@ -663,6 +666,9 @@
         coverageHint.textContent = `数据覆盖: ${partial.roomsWithData}/${roomCount} 间 (${coverage}%)`;
       }
 
+      // 直观感受
+      updateAnalogies(totalConsumption);
+
       // 更新楼栋网格
       if (partial.buildings && campusData) {
         renderBuildingGridPartial(campusData.buildingDetails, partial.buildings);
@@ -693,13 +699,24 @@
         changeEl.className = 'dash-change down';
       }
 
-      // 智能建议
+      // 直观感受 + 智能建议
+      updateAnalogies(consumption.totalConsumption);
       updateSmartTip(consumption);
 
       // 图表渲染（趋势图在 loadTrendData 中异步加载）
       renderBuildingChart(consumption);
       renderBuildingGrid(campusData.buildingDetails, consumption.buildings);
       renderEnergyMap(consumption);
+    }
+
+    function updateAnalogies(kwh) {
+      const el = document.getElementById('dash-analogies');
+      const items = EnergyAnalogies.getAll(kwh, 3);
+      if (items.length === 0) {
+        el.innerHTML = '<span style="color: var(--muted);">暂无数据</span>';
+        return;
+      }
+      el.innerHTML = items.map(t => `<div style="margin-bottom: 6px;">🔄 ${t}</div>`).join('');
     }
 
     function updateSmartTip(consumption) {
