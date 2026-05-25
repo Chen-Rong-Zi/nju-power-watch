@@ -1105,6 +1105,7 @@
     async function initCampusSelect() {
       const campuses = await DataService.getCampuses();
       const select = document.getElementById('config-campus');
+      campuses.sort((a, b) => a.localeCompare(b, 'zh-CN'));
       campuses.forEach(campus => {
         const option = document.createElement('option');
         option.value = campus;
@@ -1432,6 +1433,12 @@
       const buildings = await DataService.getBuildings(campus);
       if (buildings && buildings.length > 0) {
         buildingSelect.innerHTML = '<option value="">请选择楼栋</option>';
+        buildings.sort((a, b) => {
+          const numA = parseInt(a.name.match(/\d+/)?.[0] || '999999');
+          const numB = parseInt(b.name.match(/\d+/)?.[0] || '999999');
+          if (numA !== numB) return numA - numB;
+          return a.name.localeCompare(b.name, 'zh-CN');
+        });
         buildings.forEach(b => {
           const option = document.createElement('option');
           option.value = b.name;
