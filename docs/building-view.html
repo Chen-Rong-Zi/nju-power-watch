@@ -836,6 +836,50 @@
       position: relative;
       height: 300px;
     }
+    .stat-card-hover {
+      position: relative;
+      cursor: pointer;
+    }
+    .stat-card-hover:hover {
+      border-color: var(--accent);
+    }
+    .consumption-tooltip {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--fg);
+      color: var(--surface);
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      max-width: 500px;
+      text-align: left;
+    }
+    .consumption-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--fg);
+    }
+    .stat-card-hover:hover .consumption-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+    .tooltip-icon {
+      font-size: 14px;
+      margin-right: 6px;
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -908,7 +952,8 @@
 
     <!-- 统计摘要 -->
     <div class="stats-row" id="stats-row" style="display: none;">
-      <div class="stat-card">
+      <div class="stat-card stat-card-hover">
+        <div class="consumption-tooltip" id="tip-total"></div>
         <div class="stat-label">楼栋总消耗</div>
         <div class="stat-value accent" id="stat-total">--</div>
       </div>
@@ -916,21 +961,15 @@
         <div class="stat-label">房间总数</div>
         <div class="stat-value" id="stat-rooms">--</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-hover">
+        <div class="consumption-tooltip" id="tip-avg"></div>
         <div class="stat-label">平均消耗</div>
         <div class="stat-value" id="stat-avg">--</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-hover">
+        <div class="consumption-tooltip" id="tip-max"></div>
         <div class="stat-label">最高消耗</div>
         <div class="stat-value" id="stat-max">--</div>
-      </div>
-    </div>
-
-    <!-- 直观感受 -->
-    <div class="stats-row" id="analogy-row" style="display: none;">
-      <div class="stat-card" style="grid-column: 1 / -1; padding: 20px 24px;">
-        <div class="stat-label" style="margin-bottom: 10px;">⚡ 直观感受</div>
-        <div id="analogy-list" style="font-size: 14px; color: var(--muted); line-height: 1.8;"></div>
       </div>
     </div>
 
@@ -1189,6 +1228,7 @@
     async function initCampusSelect() {
       const campuses = await DataService.getCampuses();
       const select = document.getElementById('campus-select');
+      campuses.sort((a, b) => a.localeCompare(b, 'zh-CN'));
       campuses.forEach(campus => {
         const option = document.createElement('option');
         option.value = campus;
@@ -1216,6 +1256,12 @@
       const buildings = await DataService.getBuildings(state.campus);
       if (buildings && buildings.length > 0) {
         buildingSelect.innerHTML = '<option value="">请选择楼栋</option>';
+        buildings.sort((a, b) => {
+          const numA = parseInt(a.name.match(/\d+/)?.[0] || '999999');
+          const numB = parseInt(b.name.match(/\d+/)?.[0] || '999999');
+          if (numA !== numB) return numA - numB;
+          return a.name.localeCompare(b.name, 'zh-CN');
+        });
         buildings.forEach(b => {
           const option = document.createElement('option');
           option.value = b.name;
@@ -1271,11 +1317,9 @@
       const statsRow = document.getElementById('stats-row');
       const pagination = document.getElementById('pagination');
       const userRankCard = document.getElementById('user-rank-card');
-      const analogyRow = document.getElementById('analogy-row');
       if (statsRow) statsRow.style.display = 'none';
       if (pagination) pagination.style.display = 'none';
       if (userRankCard) userRankCard.classList.remove('show');
-      if (analogyRow) analogyRow.style.display = 'none';
     }
 
     // ==================== 排序切换 ====================
@@ -1759,6 +1803,11 @@
                   const i = context.dataIndex;
                   const rooms = trendData.roomCounts ? trendData.roomCounts[i] : '--';
                   return `${context.parsed.y.toFixed(1)} 度  (${rooms} 间房)`;
+                },
+                afterBody: function(items) {
+                  const kwh = items[0].parsed.y;
+                  const text = EnergyAnalogies.get(kwh, true);
+                  return text ? ['', '⚡ ' + text] : '';
                 }
               }
             }
@@ -1791,8 +1840,9 @@
 
     async function displayRanking(rankings) {
       document.getElementById('stats-row').style.display = 'grid';
+      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('no-data-state').style.display = 'none';
 
-      // 统计
       const totalConsumption = rankings.reduce((sum, r) => sum + r.consumption, 0);
       const avg = totalConsumption / rankings.length;
       const max = Math.max(...rankings.map(r => r.consumption));
@@ -1802,21 +1852,17 @@
       document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
       document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
 
-      // 直观感受
-      const analogyRow = document.getElementById('analogy-row');
-      const analogyList = document.getElementById('analogy-list');
-      const items = EnergyAnalogies.getAll(totalConsumption, 2);
-      if (items.length > 0) {
-        analogyRow.style.display = 'grid';
-        analogyList.innerHTML = items.map(t => `<div style="margin-bottom: 4px;">🔄 ${t}</div>`).join('');
-      } else {
-        analogyRow.style.display = 'none';
+      function setTip(id, kwh) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const text = EnergyAnalogies.get(kwh);
+        el.innerHTML = text ? '<span class="tooltip-icon">⚡</span> ' + text : '';
       }
+      setTip('tip-total', totalConsumption);
+      setTip('tip-avg', avg);
+      setTip('tip-max', max);
 
-      // 显示用户位次
       await showUserRankCard(rankings);
-
-      // 渲染当前页
       renderCurrentPage();
     }
 
@@ -2344,6 +2390,10 @@
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
+  </script>
+  <script>
+    // 直观感受 tooltip 通过 CSS .stat-card-hover + .consumption-tooltip 实现
+    // 内容在 displayRanking() 中动态设置
   </script>
 </body>
 </html>

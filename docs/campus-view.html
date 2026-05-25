@@ -212,6 +212,7 @@
       gap: 16px;
     }
     .building-card {
+      position: relative;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -380,6 +381,51 @@
       color: var(--muted);
       margin-top: 4px;
     }
+    .stat-card-hover {
+      position: relative;
+      cursor: pointer;
+    }
+    .stat-card-hover:hover {
+      border-color: var(--accent);
+    }
+    .consumption-tooltip {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--fg);
+      color: var(--surface);
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      max-width: 500px;
+      text-align: left;
+    }
+    .consumption-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--fg);
+    }
+    .stat-card-hover:hover .consumption-tooltip,
+    .building-card:hover .consumption-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+    .tooltip-icon {
+      font-size: 14px;
+      margin-right: 6px;
+    }
   </style>
 </head>
 <body>
@@ -424,7 +470,8 @@
     <div id="dashboard-content">
       <!-- 核心指标 -->
       <div class="dashboard-grid">
-        <div class="dash-card">
+        <div class="dash-card stat-card-hover">
+          <div class="consumption-tooltip" id="tip-total"></div>
           <div class="dash-label" id="dash-total-label">今日总耗电</div>
           <div class="dash-value accent" id="dash-total">--</div>
           <div class="dash-sub">校区累计</div>
@@ -450,11 +497,8 @@
           <div class="dash-sub">度/房间/日</div>
         </div>
         <div class="dash-card large">
-          <div class="dash-label">⚡ 直观感受</div>
-          <div style="font-size: 14px; color: var(--muted); line-height: 1.8;" id="dash-analogies">
-            加载中...
-          </div>
-          <div style="font-size: 13px; color: color-mix(in oklch, var(--muted) 70%, transparent); line-height: 1.6; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);" id="dash-tip">
+          <div class="dash-label">节能建议</div>
+          <div style="font-size: 15px; color: var(--muted); line-height: 1.7;" id="dash-tip">
             基于校区整体用电数据，智能生成节能优化建议...
           </div>
         </div>
@@ -544,6 +588,7 @@
     // 加载校区标签
     async function initCampusTabs() {
       const campuses = await DataService.getCampuses();
+      campuses.sort((a, b) => a.localeCompare(b, 'zh-CN'));
       const container = document.getElementById('campus-tabs');
 
       campuses.forEach((campus, index) => {
@@ -554,7 +599,6 @@
         container.appendChild(tab);
       });
 
-      // 默认选中第一个
       if (campuses.length > 0) {
         selectCampus(campuses[0], container.querySelector('.campus-tab'));
       }
@@ -666,12 +710,10 @@
         coverageHint.textContent = `数据覆盖: ${partial.roomsWithData}/${roomCount} 间 (${coverage}%)`;
       }
 
-      // 直观感受
-      updateAnalogies(totalConsumption);
-
       // 更新楼栋网格
       if (partial.buildings && campusData) {
         renderBuildingGridPartial(campusData.buildingDetails, partial.buildings);
+        updateBuildingCardTips();
       }
     }
 
@@ -699,24 +741,31 @@
         changeEl.className = 'dash-change down';
       }
 
-      // 直观感受 + 智能建议
-      updateAnalogies(consumption.totalConsumption);
+      // 直观感受 tooltip + 智能建议
+      updateTotalTip(consumption.totalConsumption);
       updateSmartTip(consumption);
 
       // 图表渲染（趋势图在 loadTrendData 中异步加载）
       renderBuildingChart(consumption);
       renderBuildingGrid(campusData.buildingDetails, consumption.buildings);
+      updateBuildingCardTips();
       renderEnergyMap(consumption);
     }
 
-    function updateAnalogies(kwh) {
-      const el = document.getElementById('dash-analogies');
-      const items = EnergyAnalogies.getAll(kwh, 3);
-      if (items.length === 0) {
-        el.innerHTML = '<span style="color: var(--muted);">暂无数据</span>';
-        return;
-      }
-      el.innerHTML = items.map(t => `<div style="margin-bottom: 6px;">🔄 ${t}</div>`).join('');
+    function updateTotalTip(kwh) {
+      const el = document.getElementById('tip-total');
+      if (!el) return;
+      const text = EnergyAnalogies.get(kwh);
+      el.innerHTML = text ? '<span class="tooltip-icon">⚡</span> ' + text : '';
+    }
+
+    function updateBuildingCardTips() {
+      document.querySelectorAll('.building-card .consumption-tooltip[data-consumption]').forEach(el => {
+        const kwh = parseFloat(el.dataset.consumption) || 0;
+        if (kwh < 0) return;
+        const text = EnergyAnalogies.get(kwh);
+        el.innerHTML = text ? '<span class="tooltip-icon">⚡</span> ' + text : '';
+      });
     }
 
     function updateSmartTip(consumption) {
@@ -845,9 +894,14 @@
                   const i = context.dataIndex;
                   const rooms = trendData.roomCounts ? trendData.roomCounts[i] : '--';
                   return `${context.parsed.y.toFixed(1)} 度  (${rooms} 间房)`;
+                },
+                afterBody: function(items) {
+                  const kwh = items[0].parsed.y;
+                  const text = EnergyAnalogies.get(kwh, true);
+                  return text ? ['', '⚡ ' + text] : '';
                 }
               }
-            }
+            },
           },
           scales: {
             x: {
@@ -939,6 +993,11 @@
                   const b = buildings[context.dataIndex];
                   if (!b) return '';
                   return `总耗电: ${context.raw.toFixed(0)}度，均耗: ${b[1].avgConsumption.toFixed(1)}度/间`;
+                },
+                afterBody: function(items) {
+                  const kwh = items[0].raw;
+                  const text = EnergyAnalogies.get(kwh, true);
+                  return text ? ['', '⚡ ' + text] : '';
                 }
               }
             }
@@ -972,6 +1031,7 @@
 
         return `
           <div class="building-card" style="cursor: pointer;" onclick="window.location.href='${url}'">
+            <div class="consumption-tooltip" data-consumption="${consumption}"></div>
             <div class="building-name">${b.name}</div>
             <div class="building-stats">
               <div class="building-stat">
@@ -1002,6 +1062,7 @@
 
         return `
           <div class="building-card" style="cursor: pointer; ${!bc ? 'opacity: 0.5;' : ''}" onclick="window.location.href='${url}'">
+            <div class="consumption-tooltip" data-consumption="${consumption}"></div>
             <div class="building-name">${b.name}</div>
             <div class="building-stats">
               <div class="building-stat">
@@ -1047,6 +1108,10 @@
       });
       map.innerHTML = cells.join('');
     }
+  </script>
+  <script>
+    // 直观感受 tooltip 通过 CSS .stat-card-hover/.building-card:hover + .consumption-tooltip 实现
+    // 内容在 updateDashboard() / renderBuildingGrid() 中动态设置
   </script>
 </body>
 </html>
