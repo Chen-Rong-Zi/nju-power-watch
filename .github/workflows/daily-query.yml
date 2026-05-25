@@ -116,7 +116,13 @@ jobs:
           python scripts/aggregate_data.py \
             --database ./database \
             --output ./database/summaries
-      
+
+      - name: Generate building details for campus view optimization
+        if: success()
+        run: |
+          python scripts/generate_building_details.py \
+            --summaries ./database/summaries
+
       - name: Commit and push summaries
         if: success()
         run: |

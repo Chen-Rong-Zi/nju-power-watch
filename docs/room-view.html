@@ -780,6 +780,7 @@
     <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" id="btn-save-config">保存配置</button>
   </div>
 
+  <script src="js/indexeddb-service.js"></script>
   <script src="js/data-service.js?v=20260525-v3"></script>
   <script>
     // 能耗类比数据（分层显示）
@@ -823,6 +824,7 @@
 
     // 初始化
     document.addEventListener('DOMContentLoaded', async () => {
+      await DataService.initDB();
       await initCampusSelect();
       // 延迟加载：只在用户打开配置面板时才预加载房间数据
       await loadUserConfig();

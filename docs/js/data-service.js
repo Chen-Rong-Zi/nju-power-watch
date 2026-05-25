@@ -91,8 +91,8 @@ const DataService = {
         yesterday.setDate(yesterday.getDate() - 1);
         return this._dateToCompact(yesterday);
       } else if (date === 'week') {
-        // 周平均使用今天的日期作为键
-        return this._dateToCompact(now);
+        // 周平均使用特殊键 'week_YYYYMMDD'，包含当天日期以区分不同周
+        return 'week_' + this._dateToCompact(now);
       }
     }
     // 如果已经是 YYYYMMDD 格式，直接返回
@@ -130,103 +130,32 @@ const DataService = {
   },
 
   /**
-   * 获取 localStorage 缓存
-   * @param {string} key 缓存键
+   * 初始化 IndexedDB 数据库
    */
-  _getLocalCache(key) {
-    try {
-      const stored = localStorage.getItem(key);
-      if (!stored) return null;
-      return JSON.parse(stored);
-    } catch (e) {
-      return null;
-    }
-  },
-
-  /**
-   * 设置 localStorage 缓存
-   */
-  _setLocalCache(key, data) {
-    try {
-      localStorage.setItem(key, JSON.stringify(data));
-      return true;
-    } catch (e) {
-      console.warn('缓存写入失败:', e);
-      return false;
-    }
+  async initDB() {
+    await IDB.init();
+    this._dbReady = true;
   },
 
   /**
    * 清除所有缓存
    */
-  clearAllCache() {
-    const keysToRemove = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      // 清除包含中文的缓存键（新格式）
-      if (key && (key.includes('耗电排序') || key.includes('房间列表') ||
-          key.includes('校区') || key.includes('幢') || key.includes('栋'))) {
-        keysToRemove.push(key);
-      }
-      // 清除旧格式缓存
-      if (key && key.startsWith('elec_cache_')) {
-        keysToRemove.push(key);
-      }
-    }
-    keysToRemove.forEach(key => localStorage.removeItem(key));
+  async clearAllCache() {
+    await IDB.clear();
 
     // 清除内存缓存
     this._overviewCache = null;
     this._campusCache.clear();
     this._buildingCache.clear();
     this._roomCache.clear();
+    console.log('[DataService] 所有缓存已清除');
   },
 
   /**
    * 获取缓存统计信息
    */
-  getCacheStats() {
-    const stats = {
-      ranking: { count: 0, size: 0 },
-      room: { count: 0, size: 0 },
-      roomsList: { count: 0, size: 0 }
-    };
-
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (!key) continue;
-
-      const value = localStorage.getItem(key);
-      const size = value ? value.length * 2 : 0; // 估算字节大小
-
-      // 新格式检测
-      if (key.includes('耗电排序')) {
-        stats.ranking.count++;
-        stats.ranking.size += size;
-      } else if (key.includes('房间列表')) {
-        stats.roomsList.count++;
-        stats.roomsList.size += size;
-      } else if (key.includes('校区') && (key.includes('幢') || key.includes('栋'))) {
-        // 房间耗电量缓存 {校区}.{楼栋}.{房间名}
-        stats.room.count++;
-        stats.room.size += size;
-      }
-      // 旧格式检测
-      else if (key.startsWith('elec_cache_')) {
-        if (key.includes('_ranking_')) {
-          stats.ranking.count++;
-          stats.ranking.size += size;
-        } else if (key.includes('_room_')) {
-          stats.room.count++;
-          stats.room.size += size;
-        } else if (key.includes('_rooms_')) {
-          stats.roomsList.count++;
-          stats.roomsList.size += size;
-        }
-      }
-    }
-
-    return stats;
+  async getCacheStats() {
+    return await IDB.getStats();
   },
 
   /**
@@ -310,6 +239,35 @@ const DataService = {
       return data;
     } catch (error) {
       console.error(`获取${campusName}/${buildingName}汇总数据失败:`, error);
+      return null;
+    }
+  },
+
+  /**
+   * 获取楼栋详情数据（包含所有房间的完整历史）
+   * 用于校区视角快速计算耗电量，避免请求大量单独房间文件
+   * @returns {Object|null} { building, campus, total_rooms, rooms: { roomId: { room_id, room_name, ... } } }
+   */
+  async getBuildingDetails(campusName, buildingName) {
+    const cacheKey = `details:${campusName}/${buildingName}`;
+    if (this._buildingCache.has(cacheKey)) {
+      return this._buildingCache.get(cacheKey);
+    }
+
+    try {
+      const response = await fetch(
+        `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/details.json`
+      );
+      if (!response.ok) {
+        console.log(`[详情文件不存在] ${campusName}/${buildingName}/details.json，将使用单独房间文件`);
+        return null;
+      }
+      const data = await response.json();
+      this._buildingCache.set(cacheKey, data);
+      console.log(`[详情加载成功] ${campusName}/${buildingName}，共 ${data.total_rooms} 个房间`);
+      return data;
+    } catch (error) {
+      console.warn(`获取${campusName}/${buildingName}详情数据失败:`, error);
       return null;
     }
   },
@@ -589,7 +547,7 @@ const DataService = {
 
     // 检查缓存
     if (!forceRefresh) {
-      const cached = this.getRankingCache(campusName, buildingName, targetDate);
+      const cached = await this.getRankingCache(campusName, buildingName, targetDate);
       if (cached) {
         console.log(`[缓存命中] 使用缓存的排序结果`);
         if (onProgress) onProgress(1, 1); // 立即完成进度
@@ -613,7 +571,7 @@ const DataService = {
     );
 
     // 批量保存房间耗电量到缓存
-    this.batchSaveRoomConsumptionCache(campusName, buildingName, roomDataMap);
+    await this.batchSaveRoomConsumptionCache(campusName, buildingName, roomDataMap);
 
     // 格式化目标日期
     const targetCompactDate = this._formatDateCompact(targetDate);
@@ -637,15 +595,15 @@ const DataService = {
           roomId,
           roomName: roomInfo.room_name,
           consumption: entry?.consumption || 0,
-          balance: entry?.electricity || roomInfo.current_balance,
-          avgConsumption: roomData.avgConsumption,
-          history: roomData.history
+          balance: entry?.electricity || roomInfo.current_balance
+          // 注意：不再保存 campus、building、history 等冗余字段
+          // campus/building 可从缓存键推断，history 在点击详情时会重新请求
         });
       }
     }
 
     // 保存排序结果到缓存
-    this.saveRankingCache(campusName, buildingName, targetDate, rankings);
+    await this.saveRankingCache(campusName, buildingName, targetDate, rankings);
 
     return rankings;
   },
@@ -675,11 +633,11 @@ const DataService = {
 
     for (const roomId of roomIds) {
       const roomInfo = roomMap[roomId];
-      let roomCache = this.getRoomConsumptionCache(campusName, buildingName, roomId, compactDate);
+      let roomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomId, compactDate);
 
       // 如果指定日期没有缓存，尝试获取该房间最新的可用日期
       if (!roomCache || roomCache.consumption === undefined) {
-        const allRoomCache = this.getRoomConsumptionCache(campusName, buildingName, roomId);
+        const allRoomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomId);
         if (allRoomCache) {
           // 找到最新的可用日期
           const dates = Object.keys(allRoomCache).sort().reverse();
@@ -696,8 +654,7 @@ const DataService = {
           roomId,
           roomName: roomInfo.room_name,
           consumption: roomCache.consumption,
-          balance: roomCache.electricity,
-          fromCache: true
+          balance: roomCache.electricity
         });
         cachedCount++;
       }
@@ -711,7 +668,7 @@ const DataService = {
     console.log(`[缓存构建] ${campusName}.${buildingName}: ${cachedCount}/${roomIds.length} 间从缓存读取 (请求:${compactDate}, 实际:${usedDate})`);
 
     // 保存到排名缓存以便下次更快访问（使用请求的日期作为键）
-    this.saveRankingCache(campusName, buildingName, date, rankings);
+    await this.saveRankingCache(campusName, buildingName, date, rankings);
 
     return {
       data: rankings,
@@ -979,10 +936,10 @@ const DataService = {
    * @param {string} date 日期
    * @returns {Object|null} 返回 { data: [], totalConsumption, roomCount, updatedAt } 或 null
    */
-  getRankingCache(campusName, buildingName, date) {
+  async getRankingCache(campusName, buildingName, date) {
     const compactDate = this._formatDateCompact(date);
     const key = this._getCacheKey('ranking', campusName, buildingName);
-    const cache = this._getLocalCache(key);
+    const cache = await IDB.get(key);
 
     if (cache && cache[compactDate]) {
       console.log(`[缓存命中] 排序结果: ${key} -> ${compactDate}`);
@@ -1004,8 +961,9 @@ const DataService = {
    * @param {string} buildingName 楼栋名
    * @param {string} date 日期
    * @param {Array} rankingData 排序结果数组
+   * @param {boolean} sorted 是否已排序（默认 false，校区页面创建的缓存不排序）
    */
-  saveRankingCache(campusName, buildingName, date, rankingData) {
+  async saveRankingCache(campusName, buildingName, date, rankingData, sorted = false) {
     const compactDate = this._formatDateCompact(date);
     const key = this._getCacheKey('ranking', campusName, buildingName);
 
@@ -1013,18 +971,19 @@ const DataService = {
     const totalConsumption = rankingData.reduce((sum, item) => sum + (item.consumption || 0), 0);
 
     // 获取现有缓存或创建新的
-    let cache = this._getLocalCache(key) || {};
+    let cache = await IDB.get(key) || {};
 
-    // 保存排序结果，包含总消耗量统计
+    // 保存排序结果，包含总消耗量统计和排序状态
     cache[compactDate] = {
       data: rankingData,
       totalConsumption: totalConsumption,
       roomCount: rankingData.length,
+      sorted: sorted,
       updatedAt: Date.now()
     };
 
-    this._setLocalCache(key, cache);
-    console.log(`[缓存保存] 排序结果: ${key} -> ${compactDate}, 共${rankingData.length}条, 总消耗: ${totalConsumption.toFixed(2)}度`);
+    await IDB.set(key, cache);
+    console.log(`[缓存保存] 排序结果: ${key} -> ${compactDate}, 共${rankingData.length}条, 总消耗: ${totalConsumption.toFixed(2)}度, 已排序: ${sorted}`);
   },
 
   // ==================== 校区耗电量缓存 ====================
@@ -1035,10 +994,10 @@ const DataService = {
    * @param {string} date 日期
    * @returns {Object|null}
    */
-  getCampusConsumptionCache(campusName, date) {
+  async getCampusConsumptionCache(campusName, date) {
     const compactDate = this._formatDateCompact(date);
     const key = this._getCacheKey('campus', campusName);
-    const cache = this._getLocalCache(key);
+    const cache = await IDB.get(key);
 
     if (cache && cache[compactDate]) {
       console.log(`[缓存命中] 校区耗电: ${key} -> ${compactDate}`);
@@ -1053,17 +1012,17 @@ const DataService = {
    * @param {string} date 日期
    * @param {Object} data 校区耗电量数据
    */
-  saveCampusConsumptionCache(campusName, date, data) {
+  async saveCampusConsumptionCache(campusName, date, data) {
     const compactDate = this._formatDateCompact(date);
     const key = this._getCacheKey('campus', campusName);
 
-    let cache = this._getLocalCache(key) || {};
+    let cache = await IDB.get(key) || {};
     cache[compactDate] = {
       ...data,
       updatedAt: Date.now()
     };
 
-    this._setLocalCache(key, cache);
+    await IDB.set(key, cache);
     console.log(`[缓存保存] 校区耗电: ${key} -> ${compactDate}`);
   },
 
@@ -1086,7 +1045,7 @@ const DataService = {
 
     // Layer 1: 校区级缓存
     if (!forceRefresh) {
-      const cached = this.getCampusConsumptionCache(campusName, targetDate);
+      const cached = await this.getCampusConsumptionCache(campusName, targetDate);
       if (cached) {
         if (onProgress) onProgress(1, 1, cached);
         return cached;
@@ -1105,7 +1064,7 @@ const DataService = {
 
     // 先检查已有排名缓存的楼栋
     for (const building of buildingDetails) {
-      const rankingCache = this.getRankingCache(campusName, building.name, targetDate);
+      const rankingCache = await this.getRankingCache(campusName, building.name, targetDate);
       if (rankingCache && rankingCache.totalConsumption !== undefined) {
         buildingsWithData.push({
           name: building.name,
@@ -1131,35 +1090,56 @@ const DataService = {
       if (buildingsWithData.some(b => b.name === building.name)) continue;
 
       try {
-        // 先尝试从房间缓存构建排名（避免重复请求）
-        let ranking = await this.getBuildingConsumptionFromRoomCache(
-          campusName,
-          building.name,
-          targetDate
-        );
+        // 优先尝试从 details.json 加载（单个请求获取整个楼栋数据）
+        let totalConsumption = 0;
+        let roomCount = 0;
+        let fromDetails = false;
 
-        // 如果房间缓存也没有，才调用 getBuildingConsumptionRankingFast
-        if (!ranking) {
-          ranking = await this.getBuildingConsumptionRankingFast(
+        const buildingDetails = await this.getBuildingDetails(campusName, building.name);
+        if (buildingDetails && buildingDetails.rooms) {
+          // 从 details.json 计算耗电量
+          const compactDate = this._formatDateCompact(targetDate);
+          for (const roomId in buildingDetails.rooms) {
+            const roomData = buildingDetails.rooms[roomId];
+            if (roomData.balance_history) {
+              const consumption = this._calculateConsumptionFromHistory(
+                roomData.balance_history,
+                targetDate,
+                compactDate
+              );
+              if (consumption !== null) {
+                totalConsumption += consumption;
+                roomCount++;
+              }
+            }
+          }
+          fromDetails = true;
+          console.log(`[details.json] ${building.name}: ${roomCount} 房间, ${totalConsumption.toFixed(2)} 度`);
+        } else {
+          // 回退到原来的方式：从房间缓存或单独文件加载
+          let ranking = await this.getBuildingConsumptionFromRoomCache(
             campusName,
             building.name,
-            targetDate === 'today' ? null : this._formatDateCompact(targetDate),
-            null,
-            false
+            targetDate
           );
-        }
 
-        // 处理返回结果
-        let totalConsumption, roomCount;
-        if (Array.isArray(ranking)) {
-          totalConsumption = ranking.reduce((sum, r) => sum + (r.consumption || 0), 0);
-          roomCount = ranking.length;
-        } else if (ranking && ranking.data) {
-          totalConsumption = ranking.totalConsumption || ranking.data.reduce((sum, r) => sum + (r.consumption || 0), 0);
-          roomCount = ranking.roomCount || ranking.data.length;
-        } else {
-          totalConsumption = 0;
-          roomCount = 0;
+          if (!ranking) {
+            ranking = await this.getBuildingConsumptionRankingFast(
+              campusName,
+              building.name,
+              targetDate === 'today' ? null : this._formatDateCompact(targetDate),
+              null,
+              false
+            );
+          }
+
+          if (Array.isArray(ranking)) {
+            totalConsumption = ranking.reduce((sum, r) => sum + (r.consumption || 0), 0);
+            roomCount = ranking.length;
+          } else if (ranking && ranking.data) {
+            totalConsumption = ranking.totalConsumption || ranking.data.reduce((sum, r) => sum + (r.consumption || 0), 0);
+            roomCount = ranking.roomCount || ranking.data.length;
+          }
         }
 
         buildingsWithData.push({
@@ -1168,7 +1148,7 @@ const DataService = {
           consumption: totalConsumption,
           roomCount: roomCount,
           avgConsumption: roomCount > 0 ? totalConsumption / roomCount : 0,
-          fromCache: ranking?.data?.[0]?.fromCache || false
+          fromCache: fromDetails
         });
       } catch (error) {
         console.warn(`加载楼栋 ${building.name} 失败:`, error);
@@ -1191,9 +1171,62 @@ const DataService = {
     }
 
     // 缓存最终结果
-    this.saveCampusConsumptionCache(campusName, targetDate, partialResult);
+    await this.saveCampusConsumptionCache(campusName, targetDate, partialResult);
 
     return partialResult;
+  },
+
+  /**
+   * 从 balance_history 计算指定日期的消耗量
+   * @param {Object} balanceHistory - { 'YYYYMMDD': balance } 格式的历史数据
+   * @param {string} dateType - 'today', 'yesterday', 'week' 或具体日期
+   * @param {string} compactDate - 格式化后的日期 YYYYMMDD
+   * @returns {number|null} 消耗量（度）或 null
+   * @private
+   */
+  _calculateConsumptionFromHistory(balanceHistory, dateType, compactDate) {
+    if (!balanceHistory) return null;
+
+    // 将对象转为排序后的数组
+    const dates = Object.keys(balanceHistory).sort();
+    if (dates.length === 0) return null;
+
+    // 找到目标日期的索引
+    let targetIdx;
+    if (dateType === 'today') {
+      targetIdx = dates.length - 1;
+    } else if (dateType === 'yesterday') {
+      targetIdx = dates.length - 2;
+    } else if (dateType === 'week') {
+      // 计算最近7天的平均消耗
+      const recentDates = dates.slice(-7);
+      if (recentDates.length < 2) return null;
+
+      let totalConsumption = 0;
+      let count = 0;
+      for (let i = 1; i < recentDates.length; i++) {
+        const prevBalance = balanceHistory[recentDates[i - 1]];
+        const currBalance = balanceHistory[recentDates[i]];
+        if (prevBalance > currBalance) {
+          totalConsumption += prevBalance - currBalance;
+          count++;
+        }
+      }
+      return count > 0 ? totalConsumption / count : 0;
+    } else {
+      // 自定义日期
+      targetIdx = dates.indexOf(compactDate);
+      if (targetIdx === -1 || targetIdx === 0) return null;
+    }
+
+    if (targetIdx <= 0) return null;
+
+    // 计算消耗量：前一天余额 - 当天余额
+    const prevBalance = balanceHistory[dates[targetIdx - 1]];
+    const currBalance = balanceHistory[dates[targetIdx]];
+
+    // 只有余额减少才算消耗（充值会导致余额增加）
+    return prevBalance > currBalance ? prevBalance - currBalance : 0;
   },
 
   /**
@@ -1244,9 +1277,9 @@ const DataService = {
    * @param {string} roomId 房间ID或房间名
    * @param {string} date 日期（可选）
    */
-  getRoomConsumptionCache(campusName, buildingName, roomId, date = null) {
+  async getRoomConsumptionCache(campusName, buildingName, roomId, date = null) {
     const key = this._getCacheKey('room', campusName, buildingName, roomId);
-    const cache = this._getLocalCache(key);
+    const cache = await IDB.get(key);
 
     if (!cache) return null;
 
@@ -1266,19 +1299,19 @@ const DataService = {
    * @param {string} date 日期
    * @param {Object} data { electricity, consumption }
    */
-  saveRoomConsumptionCache(campusName, buildingName, roomId, date, data) {
+  async saveRoomConsumptionCache(campusName, buildingName, roomId, date, data) {
     const compactDate = this._formatDateCompact(date);
     const key = this._getCacheKey('room', campusName, buildingName, roomId);
 
     // 获取现有缓存或创建新的
-    let cache = this._getLocalCache(key) || {};
+    let cache = await IDB.get(key) || {};
     cache[compactDate] = {
       electricity: data.electricity,
       consumption: data.consumption,
       updatedAt: Date.now()
     };
 
-    this._setLocalCache(key, cache);
+    await IDB.set(key, cache);
     console.log(`[缓存保存] 房间耗电量: ${key} -> ${compactDate}`);
   },
 
@@ -1288,12 +1321,15 @@ const DataService = {
    * @param {string} buildingName 楼栋名
    * @param {Map} roomDataMap roomId -> roomData 的映射
    */
-  batchSaveRoomConsumptionCache(campusName, buildingName, roomDataMap) {
+  async batchSaveRoomConsumptionCache(campusName, buildingName, roomDataMap) {
+    const entries = [];
+    const now = Date.now();
+
     for (const [roomId, roomData] of roomDataMap) {
       if (!roomData || !roomData.history) continue;
 
       const key = this._getCacheKey('room', campusName, buildingName, roomId);
-      let cache = this._getLocalCache(key) || {};
+      let cache = await IDB.get(key) || {};
 
       // 遍历历史数据，保存每个日期的耗电量
       for (const entry of roomData.history) {
@@ -1302,11 +1338,16 @@ const DataService = {
         cache[compactDate] = {
           electricity: entry.electricity,
           consumption: entry.consumption || 0,
-          updatedAt: Date.now()
+          updatedAt: now
         };
       }
 
-      this._setLocalCache(key, cache);
+      entries.push({ key, value: cache });
+    }
+
+    // 使用批量写入提高性能
+    if (entries.length > 0) {
+      await IDB.batchSet(entries);
     }
     console.log(`[缓存保存] 房间耗电量: ${campusName}.${buildingName}, 共${roomDataMap.size}个房间`);
   },
@@ -1318,9 +1359,9 @@ const DataService = {
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
    */
-  getRoomsListCache(campusName, buildingName) {
+  async getRoomsListCache(campusName, buildingName) {
     const key = this._getCacheKey('rooms', campusName, buildingName);
-    const cache = this._getLocalCache(key);
+    const cache = await IDB.get(key);
 
     if (cache) {
       console.log(`[缓存命中] 房间列表: ${key}`);
@@ -1334,9 +1375,9 @@ const DataService = {
    * @param {string} buildingName 楼栋名
    * @param {Object} roomsData 房间数据 { roomId: roomInfo }
    */
-  saveRoomsListCache(campusName, buildingName, roomsData) {
+  async saveRoomsListCache(campusName, buildingName, roomsData) {
     const key = this._getCacheKey('rooms', campusName, buildingName);
-    this._setLocalCache(key, roomsData);
+    await IDB.set(key, roomsData);
     console.log(`[缓存保存] 房间列表: ${key}, 共${Object.keys(roomsData).length}个房间`);
   },
 
@@ -1354,7 +1395,7 @@ const DataService = {
     // 并行加载所有楼栋的房间列表
     const promises = buildings.map(async (building) => {
       // 检查缓存
-      const cached = this.getRoomsListCache(campusName, building.name);
+      const cached = await this.getRoomsListCache(campusName, building.name);
       if (cached) {
         // 缓存命中，立即回调
         const rooms = Object.entries(cached).map(([id, data]) => ({
@@ -1372,7 +1413,7 @@ const DataService = {
         const buildingSummary = await this.getBuildingSummary(campusName, building.name);
         if (buildingSummary && buildingSummary.rooms) {
           // 保存到缓存
-          this.saveRoomsListCache(campusName, building.name, buildingSummary.rooms);
+          await this.saveRoomsListCache(campusName, building.name, buildingSummary.rooms);
 
           const rooms = Object.entries(buildingSummary.rooms).map(([id, data]) => ({
             id,
@@ -1418,7 +1459,7 @@ const DataService = {
     for (const chunk of chunks) {
       const promises = chunk.map(async (building) => {
         // 检查缓存
-        const cached = this.getRoomsListCache(campusName, building.name);
+        const cached = await this.getRoomsListCache(campusName, building.name);
         if (cached) {
           const rooms = Object.entries(cached).map(([id, data]) => ({
             id,
@@ -1436,7 +1477,7 @@ const DataService = {
         try {
           const buildingSummary = await this.getBuildingSummary(campusName, building.name);
           if (buildingSummary && buildingSummary.rooms) {
-            this.saveRoomsListCache(campusName, building.name, buildingSummary.rooms);
+            await this.saveRoomsListCache(campusName, building.name, buildingSummary.rooms);
 
             const rooms = Object.entries(buildingSummary.rooms).map(([id, data]) => ({
               id,

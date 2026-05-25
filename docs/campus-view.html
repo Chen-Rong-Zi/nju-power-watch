@@ -365,6 +365,9 @@
       opacity: 0;
       cursor: pointer;
     }
+    .date-btn-custom span {
+      pointer-events: none;
+    }
     .date-btn-custom input:focus + span {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
@@ -516,6 +519,7 @@
     </div>
   </main>
 
+  <script src="js/indexeddb-service.js"></script>
   <script src="js/data-service.js?v=20260525-v3"></script>
   <script>
     // ==================== 状态 ====================
@@ -529,6 +533,7 @@
 
     // ==================== 初始化 ====================
     document.addEventListener('DOMContentLoaded', async () => {
+      await DataService.initDB();
       await initCampusTabs();
       initDateSelector();
     });
@@ -563,7 +568,11 @@
         });
       });
 
-      document.getElementById('custom-date').addEventListener('change', (e) => {
+      const customDate = document.getElementById('custom-date');
+      customDate.parentElement.addEventListener('click', () => {
+        customDate.showPicker();
+      });
+      customDate.addEventListener('change', (e) => {
         document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
         e.target.parentElement.classList.add('active');
         currentDate = e.target.value;

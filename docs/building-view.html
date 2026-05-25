@@ -978,6 +978,7 @@
   </div>
 </main>
 
+<script src="js/indexeddb-service.js"></script>
 <script src="js/data-service.js?v=20260525-v3"></script>
   <script>
     // 验证 DataService 是否正确加载
@@ -1029,6 +1030,7 @@
 
     // ==================== 初始化 ====================
     document.addEventListener('DOMContentLoaded', async () => {
+      await DataService.initDB();
       state.userConfig = DataService.getUserConfig();
       await initCampusSelect();
       restoreStateFromUrl();
@@ -1245,28 +1247,51 @@
       // 1. 先检查内存缓存
       if (consumptionCache.has(cacheKey)) {
         updateCacheStatus('已缓存', false);
-        displayRankingFromCache(cacheKey);
+        const cachedData = consumptionCache.get(cacheKey);
+        displayRanking(cachedData);
         return;
       }
 
-      // 2. 检查 localStorage 缓存（使用新的缓存API）
-      const localStorageCache = DataService.getRankingCache(state.campus, state.building, state.date);
+      // 2. 检查 IndexedDB 缓存（使用新的缓存API）
+      const localStorageCache = await DataService.getRankingCache(state.campus, state.building, state.date);
       if (localStorageCache && localStorageCache.data && localStorageCache.data.length > 0) {
-        console.log(`[缓存命中] 从 localStorage 读取排序结果, 总消耗: ${localStorageCache.totalConsumption?.toFixed(2) || 'N/A'}度`);
-        updateCacheStatus('已缓存', false);
+        console.log(`[缓存命中] 从 localStorage 读取排序结果, 总消耗: ${localStorageCache.totalConsumption?.toFixed(2) || 'N/A'}度, 已排序: ${localStorageCache.sorted}`);
 
-        // 转换缓存格式（兼容 room 和 roomName 两种字段名）
-        const allRankings = localStorageCache.data.map((item, idx) => ({
+        // 转换缓存格式，从 state 补充 campus 和 building
+        let allRankings = localStorageCache.data.map((item, idx) => ({
           room: item.room || item.roomName,
           roomName: item.room || item.roomName,
           roomId: item.roomId,
           consumption: item.consumption,
           balance: item.balance,
-          campus: item.campus || state.campus,
-          building: item.building || state.building,
-          rank: idx + 1,
-          history: item.history
+          campus: state.campus,
+          building: state.building,
+          rank: idx + 1
+          // 不再从缓存读取 history，点击详情时会重新请求
         }));
+
+        // 检查是否需要排序（sorted 字段为 false 或不存在）
+        if (!localStorageCache.sorted) {
+          console.log('[缓存修正] 数据未排序，正在重新排序并更新缓存');
+          updateCacheStatus('排序中...', true);
+
+          // 按消耗量降序排序
+          allRankings.sort((a, b) => b.consumption - a.consumption);
+          // 更新排名
+          allRankings.forEach((item, idx) => item.rank = idx + 1);
+
+          // 更新 IndexedDB 缓存，标记为已排序（只保存必要字段）
+          const sortedCacheData = allRankings.map(item => ({
+            room: item.roomName,
+            roomId: item.roomId,
+            consumption: item.consumption,
+            balance: item.balance
+          }));
+          await DataService.saveRankingCache(state.campus, state.building, state.date, sortedCacheData, true);
+          console.log('[缓存修正] 排序完成，缓存已更新');
+        }
+
+        updateCacheStatus('已缓存', false);
 
         // 同时保存到内存缓存
         consumptionCache.set(cacheKey, allRankings);
@@ -1353,8 +1378,8 @@
                   consumption: consumption,
                   balance: roomInfo.current_balance,
                   campus: state.campus,
-                  building: state.building,
-                  history: roomData.history
+                  building: state.building
+                  // history 不保存到内存，点击详情时会重新请求
                 };
                 allRankings.push(item);
 
@@ -1403,8 +1428,7 @@
                 consumption: consumption,
                 balance: roomInfo.current_balance,
                 campus: state.campus,
-                building: state.building,
-                history: roomData.history
+                building: state.building
               };
               allRankings.push(item);
 
@@ -1436,8 +1460,14 @@
       // 缓存结果到内存
       consumptionCache.set(cacheKey, allRankings);
 
-      // 同时保存到 localStorage 缓存（使用新的缓存API）
-      DataService.saveRankingCache(state.campus, state.building, state.date, allRankings);
+      // 同时保存到 IndexedDB 缓存（只保存必要字段，标记为已排序）
+      const cacheData = allRankings.map(item => ({
+        room: item.roomName || item.room,
+        roomId: item.roomId,
+        consumption: item.consumption,
+        balance: item.balance
+      }));
+      await DataService.saveRankingCache(state.campus, state.building, state.date, cacheData, true);
 
       markAnimationShown(cacheKey);
 

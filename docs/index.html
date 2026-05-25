@@ -454,10 +454,12 @@
     <p style="margin-top: 8px;">© 2026 南京大学电费监控系统</p>
   </footer>
 
+  <script src="js/indexeddb-service.js"></script>
   <script src="js/data-service.js?v=20260525-v3"></script>
   <script>
     // 初始化
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
+      await DataService.initDB();
       checkUserConfig();
     });
 
