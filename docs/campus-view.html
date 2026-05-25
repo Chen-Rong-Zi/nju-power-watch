@@ -322,6 +322,61 @@
       margin-top: 16px;
       color: var(--muted);
     }
+
+    /* 日期选择器 */
+    .date-selector {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .date-btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .date-btn:hover {
+      border-color: var(--accent);
+    }
+    .date-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+    .date-btn-custom {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .date-btn-custom input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .date-btn-custom input:focus + span {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 999px;
+    }
+
+    /* 数据覆盖提示 */
+    .coverage-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
@@ -343,10 +398,23 @@
       <!-- 动态填充 -->
     </div>
 
+    <!-- 日期选择 -->
+    <div style="margin-bottom: 24px;">
+      <div class="date-selector" id="date-selector">
+        <button class="date-btn active" data-date="today">今日</button>
+        <button class="date-btn" data-date="yesterday">昨日</button>
+        <button class="date-btn" data-date="week">本周平均</button>
+        <div class="date-btn date-btn-custom">
+          <span>📅</span>
+          <input type="date" id="custom-date" title="选择日期">
+        </div>
+      </div>
+    </div>
+
     <!-- 加载状态 -->
     <div class="loading" id="loading-state" style="display: none;">
       <div class="loading-spinner"></div>
-      <div class="loading-text">加载数据中...</div>
+      <div class="loading-text" id="loading-text">加载数据中...</div>
     </div>
 
     <!-- 仪表盘 -->
@@ -354,13 +422,14 @@
       <!-- 核心指标 -->
       <div class="dashboard-grid">
         <div class="dash-card">
-          <div class="dash-label">今日总耗电</div>
+          <div class="dash-label" id="dash-total-label">今日总耗电</div>
           <div class="dash-value accent" id="dash-total">--</div>
           <div class="dash-sub">校区累计</div>
           <div class="dash-change up" id="dash-change">
-            <span>↑</span>
-            <span>--%</span>
+            <span>--</span>
+            <span>--</span>
           </div>
+          <div class="coverage-hint" id="coverage-hint"></div>
         </div>
         <div class="dash-card">
           <div class="dash-label">楼栋数量</div>
@@ -447,17 +516,21 @@
     </div>
   </main>
 
-  <script src="js/data-service.js?v=20260521-pool"></script>
+  <script src="js/data-service.js?v=20260525-v3"></script>
   <script>
-    // 状态
+    // ==================== 状态 ====================
     let currentCampus = null;
+    let currentDate = 'today';
     let trendChart = null;
     let buildingChart = null;
     let campusData = null;
+    let campusConsumption = null;
+    let loadAbortController = null;
 
-    // 初始化
+    // ==================== 初始化 ====================
     document.addEventListener('DOMContentLoaded', async () => {
       await initCampusTabs();
+      initDateSelector();
     });
 
     // 加载校区标签
@@ -479,7 +552,26 @@
       }
     }
 
-    // 选择校区
+    // 初始化日期选择器
+    function initDateSelector() {
+      document.querySelectorAll('.date-btn[data-date]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentDate = btn.dataset.date;
+          if (currentCampus) selectCampus(currentCampus, document.querySelector('.campus-tab.active'));
+        });
+      });
+
+      document.getElementById('custom-date').addEventListener('change', (e) => {
+        document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+        e.target.parentElement.classList.add('active');
+        currentDate = e.target.value;
+        if (currentCampus) selectCampus(currentCampus, document.querySelector('.campus-tab.active'));
+      });
+    }
+
+    // ==================== 选择校区 ====================
     async function selectCampus(campus, tabEl) {
       // 更新标签状态
       document.querySelectorAll('.campus-tab').forEach(t => t.classList.remove('active'));
@@ -487,136 +579,236 @@
 
       currentCampus = campus;
 
-      // 显示加载
-      document.getElementById('loading-state').style.display = 'flex';
-      document.getElementById('dashboard-content').style.opacity = '0.3';
+      // 取消之前的加载
+      if (loadAbortController) loadAbortController.cancelled = true;
+      loadAbortController = { cancelled: false };
+      const thisLoad = loadAbortController;
 
-      // 加载数据
+      // 不显示加载动画，直接更新标签文字
+      updateDateLabel();
+
+      // 加载基础统计（快速）
       campusData = await DataService.getCampusStatistics(campus);
-      await loadData();
 
-      document.getElementById('loading-state').style.display = 'none';
-      document.getElementById('dashboard-content').style.opacity = '1';
+      if (thisLoad.cancelled) return;
+
+      // 加载真实消耗数据（渐进式）
+      campusConsumption = await DataService.getCampusConsumption(
+        campus,
+        currentDate,
+        (loaded, total, partial) => {
+          if (thisLoad.cancelled) return;
+          updateDashboardWithPartialData(partial, loaded, total);
+        }
+      );
+
+      if (thisLoad.cancelled) return;
+
+      // 最终渲染
+      updateDashboard(campusConsumption);
     }
 
-    // 加载数据
-    async function loadData() {
-      if (!campusData) return;
+    // ==================== 更新函数 ====================
 
-      const buildingStats = campusData.buildingDetails || [];
-      const totalRooms = campusData.rooms || 0;
-      const buildings = campusData.buildings || 0;
+    function updateDateLabel() {
+      const labelEl = document.getElementById('dash-total-label');
+      if (currentDate === 'today') {
+        labelEl.textContent = '今日总耗电';
+      } else if (currentDate === 'yesterday') {
+        labelEl.textContent = '昨日总耗电';
+      } else if (currentDate === 'week') {
+        labelEl.textContent = '本周平均耗电';
+      } else {
+        // 自定义日期
+        const d = new Date(currentDate);
+        labelEl.textContent = `${d.getMonth() + 1}月${d.getDate()}日总耗电`;
+      }
+    }
 
-      // 计算总耗电（基于平均余额估算）
-      let totalConsumption = 0;
-      buildingStats.forEach(b => {
-        // 模拟每房间日耗电约 1-3 度
-        totalConsumption += (b.total_rooms || 0) * (Math.random() * 2 + 1);
-      });
+    function updateDashboardWithPartialData(partial, loaded, total) {
+      if (!partial) return;
 
-      const avgConsumption = totalRooms > 0 ? (totalConsumption / totalRooms).toFixed(1) : '0';
+      const totalConsumption = partial.totalConsumption || 0;
+      const roomCount = partial.roomCount || 0;
+      const avgConsumption = partial.avgConsumption || 0;
 
-      // 更新仪表盘
       document.getElementById('dash-total').textContent = totalConsumption.toFixed(0) + '度';
-      document.getElementById('dash-buildings').textContent = buildings;
-      document.getElementById('dash-rooms').textContent = totalRooms.toLocaleString();
-      document.getElementById('dash-avg').textContent = avgConsumption + '度';
+      document.getElementById('dash-buildings').textContent = partial.buildingCount || '--';
+      document.getElementById('dash-rooms').textContent = roomCount.toLocaleString();
+      document.getElementById('dash-avg').textContent = avgConsumption.toFixed(1) + '度';
 
-      // 变化趋势
-      const change = (Math.random() * 20 - 10).toFixed(1);
-      const changeEl = document.getElementById('dash-change');
-      changeEl.innerHTML = `<span>${change > 0 ? '↑' : '↓'}</span><span>${Math.abs(change)}%</span>`;
-      changeEl.className = 'dash-change ' + (change > 0 ? 'up' : 'down');
-
-      // 节能建议
-      const tips = [
-        '今日整体用电平稳，建议关注高耗电楼栋的节能措施',
-        '检测到用电高峰集中在晚间，建议错峰使用大功率电器',
-        '本周用电量较上周有所下降，继续保持良好用电习惯',
-        '部分楼栋用电异常偏高，建议检查是否有设备漏电'
-      ];
-      document.getElementById('dash-tip').textContent = tips[Math.floor(Math.random() * tips.length)];
-
-      // 为每个楼栋添加模拟耗电数据
-      buildingStats.forEach(b => {
-        b.consumption = (b.total_rooms * (Math.random() * 2 + 1)).toFixed(0);
-        b.avg = (Math.random() * 3 + 1).toFixed(1);
-      });
-
-      // 渲染图表
-      renderTrendChart();
-      renderBuildingChart(buildingStats);
-      renderBuildingGrid(buildingStats);
-      renderEnergyMap(buildingStats);
-    }
-
-    // 渲染趋势图
-    function renderTrendChart() {
-      const ctx = document.getElementById('trend-chart').getContext('2d');
-
-      if (trendChart) trendChart.destroy();
-
-      // 生成30天数据
-      const labels = [];
-      const data = [];
-      for (let i = 29; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        labels.push(d.getDate() + '日');
-        data.push(Math.random() * 500 + 800);
+      // 数据覆盖提示（显示加载进度）
+      const coverageHint = document.getElementById('coverage-hint');
+      const coverage = roomCount > 0 ? (partial.roomsWithData / roomCount * 100).toFixed(0) : 0;
+      if (loaded !== undefined && total !== undefined && loaded < total) {
+        coverageHint.textContent = `正在加载 ${loaded}/${total} 栋楼... (${coverage}%)`;
+      } else {
+        coverageHint.textContent = `数据覆盖: ${partial.roomsWithData}/${roomCount} 间 (${coverage}%)`;
       }
 
+      // 更新楼栋网格
+      if (partial.buildings && campusData) {
+        renderBuildingGridPartial(campusData.buildingDetails, partial.buildings);
+      }
+    }
+
+    function updateDashboard(consumption) {
+      if (!consumption) return;
+
+      // 核心指标
+      document.getElementById('dash-total').textContent = consumption.totalConsumption.toFixed(0) + '度';
+      document.getElementById('dash-buildings').textContent = consumption.buildingCount;
+      document.getElementById('dash-rooms').textContent = consumption.roomCount.toLocaleString();
+      document.getElementById('dash-avg').textContent = consumption.avgConsumption.toFixed(1) + '度';
+
+      // 数据覆盖提示
+      const coverageHint = document.getElementById('coverage-hint');
+      const coverage = consumption.roomCount > 0 ? (consumption.roomsWithData / consumption.roomCount * 100).toFixed(0) : 0;
+      coverageHint.textContent = `数据覆盖: ${consumption.roomsWithData}/${consumption.roomCount} 间 (${coverage}%)`;
+
+      // 变化趋势：显示数据覆盖率
+      const changeEl = document.getElementById('dash-change');
+      if (coverage < 100) {
+        changeEl.innerHTML = `<span>数据加载中</span><span>${coverage}%</span>`;
+        changeEl.className = 'dash-change down';
+      } else {
+        changeEl.innerHTML = `<span>数据完整</span><span>100%</span>`;
+        changeEl.className = 'dash-change down';
+      }
+
+      // 智能建议
+      updateSmartTip(consumption);
+
+      // 图表渲染
+      renderTrendChartEmpty();
+      renderBuildingChart(consumption);
+      renderBuildingGrid(campusData.buildingDetails, consumption.buildings);
+      renderEnergyMap(consumption);
+    }
+
+    function updateSmartTip(consumption) {
+      if (!consumption || !consumption.buildings) {
+        document.getElementById('dash-tip').textContent = '暂无足够数据生成建议...';
+        return;
+      }
+
+      const buildings = Object.entries(consumption.buildings);
+      if (buildings.length === 0) {
+        document.getElementById('dash-tip').textContent = '暂无足够数据生成建议...';
+        return;
+      }
+
+      // 找出高耗电楼栋
+      const sorted = [...buildings].sort((a, b) => b[1].consumption - a[1].consumption);
+      const avgAll = consumption.avgConsumption;
+      const aboveAvg = buildings.filter(([_, b]) => b.avgConsumption > avgAll * 1.5);
+
+      let tip;
+      if (consumption.roomsWithData === 0) {
+        tip = '暂无当日耗电数据，请稍后再试或选择其他日期查看。';
+      } else if (aboveAvg.length > 0) {
+        const names = aboveAvg.map(([n]) => n).slice(0, 3).join('、');
+        tip = `${aboveAvg.length}栋楼平均用电超过校区均值1.5倍，建议关注${names}的用电情况。`;
+      } else if (sorted[0][1].consumption > 0) {
+        tip = `${sorted[0][0]}耗电${sorted[0][1].consumption.toFixed(0)}度，为校区最高。建议关注高耗电楼栋的节能措施。`;
+      } else {
+        tip = '整体用电平稳，继续保持良好的用电习惯。';
+      }
+
+      document.getElementById('dash-tip').textContent = tip;
+    }
+
+    // ==================== 图表渲染 ====================
+
+    function renderTrendChartEmpty() {
+      const ctx = document.getElementById('trend-chart').getContext('2d');
+      if (trendChart) trendChart.destroy();
+
+      // 显示空状态提示，不使用模拟数据
       trendChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels,
+          labels: ['暂无数据'],
           datasets: [{
             label: '日耗电量',
-            data,
-            borderColor: '#10b981',
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            data: [0],
+            borderColor: '#d1d5db',
+            backgroundColor: 'rgba(0, 0, 0, 0.02)',
             fill: true,
             tension: 0.4,
-            pointRadius: 0,
-            pointHoverRadius: 6
+            pointRadius: 0
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { display: false }
+            legend: { display: false },
+            title: {
+              display: true,
+              text: '暂无历史趋势数据，请先访问各楼栋页面积累数据',
+              color: '#9ca3af',
+              font: { size: 13 }
+            }
           },
           scales: {
-            x: {
-              grid: { display: false },
-              ticks: { font: { family: 'monospace', size: 11 } }
-            },
-            y: {
-              grid: { color: 'rgba(0,0,0,0.05)' },
-              ticks: { font: { family: 'monospace', size: 11 } }
-            }
+            x: { display: false },
+            y: { display: false }
           }
         }
       });
     }
 
-    // 渲染楼栋对比图
-    function renderBuildingChart(buildingStats) {
+    function renderBuildingChart(consumption) {
       const ctx = document.getElementById('building-chart').getContext('2d');
-
       if (buildingChart) buildingChart.destroy();
 
-      const top10 = buildingStats.slice(0, 10);
+      if (!consumption || !consumption.buildings) return;
+
+      // 按消耗量排序，取前10
+      const buildings = Object.entries(consumption.buildings)
+        .filter(([_, b]) => b.consumption > 0)
+        .sort((a, b) => b[1].consumption - a[1].consumption)
+        .slice(0, 10);
+
+      if (buildings.length === 0) {
+        // 无数据时显示空状态
+        buildingChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['暂无数据'],
+            datasets: [{
+              label: '耗电量',
+              data: [0],
+              backgroundColor: '#d1d5db',
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              title: {
+                display: true,
+                text: '暂无楼栋耗电数据',
+                color: '#9ca3af',
+                font: { size: 13 }
+              }
+            }
+          }
+        });
+        return;
+      }
 
       buildingChart = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: top10.map(b => b.name),
+          labels: buildings.map(([name]) => name),
           datasets: [{
             label: '耗电量',
-            data: top10.map(b => b.consumption),
-            backgroundColor: top10.map((_, i) => `rgba(16, 185, 129, ${1 - i * 0.08})`),
+            data: buildings.map(([_, b]) => b.consumption),
+            backgroundColor: buildings.map((_, i) => `rgba(16, 185, 129, ${1 - i * 0.08})`),
             borderRadius: 6
           }]
         },
@@ -624,7 +816,16 @@
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { display: false }
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const b = buildings[context.dataIndex];
+                  if (!b) return '';
+                  return `总耗电: ${context.raw.toFixed(0)}度，均耗: ${b[1].avgConsumption.toFixed(1)}度/间`;
+                }
+              }
+            }
           },
           scales: {
             x: {
@@ -637,39 +838,96 @@
             },
             y: {
               grid: { color: 'rgba(0,0,0,0.05)' },
-              ticks: { font: { family: 'monospace', size: 11 } }
+              ticks: { font: { family: 'monospace', size: 11 } },
+              beginAtZero: true
             }
           }
         }
       });
     }
 
-    // 渲染楼栋网格
-    function renderBuildingGrid(buildingStats) {
+    function renderBuildingGrid(buildingDetails, buildingsConsumption) {
       const grid = document.getElementById('building-grid');
-      grid.innerHTML = buildingStats.map(b => `
-        <div class="building-card">
-          <div class="building-name">${b.name}</div>
-          <div class="building-stats">
-            <div class="building-stat">
-              <span class="building-stat-label">房间: </span>
-              <span class="building-stat-value">${b.rooms}</span>
-            </div>
-            <div class="building-stat">
-              <span class="building-stat-label">消耗: </span>
-              <span class="building-stat-value">${b.consumption}度</span>
+      grid.innerHTML = buildingDetails.map(b => {
+        const bc = buildingsConsumption[b.name];
+        const consumption = bc ? bc.consumption.toFixed(0) : '0';
+        const avg = bc ? bc.avgConsumption.toFixed(1) : '0.0';
+        const url = `building-view.html?campus=${encodeURIComponent(currentCampus)}&building=${encodeURIComponent(b.name)}`;
+
+        return `
+          <div class="building-card" style="cursor: pointer;" onclick="window.location.href='${url}'">
+            <div class="building-name">${b.name}</div>
+            <div class="building-stats">
+              <div class="building-stat">
+                <span class="building-stat-label">房间: </span>
+                <span class="building-stat-value">${b.total_rooms}</span>
+              </div>
+              <div class="building-stat">
+                <span class="building-stat-label">消耗: </span>
+                <span class="building-stat-value">${consumption}度</span>
+              </div>
+              <div class="building-stat">
+                <span class="building-stat-label">均耗: </span>
+                <span class="building-stat-value">${avg}度</span>
+              </div>
             </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
-    // 渲染能耗地图
-    function renderEnergyMap(buildingStats) {
+    function renderBuildingGridPartial(buildingDetails, buildingsConsumption) {
+      const grid = document.getElementById('building-grid');
+      grid.innerHTML = buildingDetails.map(b => {
+        const bc = buildingsConsumption[b.name];
+        const consumption = bc ? bc.consumption.toFixed(0) : '...';
+        const avg = bc ? bc.avgConsumption.toFixed(1) : '...';
+        const url = `building-view.html?campus=${encodeURIComponent(currentCampus)}&building=${encodeURIComponent(b.name)}`;
+
+        return `
+          <div class="building-card" style="cursor: pointer; ${!bc ? 'opacity: 0.5;' : ''}" onclick="window.location.href='${url}'">
+            <div class="building-name">${b.name}</div>
+            <div class="building-stats">
+              <div class="building-stat">
+                <span class="building-stat-label">房间: </span>
+                <span class="building-stat-value">${b.total_rooms}</span>
+              </div>
+              <div class="building-stat">
+                <span class="building-stat-label">消耗: </span>
+                <span class="building-stat-value">${consumption}度</span>
+              </div>
+              <div class="building-stat">
+                <span class="building-stat-label">均耗: </span>
+                <span class="building-stat-value">${avg}度</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderEnergyMap(consumption) {
       const map = document.getElementById('map-visual');
-      const cells = buildingStats.slice(0, 80).map(b => {
-        const level = Math.ceil(parseFloat(b.avg) / 0.8);
-        return `<div class="map-cell level-${Math.min(level, 5)}" title="${b.name}: ${b.consumption}度"></div>`;
+      if (!consumption || !consumption.buildings) {
+        map.innerHTML = '<div style="color: var(--muted); padding: 20px;">暂无数据</div>';
+        return;
+      }
+
+      const buildings = Object.entries(consumption.buildings)
+        .filter(([_, b]) => b.avgConsumption > 0);
+
+      if (buildings.length === 0) {
+        map.innerHTML = '<div style="color: var(--muted); padding: 20px;">暂无耗电数据</div>';
+        return;
+      }
+
+      // 计算最大平均消耗用于归一化
+      const avgValues = buildings.map(([_, b]) => b.avgConsumption);
+      const maxAvg = Math.max(...avgValues);
+
+      const cells = buildings.slice(0, 80).map(([name, b]) => {
+        const level = maxAvg > 0 ? Math.ceil((b.avgConsumption / maxAvg) * 5) : 1;
+        return `<div class="map-cell level-${Math.min(Math.max(level, 1), 5)}" title="${name}: ${b.consumption.toFixed(0)}度 (均${b.avgConsumption.toFixed(1)}度/间)"></div>`;
       });
       map.innerHTML = cells.join('');
     }

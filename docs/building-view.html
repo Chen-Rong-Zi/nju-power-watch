@@ -949,7 +949,7 @@
       <!-- 无数据状态 -->
       <div class="no-data-state" id="no-data-state" style="display: none;">
         <div class="no-data-icon">📅</div>
-        <div class="no-data-text">该日期暂无数据</div>
+        <div class="no-data-text" id="no-data-text">该日期暂无数据</div>
         <div class="no-data-hint" id="no-data-hint">请尝试选择其他日期</div>
       </div>
 
@@ -978,7 +978,7 @@
   </div>
 </main>
 
-<script src="js/data-service.js?v=20260521-pool"></script>
+<script src="js/data-service.js?v=20260525-v3"></script>
   <script>
     // 验证 DataService 是否正确加载
     if (typeof DataService === 'undefined') {
@@ -1242,10 +1242,37 @@
       const cacheKey = `${state.campus}/${state.building}/${state.date}`;
       const hasAnimationShown = hasAnimationBeenShown(cacheKey);
 
-      // 检查是否有缓存
+      // 1. 先检查内存缓存
       if (consumptionCache.has(cacheKey)) {
         updateCacheStatus('已缓存', false);
         displayRankingFromCache(cacheKey);
+        return;
+      }
+
+      // 2. 检查 localStorage 缓存（使用新的缓存API）
+      const localStorageCache = DataService.getRankingCache(state.campus, state.building, state.date);
+      if (localStorageCache && localStorageCache.data && localStorageCache.data.length > 0) {
+        console.log(`[缓存命中] 从 localStorage 读取排序结果, 总消耗: ${localStorageCache.totalConsumption?.toFixed(2) || 'N/A'}度`);
+        updateCacheStatus('已缓存', false);
+
+        // 转换缓存格式（兼容 room 和 roomName 两种字段名）
+        const allRankings = localStorageCache.data.map((item, idx) => ({
+          room: item.room || item.roomName,
+          roomName: item.room || item.roomName,
+          roomId: item.roomId,
+          consumption: item.consumption,
+          balance: item.balance,
+          campus: item.campus || state.campus,
+          building: item.building || state.building,
+          rank: idx + 1,
+          history: item.history
+        }));
+
+        // 同时保存到内存缓存
+        consumptionCache.set(cacheKey, allRankings);
+
+        // 显示结果
+        displayRanking(allRankings);
         return;
       }
 
@@ -1406,8 +1433,12 @@
       allRankings.sort((a, b) => b.consumption - a.consumption);
       allRankings.forEach((r, idx) => r.rank = idx + 1);
 
-      // 缓存结果
+      // 缓存结果到内存
       consumptionCache.set(cacheKey, allRankings);
+
+      // 同时保存到 localStorage 缓存（使用新的缓存API）
+      DataService.saveRankingCache(state.campus, state.building, state.date, allRankings);
+
       markAnimationShown(cacheKey);
 
       // 隐藏进度条

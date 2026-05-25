@@ -15,11 +15,219 @@ const DataService = {
   SUMMARIES_PATH: './database/summaries',
   DATABASE_PATH: './database',
 
-  // 缓存
+  // 内存缓存
   _overviewCache: null,
   _campusCache: new Map(),
   _buildingCache: new Map(),
   _roomCache: new Map(),
+
+  // localStorage 缓存键前缀
+  CACHE_PREFIX: '',
+  CACHE_VERSION: 'v2',
+
+  /**
+   * ==================== 缓存层键值对格式设计 ====================
+   *
+   * 1. 排序结果缓存：
+   *    键: `{校区}.{楼栋}.耗电排序`
+   *    值: {
+   *      '20250127': [
+   *        { roomId, roomName, consumption, balance, rank },
+   *        ...
+   *      ],
+   *      '20250128': [...]
+   *    }
+   *
+   * 2. 房间耗电量缓存：
+   *    键: `{校区}.{楼栋}.{房间名}`
+   *    值: {
+   *      '20250127': { electricity: 45.2, consumption: 3.5 },
+   *      '20250128': { electricity: 48.7, consumption: 2.8 },
+   *      ...
+   *    }
+   *
+   * 3. 楼栋房间列表缓存：
+   *    键: `{校区}.{楼栋}.房间列表`
+   *    值: {
+   *      '房间ID': { name: '101', room_name: '4A211', current_balance: 45.2, last_updated: '...' },
+   *      ...
+   *    }
+   */
+
+  /**
+   * 生成缓存键
+   */
+  _getCacheKey(type, ...parts) {
+    // 新格式：直接使用中文键名
+    if (type === 'ranking') {
+      // {校区}.{楼栋}.耗电排序
+      return `${parts[0]}.${parts[1]}.耗电排序`;
+    } else if (type === 'room') {
+      // {校区}.{楼栋}.{房间名}
+      return `${parts[0]}.${parts[1]}.${parts[2]}`;
+    } else if (type === 'rooms') {
+      // {校区}.{楼栋}.房间列表
+      return `${parts[0]}.${parts[1]}.房间列表`;
+    } else if (type === 'campus') {
+      // {校区}.校区耗电
+      return `${parts[0]}.校区耗电`;
+    }
+    return `${this.CACHE_PREFIX}${type}_${parts.join('.')}`;
+  },
+
+  /**
+   * 格式化日期为 YYYYMMDD 格式
+   * @param {string} date 日期字符串，如 '2025-01-27' 或 '20250127'
+   */
+  _formatDateCompact(date) {
+    if (!date) return '';
+    // 如果是相对日期，先转换为具体日期
+    if (date === 'today' || date === 'yesterday' || date === 'week') {
+      const now = new Date();
+      if (date === 'today') {
+        return this._dateToCompact(now);
+      } else if (date === 'yesterday') {
+        const yesterday = new Date(now);
+        yesterday.setDate(yesterday.getDate() - 1);
+        return this._dateToCompact(yesterday);
+      } else if (date === 'week') {
+        // 周平均使用今天的日期作为键
+        return this._dateToCompact(now);
+      }
+    }
+    // 如果已经是 YYYYMMDD 格式，直接返回
+    if (/^\d{8}$/.test(date)) return date;
+    // 如果是 YYYY-MM-DD 格式，转换为 YYYYMMDD
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      return date.replace(/-/g, '');
+    }
+    return date;
+  },
+
+  /**
+   * 将Date对象转换为YYYYMMDD格式
+   */
+  _dateToCompact(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}${month}${day}`;
+  },
+
+  /**
+   * 格式化日期为 YYYY-MM-DD 格式
+   * @param {string} date 日期字符串，如 '20250127' 或 '2025-01-27'
+   */
+  formatDate(date) {
+    if (!date) return '';
+    // 如果已经是 YYYY-MM-DD 格式，直接返回
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) return date;
+    // 如果是 YYYYMMDD 格式，转换为 YYYY-MM-DD
+    if (/^\d{8}$/.test(date)) {
+      return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`;
+    }
+    return date;
+  },
+
+  /**
+   * 获取 localStorage 缓存
+   * @param {string} key 缓存键
+   */
+  _getLocalCache(key) {
+    try {
+      const stored = localStorage.getItem(key);
+      if (!stored) return null;
+      return JSON.parse(stored);
+    } catch (e) {
+      return null;
+    }
+  },
+
+  /**
+   * 设置 localStorage 缓存
+   */
+  _setLocalCache(key, data) {
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+      return true;
+    } catch (e) {
+      console.warn('缓存写入失败:', e);
+      return false;
+    }
+  },
+
+  /**
+   * 清除所有缓存
+   */
+  clearAllCache() {
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      // 清除包含中文的缓存键（新格式）
+      if (key && (key.includes('耗电排序') || key.includes('房间列表') ||
+          key.includes('校区') || key.includes('幢') || key.includes('栋'))) {
+        keysToRemove.push(key);
+      }
+      // 清除旧格式缓存
+      if (key && key.startsWith('elec_cache_')) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+
+    // 清除内存缓存
+    this._overviewCache = null;
+    this._campusCache.clear();
+    this._buildingCache.clear();
+    this._roomCache.clear();
+  },
+
+  /**
+   * 获取缓存统计信息
+   */
+  getCacheStats() {
+    const stats = {
+      ranking: { count: 0, size: 0 },
+      room: { count: 0, size: 0 },
+      roomsList: { count: 0, size: 0 }
+    };
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key) continue;
+
+      const value = localStorage.getItem(key);
+      const size = value ? value.length * 2 : 0; // 估算字节大小
+
+      // 新格式检测
+      if (key.includes('耗电排序')) {
+        stats.ranking.count++;
+        stats.ranking.size += size;
+      } else if (key.includes('房间列表')) {
+        stats.roomsList.count++;
+        stats.roomsList.size += size;
+      } else if (key.includes('校区') && (key.includes('幢') || key.includes('栋'))) {
+        // 房间耗电量缓存 {校区}.{楼栋}.{房间名}
+        stats.room.count++;
+        stats.room.size += size;
+      }
+      // 旧格式检测
+      else if (key.startsWith('elec_cache_')) {
+        if (key.includes('_ranking_')) {
+          stats.ranking.count++;
+          stats.ranking.size += size;
+        } else if (key.includes('_room_')) {
+          stats.room.count++;
+          stats.room.size += size;
+        } else if (key.includes('_rooms_')) {
+          stats.roomsList.count++;
+          stats.roomsList.size += size;
+        }
+      }
+    }
+
+    return stats;
+  },
 
   /**
    * 获取总览数据
@@ -370,10 +578,25 @@ const DataService = {
   },
 
   /**
-   * 快速获取楼栋耗电量排行（请求池优化版）
-   * 使用请求池模式，始终保持100个并发请求
+   * 快速获取楼栋耗电量排行（缓存优先 + 请求池优化版）
+   * 1. 先检查缓存中是否有该日期的排序结果
+   * 2. 如果有缓存，直接返回
+   * 3. 如果没有缓存，获取数据后计算并保存到缓存
    */
-  async getBuildingConsumptionRankingFast(campusName, buildingName, date = null, onProgress = null) {
+  async getBuildingConsumptionRankingFast(campusName, buildingName, date = null, onProgress = null, forceRefresh = false) {
+    // 确定日期
+    const targetDate = date || new Date().toISOString().slice(0, 10);
+
+    // 检查缓存
+    if (!forceRefresh) {
+      const cached = this.getRankingCache(campusName, buildingName, targetDate);
+      if (cached) {
+        console.log(`[缓存命中] 使用缓存的排序结果`);
+        if (onProgress) onProgress(1, 1); // 立即完成进度
+        return cached;
+      }
+    }
+
     const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
     if (!buildingSummary || !buildingSummary.rooms) return [];
 
@@ -389,6 +612,12 @@ const DataService = {
       onProgress
     );
 
+    // 批量保存房间耗电量到缓存
+    this.batchSaveRoomConsumptionCache(campusName, buildingName, roomDataMap);
+
+    // 格式化目标日期
+    const targetCompactDate = this._formatDateCompact(targetDate);
+
     // 构建排行数据
     const rankings = [];
     for (const roomId of roomIds) {
@@ -396,19 +625,100 @@ const DataService = {
       const roomData = roomDataMap.get(roomId);
 
       if (roomData && roomData.history && roomData.history.length > 0) {
-        const lastEntry = roomData.history[roomData.history.length - 1];
+        // 尝试从历史中找到指定日期的消耗
+        const targetEntry = roomData.history.find(h =>
+          h.date === targetCompactDate || h.formattedDate === targetDate
+        );
+
+        // 如果找到指定日期则用该日期，否则用最新一天
+        const entry = targetEntry || roomData.history[roomData.history.length - 1];
+
         rankings.push({
           roomId,
           roomName: roomInfo.room_name,
-          consumption: lastEntry?.consumption || 0,
-          balance: roomInfo.current_balance,
+          consumption: entry?.consumption || 0,
+          balance: entry?.electricity || roomInfo.current_balance,
           avgConsumption: roomData.avgConsumption,
           history: roomData.history
         });
       }
     }
 
+    // 保存排序结果到缓存
+    this.saveRankingCache(campusName, buildingName, targetDate, rankings);
+
     return rankings;
+  },
+
+  /**
+   * 从房间消耗缓存构建楼栋排名（避免重复请求）
+   * 如果指定日期没有缓存，使用最近的可用日期
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string} date 日期
+   * @returns {Object|null} 排名数据或 null
+   */
+  async getBuildingConsumptionFromRoomCache(campusName, buildingName, date) {
+    const compactDate = this._formatDateCompact(date);
+
+    // 获取楼栋房间列表
+    const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
+    if (!buildingSummary || !buildingSummary.rooms) return null;
+
+    const roomMap = buildingSummary.rooms;
+    const roomIds = Object.keys(roomMap);
+
+    // 尝试从房间缓存读取每个房间的指定日期消耗
+    const rankings = [];
+    let cachedCount = 0;
+    let usedDate = compactDate;
+
+    for (const roomId of roomIds) {
+      const roomInfo = roomMap[roomId];
+      let roomCache = this.getRoomConsumptionCache(campusName, buildingName, roomId, compactDate);
+
+      // 如果指定日期没有缓存，尝试获取该房间最新的可用日期
+      if (!roomCache || roomCache.consumption === undefined) {
+        const allRoomCache = this.getRoomConsumptionCache(campusName, buildingName, roomId);
+        if (allRoomCache) {
+          // 找到最新的可用日期
+          const dates = Object.keys(allRoomCache).sort().reverse();
+          if (dates.length > 0) {
+            const latestDate = dates[0];
+            roomCache = allRoomCache[latestDate];
+            usedDate = latestDate; // 记录实际使用的日期
+          }
+        }
+      }
+
+      if (roomCache && roomCache.consumption !== undefined) {
+        rankings.push({
+          roomId,
+          roomName: roomInfo.room_name,
+          consumption: roomCache.consumption,
+          balance: roomCache.electricity,
+          fromCache: true
+        });
+        cachedCount++;
+      }
+    }
+
+    // 如果没有任何缓存数据，返回 null
+    if (cachedCount === 0) {
+      return null;
+    }
+
+    console.log(`[缓存构建] ${campusName}.${buildingName}: ${cachedCount}/${roomIds.length} 间从缓存读取 (请求:${compactDate}, 实际:${usedDate})`);
+
+    // 保存到排名缓存以便下次更快访问（使用请求的日期作为键）
+    this.saveRankingCache(campusName, buildingName, date, rankings);
+
+    return {
+      data: rankings,
+      totalConsumption: rankings.reduce((sum, r) => sum + r.consumption, 0),
+      roomCount: rankings.length,
+      usedDate: usedDate
+    };
   },
 
   /**
@@ -652,6 +962,509 @@ const DataService = {
     } else {
       return { amount: 300, reason: '按您的用电习惯，300度约可用1个月' };
     }
+  },
+
+  // ==================== 排序结果缓存 ====================
+
+  /**
+   * 获取排序结果缓存
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string} date 日期 (YYYY-MM-DD 或 YYYYMMDD)
+   */
+  /**
+   * 获取排序结果缓存
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string} date 日期
+   * @returns {Object|null} 返回 { data: [], totalConsumption, roomCount, updatedAt } 或 null
+   */
+  getRankingCache(campusName, buildingName, date) {
+    const compactDate = this._formatDateCompact(date);
+    const key = this._getCacheKey('ranking', campusName, buildingName);
+    const cache = this._getLocalCache(key);
+
+    if (cache && cache[compactDate]) {
+      console.log(`[缓存命中] 排序结果: ${key} -> ${compactDate}`);
+      const cachedData = cache[compactDate];
+
+      // 兼容旧格式（直接是数组）和新格式（包含 data 字段的对象）
+      if (Array.isArray(cachedData)) {
+        // 旧格式，直接返回数组
+        return { data: cachedData, totalConsumption: 0, roomCount: cachedData.length };
+      }
+      return cachedData;
+    }
+    return null;
+  },
+
+  /**
+   * 保存排序结果到缓存
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string} date 日期
+   * @param {Array} rankingData 排序结果数组
+   */
+  saveRankingCache(campusName, buildingName, date, rankingData) {
+    const compactDate = this._formatDateCompact(date);
+    const key = this._getCacheKey('ranking', campusName, buildingName);
+
+    // 计算总消耗量
+    const totalConsumption = rankingData.reduce((sum, item) => sum + (item.consumption || 0), 0);
+
+    // 获取现有缓存或创建新的
+    let cache = this._getLocalCache(key) || {};
+
+    // 保存排序结果，包含总消耗量统计
+    cache[compactDate] = {
+      data: rankingData,
+      totalConsumption: totalConsumption,
+      roomCount: rankingData.length,
+      updatedAt: Date.now()
+    };
+
+    this._setLocalCache(key, cache);
+    console.log(`[缓存保存] 排序结果: ${key} -> ${compactDate}, 共${rankingData.length}条, 总消耗: ${totalConsumption.toFixed(2)}度`);
+  },
+
+  // ==================== 校区耗电量缓存 ====================
+
+  /**
+   * 获取校区级耗电量缓存
+   * @param {string} campusName 校区名
+   * @param {string} date 日期
+   * @returns {Object|null}
+   */
+  getCampusConsumptionCache(campusName, date) {
+    const compactDate = this._formatDateCompact(date);
+    const key = this._getCacheKey('campus', campusName);
+    const cache = this._getLocalCache(key);
+
+    if (cache && cache[compactDate]) {
+      console.log(`[缓存命中] 校区耗电: ${key} -> ${compactDate}`);
+      return cache[compactDate];
+    }
+    return null;
+  },
+
+  /**
+   * 保存校区级耗电量到缓存
+   * @param {string} campusName 校区名
+   * @param {string} date 日期
+   * @param {Object} data 校区耗电量数据
+   */
+  saveCampusConsumptionCache(campusName, date, data) {
+    const compactDate = this._formatDateCompact(date);
+    const key = this._getCacheKey('campus', campusName);
+
+    let cache = this._getLocalCache(key) || {};
+    cache[compactDate] = {
+      ...data,
+      updatedAt: Date.now()
+    };
+
+    this._setLocalCache(key, cache);
+    console.log(`[缓存保存] 校区耗电: ${key} -> ${compactDate}`);
+  },
+
+  /**
+   * 获取校区耗电量数据（渐进加载）
+   *
+   * 三层策略：
+   * 1. 校区级缓存 → 瞬时返回
+   * 2. 楼栋排名缓存聚合 → 零成本聚合已有楼栋数据
+   * 3. 批量加载未缓存楼栋 → 逐栋完成后触发 onProgress
+   *
+   * @param {string} campusName 校区名
+   * @param {string} date 日期类型: 'today', 'yesterday', 'week', 或具体日期 YYYY-MM-DD
+   * @param {Function} onProgress 进度回调 (loadedBuildings, totalBuildings, partialResult)
+   * @param {boolean} forceRefresh 强制刷新
+   * @returns {Promise<Object>} 校区耗电量结果
+   */
+  async getCampusConsumption(campusName, date = 'today', onProgress = null, forceRefresh = false) {
+    const targetDate = date || 'today';
+
+    // Layer 1: 校区级缓存
+    if (!forceRefresh) {
+      const cached = this.getCampusConsumptionCache(campusName, targetDate);
+      if (cached) {
+        if (onProgress) onProgress(1, 1, cached);
+        return cached;
+      }
+    }
+
+    // 获取校区统计（楼栋列表）
+    const campusStats = await this.getCampusStatistics(campusName);
+    if (!campusStats) return null;
+
+    const buildingDetails = campusStats.buildingDetails || [];
+    const totalBuildings = buildingDetails.length;
+
+    // Layer 2 & 3: 逐栋加载
+    const buildingsWithData = [];
+
+    // 先检查已有排名缓存的楼栋
+    for (const building of buildingDetails) {
+      const rankingCache = this.getRankingCache(campusName, building.name, targetDate);
+      if (rankingCache && rankingCache.totalConsumption !== undefined) {
+        buildingsWithData.push({
+          name: building.name,
+          total_rooms: building.total_rooms,
+          consumption: rankingCache.totalConsumption,
+          roomCount: rankingCache.roomCount,
+          avgConsumption: rankingCache.roomCount > 0
+            ? rankingCache.totalConsumption / rankingCache.roomCount : 0,
+          fromCache: true
+        });
+      }
+    }
+
+    // 从缓存楼栋发出初步结果
+    let partialResult = this._aggregateCampusResult(campusName, campusStats, buildingsWithData);
+    if (onProgress && buildingsWithData.length > 0) {
+      onProgress(buildingsWithData.length, totalBuildings, partialResult);
+    }
+
+    // Layer 3: 逐栋加载未缓存的楼栋
+    for (const building of buildingDetails) {
+      // 跳过已有缓存数据的楼栋
+      if (buildingsWithData.some(b => b.name === building.name)) continue;
+
+      try {
+        // 先尝试从房间缓存构建排名（避免重复请求）
+        let ranking = await this.getBuildingConsumptionFromRoomCache(
+          campusName,
+          building.name,
+          targetDate
+        );
+
+        // 如果房间缓存也没有，才调用 getBuildingConsumptionRankingFast
+        if (!ranking) {
+          ranking = await this.getBuildingConsumptionRankingFast(
+            campusName,
+            building.name,
+            targetDate === 'today' ? null : this._formatDateCompact(targetDate),
+            null,
+            false
+          );
+        }
+
+        // 处理返回结果
+        let totalConsumption, roomCount;
+        if (Array.isArray(ranking)) {
+          totalConsumption = ranking.reduce((sum, r) => sum + (r.consumption || 0), 0);
+          roomCount = ranking.length;
+        } else if (ranking && ranking.data) {
+          totalConsumption = ranking.totalConsumption || ranking.data.reduce((sum, r) => sum + (r.consumption || 0), 0);
+          roomCount = ranking.roomCount || ranking.data.length;
+        } else {
+          totalConsumption = 0;
+          roomCount = 0;
+        }
+
+        buildingsWithData.push({
+          name: building.name,
+          total_rooms: building.total_rooms,
+          consumption: totalConsumption,
+          roomCount: roomCount,
+          avgConsumption: roomCount > 0 ? totalConsumption / roomCount : 0,
+          fromCache: ranking?.data?.[0]?.fromCache || false
+        });
+      } catch (error) {
+        console.warn(`加载楼栋 ${building.name} 失败:`, error);
+        buildingsWithData.push({
+          name: building.name,
+          total_rooms: building.total_rooms,
+          consumption: 0,
+          roomCount: 0,
+          avgConsumption: 0,
+          fromCache: false,
+          error: true
+        });
+      }
+
+      // 每完成一栋楼触发进度更新
+      partialResult = this._aggregateCampusResult(campusName, campusStats, buildingsWithData);
+      if (onProgress) {
+        onProgress(buildingsWithData.length, totalBuildings, partialResult);
+      }
+    }
+
+    // 缓存最终结果
+    this.saveCampusConsumptionCache(campusName, targetDate, partialResult);
+
+    return partialResult;
+  },
+
+  /**
+   * 聚合楼栋数据为校区结果
+   * @private
+   */
+  _aggregateCampusResult(campusName, campusStats, buildingsWithData) {
+    let totalConsumption = 0;
+    let totalRoomCount = 0;
+    const buildings = {};
+
+    for (const b of buildingsWithData) {
+      totalConsumption += b.consumption || 0;
+      totalRoomCount += b.roomCount || 0;
+      buildings[b.name] = {
+        consumption: b.consumption || 0,
+        roomCount: b.roomCount || 0,
+        total_rooms: b.total_rooms || 0,
+        avgConsumption: b.avgConsumption || 0
+      };
+    }
+
+    const campusRoomCount = campusStats.rooms || 0;
+    return {
+      campus: campusName,
+      totalConsumption,
+      buildingCount: campusStats.buildings || 0,
+      roomCount: campusRoomCount,
+      roomsWithData: totalRoomCount,
+      avgConsumption: campusRoomCount > 0 ? totalConsumption / campusRoomCount : 0,
+      buildings
+    };
+  },
+
+  // ==================== 房间耗电量缓存 ====================
+
+  /**
+   * 获取房间某日的耗电量缓存
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string} roomId 房间ID
+   * @param {string} date 日期 (可选，不传则返回所有日期)
+   */
+  /**
+   * 获取房间耗电量缓存
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string} roomId 房间ID或房间名
+   * @param {string} date 日期（可选）
+   */
+  getRoomConsumptionCache(campusName, buildingName, roomId, date = null) {
+    const key = this._getCacheKey('room', campusName, buildingName, roomId);
+    const cache = this._getLocalCache(key);
+
+    if (!cache) return null;
+
+    if (date) {
+      const compactDate = this._formatDateCompact(date);
+      return cache[compactDate] || null;
+    }
+
+    return cache;
+  },
+
+  /**
+   * 保存房间耗电量到缓存
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string} roomId 房间ID或房间名
+   * @param {string} date 日期
+   * @param {Object} data { electricity, consumption }
+   */
+  saveRoomConsumptionCache(campusName, buildingName, roomId, date, data) {
+    const compactDate = this._formatDateCompact(date);
+    const key = this._getCacheKey('room', campusName, buildingName, roomId);
+
+    // 获取现有缓存或创建新的
+    let cache = this._getLocalCache(key) || {};
+    cache[compactDate] = {
+      electricity: data.electricity,
+      consumption: data.consumption,
+      updatedAt: Date.now()
+    };
+
+    this._setLocalCache(key, cache);
+    console.log(`[缓存保存] 房间耗电量: ${key} -> ${compactDate}`);
+  },
+
+  /**
+   * 批量保存房间耗电量到缓存
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {Map} roomDataMap roomId -> roomData 的映射
+   */
+  batchSaveRoomConsumptionCache(campusName, buildingName, roomDataMap) {
+    for (const [roomId, roomData] of roomDataMap) {
+      if (!roomData || !roomData.history) continue;
+
+      const key = this._getCacheKey('room', campusName, buildingName, roomId);
+      let cache = this._getLocalCache(key) || {};
+
+      // 遍历历史数据，保存每个日期的耗电量
+      for (const entry of roomData.history) {
+        const date = entry.formattedDate || this.formatDate(entry.date);
+        const compactDate = this._formatDateCompact(date);
+        cache[compactDate] = {
+          electricity: entry.electricity,
+          consumption: entry.consumption || 0,
+          updatedAt: Date.now()
+        };
+      }
+
+      this._setLocalCache(key, cache);
+    }
+    console.log(`[缓存保存] 房间耗电量: ${campusName}.${buildingName}, 共${roomDataMap.size}个房间`);
+  },
+
+  // ==================== 楼栋房间列表缓存 ====================
+
+  /**
+   * 获取楼栋房间列表缓存
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   */
+  getRoomsListCache(campusName, buildingName) {
+    const key = this._getCacheKey('rooms', campusName, buildingName);
+    const cache = this._getLocalCache(key);
+
+    if (cache) {
+      console.log(`[缓存命中] 房间列表: ${key}`);
+    }
+    return cache;
+  },
+
+  /**
+   * 保存楼栋房间列表到缓存
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {Object} roomsData 房间数据 { roomId: roomInfo }
+   */
+  saveRoomsListCache(campusName, buildingName, roomsData) {
+    const key = this._getCacheKey('rooms', campusName, buildingName);
+    this._setLocalCache(key, roomsData);
+    console.log(`[缓存保存] 房间列表: ${key}, 共${Object.keys(roomsData).length}个房间`);
+  },
+
+  // ==================== 异步加载楼栋房间列表 ====================
+
+  /**
+   * 异步加载楼栋房间列表（支持缓存和渐进式回调）
+   * @param {string} campusName 校区名
+   * @param {Function} onBuildingLoaded 单个楼栋加载完成回调 (buildingName, rooms)
+   */
+  async loadBuildingsRoomsAsync(campusName, onBuildingLoaded) {
+    // 先获取楼栋列表
+    const buildings = await this.getBuildings(campusName);
+
+    // 并行加载所有楼栋的房间列表
+    const promises = buildings.map(async (building) => {
+      // 检查缓存
+      const cached = this.getRoomsListCache(campusName, building.name);
+      if (cached) {
+        // 缓存命中，立即回调
+        const rooms = Object.entries(cached).map(([id, data]) => ({
+          id,
+          name: data.room_name,
+          currentBalance: data.current_balance,
+          lastUpdated: data.last_updated
+        }));
+        onBuildingLoaded(building.name, rooms);
+        return { building: building.name, rooms, fromCache: true };
+      }
+
+      // 缓存未命中，从网络获取
+      try {
+        const buildingSummary = await this.getBuildingSummary(campusName, building.name);
+        if (buildingSummary && buildingSummary.rooms) {
+          // 保存到缓存
+          this.saveRoomsListCache(campusName, building.name, buildingSummary.rooms);
+
+          const rooms = Object.entries(buildingSummary.rooms).map(([id, data]) => ({
+            id,
+            name: data.room_name,
+            currentBalance: data.current_balance,
+            lastUpdated: data.last_updated
+          }));
+
+          onBuildingLoaded(building.name, rooms);
+          return { building: building.name, rooms, fromCache: false };
+        }
+      } catch (error) {
+        console.warn(`加载楼栋 ${building.name} 失败:`, error);
+      }
+
+      return { building: building.name, rooms: [], fromCache: false };
+    });
+
+    // 等待所有楼栋加载完成
+    const results = await Promise.all(promises);
+    return results;
+  },
+
+  /**
+   * 获取所有楼栋的所有房间（用于搜索）
+   * 优先从缓存获取，异步加载缺失的楼栋
+   * @param {string} campusName 校区名
+   * @param {Function} onProgress 进度回调 (loaded, total)
+   */
+  async getAllRoomsForSearch(campusName, onProgress = null) {
+    const buildings = await this.getBuildings(campusName);
+    const total = buildings.length;
+    let loaded = 0;
+    const allRooms = [];
+
+    // 并行加载，但使用较小的并发数避免阻塞
+    const concurrency = 3;
+    const chunks = [];
+    for (let i = 0; i < buildings.length; i += concurrency) {
+      chunks.push(buildings.slice(i, i + concurrency));
+    }
+
+    for (const chunk of chunks) {
+      const promises = chunk.map(async (building) => {
+        // 检查缓存
+        const cached = this.getRoomsListCache(campusName, building.name);
+        if (cached) {
+          const rooms = Object.entries(cached).map(([id, data]) => ({
+            id,
+            name: data.room_name,
+            campus: campusName,
+            building: building.name,
+            currentBalance: data.current_balance
+          }));
+          loaded++;
+          if (onProgress) onProgress(loaded, total);
+          return rooms;
+        }
+
+        // 缓存未命中，从网络获取
+        try {
+          const buildingSummary = await this.getBuildingSummary(campusName, building.name);
+          if (buildingSummary && buildingSummary.rooms) {
+            this.saveRoomsListCache(campusName, building.name, buildingSummary.rooms);
+
+            const rooms = Object.entries(buildingSummary.rooms).map(([id, data]) => ({
+              id,
+              name: data.room_name,
+              campus: campusName,
+              building: building.name,
+              currentBalance: data.current_balance
+            }));
+            loaded++;
+            if (onProgress) onProgress(loaded, total);
+            return rooms;
+          }
+        } catch (error) {
+          console.warn(`加载楼栋 ${building.name} 失败:`, error);
+        }
+
+        loaded++;
+        if (onProgress) onProgress(loaded, total);
+        return [];
+      });
+
+      const results = await Promise.all(promises);
+      for (const rooms of results) {
+        allRooms.push(...rooms);
+      }
+    }
+
+    return allRooms;
   }
 };
 

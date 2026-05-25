@@ -780,7 +780,7 @@
     <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" id="btn-save-config">保存配置</button>
   </div>
 
-  <script src="js/data-service.js?v=20260521-pool"></script>
+  <script src="js/data-service.js?v=20260525-v3"></script>
   <script>
     // 能耗类比数据（分层显示）
     const ENERGY_ANALOGIES = [
@@ -840,43 +840,72 @@
       }
     }
 
-    // 预加载所有房间数据用于搜索（延迟到需要时才执行）
+    // 预加载所有房间数据用于搜索（使用缓存优先策略）
     let allRoomsLoading = false;
+    let currentSearchQuery = ''; // 当前搜索词
+
     async function preloadAllRooms() {
       if (allRoomsCache || allRoomsLoading) return;
       allRoomsLoading = true;
 
       try {
         allRoomsCache = [];
+
+        // 使用新的异步加载API，支持缓存和渐进式更新
         const campuses = await DataService.getCampuses();
 
+        // 并行加载所有校区的房间（异步，不阻塞）
         for (const campus of campuses) {
-          const buildings = await DataService.getBuildings(campus);
-          if (!buildings) continue;
-
-          for (const building of buildings) {
-            const rooms = await DataService.getRooms(campus, building.name);
-            if (!rooms) continue;
-
+          // 使用缓存优先的异步加载
+          DataService.getAllRoomsForSearch(
+            campus,
+            (loaded, total) => {
+              // 进度回调 - 可以显示加载进度
+              console.log(`[搜索数据] ${campus}: ${loaded}/${total}`);
+            }
+          ).then(rooms => {
+            // 将房间添加到缓存
             rooms.forEach(room => {
               allRoomsCache.push({
-                campus,
-                building: building.name,
+                campus: room.campus,
+                building: room.building,
                 roomId: room.id,
                 roomName: room.name,
-                // 用于搜索的简化名称，包含房间名和ID以便搜索
-                searchKey: `${campus} ${building.name} ${room.name}`.toLowerCase()
+                searchKey: `${room.campus} ${room.building} ${room.name} ${room.id}`.toLowerCase()
               });
             });
-          }
+
+            // 如果用户正在搜索，实时更新搜索结果
+            if (currentSearchQuery) {
+              updateSearchResults(currentSearchQuery);
+            }
+
+            console.log(`[搜索数据] ${campus} 加载完成，当前共 ${allRoomsCache.length} 个房间`);
+          }).catch(error => {
+            console.warn(`加载 ${campus} 房间数据失败:`, error);
+          });
         }
-        console.log(`预加载完成，共 ${allRoomsCache.length} 个房间`);
+
+        // 等待第一个校区的数据加载完成（确保有数据可用于搜索）
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        console.log(`预加载开始，当前已缓存 ${allRoomsCache.length} 个房间`);
       } catch (error) {
         console.error('预加载房间数据失败:', error);
         allRoomsCache = null;
       } finally {
         allRoomsLoading = false;
       }
+    }
+
+    // 实时更新搜索结果（不阻塞）
+    function updateSearchResults(query) {
+      if (!allRoomsCache || !query) return;
+
+      const results = allRoomsCache
+        .filter(room => fuzzyMatch(room.searchKey, query));
+
+      showSearchResults(results);
     }
 
     // 模糊搜索算法
@@ -889,7 +918,8 @@
 
       // 所有搜索词都必须匹配
       return queryParts.every(part => {
-        return text.includes(part);
+        if (text.includes(part)) return true;
+        return false;
       });
     }
 
@@ -912,42 +942,35 @@
       });
     }
 
-    // 执行搜索
+    // 执行搜索（异步，支持实时更新）
     async function performSearch(query) {
+      currentSearchQuery = query;
+
       if (!query || query.length < 1) {
         document.getElementById('search-results').style.display = 'none';
+        currentSearchQuery = '';
         return [];
       }
 
-      // 如果数据未加载，先加载
+      // 如果数据正在加载，显示加载状态
+      if (allRoomsLoading) {
+        showSearchLoading();
+        // 数据加载完成后会自动更新搜索结果
+        return [];
+      }
+
+      // 如果数据未加载，启动异步加载
       if (!allRoomsCache) {
         showSearchLoading();
-        await preloadAllRooms();
-      }
-
-      if (!allRoomsCache) {
-        console.log('数据未加载完成');
+        preloadAllRooms(); // 异步加载，不等待
         return [];
       }
 
-      console.log(`搜索 "${query}"，共 ${allRoomsCache.length} 个房间`);
-
-      // 测试搜索 "211" 是否能匹配到 "4a211"
-      if (query === '211') {
-        const testRoom = allRoomsCache.find(r => r.roomName && r.roomName.toLowerCase().includes('211'));
-        if (testRoom) {
-          console.log(`测试: 找到房间 ${testRoom.roomName}, searchKey: ${testRoom.searchKey}`);
-          console.log(`测试: fuzzyMatch 结果 = ${fuzzyMatch(testRoom.searchKey, '211')}`);
-        }
-      }
-
+      // 从缓存中搜索
       const results = allRoomsCache
-        .filter(room => {
-          const match = fuzzyMatch(room.searchKey, query);
-          return match;
-        }); // 限制结果数量
+        .filter(room => fuzzyMatch(room.searchKey, query));
 
-      console.log(`找到 ${results.length} 个结果`);
+      showSearchResults(results);
       return results;
     }
 
@@ -1015,7 +1038,7 @@
     async function selectSearchResult(campus, building, roomId, roomName) {
       // 隐藏搜索结果
       document.getElementById('search-results').style.display = 'none';
-      document.getElementById('config-search').value = `${campus} · ${building} · ${roomName}`;
+      document.getElementById('config-search').value = `${campus}  ${building}  ${roomName}`;
 
       // 设置校区
       document.getElementById('config-campus').value = campus;
@@ -1431,7 +1454,7 @@
         // 排序房间
         const sortedRooms = sortRooms(rooms);
         roomSelect.innerHTML = '<option value="">请选择房间</option>';
-        sortedRooms.slice(0, 200).forEach(room => {
+        sortedRooms.forEach(room => {
           const option = document.createElement('option');
           option.value = room.id;
           option.textContent = room.name;
