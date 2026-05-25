@@ -2,7 +2,7 @@
 
 南京大学宿舍电费数据采集、分析与可视化平台。自动从校园 epay 系统采集全校宿舍电量数据，提供多维度可视化看板。
 
-**🌐 在线体验**: [nju-power-watch.vercel.app](https://nju-power-watch.vercel.app)
+**🌐 在线体验**: [njupower.top](njutpower.top)
 
 ---
 
