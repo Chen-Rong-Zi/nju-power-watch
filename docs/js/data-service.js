@@ -1506,6 +1506,85 @@ const DataService = {
     }
 
     return allRooms;
+  },
+
+  /**
+   * 获取校区耗电趋势（多日）
+   * 遍历所有楼栋的 details.json，聚合所有房间的 balance_history
+   * 计算每栋楼中每个房间每天的历史消耗，返回按日期排序的趋势数据
+   * 包含所有有余额记录的日期（即使消耗为0，因充值或余额不变也会记录）
+   * @param {string} campusName 校区名
+   * @param {number} maxDays 最大天数（默认30）
+   * @returns {Promise<Object|null>} { dates: ['05-16', '05-17', ...], consumption: [120, 135, ...], roomCounts: [80, 82, ...] }
+   */
+  async getCampusConsumptionTrend(campusName, maxDays = 30) {
+    const campusStats = await this.getCampusStatistics(campusName);
+    if (!campusStats) return null;
+
+    const buildingDetails = campusStats.buildingDetails || [];
+
+    // 先收集所有楼栋的所有房间的 balance_history
+    // dailyConsumption[date][roomId] = consumption （可为0）
+    const dailyConsumption = {};
+    const allDateSet = new Set();
+
+    for (const bd of buildingDetails) {
+      const details = await this.getBuildingDetails(campusName, bd.name);
+      if (!details || !details.rooms) continue;
+
+      for (const roomId in details.rooms) {
+        const bh = details.rooms[roomId].balance_history;
+        if (!bh) continue;
+
+        const dates = Object.keys(bh).sort();
+        if (dates.length < 2) continue;
+
+        for (let i = 1; i < dates.length; i++) {
+          const date = dates[i];
+          const prev = bh[dates[i - 1]];
+          const curr = bh[date];
+          // 消耗 = max(0, 前日余额 - 当日余额)，充值或不变记为0
+          const cons = prev > curr ? prev - curr : 0;
+          allDateSet.add(date);
+
+          if (!dailyConsumption[date]) dailyConsumption[date] = {};
+          if (!dailyConsumption[date][roomId]) {
+            dailyConsumption[date][roomId] = cons;
+          }
+        }
+      }
+    }
+
+    if (allDateSet.size === 0) return null;
+
+    // 取最近 maxDays 天
+    const sortedDates = Array.from(allDateSet).sort();
+    const recentDates = sortedDates.slice(-maxDays);
+
+    // 按日期聚合所有房间消耗
+    const dates = [];
+    const consumption = [];
+    const roomCounts = [];
+
+    for (const d of recentDates) {
+      const roomsOnDate = dailyConsumption[d];
+      if (!roomsOnDate) continue;
+
+      let totalCons = 0;
+      let count = 0;
+      for (const roomId in roomsOnDate) {
+        totalCons += roomsOnDate[roomId];
+        count++;
+      }
+
+      const month = d.substring(4, 6);
+      const day = d.substring(6, 8);
+      dates.push(`${month}-${day}`);
+      consumption.push(Math.round(totalCons * 10) / 10);
+      roomCounts.push(count);
+    }
+
+    return { dates, consumption, roomCounts };
   }
 };
 

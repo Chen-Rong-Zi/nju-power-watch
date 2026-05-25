@@ -812,7 +812,32 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    .chart-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .chart-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+    }
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <nav class="topnav">
@@ -959,6 +984,16 @@
         <div class="empty-text">请选择校区和楼栋查看排行榜</div>
       </div>
     </div>
+
+    <!-- 校区耗电趋势 -->
+    <div class="chart-card" id="trend-card" style="display: none;">
+      <div class="chart-header">
+        <h2 class="chart-title" id="trend-title">校区耗电趋势</h2>
+      </div>
+      <div class="chart-container">
+        <canvas id="trend-chart"></canvas>
+      </div>
+    </div>
   </main>
 
   <!-- 房间详情面板 -->
@@ -1003,6 +1038,8 @@
     // 三级缓存
     const roomDataCache = new Map();      // 缓存房间历史数据: key = "校区/楼栋/房间ID"
     const consumptionCache = new Map();    // 缓存计算结果: key = "校区/楼栋/日期"
+
+    let trendChart = null;
 
     // 动画展示记录（持久化到 localStorage）
     const ANIMATION_SHOWN_KEY = 'electricity_animation_shown';
@@ -1181,6 +1218,19 @@
 
       saveStateToUrl();
       showEmptyState();
+      loadCampusTrend(state.campus);
+    }
+
+    async function loadCampusTrend(campus) {
+      const trendCard = document.getElementById('trend-card');
+      if (!campus) {
+        trendCard.style.display = 'none';
+        return;
+      }
+      trendCard.style.display = 'block';
+      document.getElementById('trend-title').textContent = `${campus} · 校区耗电趋势`;
+      const trendData = await DataService.getCampusConsumptionTrend(campus);
+      renderTrendChart(trendData);
     }
 
     async function onBuildingChange(e) {
@@ -1603,6 +1653,127 @@
     }
 
     // ==================== 显示排行榜 ====================
+    function renderTrendChart(trendData) {
+      const ctx = document.getElementById('trend-chart').getContext('2d');
+      if (trendChart) trendChart.destroy();
+
+      if (!trendData || !trendData.dates || trendData.dates.length === 0) {
+        trendChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['暂无数据'],
+            datasets: [{
+              label: '日耗电量',
+              data: [0],
+              borderColor: '#d1d5db',
+              backgroundColor: 'rgba(0, 0, 0, 0.02)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              title: {
+                display: true,
+                text: '暂无历史趋势数据',
+                color: '#9ca3af',
+                font: { size: 13 }
+              }
+            },
+            scales: {
+              x: { display: false },
+              y: { display: false }
+            }
+          }
+        });
+        return;
+      }
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+      gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
+      gradient.addColorStop(1, 'rgba(99, 102, 241, 0.01)');
+
+      trendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: trendData.dates,
+          datasets: [{
+            label: '日耗电量 (度)',
+            data: trendData.consumption,
+            borderColor: '#6366f1',
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.3,
+            pointRadius: 3,
+            pointBackgroundColor: '#6366f1',
+            pointHoverRadius: 5,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          },
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: '#94a3b8',
+                font: { size: 12 },
+                boxWidth: 12,
+                padding: 12
+              }
+            },
+            tooltip: {
+              backgroundColor: '#1e293b',
+              titleColor: '#f1f5f9',
+              bodyColor: '#f1f5f9',
+              borderColor: '#334155',
+              borderWidth: 1,
+              padding: 10,
+              cornerRadius: 8,
+              callbacks: {
+                label: function(context) {
+                  const i = context.dataIndex;
+                  const rooms = trendData.roomCounts ? trendData.roomCounts[i] : '--';
+                  return `${context.parsed.y.toFixed(1)} 度  (${rooms} 间房)`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: {
+                color: '#94a3b8',
+                font: { size: 11 },
+                maxRotation: 45
+              }
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: '#334155',
+                drawBorder: false
+              },
+              ticks: {
+                color: '#94a3b8',
+                font: { size: 11 },
+                callback: function(value) { return value + '度'; }
+              }
+            }
+          }
+        }
+      });
+    }
+
     async function displayRanking(rankings) {
       document.getElementById('stats-row').style.display = 'grid';
 

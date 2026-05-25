@@ -615,6 +615,14 @@
 
       // 最终渲染
       updateDashboard(campusConsumption);
+
+      // 异步加载趋势数据
+      loadTrendData(campus);
+    }
+
+    async function loadTrendData(campus) {
+      const trendData = await DataService.getCampusConsumptionTrend(campus);
+      renderTrendChart(trendData);
     }
 
     // ==================== 更新函数 ====================
@@ -688,8 +696,7 @@
       // 智能建议
       updateSmartTip(consumption);
 
-      // 图表渲染
-      renderTrendChartEmpty();
+      // 图表渲染（趋势图在 loadTrendData 中异步加载）
       renderBuildingChart(consumption);
       renderBuildingGrid(campusData.buildingDetails, consumption.buildings);
       renderEnergyMap(consumption);
@@ -729,40 +736,123 @@
 
     // ==================== 图表渲染 ====================
 
-    function renderTrendChartEmpty() {
+    function renderTrendChart(trendData) {
       const ctx = document.getElementById('trend-chart').getContext('2d');
       if (trendChart) trendChart.destroy();
 
-      // 显示空状态提示，不使用模拟数据
+      if (!trendData || !trendData.dates || trendData.dates.length === 0) {
+        trendChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['暂无数据'],
+            datasets: [{
+              label: '日耗电量',
+              data: [0],
+              borderColor: '#d1d5db',
+              backgroundColor: 'rgba(0, 0, 0, 0.02)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              title: {
+                display: true,
+                text: '暂无历史趋势数据',
+                color: '#9ca3af',
+                font: { size: 13 }
+              }
+            },
+            scales: {
+              x: { display: false },
+              y: { display: false }
+            }
+          }
+        });
+        return;
+      }
+
+      // 生成半透明渐变色
+      const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+      gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
+      gradient.addColorStop(1, 'rgba(99, 102, 241, 0.01)');
+
       trendChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['暂无数据'],
+          labels: trendData.dates,
           datasets: [{
-            label: '日耗电量',
-            data: [0],
-            borderColor: '#d1d5db',
-            backgroundColor: 'rgba(0, 0, 0, 0.02)',
+            label: '日耗电量 (度)',
+            data: trendData.consumption,
+            borderColor: '#6366f1',
+            backgroundColor: gradient,
             fill: true,
-            tension: 0.4,
-            pointRadius: 0
+            tension: 0.3,
+            pointRadius: 3,
+            pointBackgroundColor: '#6366f1',
+            pointHoverRadius: 5,
+            borderWidth: 2
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          },
           plugins: {
-            legend: { display: false },
-            title: {
+            legend: {
               display: true,
-              text: '暂无历史趋势数据，请先访问各楼栋页面积累数据',
-              color: '#9ca3af',
-              font: { size: 13 }
+              labels: {
+                color: getComputedStyle(document.documentElement).getPropertyValue('--fg-muted').trim() || '#94a3b8',
+                font: { size: 12 },
+                boxWidth: 12,
+                padding: 12
+              }
+            },
+            tooltip: {
+              backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--surface').trim() || '#1e293b',
+              titleColor: getComputedStyle(document.documentElement).getPropertyValue('--fg').trim() || '#f1f5f9',
+              bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--fg').trim() || '#f1f5f9',
+              borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#334155',
+              borderWidth: 1,
+              padding: 10,
+              cornerRadius: 8,
+              callbacks: {
+                label: function(context) {
+                  const i = context.dataIndex;
+                  const rooms = trendData.roomCounts ? trendData.roomCounts[i] : '--';
+                  return `${context.parsed.y.toFixed(1)} 度  (${rooms} 间房)`;
+                }
+              }
             }
           },
           scales: {
-            x: { display: false },
-            y: { display: false }
+            x: {
+              grid: { display: false },
+              ticks: {
+                color: getComputedStyle(document.documentElement).getPropertyValue('--fg-muted').trim() || '#94a3b8',
+                font: { size: 11 },
+                maxRotation: 45
+              }
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim() || '#334155',
+                drawBorder: false
+              },
+              ticks: {
+                color: getComputedStyle(document.documentElement).getPropertyValue('--fg-muted').trim() || '#94a3b8',
+                font: { size: 11 },
+                callback: function(value) { return value + '度'; }
+              }
+            }
           }
         }
       });
