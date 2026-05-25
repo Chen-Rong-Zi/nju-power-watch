@@ -1585,6 +1585,73 @@ const DataService = {
     }
 
     return { dates, consumption, roomCounts };
+  },
+
+  /**
+   * 获取楼栋耗电趋势（多日）
+   * 遍历指定楼栋的所有房间的 balance_history
+   * 计算该楼栋每天的历史消耗，返回按日期排序的趋势数据
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {number} maxDays 最大天数（默认30）
+   * @returns {Promise<Object|null>} { dates: ['05-16', ...], consumption: [120, ...], roomCounts: [80, ...] }
+   */
+  async getBuildingConsumptionTrend(campusName, buildingName, maxDays = 30) {
+    const details = await this.getBuildingDetails(campusName, buildingName);
+    if (!details || !details.rooms) return null;
+
+    const dailyConsumption = {};
+    const allDateSet = new Set();
+
+    for (const roomId in details.rooms) {
+      const bh = details.rooms[roomId].balance_history;
+      if (!bh) continue;
+
+      const dates = Object.keys(bh).sort();
+      if (dates.length < 2) continue;
+
+      for (let i = 1; i < dates.length; i++) {
+        const date = dates[i];
+        const prev = bh[dates[i - 1]];
+        const curr = bh[date];
+        const cons = prev > curr ? prev - curr : 0;
+        allDateSet.add(date);
+
+        if (!dailyConsumption[date]) dailyConsumption[date] = {};
+        if (!dailyConsumption[date][roomId]) {
+          dailyConsumption[date][roomId] = cons;
+        }
+      }
+    }
+
+    if (allDateSet.size === 0) return null;
+
+    const sortedDates = Array.from(allDateSet).sort();
+    const recentDates = sortedDates.slice(-maxDays);
+
+    const dates = [];
+    const consumption = [];
+    const roomCounts = [];
+
+    for (const d of recentDates) {
+      const roomsOnDate = dailyConsumption[d];
+      if (!roomsOnDate) continue;
+
+      let totalCons = 0;
+      let count = 0;
+      for (const roomId in roomsOnDate) {
+        totalCons += roomsOnDate[roomId];
+        count++;
+      }
+
+      const month = d.substring(4, 6);
+      const day = d.substring(6, 8);
+      dates.push(`${month}-${day}`);
+      consumption.push(Math.round(totalCons * 10) / 10);
+      roomCounts.push(count);
+    }
+
+    return { dates, consumption, roomCounts };
   }
 };
 

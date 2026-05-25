@@ -985,10 +985,10 @@
       </div>
     </div>
 
-    <!-- 校区耗电趋势 -->
+    <!-- 楼栋耗电趋势 -->
     <div class="chart-card" id="trend-card" style="display: none;">
       <div class="chart-header">
-        <h2 class="chart-title" id="trend-title">校区耗电趋势</h2>
+        <h2 class="chart-title" id="trend-title">楼栋耗电趋势</h2>
       </div>
       <div class="chart-container">
         <canvas id="trend-chart"></canvas>
@@ -1117,6 +1117,7 @@
 
             // 加载排行榜（不播放动画，因为是从返回恢复的）
             await loadRanking();
+            loadBuildingTrend(state.campus, state.building);
           }
         }
       }
@@ -1218,18 +1219,20 @@
 
       saveStateToUrl();
       showEmptyState();
-      loadCampusTrend(state.campus);
+      hideBuildingTrend();
     }
 
-    async function loadCampusTrend(campus) {
+    function hideBuildingTrend() {
       const trendCard = document.getElementById('trend-card');
-      if (!campus) {
-        trendCard.style.display = 'none';
-        return;
-      }
-      trendCard.style.display = 'block';
-      document.getElementById('trend-title').textContent = `${campus} · 校区耗电趋势`;
-      const trendData = await DataService.getCampusConsumptionTrend(campus);
+      trendCard.style.display = 'none';
+    }
+
+    async function loadBuildingTrend(campus, building) {
+      if (!campus || !building) return;
+      const trendData = await DataService.getBuildingConsumptionTrend(campus, building);
+      if (!trendData) return;
+      document.getElementById('trend-title').textContent = `${building} · 楼栋耗电趋势`;
+      document.getElementById('trend-card').style.display = 'block';
       renderTrendChart(trendData);
     }
 
@@ -1243,8 +1246,10 @@
       saveStateToUrl();
       if (state.building) {
         await loadRanking();
+        await loadBuildingTrend(state.campus, state.building);
       } else {
         showEmptyState();
+        hideBuildingTrend();
       }
     }
 
