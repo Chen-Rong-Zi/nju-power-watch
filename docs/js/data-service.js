@@ -1661,47 +1661,107 @@ const DataService = {
  */
 const EnergyAnalogies = {
   _analogies: [
-    { min: 0.00001, label: kwh => `够iPhone 16 充满约 ${Math.round(kwh / 0.0135)} 次` },
-    { min: 0.001, label: kwh => `够ChatGPT回答约 ${Math.round(kwh / 0.00034)} 个问题` },
-    { min: 0.1, label: kwh => `够煮约 ${Math.round(kwh / 0.05)} 杯咖啡` },
-    { min: 0.1, label: kwh => `≈ 小米SU7跑 ${(kwh * 7).toFixed(0)} 公里（新街口→中山陵单程7公里）` },
-    { min: 5, label: kwh => `够特斯拉Optimus人形机器人高强度工作约 ${(kwh / 0.5).toFixed(0)} 小时` },
-    { min: 20, label: kwh => `够一台比特币矿机（蚂蚁S21 Pro）挖矿约 ${(kwh / 84 * 24).toFixed(0)} 小时` },
-    { min: 40, label: kwh => `≈ 小米SU7从南京开到上海（约${Math.round(kwh * 7)}公里）` },
-    { min: 100, label: kwh => `≈ 三口之家一个月的用电量` },
-    { min: 140, label: kwh => `≈ 小米SU7从南京开到北京（约${Math.round(kwh * 7)}公里）` },
-    { min: 200, label: kwh => `够100台特斯拉Optimus同时工作 ${(kwh / 50).toFixed(0)} 小时` },
-    { min: 1000, label: kwh => `够训练DeepSeek-R1回答约 ${Math.round(kwh / 0.01)} 道高中数学题` },
-    { min: 5000, label: kwh => `≈ 一辆小米SU7绕地球跑 ${((kwh * 7) / 40000).toFixed(1)} 圈` },
-    { min: 20000, label: kwh => `≈ 全球比特币网络 ${(kwh / 138000000000 * 365 * 24 * 60).toFixed(2)} 秒的耗电量` },
-    { min: 100000, label: kwh => `≈ DeepSeek-V3训练的 ${(kwh / 1087000 * 100).toFixed(1)}%（一次训练约108.7万度电）` },
+    { min: 0, category: 'daily', icon: '📺', label: kwh => `📺 相当于bilibili自2008年以来用爱发电总量` },
+    { min: 0, category: 'daily', icon: '⚛️', label: kwh => `⚛️ 实现了人体小型核聚变，靠意念维持运转` },
+    { min: 0, category: 'daily', icon: '🌙', label: kwh => `🌙 开启了超级黑暗模式，连空气都不敢动` },
+    { min: 0, category: 'daily', icon: '🔥', label: kwh => `🔥 靠燃烧卡路里供能，健身房看了都沉默` },
+    { min: 0, category: 'daily', icon: '☀️', label: kwh => `☀️ 可能是光合作用了一天，建议检查是否为植物人` },
+    { min: 0, category: 'daily', icon: '🧘', label: kwh => `🧘 达到了"电费禅"的最高境界，万物皆空` },
+    { min: 0, category: 'daily', icon: '🤖', label: kwh => `🤖 永动机研发成功？中科院连夜发贺电` },
+    { min: 0, category: 'daily', icon: '⚡', label: kwh => `⚡ 零碳排放达成，北极熊发来感谢信` },
+    { min: 0.01, category: 'daily', icon: '📱', label: kwh => `📱 iPhone 16充满约 ${Math.round(kwh / 0.0135)} 次` },
+    { min: 0.05, category: 'daily', icon: '💡', label: kwh => `💡 10W LED灯照明约 ${Math.round(kwh / 0.01)} 小时` },
+    { min: 0.1, category: 'daily', icon: '☕', label: kwh => `☕ 煮约 ${Math.round(kwh / 0.05)} 杯咖啡` },
+    { min: 0.1, category: 'daily', icon: '💧', label: kwh => `💧 烧开约 ${Math.round(kwh * 10)} 升水` },
+    { min: 0.3, category: 'daily', icon: '💻', label: kwh => `💻 笔记本工作约 ${Math.round(kwh / 0.05)} 小时` },
+    { min: 0.5, category: 'daily', icon: '📺', label: kwh => `📺 电视播放约 ${Math.round(kwh / 0.1)} 小时` },
+    { min: 1, category: 'daily', icon: '🧺', label: kwh => `🧺 洗衣机洗约 ${Math.round(kwh / 0.5)} 桶衣服` },
+    { min: 1.5, category: 'daily', icon: '❄️', label: kwh => `❄️ 1.5匹空调运行约 ${Math.round(kwh / 1.5)} 小时` },
+    { min: 2, category: 'daily', icon: '🚲', label: kwh => `🚲 电动车骑行约 ${Math.round(kwh * 50)} 公里` },
+    { min: 10, category: 'daily', icon: '🍜', label: kwh => `🍜 电饭煲煮饭约 ${Math.round(kwh / 0.8)} 锅` },
+    { min: 30, category: 'daily', icon: '🏠', label: kwh => `🏠 单人公寓约 ${Math.round(kwh / 5)} 天的用电量` },
+    { min: 100, category: 'daily', icon: '🏠', label: kwh => `🏠 三口之家一个月的用电量` },
+    { min: 500, category: 'daily', icon: '🏘️', label: kwh => `🏘️ ${Math.round(kwh / 100)} 个三口之家一个月的用电` },
+
+    // ========== AI/科技类 ==========
+    { min: 0.001, category: 'ai', icon: '🤖', label: kwh => `🤖 ChatGPT回答约 ${Math.round(kwh / 0.00034)} 个问题` },
+    { min: 0.1, category: 'ai', icon: '🧠', label: kwh => `🧠 GPT-4生成约 ${Math.round(kwh / 0.002)} 张图` },
+    { min: 5, category: 'ai', icon: '🦾', label: kwh => `🦾 特斯拉Optimus工作约 ${(kwh / 0.5).toFixed(0)} 小时` },
+    { min: 100, category: 'ai', icon: '🤖', label: kwh => `🤖 100台Optimus同时工作 ${(kwh / 50).toFixed(0)} 小时` },
+    { min: 1000, category: 'ai', icon: '🧠', label: kwh => `🧠 DeepSeek-R1回答约 ${Math.round(kwh / 0.01)} 道高中数学题` },
+    { min: 50000, category: 'ai', icon: '🧠', label: kwh => `🧠 DeepSeek-V3训练的 ${(kwh / 1087000 * 100).toFixed(2)}%` },
+
+    // ========== 电动汽车类 ==========
+    { min: 0.1, category: 'ev', icon: '🚗', label: kwh => `🚗 小米SU7跑 ${(kwh * 7).toFixed(1)} 公里` },
+    { min: 5, category: 'ev', icon: '🚗', label: kwh => `🚗 小米SU7跑约 ${(kwh * 7).toFixed(0)} 公里（≈${(kwh * 7 / 300).toFixed(1)}个南京市区）` },
+    { min: 40, category: 'ev', icon: '🚗', label: kwh => `🚗 小米SU7从南京开到上海（${Math.round(kwh * 7)}公里）` },
+    { min: 140, category: 'ev', icon: '🚗', label: kwh => `🚗 小米SU7从南京开到北京（${Math.round(kwh * 7)}公里）` },
+    { min: 500, category: 'ev', icon: '🚗', label: kwh => `🚗 小米SU7跑约 ${(kwh * 7).toFixed(0)} 公里（≈${(kwh * 7 / 1200).toFixed(1)}个南京→北京）` },
+    { min: 5000, category: 'ev', icon: '🌍', label: kwh => `🌍 小米SU7绕地球跑 ${((kwh * 7) / 40000).toFixed(1)} 圈` },
+
+    // ========== 比特币类 ==========
+    { min: 5, category: 'btc', icon: '₿', label: kwh => `₿ 挖矿收益约 $${(kwh * 0.00003).toFixed(4)}` },
+    { min: 20, category: 'btc', icon: '₿', label: kwh => `₿ 蚂蚁S21 Pro挖矿约 ${(kwh / 3.5).toFixed(1)} 小时` },
+    { min: 100, category: 'btc', icon: '₿', label: kwh => `₿ 蚂蚁S21 Pro挖矿约 ${(kwh / 84 * 24).toFixed(1)} 小时` },
+    { min: 20000, category: 'btc', icon: '₿', label: kwh => `₿ 全球比特币网络 ${(kwh / 138000000000 * 365 * 24 * 60).toFixed(2)} 秒耗电` },
+
+    // ========== 家庭用电类（楼栋/校区级别）==========
+    { min: 3000, category: 'home', icon: '🏢', label: kwh => `🏢 ${Math.round(kwh / 3000)} 栋居民楼一天的用电` },
+    { min: 10000, category: 'home', icon: '🏫', label: kwh => `🏫 ${Math.round(kwh / 5000)} 栋居民楼一周的用电` },
+
+    // ========== 数据中心类 ==========
+    { min: 1000, category: 'datacenter', icon: '🖥️', label: kwh => `🖥️ 小型服务器机房运行约 ${(kwh / 500).toFixed(1)} 小时` },
+    { min: 10000, category: 'datacenter', icon: '🏢', label: kwh => `🏢 中型数据中心运行约 ${(kwh / 50000).toFixed(2)} 小时` },
+
+    // ========== 碳排放类 ==========
+    { min: 1, category: 'carbon', icon: '🌳', label: kwh => `🌳 需 ${Math.round(kwh * 0.5)} 棵树吸收一天的碳排放` },
+    { min: 100, category: 'carbon', icon: '🌲', label: kwh => `🌲 需 ${Math.round(kwh * 0.5)} 棵树吸收一天的碳排放` },
+    { min: 1000, category: 'carbon', icon: '🏭', label: kwh => `🏭 约排放 ${(kwh * 0.5).toFixed(0)} kg CO₂` },
   ],
 
-  get(kwh) {
-    if (!kwh || kwh <= 0) return null;
-    for (const a of this._analogies) {
-      if (kwh >= a.min) return a.label(kwh);
+  get(kwh, deterministic = false) {
+    if (kwh === undefined || kwh === null || kwh < 0) return null;
+    
+    let matches;
+    if (kwh === 0) {
+      matches = this._analogies.filter(a => a.min === 0);
+    } else {
+      matches = this._analogies.filter(a => kwh >= a.min && a.min > 0);
     }
-    return null;
+    
+    if (matches.length === 0) return null;
+    
+    let idx;
+    if (deterministic) {
+      const hash = Math.sin(kwh * 1000) * 10000;
+      idx = Math.abs(Math.floor(hash)) % matches.length;
+    } else {
+      idx = Math.floor(Math.random() * matches.length);
+    }
+    
+    return matches[idx].label(kwh);
   },
 
   getAll(kwh, max = 3) {
-    if (!kwh || kwh <= 0) return [];
-    const matches = this._analogies.filter(a => kwh >= a.min);
-    matches.sort((a, b) => b.min - a.min);
-    const pick = [];
-    const used = new Set();
-    for (const m of matches) {
-      const label = m.label(kwh);
-      const parts = label.split(' ');
-      const key = parts.length > 1 ? parts[0] + parts[1] : parts[0];
-      if (!used.has(key)) {
-        pick.push(label);
-        used.add(key);
-        if (pick.length >= max) break;
-      }
+    if (kwh === undefined || kwh === null || kwh < 0) return [];
+    
+    let matches;
+    if (kwh === 0) {
+      matches = this._analogies.filter(a => a.min === 0);
+    } else {
+      matches = this._analogies.filter(a => kwh >= a.min && a.min > 0);
     }
-    return pick.length > 0 ? pick : [matches[matches.length - 1].label(kwh)];
+    
+    if (matches.length === 0) return [];
+    
+    const result = [];
+    const pool = [...matches];
+    for (let i = 0; i < max && pool.length > 0; i++) {
+      const idx = Math.floor(Math.random() * pool.length);
+      result.push(pool[idx].label(kwh));
+      pool.splice(idx, 1);
+    }
+    return result;
   }
 };
 
