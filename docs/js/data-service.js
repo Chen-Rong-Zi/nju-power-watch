@@ -1195,8 +1195,11 @@ const DataService = {
     let targetIdx;
     if (dateType === 'today') {
       targetIdx = dates.length - 1;
+      // 今天需要至少有两天数据才能计算
+      if (targetIdx <= 0) return null;
     } else if (dateType === 'yesterday') {
       targetIdx = dates.length - 2;
+      if (targetIdx < 0) return null;
     } else if (dateType === 'week') {
       // 计算最近7天的平均消耗
       const recentDates = dates.slice(-7);
@@ -1652,6 +1655,184 @@ const DataService = {
     }
 
     return { dates, consumption, roomCounts };
+  },
+
+  /**
+   * 获取整个校区所有房间的耗电排名
+   * @param {string} campusName 校区名
+   * @param {string} date 日期类型：'today', 'yesterday', 'week', 或具体日期 YYYY-MM-DD
+   * @param {Function} onProgress 进度回调：(loaded, total, partialResult)
+   * @param {number} limit 返回的排名数量限制（默认 100）
+   * @returns {Promise<Array>} 排序后的房间数据数组
+   */
+  async getCampusWideRanking(campusName, date = 'today', onProgress = null, limit = 100) {
+    const campusStats = await this.getCampusStatistics(campusName);
+    if (!campusStats) return [];
+
+    const buildingDetails = campusStats.buildingDetails || [];
+    const totalBuildings = buildingDetails.length;
+    let loadedBuildings = 0;
+    const allRooms = [];
+
+    for (const building of buildingDetails) {
+      try {
+        // 尝试从 details.json 加载楼栋数据（快速）
+        const details = await this.getBuildingDetails(campusName, building.name);
+        const compactDate = this._formatDateCompact(date);
+        
+        if (details && details.rooms) {
+          // 从 details.json 提取房间消耗数据
+          for (const roomId in details.rooms) {
+            const roomData = details.rooms[roomId];
+            if (roomData.balance_history) {
+              const consumption = this._calculateConsumptionFromHistory(
+                roomData.balance_history,
+                date,
+                compactDate
+              );
+              if (consumption !== null) {
+                allRooms.push({
+                  roomId,
+                  roomName: roomData.room_name || roomId,
+                  building: building.name,
+                  campus: campusName,
+                  consumption,
+                  balance: roomData.current_balance || 0
+                });
+              }
+            }
+          }
+        } else {
+          // 回退到原来的方式：从排名缓存或加载
+          let ranking = await this.getBuildingConsumptionFromRoomCache(
+            campusName,
+            building.name,
+            date
+          );
+          
+          if (!ranking) {
+            ranking = await this.getBuildingConsumptionRankingFast(
+              campusName,
+              building.name,
+              date === 'today' ? null : this._formatDateCompact(date),
+              null,
+              false
+            );
+          }
+          
+          if (Array.isArray(ranking)) {
+            ranking.forEach(r => {
+              allRooms.push({
+                roomId: r.roomId,
+                roomName: r.roomName,
+                building: building.name,
+                campus: campusName,
+                consumption: r.consumption || 0,
+                balance: r.balance || 0
+              });
+            });
+          } else if (ranking && ranking.data) {
+            ranking.data.forEach(r => {
+              allRooms.push({
+                roomId: r.roomId,
+                roomName: r.roomName,
+                building: building.name,
+                campus: campusName,
+                consumption: r.consumption || 0,
+                balance: r.balance || 0
+              });
+            });
+          }
+        }
+      } catch (error) {
+        console.warn(`加载楼栋 ${building.name} 房间数据失败:`, error);
+      }
+
+      loadedBuildings++;
+      
+      // 每次加载完一栋楼，触发进度回调并更新部分结果
+      if (onProgress) {
+        // 实时排序并取前 limit 个
+        const partialSorted = [...allRooms].sort((a, b) => b.consumption - a.consumption).slice(0, limit);
+        onProgress(loadedBuildings, totalBuildings, partialSorted);
+      }
+    }
+
+    // 按耗电量降序排序，取前 limit 个
+    allRooms.sort((a, b) => b.consumption - a.consumption);
+    
+    // 添加排名
+    const result = allRooms.slice(0, limit).map((room, index) => ({
+      ...room,
+      rank: index + 1
+    }));
+
+    return result;
+  },
+
+  /**
+   * 计算某个房间在楼栋和校区中的排名百分比
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string} roomId 房间ID
+   * @param {string} date 日期类型：'today', 'yesterday', 'week', 或具体日期
+   * @returns {Promise<Object>} 包含 beatBuildingPercent 和 beatCampusPercent 的对象
+   */
+  async calculateBeatPercentage(campusName, buildingName, roomId, date = 'today') {
+    console.log('[calculateBeatPercentage] 开始计算', { campusName, buildingName, roomId, date });
+    
+    try {
+      // 直接使用已有的 getCampusWideRanking 函数，因为它已经是优化过的
+      const campusRanking = await this.getCampusWideRanking(
+        campusName,
+        date,
+        null,
+        Infinity // 获取全部房间
+      );
+      
+      console.log('[calculateBeatPercentage] 校区排名数据', campusRanking.length, '个房间');
+      
+      // 在所有数据中找到当前房间
+      const currentRoom = campusRanking.find(r => r.roomId === roomId && r.building === buildingName);
+      
+      if (!currentRoom || campusRanking.length === 0) {
+        console.log('[calculateBeatPercentage] 找不到房间或没有数据');
+        return {
+          beatBuildingPercent: 0,
+          beatCampusPercent: 0,
+          buildingRoomCount: 0,
+          campusRoomCount: campusRanking.length
+        };
+      }
+      
+      // 计算楼栋数据
+      const buildingRooms = campusRanking.filter(r => r.building === buildingName);
+      const buildingBeaten = buildingRooms.filter(r => r.consumption < currentRoom.consumption).length;
+      const beatBuildingPercent = buildingRooms.length > 0 ? (buildingBeaten / buildingRooms.length) * 100 : 0;
+      
+      // 计算校区数据
+      const campusBeaten = campusRanking.filter(r => r.consumption < currentRoom.consumption).length;
+      const beatCampusPercent = (campusBeaten / campusRanking.length) * 100;
+      
+      const result = {
+        beatBuildingPercent,
+        beatCampusPercent,
+        buildingRoomCount: buildingRooms.length,
+        campusRoomCount: campusRanking.length
+      };
+      
+      console.log('[calculateBeatPercentage] 计算完成', result);
+      return result;
+      
+    } catch (error) {
+      console.error('[calculateBeatPercentage] 计算失败:', error);
+      return {
+        beatBuildingPercent: 0,
+        beatCampusPercent: 0,
+        buildingRoomCount: 0,
+        campusRoomCount: 0
+      };
+    }
   }
 };
 

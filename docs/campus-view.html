@@ -426,6 +426,75 @@
       font-size: 14px;
       margin-right: 6px;
     }
+
+    /* 排行榜样式 */
+    .ranking-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .ranking-table th {
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 600;
+      color: var(--muted);
+      border-bottom: 2px solid var(--border);
+      z-index: 10;
+    }
+
+    .ranking-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ranking-table tr:hover {
+      background: color-mix(in oklch, var(--accent) 5%, transparent);
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .rank-1 { background: linear-gradient(135deg, #ffd700, #ffb700); color: #fff; }
+    .rank-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #fff; }
+    .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
+    .rank-other { background: var(--border); color: var(--muted); }
+
+    .room-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .room-link:hover {
+      text-decoration: underline;
+    }
+
+    .building-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: color-mix(in oklch, var(--accent) 15%, transparent);
+      color: var(--accent);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .consumption-value {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -560,6 +629,25 @@
           <div class="legend-item">
             <div class="legend-dot" style="background: #10b981;"></div>
             <span>高</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 全校区排行榜 -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">全校区耗电排行榜 TOP 100</h2>
+          <button class="date-btn" id="refresh-ranking" style="padding: 8px 16px;">
+            🔄 刷新排名
+          </button>
+        </div>
+        <div id="ranking-progress" style="display: none; padding: 20px; text-align: center; color: var(--muted);">
+          <div class="loading-spinner" style="margin: 0 auto 10px auto;"></div>
+          <div id="ranking-progress-text">加载中...</div>
+        </div>
+        <div class="ranking-container" id="ranking-container" style="max-height: 600px; overflow-y: auto;">
+          <div style="text-align: center; color: var(--muted); padding: 40px;">
+            点击上方"刷新排名"按钮加载数据
           </div>
         </div>
       </div>
@@ -1107,6 +1195,115 @@
         return `<div class="map-cell level-${Math.min(Math.max(level, 1), 5)}" title="${name}: ${b.consumption.toFixed(0)}度 (均${b.avgConsumption.toFixed(1)}度/间)"></div>`;
       });
       map.innerHTML = cells.join('');
+    }
+
+    // ==================== 全校区排行榜 ====================
+    let rankingLoading = false;
+
+    // 初始化排行榜按钮事件
+    document.getElementById('refresh-ranking').addEventListener('click', loadCampusRanking);
+
+    // 加载全校区排行榜
+    async function loadCampusRanking() {
+      if (rankingLoading) return;
+      if (!currentCampus) return;
+
+      rankingLoading = true;
+      const progressEl = document.getElementById('ranking-progress');
+      const progressTextEl = document.getElementById('ranking-progress-text');
+      const containerEl = document.getElementById('ranking-container');
+      const buttonEl = document.getElementById('refresh-ranking');
+
+      progressEl.style.display = 'block';
+      containerEl.innerHTML = '';
+      buttonEl.disabled = true;
+      buttonEl.textContent = '加载中...';
+
+      try {
+        const ranking = await DataService.getCampusWideRanking(
+          currentCampus,
+          currentDate,
+          (loaded, total, partial) => {
+            progressTextEl.textContent = `已加载 ${loaded}/${total} 栋楼...`;
+            if (partial.length > 0) {
+              renderRankingTable(partial, true);
+            }
+          },
+          100
+        );
+
+        progressEl.style.display = 'none';
+        renderRankingTable(ranking, false);
+      } catch (error) {
+        console.error('加载排行榜失败:', error);
+        containerEl.innerHTML = `
+          <div style="text-align: center; color: var(--danger); padding: 40px;">
+            加载失败: ${error.message}
+          </div>
+        `;
+      } finally {
+        rankingLoading = false;
+        buttonEl.disabled = false;
+        buttonEl.textContent = '🔄 刷新排名';
+      }
+    }
+
+    // 渲染排行榜表格
+    function renderRankingTable(ranking, isPartial) {
+      const containerEl = document.getElementById('ranking-container');
+      
+      if (ranking.length === 0) {
+        containerEl.innerHTML = `
+          <div style="text-align: center; color: var(--muted); padding: 40px;">
+            暂无数据
+          </div>
+        `;
+        return;
+      }
+
+      containerEl.innerHTML = `
+        <table class="ranking-table">
+          <thead>
+            <tr>
+              <th style="width: 60px;">排名</th>
+              <th>房间</th>
+              <th style="width: 160px;">楼栋</th>
+              <th style="width: 140px; text-align: right;">耗电量</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${ranking.map(room => renderRankingRow(room)).join('')}
+          </tbody>
+        </table>
+        ${isPartial ? '<div style="text-align: center; color: var(--muted); padding: 16px; font-size: 14px;">数据加载中...</div>' : ''}
+      `;
+    }
+
+    // 渲染排名行
+    function renderRankingRow(room) {
+      let rankClass = 'rank-other';
+      if (room.rank === 1) rankClass = 'rank-1';
+      else if (room.rank === 2) rankClass = 'rank-2';
+      else if (room.rank === 3) rankClass = 'rank-3';
+
+      const buildingUrl = `building-view.html?campus=${encodeURIComponent(currentCampus)}&building=${encodeURIComponent(room.building)}`;
+
+      return `
+        <tr>
+          <td>
+            <span class="rank-badge ${rankClass}">${room.rank}</span>
+          </td>
+          <td>
+            <div class="room-name">${room.roomName}</div>
+          </td>
+          <td>
+            <a href="${buildingUrl}" class="building-tag">${room.building}</a>
+          </td>
+          <td style="text-align: right;">
+            <span class="consumption-value">${room.consumption.toFixed(1)} 度</span>
+          </td>
+        </tr>
+      `;
     }
   </script>
   <script>
