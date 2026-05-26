@@ -1780,32 +1780,39 @@ const DataService = {
    * 获取单个房间的消耗数据（支持多种数据源）
    * @private
    */
-  async _getRoomConsumption(campusName, buildingName, roomId, date, compactDate) {
+  async _getRoomConsumption(campusName, buildingName, roomId, date, compactDate, options = {}) {
     // 首先尝试从 details.json 获取
-    const details = await this.getBuildingDetails(campusName, buildingName);
-    if (details && details.rooms && details.rooms[roomId]) {
-      const cons = this._calculateConsumptionFromHistory(
-        details.rooms[roomId].balance_history,
-        date,
-        compactDate
-      );
-      if (cons !== null) return cons;
+    if (!options.skipDetailsLookup) {
+      const details = await this.getBuildingDetails(campusName, buildingName);
+      if (details && details.rooms && details.rooms[roomId]) {
+        const cons = options.strictDate
+          ? this._calculateConsumptionForDate(details.rooms[roomId].balance_history, compactDate)
+          : this._calculateConsumptionFromHistory(
+              details.rooms[roomId].balance_history,
+              date,
+              compactDate
+            );
+        if (cons !== null) return cons;
+      }
     }
 
     // 回退到单独的房间文件
     try {
       const roomHistory = await this.getRoomHistory(campusName, buildingName, roomId);
       if (roomHistory && roomHistory.history && roomHistory.history.length > 0) {
-        // 查找指定日期或使用最近日期
+        // 查找指定日期
         const targetEntry = roomHistory.history.find(h => 
           h.date === compactDate || h.formattedDate === date
         );
-        if (targetEntry && targetEntry.consumption !== undefined) {
+        if (targetEntry && targetEntry.consumption !== undefined && targetEntry.consumption !== null) {
           return targetEntry.consumption;
+        }
+        if (options.strictDate) {
+          return null;
         }
         // 使用最近一天的消耗
         const lastEntry = roomHistory.history[roomHistory.history.length - 1];
-        if (lastEntry && lastEntry.consumption !== undefined) {
+        if (lastEntry && lastEntry.consumption !== undefined && lastEntry.consumption !== null) {
           return lastEntry.consumption;
         }
       }
@@ -1820,18 +1827,16 @@ const DataService = {
    * 获取楼栋的所有房间消耗数据（支持多种数据源）
    * @private
    */
-  async _getBuildingRoomConsumptions(campusName, buildingName, date, compactDate) {
+  async _getBuildingRoomConsumptions(campusName, buildingName, date, compactDate, selectedRoomId = null) {
     const consumptions = [];
     
     // 首先尝试从 details.json 获取
     const details = await this.getBuildingDetails(campusName, buildingName);
     if (details && details.rooms) {
       for (const [rid, roomData] of Object.entries(details.rooms)) {
-        const cons = this._calculateConsumptionFromHistory(
-          roomData.balance_history,
-          date,
-          compactDate
-        );
+        if (selectedRoomId && rid === selectedRoomId) continue;
+
+        const cons = this._calculateConsumptionForDate(roomData.balance_history, compactDate);
         if (cons !== null) {
           consumptions.push(cons);
         }
@@ -1845,7 +1850,19 @@ const DataService = {
       if (buildingSummary && buildingSummary.rooms) {
         const roomIds = Object.keys(buildingSummary.rooms);
         for (const rid of roomIds) {
-          const cons = await this._getRoomConsumption(campusName, buildingName, rid, date, compactDate);
+          if (selectedRoomId && rid === selectedRoomId) continue;
+
+          const cons = await this._getRoomConsumption(
+            campusName,
+            buildingName,
+            rid,
+            date,
+            compactDate,
+            {
+              skipDetailsLookup: true,
+              strictDate: true
+            }
+          );
           if (cons !== null) {
             consumptions.push(cons);
           }
@@ -1856,6 +1873,23 @@ const DataService = {
     }
 
     return consumptions;
+  },
+
+  /**
+   * 从 balance_history 计算指定日期的消耗量
+   * @private
+   */
+  _calculateConsumptionForDate(balanceHistory, compactDate) {
+    if (!balanceHistory || !compactDate) return null;
+
+    const dates = Object.keys(balanceHistory).sort();
+    const targetIdx = dates.indexOf(compactDate);
+    if (targetIdx <= 0) return null;
+
+    const prevBalance = balanceHistory[dates[targetIdx - 1]];
+    const currBalance = balanceHistory[dates[targetIdx]];
+
+    return prevBalance > currBalance ? prevBalance - currBalance : 0;
   },
 
   /**
@@ -1891,7 +1925,14 @@ const DataService = {
       let campusBeaten = 0;
       
       // 先获取当前房间的消耗数据（支持多种数据源）
-      currentRoomConsumption = await this._getRoomConsumption(campusName, buildingName, roomId, date, compactDate);
+      currentRoomConsumption = await this._getRoomConsumption(
+        campusName,
+        buildingName,
+        roomId,
+        date,
+        compactDate,
+        { strictDate: true }
+      );
       
       if (currentRoomConsumption === null) {
         console.log('[calculateBeatPercentage] 无法获取当前房间消耗数据');
@@ -1909,7 +1950,11 @@ const DataService = {
       for (const building of campusStats.buildingDetails) {
         try {
           const consumptions = await this._getBuildingRoomConsumptions(
-            campusName, building.name, date, compactDate
+            campusName,
+            building.name,
+            date,
+            compactDate,
+            building.name === buildingName ? roomId : null
           );
           
           for (const cons of consumptions) {

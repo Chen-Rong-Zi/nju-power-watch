@@ -637,9 +637,6 @@
       <div class="chart-card">
         <div class="chart-header">
           <h2 class="chart-title">全校区耗电排行榜 TOP 100</h2>
-          <button class="date-btn" id="refresh-ranking" style="padding: 8px 16px;">
-            🔄 刷新排名
-          </button>
         </div>
         <div id="ranking-progress" style="display: none; padding: 20px; text-align: center; color: var(--muted);">
           <div class="loading-spinner" style="margin: 0 auto 10px auto;"></div>
@@ -647,7 +644,7 @@
         </div>
         <div class="ranking-container" id="ranking-container" style="max-height: 600px; overflow-y: auto;">
           <div style="text-align: center; color: var(--muted); padding: 40px;">
-            点击上方"刷新排名"按钮加载数据
+            正在准备排行榜数据...
           </div>
         </div>
       </div>
@@ -723,6 +720,7 @@
 
       currentCampus = campus;
       resetCampusRanking();
+      loadCampusRanking();
 
       // 取消之前的加载
       if (loadAbortController) loadAbortController.cancelled = true;
@@ -1202,9 +1200,6 @@
     let rankingLoading = false;
     let currentRankingRequestId = 0;
 
-    // 初始化排行榜按钮事件
-    document.getElementById('refresh-ranking').addEventListener('click', loadCampusRanking);
-
     // 重置排行榜并让进行中的排行榜请求失效
     function resetCampusRanking() {
       currentRankingRequestId++;
@@ -1213,13 +1208,10 @@
       const progressEl = document.getElementById('ranking-progress');
       const progressTextEl = document.getElementById('ranking-progress-text');
       const containerEl = document.getElementById('ranking-container');
-      const buttonEl = document.getElementById('refresh-ranking');
 
       progressEl.style.display = 'none';
       progressTextEl.textContent = '加载中...';
-      buttonEl.disabled = false;
-      buttonEl.textContent = '🔄 刷新排名';
-      containerEl.innerHTML = '<div style="text-align: center; color: var(--muted); padding: 40px;">点击上方"刷新排名"按钮加载数据</div>';
+      containerEl.innerHTML = '<div style="text-align: center; color: var(--muted); padding: 40px;">正在准备排行榜数据...</div>';
     }
 
     // 加载全校区排行榜
@@ -1236,12 +1228,9 @@
       const progressEl = document.getElementById('ranking-progress');
       const progressTextEl = document.getElementById('ranking-progress-text');
       const containerEl = document.getElementById('ranking-container');
-      const buttonEl = document.getElementById('refresh-ranking');
 
       progressEl.style.display = 'block';
       containerEl.innerHTML = '';
-      buttonEl.disabled = true;
-      buttonEl.textContent = '加载中...';
 
       try {
         const ranking = await DataService.getCampusWideRanking(
@@ -1293,8 +1282,6 @@
         // 只有当是最新请求时才重置loading状态
         if (requestId === currentRankingRequestId) {
           rankingLoading = false;
-          buttonEl.disabled = false;
-          buttonEl.textContent = '🔄 刷新排名';
         }
       }
     }
