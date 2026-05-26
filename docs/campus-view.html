@@ -722,6 +722,7 @@
       tabEl.classList.add('active');
 
       currentCampus = campus;
+      resetCampusRanking();
 
       // 取消之前的加载
       if (loadAbortController) loadAbortController.cancelled = true;
@@ -1204,6 +1205,23 @@
     // 初始化排行榜按钮事件
     document.getElementById('refresh-ranking').addEventListener('click', loadCampusRanking);
 
+    // 重置排行榜并让进行中的排行榜请求失效
+    function resetCampusRanking() {
+      currentRankingRequestId++;
+      rankingLoading = false;
+
+      const progressEl = document.getElementById('ranking-progress');
+      const progressTextEl = document.getElementById('ranking-progress-text');
+      const containerEl = document.getElementById('ranking-container');
+      const buttonEl = document.getElementById('refresh-ranking');
+
+      progressEl.style.display = 'none';
+      progressTextEl.textContent = '加载中...';
+      buttonEl.disabled = false;
+      buttonEl.textContent = '🔄 刷新排名';
+      containerEl.innerHTML = '<div style="text-align: center; color: var(--muted); padding: 40px;">点击上方"刷新排名"按钮加载数据</div>';
+    }
+
     // 加载全校区排行榜
     async function loadCampusRanking() {
       if (rankingLoading) return;
@@ -1212,6 +1230,8 @@
       rankingLoading = true;
       currentRankingRequestId++;
       const requestId = currentRankingRequestId;
+      const rankingCampus = currentCampus;
+      const rankingDate = currentDate;
       
       const progressEl = document.getElementById('ranking-progress');
       const progressTextEl = document.getElementById('ranking-progress-text');
@@ -1225,28 +1245,40 @@
 
       try {
         const ranking = await DataService.getCampusWideRanking(
-          currentCampus,
-          currentDate,
+          rankingCampus,
+          rankingDate,
           (loaded, total, partial) => {
             // 检查是否是最新的请求
-            if (requestId !== currentRankingRequestId) return;
+            if (
+              requestId !== currentRankingRequestId ||
+              rankingCampus !== currentCampus ||
+              rankingDate !== currentDate
+            ) return;
             
             progressTextEl.textContent = `已加载 ${loaded}/${total} 栋楼...`;
             if (partial.length > 0) {
-              renderRankingTable(partial, true);
+              renderRankingTable(partial, true, rankingCampus);
             }
           },
           100
         );
 
         // 检查是否是最新的请求
-        if (requestId !== currentRankingRequestId) return;
+        if (
+          requestId !== currentRankingRequestId ||
+          rankingCampus !== currentCampus ||
+          rankingDate !== currentDate
+        ) return;
         
         progressEl.style.display = 'none';
-        renderRankingTable(ranking, false);
+        renderRankingTable(ranking, false, rankingCampus);
       } catch (error) {
         // 检查是否是最新的请求
-        if (requestId !== currentRankingRequestId) return;
+        if (
+          requestId !== currentRankingRequestId ||
+          rankingCampus !== currentCampus ||
+          rankingDate !== currentDate
+        ) return;
         
         console.error('加载排行榜失败:', error);
         progressEl.style.display = 'none';
@@ -1276,7 +1308,7 @@
     }
 
     // 渲染排行榜表格
-    function renderRankingTable(ranking, isPartial) {
+    function renderRankingTable(ranking, isPartial, campusName) {
       const containerEl = document.getElementById('ranking-container');
       containerEl.innerHTML = ''; // 清空容器
       
@@ -1333,7 +1365,7 @@
         const buildingTd = document.createElement('td');
         const buildingA = document.createElement('a');
         buildingA.className = 'building-tag';
-        const buildingUrl = `building-view.html?campus=${encodeURIComponent(currentCampus)}&building=${encodeURIComponent(room.building)}`;
+        const buildingUrl = `building-view.html?campus=${encodeURIComponent(campusName)}&building=${encodeURIComponent(room.building)}`;
         buildingA.href = buildingUrl;
         buildingA.textContent = room.building;
         buildingTd.appendChild(buildingA);
