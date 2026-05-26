@@ -56,13 +56,9 @@ async def write_json_file(file_path: Path, data: Dict[str, Any]) -> None:
 async def process_building(building_dir: Path) -> Dict[str, Any]:
     """
     Process a single building directory.
-    Reads all room JSON files and creates details.json.
+    Reads room list from summary.json and loads corresponding room JSON files.
     """
-    rooms_dir = building_dir / "rooms"
-    if not rooms_dir.exists():
-        return None
-
-    # Read building summary for metadata
+    # Read building summary for metadata and room list
     summary_file = building_dir / "summary.json"
     summary = await read_json_file(summary_file)
     if not summary:
@@ -70,20 +66,26 @@ async def process_building(building_dir: Path) -> Dict[str, Any]:
 
     building_name = summary.get('building', building_dir.name)
     campus_name = summary.get('campus', '')
+    rooms_list = summary.get('rooms', {})
 
-    # Read all room files
-    room_files = list(rooms_dir.glob("*.json"))
-    if not room_files:
+    if not rooms_list:
         return None
 
+    # Read room files based on room IDs from summary.json
+    rooms_dir = building_dir / "rooms"
     rooms = {}
 
-    tasks = [read_json_file(f) for f in room_files]
+    async def read_room_file(room_id: str) -> tuple:
+        room_file = rooms_dir / f"{room_id}.json"
+        room_data = await read_json_file(room_file)
+        return room_id, room_data
+
+    tasks = [read_room_file(room_id) for room_id in rooms_list.keys()]
     results = await asyncio.gather(*tasks)
 
-    for room_file, room_data in zip(room_files, results):
+    for room_id, room_data in results:
         if room_data and 'room_id' in room_data:
-            rooms[room_data['room_id']] = room_data
+            rooms[room_id] = room_data
 
     if not rooms:
         return None

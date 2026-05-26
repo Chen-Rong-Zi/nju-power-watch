@@ -97,21 +97,21 @@ def parse_html(html: str) -> dict:
 
     if is_suzhou:
         # 苏州校区：提取"剩余余额"字段（真正的余额，单位：元）
-        match = re.search(r'剩余余额.*?<i>([\d.]+)元</i>', html)
+        match = re.search(r'剩余余额.*?<i>([\d.]+元)</i>', html)
         if match:
-            result["剩余余额"] = float(match.group(1))
+            result["剩余余额"] = match.group(1)
 
         # 苏州校区也可以提取真正的电量（度）
         # 注意：苏州校区的"剩余电量"是第二个出现的，需要用 findall 或更精确的正则
-        matches = re.findall(r'剩余电量.*?<i>([\d.]+)度</i>', html)
+        matches = re.findall(r'剩余电量.*?<i>([\d.]+度)</i>', html)
         if len(matches) >= 2:
             # 第二个是苏州校区的真实电量
-            result["剩余电量"] = float(matches[1])
+            result["剩余电量"] = matches[1]
     else:
         # 非苏州校区：提取第一个"剩余电量"，数值即为余额
-        match = re.search(r'剩余电量.*?<i>([\d.]+)度</i>', html)
+        match = re.search(r'剩余电量.*?<i>([\d.]+度)</i>', html)
         if match:
-            balance = float(match.group(1))
+            balance = match.group(1)
             result["剩余电量"] = balance  # 非苏州校区，电量=余额
 
     return result
