@@ -735,12 +735,12 @@
           <div class="ranking-item">
             <div class="ranking-label">在本楼栋</div>
             <div class="ranking-percent-value" id="beat-building-percent">--</div>
-            <div class="ranking-sub">打败了 <span id="building-room-count">--</span> 个房间</div>
+            <div class="ranking-sub">打败了 <span id="building-beaten">--</span> 个房间（共 <span id="building-room-count">--</span> 个）</div>
           </div>
           <div class="ranking-item">
             <div class="ranking-label">在全校区</div>
             <div class="ranking-percent-value" id="beat-campus-percent">--</div>
-            <div class="ranking-sub">打败了 <span id="campus-room-count">--</span> 个房间</div>
+            <div class="ranking-sub">打败了 <span id="campus-beaten">--</span> 个房间（共 <span id="campus-room-count">--</span> 个）</div>
           </div>
         </div>
         <div class="ranking-loading" id="ranking-loading" style="text-align: center; padding: 20px; display: none;">
@@ -1261,7 +1261,7 @@
     }
     
     // 加载排名数据
-    async function loadRankingData() {
+    async function loadRankingData(retryCount = 0) {
       if (!userConfig) return;
       
       const rankingCard = document.getElementById('ranking-percent-card');
@@ -1287,6 +1287,8 @@
         document.getElementById('beat-campus-percent').textContent = result.beatCampusPercent.toFixed(0) + '%';
         document.getElementById('building-room-count').textContent = result.buildingRoomCount;
         document.getElementById('campus-room-count').textContent = result.campusRoomCount;
+        document.getElementById('building-beaten').textContent = result.buildingBeaten;
+        document.getElementById('campus-beaten').textContent = result.campusBeaten;
         
         // 只有在两个都没有数据时才显示提示
         if (result.buildingRoomCount === 0 && result.campusRoomCount === 0) {
@@ -1301,11 +1303,10 @@
         console.error('[loadRankingData] 加载排名数据失败:', error);
         rankingLoading.innerHTML = '<div style="color: var(--muted);">数据加载中，请稍后...</div>';
         
-        // 3秒后尝试重新加载（只重试一次，避免无限循环）
-        if (!loadRankingData.hasRetried) {
-          loadRankingData.hasRetried = true;
+        // 3秒后尝试重新加载（最多重试1次，避免无限循环）
+        if (retryCount < 1) {
           setTimeout(() => {
-            loadRankingData();
+            loadRankingData(retryCount + 1);
           }, 3000);
         }
       }

@@ -1781,44 +1781,92 @@ const DataService = {
   async calculateBeatPercentage(campusName, buildingName, roomId, date = 'today') {
     console.log('[calculateBeatPercentage] 开始计算', { campusName, buildingName, roomId, date });
     
+    const compactDate = this._formatDateCompact(date);
+    let currentRoomConsumption = null;
+    
     try {
-      // 直接使用已有的 getCampusWideRanking 函数，因为它已经是优化过的
-      const campusRanking = await this.getCampusWideRanking(
-        campusName,
-        date,
-        null,
-        Infinity // 获取全部房间
-      );
-      
-      console.log('[calculateBeatPercentage] 校区排名数据', campusRanking.length, '个房间');
-      
-      // 在所有数据中找到当前房间
-      const currentRoom = campusRanking.find(r => r.roomId === roomId && r.building === buildingName);
-      
-      if (!currentRoom || campusRanking.length === 0) {
-        console.log('[calculateBeatPercentage] 找不到房间或没有数据');
+      const campusStats = await this.getCampusStatistics(campusName);
+      if (!campusStats || !campusStats.buildingDetails) {
         return {
           beatBuildingPercent: 0,
           beatCampusPercent: 0,
           buildingRoomCount: 0,
-          campusRoomCount: campusRanking.length
+          campusRoomCount: 0,
+          buildingBeaten: 0,
+          campusBeaten: 0
         };
       }
       
-      // 计算楼栋数据
-      const buildingRooms = campusRanking.filter(r => r.building === buildingName);
-      const buildingBeaten = buildingRooms.filter(r => r.consumption < currentRoom.consumption).length;
-      const beatBuildingPercent = buildingRooms.length > 0 ? (buildingBeaten / buildingRooms.length) * 100 : 0;
+      let buildingRoomCount = 0;
+      let buildingBeaten = 0;
+      let campusRoomCount = 0;
+      let campusBeaten = 0;
       
-      // 计算校区数据
-      const campusBeaten = campusRanking.filter(r => r.consumption < currentRoom.consumption).length;
-      const beatCampusPercent = (campusBeaten / campusRanking.length) * 100;
+      // 先获取当前房间的消耗数据
+      const currentBuildingDetails = await this.getBuildingDetails(campusName, buildingName);
+      if (currentBuildingDetails && currentBuildingDetails.rooms && currentBuildingDetails.rooms[roomId]) {
+        const roomData = currentBuildingDetails.rooms[roomId];
+        currentRoomConsumption = this._calculateConsumptionFromHistory(
+          roomData.balance_history,
+          date,
+          compactDate
+        );
+      }
+      
+      if (currentRoomConsumption === null) {
+        console.log('[calculateBeatPercentage] 无法获取当前房间消耗数据');
+        return {
+          beatBuildingPercent: 0,
+          beatCampusPercent: 0,
+          buildingRoomCount: 0,
+          campusRoomCount: 0,
+          buildingBeaten: 0,
+          campusBeaten: 0
+        };
+      }
+      
+      // 遍历所有楼栋，统计数据
+      for (const building of campusStats.buildingDetails) {
+        try {
+          const details = await this.getBuildingDetails(campusName, building.name);
+          if (!details || !details.rooms) continue;
+          
+          for (const [rid, roomData] of Object.entries(details.rooms)) {
+            const cons = this._calculateConsumptionFromHistory(
+              roomData.balance_history,
+              date,
+              compactDate
+            );
+            
+            if (cons !== null) {
+              campusRoomCount++;
+              if (cons < currentRoomConsumption) {
+                campusBeaten++;
+              }
+              
+              if (building.name === buildingName) {
+                buildingRoomCount++;
+                if (cons < currentRoomConsumption) {
+                  buildingBeaten++;
+                }
+              }
+            }
+          }
+        } catch (e) {
+          console.warn(`跳过楼栋 ${building.name}:`, e);
+        }
+      }
+      
+      const beatBuildingPercent = buildingRoomCount > 0 ? (buildingBeaten / buildingRoomCount) * 100 : 0;
+      const beatCampusPercent = campusRoomCount > 0 ? (campusBeaten / campusRoomCount) * 100 : 0;
       
       const result = {
         beatBuildingPercent,
         beatCampusPercent,
-        buildingRoomCount: buildingRooms.length,
-        campusRoomCount: campusRanking.length
+        buildingRoomCount,
+        campusRoomCount,
+        buildingBeaten,
+        campusBeaten
       };
       
       console.log('[calculateBeatPercentage] 计算完成', result);
@@ -1830,7 +1878,9 @@ const DataService = {
         beatBuildingPercent: 0,
         beatCampusPercent: 0,
         buildingRoomCount: 0,
-        campusRoomCount: 0
+        campusRoomCount: 0,
+        buildingBeaten: 0,
+        campusBeaten: 0
       };
     }
   }
