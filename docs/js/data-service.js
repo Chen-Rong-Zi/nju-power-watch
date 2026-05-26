@@ -1752,8 +1752,14 @@ const DataService = {
       
       // 每次加载完一栋楼，触发进度回调并更新部分结果
       if (onProgress) {
-        // 实时排序并取前 limit 个
-        const partialSorted = [...allRooms].sort((a, b) => b.consumption - a.consumption).slice(0, limit);
+        // 实时排序并取前 limit 个，并添加 rank 字段
+        const partialSorted = [...allRooms]
+          .sort((a, b) => b.consumption - a.consumption)
+          .slice(0, limit)
+          .map((room, index) => ({
+            ...room,
+            rank: index + 1
+          }));
         onProgress(loadedBuildings, totalBuildings, partialSorted);
       }
     }

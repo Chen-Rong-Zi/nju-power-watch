@@ -745,7 +745,7 @@
         </div>
         <div class="ranking-loading" id="ranking-loading" style="text-align: center; padding: 20px; display: none;">
           <div class="loading-spinner"></div>
-          <div style="color: var(--muted); margin-top: 10px;">计算排名中...</div>
+          <div id="ranking-loading-text" style="color: var(--muted); margin-top: 10px;">计算排名中...</div>
         </div>
       </div>
     </section>
@@ -1266,9 +1266,12 @@
       
       const rankingCard = document.getElementById('ranking-percent-card');
       const rankingLoading = document.getElementById('ranking-loading');
+      const rankingLoadingText = document.getElementById('ranking-loading-text');
       
       rankingCard.style.display = 'block';
       rankingLoading.style.display = 'block';
+      // 重置loading文本为初始状态
+      rankingLoadingText.textContent = '计算排名中...';
       
       console.log('[loadRankingData] 开始加载排名数据', userConfig);
       
@@ -1293,7 +1296,7 @@
         // 只有在两个都没有数据时才显示提示
         if (result.buildingRoomCount === 0 && result.campusRoomCount === 0) {
           console.log('[loadRankingData] 完全没有数据');
-          rankingLoading.innerHTML = '<div style="color: var(--muted);">暂无数据</div>';
+          rankingLoadingText.textContent = '暂无数据';
         } else {
           // 有数据，隐藏loading
           rankingLoading.style.display = 'none';
@@ -1301,7 +1304,7 @@
         
       } catch (error) {
         console.error('[loadRankingData] 加载排名数据失败:', error);
-        rankingLoading.innerHTML = '<div style="color: var(--muted);">数据加载中，请稍后...</div>';
+        rankingLoadingText.textContent = '数据加载中，请稍后...';
         
         // 3秒后尝试重新加载（最多重试1次，避免无限循环）
         if (retryCount < 1) {

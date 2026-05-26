@@ -1199,6 +1199,7 @@
 
     // ==================== 全校区排行榜 ====================
     let rankingLoading = false;
+    let currentRankingRequestId = 0;
 
     // 初始化排行榜按钮事件
     document.getElementById('refresh-ranking').addEventListener('click', loadCampusRanking);
@@ -1209,6 +1210,9 @@
       if (!currentCampus) return;
 
       rankingLoading = true;
+      currentRankingRequestId++;
+      const requestId = currentRankingRequestId;
+      
       const progressEl = document.getElementById('ranking-progress');
       const progressTextEl = document.getElementById('ranking-progress-text');
       const containerEl = document.getElementById('ranking-container');
@@ -1224,6 +1228,9 @@
           currentCampus,
           currentDate,
           (loaded, total, partial) => {
+            // 检查是否是最新的请求
+            if (requestId !== currentRankingRequestId) return;
+            
             progressTextEl.textContent = `已加载 ${loaded}/${total} 栋楼...`;
             if (partial.length > 0) {
               renderRankingTable(partial, true);
@@ -1232,9 +1239,15 @@
           100
         );
 
+        // 检查是否是最新的请求
+        if (requestId !== currentRankingRequestId) return;
+        
         progressEl.style.display = 'none';
         renderRankingTable(ranking, false);
       } catch (error) {
+        // 检查是否是最新的请求
+        if (requestId !== currentRankingRequestId) return;
+        
         console.error('加载排行榜失败:', error);
         containerEl.innerHTML = '';
         const errorDiv = document.createElement('div');
@@ -1244,9 +1257,12 @@
         errorDiv.textContent = `加载失败: ${error.message}`;
         containerEl.appendChild(errorDiv);
       } finally {
-        rankingLoading = false;
-        buttonEl.disabled = false;
-        buttonEl.textContent = '🔄 刷新排名';
+        // 只有当是最新请求时才重置loading状态
+        if (requestId === currentRankingRequestId) {
+          rankingLoading = false;
+          buttonEl.disabled = false;
+          buttonEl.textContent = '🔄 刷新排名';
+        }
       }
     }
 
