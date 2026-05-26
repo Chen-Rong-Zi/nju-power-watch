@@ -1127,7 +1127,7 @@ const DataService = {
             ranking = await this.getBuildingConsumptionRankingFast(
               campusName,
               building.name,
-              targetDate === 'today' ? null : this._formatDateCompact(targetDate),
+              targetDate === 'today' ? null : targetDate,
               null,
               false
             );
@@ -1714,7 +1714,7 @@ const DataService = {
             ranking = await this.getBuildingConsumptionRankingFast(
               campusName,
               building.name,
-              date === 'today' ? null : this._formatDateCompact(date),
+              date === 'today' ? null : date,
               null,
               false
             );
