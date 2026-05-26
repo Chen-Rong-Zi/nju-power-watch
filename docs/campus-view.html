@@ -1249,6 +1249,7 @@
         if (requestId !== currentRankingRequestId) return;
         
         console.error('加载排行榜失败:', error);
+        progressEl.style.display = 'none';
         containerEl.innerHTML = '';
         const errorDiv = document.createElement('div');
         errorDiv.style.textAlign = 'center';

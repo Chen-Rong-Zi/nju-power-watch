@@ -1777,6 +1777,88 @@ const DataService = {
   },
 
   /**
+   * 获取单个房间的消耗数据（支持多种数据源）
+   * @private
+   */
+  async _getRoomConsumption(campusName, buildingName, roomId, date, compactDate) {
+    // 首先尝试从 details.json 获取
+    const details = await this.getBuildingDetails(campusName, buildingName);
+    if (details && details.rooms && details.rooms[roomId]) {
+      const cons = this._calculateConsumptionFromHistory(
+        details.rooms[roomId].balance_history,
+        date,
+        compactDate
+      );
+      if (cons !== null) return cons;
+    }
+
+    // 回退到单独的房间文件
+    try {
+      const roomHistory = await this.getRoomHistory(campusName, buildingName, roomId);
+      if (roomHistory && roomHistory.history && roomHistory.history.length > 0) {
+        // 查找指定日期或使用最近日期
+        const targetEntry = roomHistory.history.find(h => 
+          h.date === compactDate || h.formattedDate === date
+        );
+        if (targetEntry && targetEntry.consumption !== undefined) {
+          return targetEntry.consumption;
+        }
+        // 使用最近一天的消耗
+        const lastEntry = roomHistory.history[roomHistory.history.length - 1];
+        if (lastEntry && lastEntry.consumption !== undefined) {
+          return lastEntry.consumption;
+        }
+      }
+    } catch (e) {
+      console.warn(`获取房间 ${roomId} 历史失败:`, e);
+    }
+
+    return null;
+  },
+
+  /**
+   * 获取楼栋的所有房间消耗数据（支持多种数据源）
+   * @private
+   */
+  async _getBuildingRoomConsumptions(campusName, buildingName, date, compactDate) {
+    const consumptions = [];
+    
+    // 首先尝试从 details.json 获取
+    const details = await this.getBuildingDetails(campusName, buildingName);
+    if (details && details.rooms) {
+      for (const [rid, roomData] of Object.entries(details.rooms)) {
+        const cons = this._calculateConsumptionFromHistory(
+          roomData.balance_history,
+          date,
+          compactDate
+        );
+        if (cons !== null) {
+          consumptions.push(cons);
+        }
+      }
+      return consumptions;
+    }
+
+    // 回退到从房间缓存或单独文件获取
+    try {
+      const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
+      if (buildingSummary && buildingSummary.rooms) {
+        const roomIds = Object.keys(buildingSummary.rooms);
+        for (const rid of roomIds) {
+          const cons = await this._getRoomConsumption(campusName, buildingName, rid, date, compactDate);
+          if (cons !== null) {
+            consumptions.push(cons);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn(`获取楼栋 ${buildingName} 房间数据失败:`, e);
+    }
+
+    return consumptions;
+  },
+
+  /**
    * 计算某个房间在楼栋和校区中的排名百分比
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
@@ -1808,16 +1890,8 @@ const DataService = {
       let campusRoomCount = 0;
       let campusBeaten = 0;
       
-      // 先获取当前房间的消耗数据
-      const currentBuildingDetails = await this.getBuildingDetails(campusName, buildingName);
-      if (currentBuildingDetails && currentBuildingDetails.rooms && currentBuildingDetails.rooms[roomId]) {
-        const roomData = currentBuildingDetails.rooms[roomId];
-        currentRoomConsumption = this._calculateConsumptionFromHistory(
-          roomData.balance_history,
-          date,
-          compactDate
-        );
-      }
+      // 先获取当前房间的消耗数据（支持多种数据源）
+      currentRoomConsumption = await this._getRoomConsumption(campusName, buildingName, roomId, date, compactDate);
       
       if (currentRoomConsumption === null) {
         console.log('[calculateBeatPercentage] 无法获取当前房间消耗数据');
@@ -1834,27 +1908,20 @@ const DataService = {
       // 遍历所有楼栋，统计数据
       for (const building of campusStats.buildingDetails) {
         try {
-          const details = await this.getBuildingDetails(campusName, building.name);
-          if (!details || !details.rooms) continue;
+          const consumptions = await this._getBuildingRoomConsumptions(
+            campusName, building.name, date, compactDate
+          );
           
-          for (const [rid, roomData] of Object.entries(details.rooms)) {
-            const cons = this._calculateConsumptionFromHistory(
-              roomData.balance_history,
-              date,
-              compactDate
-            );
+          for (const cons of consumptions) {
+            campusRoomCount++;
+            if (cons < currentRoomConsumption) {
+              campusBeaten++;
+            }
             
-            if (cons !== null) {
-              campusRoomCount++;
+            if (building.name === buildingName) {
+              buildingRoomCount++;
               if (cons < currentRoomConsumption) {
-                campusBeaten++;
-              }
-              
-              if (building.name === buildingName) {
-                buildingRoomCount++;
-                if (cons < currentRoomConsumption) {
-                  buildingBeaten++;
-                }
+                buildingBeaten++;
               }
             }
           }
