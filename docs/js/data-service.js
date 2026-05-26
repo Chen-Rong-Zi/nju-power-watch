@@ -25,6 +25,9 @@ const DataService = {
   CACHE_PREFIX: '',
   CACHE_VERSION: 'v2',
 
+  // 数据版本缓存键
+  DATA_VERSION_KEY: '__data_version__',
+
   /**
    * ==================== 缓存层键值对格式设计 ====================
    *
@@ -131,10 +134,49 @@ const DataService = {
 
   /**
    * 初始化 IndexedDB 数据库
+   * 同时检查数据版本，版本变化时自动清除缓存
    */
   async initDB() {
     await IDB.init();
     this._dbReady = true;
+
+    // 检查数据版本
+    await this._checkDataVersion();
+  },
+
+  /**
+   * 检查数据版本，版本变化时清除缓存
+   */
+  async _checkDataVersion() {
+    try {
+      // 获取 overview.json 中的版本号
+      const response = await fetch(`${this.SUMMARIES_PATH}/overview.json`);
+      const overview = await response.json();
+      const serverVersion = overview.data_version || overview.generated_at;
+
+      if (!serverVersion) {
+        console.log('[版本检查] 服务器未提供版本号，跳过缓存检查');
+        return;
+      }
+
+      // 获取本地缓存的版本号
+      const localVersion = await IDB.get(this.DATA_VERSION_KEY);
+
+      if (localVersion && localVersion !== serverVersion) {
+        console.log(`[版本检查] 数据版本已更新: ${localVersion} → ${serverVersion}，清除缓存`);
+        await IDB.clear();
+        this._overviewCache = null;
+        this._campusCache.clear();
+        this._buildingCache.clear();
+        this._roomCache.clear();
+      }
+
+      // 保存当前版本号
+      await IDB.set(this.DATA_VERSION_KEY, serverVersion);
+      console.log(`[版本检查] 当前数据版本: ${serverVersion}`);
+    } catch (error) {
+      console.warn('[版本检查] 检查数据版本失败:', error);
+    }
   },
 
   /**
