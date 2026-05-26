@@ -65,7 +65,18 @@ async def load_cookies_from_file(filepath: str) -> dict:
 
 
 def parse_html(html: str) -> dict:
-    """解析 HTML 页面，提取电费信息"""
+    """解析 HTML 页面，提取电费信息
+
+    苏州校区 vs 非苏州校区的区别：
+    - 非苏州校区：仅显示"剩余电量"，数值=余额（元）
+    - 苏州校区：显示"剩余电量"（实际度数）和"剩余余额"（元）
+
+    HTML 中有两个"剩余电量"块，通过 v-if 条件渲染：
+    - 第一个：v-if="!isSuZhouArea" - 非苏州校区显示
+    - 第二个：v-if="isSuZhouArea" - 苏州校区显示
+
+    解决方案：根据校区名称判断，提取正确的字段
+    """
     result = {}
 
     # 从 JS 片段提取 this.check 的 JSON 数据
@@ -81,10 +92,27 @@ def parse_html(html: str) -> dict:
         except json.JSONDecodeError:
             pass
 
-    # 提取剩余电量
-    match = re.search(r'剩余电量.*?<i>([\d.]+)度</i>', html)
-    if match:
-        result["剩余电量"] = f"{match.group(1)}度"
+    campus = result.get("校区", "")
+    is_suzhou = campus == "苏州校区"
+
+    if is_suzhou:
+        # 苏州校区：提取"剩余余额"字段（真正的余额，单位：元）
+        match = re.search(r'剩余余额.*?<i>([\d.]+)元</i>', html)
+        if match:
+            result["剩余余额"] = float(match.group(1))
+
+        # 苏州校区也可以提取真正的电量（度）
+        # 注意：苏州校区的"剩余电量"是第二个出现的，需要用 findall 或更精确的正则
+        matches = re.findall(r'剩余电量.*?<i>([\d.]+)度</i>', html)
+        if len(matches) >= 2:
+            # 第二个是苏州校区的真实电量
+            result["剩余电量"] = float(matches[1])
+    else:
+        # 非苏州校区：提取第一个"剩余电量"，数值即为余额
+        match = re.search(r'剩余电量.*?<i>([\d.]+)度</i>', html)
+        if match:
+            balance = float(match.group(1))
+            result["剩余电量"] = balance  # 非苏州校区，电量=余额
 
     return result
 
