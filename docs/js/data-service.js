@@ -184,6 +184,7 @@ const DataService = {
    */
   async clearAllCache() {
     await IDB.clear();
+    this._clearCampusWideRankingSessionCache();
 
     // 清除内存缓存
     this._overviewCache = null;
@@ -1169,7 +1170,7 @@ const DataService = {
             ranking = await this.getBuildingConsumptionRankingFast(
               campusName,
               building.name,
-              targetDate === 'today' ? null : this._formatDateCompact(targetDate),
+              targetDate === 'today' ? null : targetDate,
               null,
               false
             );
@@ -1237,8 +1238,11 @@ const DataService = {
     let targetIdx;
     if (dateType === 'today') {
       targetIdx = dates.length - 1;
+      // 今天需要至少有两天数据才能计算
+      if (targetIdx <= 0) return null;
     } else if (dateType === 'yesterday') {
       targetIdx = dates.length - 2;
+      if (targetIdx < 0) return null;
     } else if (dateType === 'week') {
       // 计算最近7天的平均消耗
       const recentDates = dates.slice(-7);
@@ -1694,6 +1698,235 @@ const DataService = {
     }
 
     return { dates, consumption, roomCounts };
+  },
+
+  /**
+   * 获取整个校区所有房间的耗电排名
+   * @param {string} campusName 校区名
+   * @param {string} date 日期类型：'today', 'yesterday', 'week', 或具体日期 YYYY-MM-DD
+   * @param {Function} onProgress 进度回调：(loaded, total, partialResult)
+   * @param {number} limit 返回的排名数量限制（默认 100）
+   * @returns {Promise<Array>} 排序后的房间数据数组
+   */
+  async getCampusWideRanking(campusName, date = 'today', onProgress = null, limit = 100) {
+    const targetDate = date || 'today';
+    const compactDate = this._formatDateCompact(targetDate);
+    const overview = await this.getOverview();
+    const dataVersion = overview?.generated_at || 'unknown';
+    const cachedRanking = this._getCampusWideRankingSessionCache(campusName, targetDate, limit, dataVersion);
+    if (cachedRanking) {
+      if (onProgress) onProgress(1, 1, cachedRanking);
+      return cachedRanking;
+    }
+
+    const campusStats = await this.getCampusStatistics(campusName);
+    if (!campusStats) return [];
+
+    const buildingDetails = campusStats.buildingDetails || [];
+    const totalBuildings = buildingDetails.length;
+    let loadedBuildings = 0;
+    const topRooms = [];
+
+    for (const building of buildingDetails) {
+      try {
+        // 尝试从 details.json 加载楼栋数据（快速）
+        const details = await this.getBuildingDetails(campusName, building.name);
+        
+        if (details && details.rooms) {
+          // 从 details.json 提取房间消耗数据
+          for (const roomId in details.rooms) {
+            const roomData = details.rooms[roomId];
+            if (roomData.balance_history) {
+              const consumption = this._calculateConsumptionFromHistory(
+                roomData.balance_history,
+                targetDate,
+                compactDate
+              );
+              if (consumption !== null) {
+                this._insertIntoTopRooms(topRooms, {
+                  roomId,
+                  roomName: roomData.room_name || roomId,
+                  building: building.name,
+                  campus: campusName,
+                  consumption,
+                  balance: roomData.current_balance || 0
+                }, limit);
+              }
+            }
+          }
+        } else {
+          // 回退到原来的方式：从排名缓存或加载
+          let ranking = await this.getBuildingConsumptionFromRoomCache(
+            campusName,
+            building.name,
+            targetDate
+          );
+          
+          if (!ranking) {
+            ranking = await this.getBuildingConsumptionRankingFast(
+              campusName,
+              building.name,
+              targetDate === 'today' ? null : targetDate,
+              null,
+              false
+            );
+          }
+          
+          if (Array.isArray(ranking)) {
+            ranking.forEach(r => {
+              this._insertIntoTopRooms(topRooms, {
+                roomId: r.roomId,
+                roomName: r.roomName,
+                building: building.name,
+                campus: campusName,
+                consumption: r.consumption || 0,
+                balance: r.balance || 0
+              }, limit);
+            });
+          } else if (ranking && ranking.data) {
+            ranking.data.forEach(r => {
+              this._insertIntoTopRooms(topRooms, {
+                roomId: r.roomId,
+                roomName: r.roomName,
+                building: building.name,
+                campus: campusName,
+                consumption: r.consumption || 0,
+                balance: r.balance || 0
+              }, limit);
+            });
+          }
+        }
+      } catch (error) {
+        console.warn(`加载楼栋 ${building.name} 房间数据失败:`, error);
+      }
+
+      loadedBuildings++;
+      
+      // 每次加载完一栋楼，触发进度回调并更新部分结果
+      if (onProgress) {
+        const partialSorted = this._rankTopRooms(topRooms);
+        if (onProgress(loadedBuildings, totalBuildings, partialSorted) === false) {
+          return partialSorted;
+        }
+      }
+    }
+
+    const result = this._rankTopRooms(topRooms);
+    this._saveCampusWideRankingSessionCache(campusName, targetDate, limit, dataVersion, result);
+
+    return result;
+  },
+
+  /**
+   * 将房间插入到固定长度的降序 TOP N 列表，避免全校区房间全量排序。
+   * @private
+   */
+  _insertIntoTopRooms(topRooms, room, limit) {
+    if (!room || limit <= 0) return;
+    const consumption = Number(room.consumption) || 0;
+    const normalizedRoom = {
+      ...room,
+      consumption
+    };
+
+    if (topRooms.length < limit) {
+      topRooms.push(normalizedRoom);
+      this._bubbleTopRoomUp(topRooms, topRooms.length - 1);
+      return;
+    }
+
+    if (consumption <= topRooms[topRooms.length - 1].consumption) return;
+
+    topRooms[topRooms.length - 1] = normalizedRoom;
+    this._bubbleTopRoomUp(topRooms, topRooms.length - 1);
+  },
+
+  /**
+   * 将新插入的元素向前移动，保持列表按耗电量降序排列。
+   * @private
+   */
+  _bubbleTopRoomUp(topRooms, index) {
+    while (index > 0 && topRooms[index].consumption > topRooms[index - 1].consumption) {
+      const prev = topRooms[index - 1];
+      topRooms[index - 1] = topRooms[index];
+      topRooms[index] = prev;
+      index--;
+    }
+  },
+
+  /**
+   * 为 TOP N 列表补充排名，返回新数组避免污染缓存中的基础数据。
+   * @private
+   */
+  _rankTopRooms(topRooms) {
+    return topRooms.map((room, index) => ({
+      ...room,
+      rank: index + 1
+    }));
+  },
+
+  /**
+   * 校区 TOP N 排行榜使用 sessionStorage 缓存，避免一次会话内切换校区时重复计算。
+   * @private
+   */
+  _getCampusWideRankingSessionCache(campusName, date, limit, dataVersion = 'unknown') {
+    try {
+      if (typeof sessionStorage === 'undefined') return null;
+      const key = this._getCampusWideRankingSessionKey(campusName, date, limit, dataVersion);
+      const cached = sessionStorage.getItem(key);
+      if (!cached) return null;
+
+      const parsed = JSON.parse(cached);
+      if (!parsed || !Array.isArray(parsed.data)) return null;
+
+      console.log(`[SessionStorage命中] 校区排行榜: ${campusName} -> ${this._formatDateCompact(date)}, TOP ${limit}`);
+      return parsed.data;
+    } catch (error) {
+      console.warn('[SessionStorage] 读取校区排行榜缓存失败:', error);
+      return null;
+    }
+  },
+
+  /**
+   * @private
+   */
+  _saveCampusWideRankingSessionCache(campusName, date, limit, dataVersion, ranking) {
+    try {
+      if (typeof sessionStorage === 'undefined') return;
+      const key = this._getCampusWideRankingSessionKey(campusName, date, limit, dataVersion);
+      sessionStorage.setItem(key, JSON.stringify({
+        data: ranking,
+        updatedAt: Date.now()
+      }));
+      console.log(`[SessionStorage保存] 校区排行榜: ${campusName} -> ${this._formatDateCompact(date)}, TOP ${limit}`);
+    } catch (error) {
+      console.warn('[SessionStorage] 保存校区排行榜缓存失败:', error);
+    }
+  },
+
+  /**
+   * @private
+   */
+  _getCampusWideRankingSessionKey(campusName, date, limit, dataVersion = 'unknown') {
+    return `campus-wide-ranking:v1:${dataVersion}:${campusName}:${this._formatDateCompact(date)}:${limit}`;
+  },
+
+  /**
+   * @private
+   */
+  _clearCampusWideRankingSessionCache() {
+    try {
+      if (typeof sessionStorage === 'undefined') return;
+      const prefix = 'campus-wide-ranking:';
+      const keysToRemove = [];
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (key && key.startsWith(prefix)) keysToRemove.push(key);
+      }
+      keysToRemove.forEach(key => sessionStorage.removeItem(key));
+    } catch (error) {
+      console.warn('[SessionStorage] 清除校区排行榜缓存失败:', error);
+    }
   }
 };
 

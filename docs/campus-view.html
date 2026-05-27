@@ -426,6 +426,75 @@
       font-size: 14px;
       margin-right: 6px;
     }
+
+    /* 排行榜样式 */
+    .ranking-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .ranking-table th {
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 600;
+      color: var(--muted);
+      border-bottom: 2px solid var(--border);
+      z-index: 10;
+    }
+
+    .ranking-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ranking-table tr:hover {
+      background: color-mix(in oklch, var(--accent) 5%, transparent);
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .rank-1 { background: linear-gradient(135deg, #ffd700, #ffb700); color: #fff; }
+    .rank-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #fff; }
+    .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
+    .rank-other { background: var(--border); color: var(--muted); }
+
+    .room-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .room-link:hover {
+      text-decoration: underline;
+    }
+
+    .building-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: color-mix(in oklch, var(--accent) 15%, transparent);
+      color: var(--accent);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .consumption-value {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -563,6 +632,22 @@
           </div>
         </div>
       </div>
+
+      <!-- 全校区排行榜 -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">全校区耗电排行榜 TOP 100</h2>
+        </div>
+        <div id="ranking-progress" style="display: none; padding: 20px; text-align: center; color: var(--muted);">
+          <div class="loading-spinner" style="margin: 0 auto 10px auto;"></div>
+          <div id="ranking-progress-text">加载中...</div>
+        </div>
+        <div class="ranking-container" id="ranking-container" style="max-height: 600px; overflow-y: auto;">
+          <div style="text-align: center; color: var(--muted); padding: 40px;">
+            正在准备排行榜数据...
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -634,6 +719,7 @@
       tabEl.classList.add('active');
 
       currentCampus = campus;
+      resetCampusRanking();
 
       // 取消之前的加载
       if (loadAbortController) loadAbortController.cancelled = true;
@@ -662,6 +748,7 @@
 
       // 最终渲染
       updateDashboard(campusConsumption);
+      scheduleCampusRanking();
 
       // 异步加载趋势数据
       loadTrendData(campus);
@@ -1107,6 +1194,216 @@
         return `<div class="map-cell level-${Math.min(Math.max(level, 1), 5)}" title="${name}: ${b.consumption.toFixed(0)}度 (均${b.avgConsumption.toFixed(1)}度/间)"></div>`;
       });
       map.innerHTML = cells.join('');
+    }
+
+    // ==================== 全校区排行榜 ====================
+    let rankingLoading = false;
+    let currentRankingRequestId = 0;
+
+    // 重置排行榜并让进行中的排行榜请求失效
+    function resetCampusRanking() {
+      currentRankingRequestId++;
+      rankingLoading = false;
+
+      const progressEl = document.getElementById('ranking-progress');
+      const progressTextEl = document.getElementById('ranking-progress-text');
+      const containerEl = document.getElementById('ranking-container');
+
+      progressEl.style.display = 'none';
+      progressTextEl.textContent = '加载中...';
+      containerEl.innerHTML = '<div style="text-align: center; color: var(--muted); padding: 40px;">正在准备排行榜数据...</div>';
+    }
+
+    // 加载全校区排行榜
+    async function loadCampusRanking() {
+      if (rankingLoading) return;
+      if (!currentCampus) return;
+
+      rankingLoading = true;
+      currentRankingRequestId++;
+      const requestId = currentRankingRequestId;
+      const rankingCampus = currentCampus;
+      const rankingDate = currentDate;
+      
+      const progressEl = document.getElementById('ranking-progress');
+      const progressTextEl = document.getElementById('ranking-progress-text');
+      const containerEl = document.getElementById('ranking-container');
+
+      progressEl.style.display = 'block';
+      containerEl.innerHTML = '';
+
+      try {
+        const ranking = await DataService.getCampusWideRanking(
+          rankingCampus,
+          rankingDate,
+          (loaded, total, partial) => {
+            // 检查是否是最新的请求
+            if (
+              requestId !== currentRankingRequestId ||
+              rankingCampus !== currentCampus ||
+              rankingDate !== currentDate
+            ) return false;
+            
+            progressTextEl.textContent = `已加载 ${loaded}/${total} 栋楼...`;
+            if (partial.length > 0) {
+              renderRankingTable(partial, true, rankingCampus);
+            }
+            return true;
+          },
+          100
+        );
+
+        // 检查是否是最新的请求
+        if (
+          requestId !== currentRankingRequestId ||
+          rankingCampus !== currentCampus ||
+          rankingDate !== currentDate
+        ) return;
+        
+        progressEl.style.display = 'none';
+        renderRankingTable(ranking, false, rankingCampus);
+      } catch (error) {
+        // 检查是否是最新的请求
+        if (
+          requestId !== currentRankingRequestId ||
+          rankingCampus !== currentCampus ||
+          rankingDate !== currentDate
+        ) return;
+        
+        console.error('加载排行榜失败:', error);
+        progressEl.style.display = 'none';
+        containerEl.innerHTML = '';
+        const errorDiv = document.createElement('div');
+        errorDiv.style.textAlign = 'center';
+        errorDiv.style.color = 'var(--danger)';
+        errorDiv.style.padding = '40px';
+        errorDiv.textContent = `加载失败: ${error.message}`;
+        containerEl.appendChild(errorDiv);
+      } finally {
+        // 只有当是最新请求时才重置loading状态
+        if (requestId === currentRankingRequestId) {
+          rankingLoading = false;
+        }
+      }
+    }
+
+    function scheduleCampusRanking() {
+      const scheduledRequestId = currentRankingRequestId;
+      const scheduledCampus = currentCampus;
+      const scheduledDate = currentDate;
+      const load = () => {
+        if (
+          currentCampus === scheduledCampus &&
+          currentDate === scheduledDate &&
+          currentRankingRequestId === scheduledRequestId
+        ) {
+          loadCampusRanking();
+        }
+      };
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(load, { timeout: 500 });
+      } else {
+        setTimeout(load, 0);
+      }
+    }
+
+    // HTML转义函数
+    function escapeHTML(str) {
+      if (typeof str !== 'string') return str;
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // 渲染排行榜表格
+    function renderRankingTable(ranking, isPartial, campusName) {
+      const containerEl = document.getElementById('ranking-container');
+      containerEl.innerHTML = ''; // 清空容器
+      
+      if (ranking.length === 0) {
+        const div = document.createElement('div');
+        div.style.textAlign = 'center';
+        div.style.color = 'var(--muted)';
+        div.style.padding = '40px';
+        div.textContent = '暂无数据';
+        containerEl.appendChild(div);
+        return;
+      }
+
+      const table = document.createElement('table');
+      table.className = 'ranking-table';
+      
+      const thead = document.createElement('thead');
+      thead.innerHTML = `
+        <tr>
+          <th style="width: 60px;">排名</th>
+          <th>房间</th>
+          <th style="width: 160px;">楼栋</th>
+          <th style="width: 140px; text-align: right;">耗电量</th>
+        </tr>
+      `;
+      table.appendChild(thead);
+      
+      const tbody = document.createElement('tbody');
+      
+      ranking.forEach(room => {
+        const tr = document.createElement('tr');
+        
+        // 排名列
+        const rankTd = document.createElement('td');
+        const rankSpan = document.createElement('span');
+        let rankClass = 'rank-other';
+        if (room.rank === 1) rankClass = 'rank-1';
+        else if (room.rank === 2) rankClass = 'rank-2';
+        else if (room.rank === 3) rankClass = 'rank-3';
+        rankSpan.className = `rank-badge ${rankClass}`;
+        rankSpan.textContent = room.rank;
+        rankTd.appendChild(rankSpan);
+        tr.appendChild(rankTd);
+        
+        // 房间名列
+        const roomTd = document.createElement('td');
+        const roomDiv = document.createElement('div');
+        roomDiv.className = 'room-name';
+        roomDiv.textContent = room.roomName;
+        roomTd.appendChild(roomDiv);
+        tr.appendChild(roomTd);
+        
+        // 楼栋列
+        const buildingTd = document.createElement('td');
+        const buildingA = document.createElement('a');
+        buildingA.className = 'building-tag';
+        const buildingUrl = `building-view.html?campus=${encodeURIComponent(campusName)}&building=${encodeURIComponent(room.building)}`;
+        buildingA.href = buildingUrl;
+        buildingA.textContent = room.building;
+        buildingTd.appendChild(buildingA);
+        tr.appendChild(buildingTd);
+        
+        // 耗电量列
+        const consumptionTd = document.createElement('td');
+        consumptionTd.style.textAlign = 'right';
+        const consumptionSpan = document.createElement('span');
+        consumptionSpan.className = 'consumption-value';
+        consumptionSpan.textContent = `${room.consumption.toFixed(1)} 度`;
+        consumptionTd.appendChild(consumptionSpan);
+        tr.appendChild(consumptionTd);
+        
+        tbody.appendChild(tr);
+      });
+      
+      table.appendChild(tbody);
+      containerEl.appendChild(table);
+      
+      if (isPartial) {
+        const loadingDiv = document.createElement('div');
+        loadingDiv.style.textAlign = 'center';
+        loadingDiv.style.color = 'var(--muted)';
+        loadingDiv.style.padding = '16px';
+        loadingDiv.style.fontSize = '14px';
+        loadingDiv.textContent = '数据加载中...';
+        containerEl.appendChild(loadingDiv);
+      }
     }
   </script>
   <script>
