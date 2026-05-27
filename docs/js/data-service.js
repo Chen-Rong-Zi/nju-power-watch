@@ -21,6 +21,8 @@ const DataService = {
   _buildingCache: new Map(),
   _roomCache: new Map(),
   _beatPercentageCache: new Map(),
+  _buildingConsumptionStatsCache: new Map(),
+  _balanceHistoryDatesCache: new WeakMap(),
 
   // localStorage 缓存键前缀
   CACHE_PREFIX: '',
@@ -172,6 +174,9 @@ const DataService = {
         this._buildingCache.clear();
         this._roomCache.clear();
         this._beatPercentageCache.clear();
+        this._buildingConsumptionStatsCache.clear();
+        this._balanceHistoryDatesCache = new WeakMap();
+        this._clearCampusWideRankingSessionCache();
         this._clearBeatPercentageSessionCache();
       }
 
@@ -196,6 +201,8 @@ const DataService = {
     this._buildingCache.clear();
     this._roomCache.clear();
     this._beatPercentageCache.clear();
+    this._buildingConsumptionStatsCache.clear();
+    this._balanceHistoryDatesCache = new WeakMap();
     this._clearBeatPercentageSessionCache();
     console.log('[DataService] 所有缓存已清除');
   },
@@ -1236,8 +1243,7 @@ const DataService = {
   _calculateConsumptionFromHistory(balanceHistory, dateType, compactDate) {
     if (!balanceHistory) return null;
 
-    // 将对象转为排序后的数组
-    const dates = Object.keys(balanceHistory).sort();
+    const dates = this._getBalanceHistoryDates(balanceHistory);
     if (dates.length === 0) return null;
 
     // 找到目标日期的索引
@@ -1279,6 +1285,28 @@ const DataService = {
 
     // 只有余额减少才算消耗（充值会导致余额增加）
     return prevBalance > currBalance ? prevBalance - currBalance : 0;
+  },
+
+  /**
+   * 获取 balance_history 的升序日期列表，并在对象生命周期内复用。
+   * @private
+   */
+  _getBalanceHistoryDates(balanceHistory) {
+    if (!balanceHistory || typeof balanceHistory !== 'object') return [];
+
+    const cachedDates = this._balanceHistoryDatesCache.get(balanceHistory);
+    if (cachedDates) return cachedDates;
+
+    const dates = Object.keys(balanceHistory);
+    for (let i = 1; i < dates.length; i++) {
+      if (dates[i - 1] > dates[i]) {
+        dates.sort();
+        break;
+      }
+    }
+
+    this._balanceHistoryDatesCache.set(balanceHistory, dates);
+    return dates;
   },
 
   /**
@@ -1969,50 +1997,125 @@ const DataService = {
   },
 
   /**
-   * 获取楼栋内所有可比较房间的消耗数据
+   * 获取楼栋内可比较房间的消耗统计。
+   * 结果按消耗量升序保存，后续计算“打败多少房间”可用二分而不是逐个扫描。
    * @private
    */
-  async _getBuildingRoomConsumptions(campusName, buildingName, date, compactDate, selectedRoomId = null) {
-    const consumptions = [];
-    const excludedRoomId = selectedRoomId ? String(selectedRoomId) : null;
+  async _getBuildingConsumptionStats(campusName, buildingName, date, compactDate) {
+    const cacheKey = this._getBuildingConsumptionStatsCacheKey(campusName, buildingName, compactDate);
+    const cachedStats = this._buildingConsumptionStatsCache.get(cacheKey);
+    if (cachedStats) return cachedStats;
 
-    const details = await this.getBuildingDetails(campusName, buildingName);
-    if (details?.rooms) {
-      for (const [roomId, roomData] of Object.entries(details.rooms)) {
-        if (excludedRoomId && this._isSameRoomId(roomId, excludedRoomId, roomData)) continue;
+    const stats = {
+      consumptions: [],
+      roomConsumptions: new Map()
+    };
 
-        const consumption = this._calculateConsumptionFromHistory(
-          roomData.balance_history,
-          date,
-          compactDate
-        );
-        if (consumption !== null) consumptions.push(consumption);
+    const addConsumption = (roomId, roomData, consumption) => {
+      if (consumption === null || consumption === undefined) return;
+      const numericConsumption = Number(consumption);
+      if (!Number.isFinite(numericConsumption)) return;
+
+      stats.consumptions.push(numericConsumption);
+      this._rememberRoomConsumption(stats.roomConsumptions, roomId, numericConsumption);
+      this._rememberRoomConsumption(stats.roomConsumptions, roomData?.room_id, numericConsumption);
+    };
+
+    const cachedRanking = await this.getRankingCache(campusName, buildingName, date);
+    const cachedRows = Array.isArray(cachedRanking)
+      ? cachedRanking
+      : (Array.isArray(cachedRanking?.data) ? cachedRanking.data : null);
+
+    if (cachedRows && cachedRows.length > 0) {
+      for (const row of cachedRows) {
+        addConsumption(row.roomId, row, row.consumption);
       }
-      return consumptions;
+    } else {
+      const details = await this.getBuildingDetails(campusName, buildingName);
+      if (details?.rooms) {
+        for (const [roomId, roomData] of Object.entries(details.rooms)) {
+          addConsumption(
+            roomId,
+            roomData,
+            this._calculateConsumptionFromHistory(roomData.balance_history, date, compactDate)
+          );
+        }
+      } else {
+        const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
+        const roomIds = Object.keys(buildingSummary?.rooms || {});
+        for (const roomId of roomIds) {
+          addConsumption(
+            roomId,
+            buildingSummary.rooms[roomId],
+            await this._getRoomConsumption(
+              campusName,
+              buildingName,
+              roomId,
+              date,
+              compactDate,
+              { skipDetailsLookup: true }
+            )
+          );
+        }
+      }
     }
 
-    try {
-      const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
-      const roomIds = Object.keys(buildingSummary?.rooms || {});
-      for (const roomId of roomIds) {
-        const roomData = buildingSummary?.rooms?.[roomId];
-        if (excludedRoomId && this._isSameRoomId(roomId, excludedRoomId, roomData)) continue;
+    stats.consumptions.sort((a, b) => a - b);
+    stats.roomCount = stats.consumptions.length;
+    this._buildingConsumptionStatsCache.set(cacheKey, stats);
+    return stats;
+  },
 
-        const consumption = await this._getRoomConsumption(
-          campusName,
-          buildingName,
-          roomId,
-          date,
-          compactDate,
-          { skipDetailsLookup: true }
-        );
-        if (consumption !== null) consumptions.push(consumption);
+  /**
+   * @private
+   */
+  _getBuildingConsumptionStatsCacheKey(campusName, buildingName, compactDate) {
+    return `${campusName}|${buildingName}|${compactDate}`;
+  },
+
+  /**
+   * @private
+   */
+  _rememberRoomConsumption(roomConsumptions, roomId, consumption) {
+    const normalizedRoomId = String(roomId || '');
+    if (!normalizedRoomId) return;
+    roomConsumptions.set(normalizedRoomId, consumption);
+  },
+
+  /**
+   * @private
+   */
+  _getRoomConsumptionFromStats(stats, roomId) {
+    if (!stats?.roomConsumptions) return null;
+    const normalizedRoomId = String(roomId || '');
+    if (!normalizedRoomId || !stats.roomConsumptions.has(normalizedRoomId)) return null;
+    return stats.roomConsumptions.get(normalizedRoomId);
+  },
+
+  /**
+   * @private
+   */
+  _hasRoomConsumptionInStats(stats, roomId) {
+    if (!stats?.roomConsumptions) return false;
+    return stats.roomConsumptions.has(String(roomId || ''));
+  },
+
+  /**
+   * 返回升序数组中小于 value 的元素数量。
+   * @private
+   */
+  _countLessThan(sortedValues, value) {
+    let low = 0;
+    let high = sortedValues.length;
+    while (low < high) {
+      const mid = Math.floor((low + high) / 2);
+      if (sortedValues[mid] < value) {
+        low = mid + 1;
+      } else {
+        high = mid;
       }
-    } catch (error) {
-      console.warn(`获取楼栋 ${buildingName} 房间数据失败:`, error);
     }
-
-    return consumptions;
+    return low;
   },
 
   /**
@@ -2179,13 +2282,23 @@ const DataService = {
         return emptyResult;
       }
 
-      const currentRoomConsumption = await this._getRoomConsumption(
+      const currentBuildingStats = await this._getBuildingConsumptionStats(
         campusName,
         buildingName,
-        roomId,
         date,
         compactDate
       );
+
+      let currentRoomConsumption = this._getRoomConsumptionFromStats(currentBuildingStats, roomId);
+      if (currentRoomConsumption === null) {
+        currentRoomConsumption = await this._getRoomConsumption(
+          campusName,
+          buildingName,
+          roomId,
+          date,
+          compactDate
+        );
+      }
 
       if (currentRoomConsumption === null) {
         this._saveBeatPercentageCache(cacheKey, emptyResult);
@@ -2199,22 +2312,20 @@ const DataService = {
 
       for (const building of campusStats.buildingDetails) {
         try {
-          const consumptions = await this._getBuildingRoomConsumptions(
-            campusName,
-            building.name,
-            date,
-            compactDate,
-            building.name === buildingName ? roomId : null
-          );
+          const stats = building.name === buildingName
+            ? currentBuildingStats
+            : await this._getBuildingConsumptionStats(campusName, building.name, date, compactDate);
+          const beatenInBuilding = this._countLessThan(stats.consumptions, currentRoomConsumption);
 
-          for (const consumption of consumptions) {
-            campusRoomCount++;
-            if (consumption < currentRoomConsumption) campusBeaten++;
-
-            if (building.name === buildingName) {
-              buildingRoomCount++;
-              if (consumption < currentRoomConsumption) buildingBeaten++;
-            }
+          if (building.name === buildingName) {
+            const excludesCurrentRoom = this._hasRoomConsumptionInStats(stats, roomId);
+            buildingRoomCount = Math.max(0, stats.roomCount - (excludesCurrentRoom ? 1 : 0));
+            buildingBeaten = beatenInBuilding;
+            campusRoomCount += buildingRoomCount;
+            campusBeaten += beatenInBuilding;
+          } else {
+            campusRoomCount += stats.roomCount;
+            campusBeaten += beatenInBuilding;
           }
         } catch (error) {
           console.warn(`跳过楼栋 ${building.name}:`, error);
