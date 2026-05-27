@@ -720,7 +720,6 @@
 
       currentCampus = campus;
       resetCampusRanking();
-      loadCampusRanking();
 
       // 取消之前的加载
       if (loadAbortController) loadAbortController.cancelled = true;
@@ -749,6 +748,7 @@
 
       // 最终渲染
       updateDashboard(campusConsumption);
+      scheduleCampusRanking();
 
       // 异步加载趋势数据
       loadTrendData(campus);
@@ -1242,12 +1242,13 @@
               requestId !== currentRankingRequestId ||
               rankingCampus !== currentCampus ||
               rankingDate !== currentDate
-            ) return;
+            ) return false;
             
             progressTextEl.textContent = `已加载 ${loaded}/${total} 栋楼...`;
             if (partial.length > 0) {
               renderRankingTable(partial, true, rankingCampus);
             }
+            return true;
           },
           100
         );
@@ -1283,6 +1284,27 @@
         if (requestId === currentRankingRequestId) {
           rankingLoading = false;
         }
+      }
+    }
+
+    function scheduleCampusRanking() {
+      const scheduledRequestId = currentRankingRequestId;
+      const scheduledCampus = currentCampus;
+      const scheduledDate = currentDate;
+      const load = () => {
+        if (
+          currentCampus === scheduledCampus &&
+          currentDate === scheduledDate &&
+          currentRankingRequestId === scheduledRequestId
+        ) {
+          loadCampusRanking();
+        }
+      };
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(load, { timeout: 500 });
+      } else {
+        setTimeout(load, 0);
       }
     }
 

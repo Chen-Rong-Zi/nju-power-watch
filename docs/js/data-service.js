@@ -142,6 +142,7 @@ const DataService = {
    */
   async clearAllCache() {
     await IDB.clear();
+    this._clearCampusWideRankingSessionCache();
 
     // 清除内存缓存
     this._overviewCache = null;
@@ -1666,19 +1667,28 @@ const DataService = {
    * @returns {Promise<Array>} 排序后的房间数据数组
    */
   async getCampusWideRanking(campusName, date = 'today', onProgress = null, limit = 100) {
+    const targetDate = date || 'today';
+    const compactDate = this._formatDateCompact(targetDate);
+    const overview = await this.getOverview();
+    const dataVersion = overview?.generated_at || 'unknown';
+    const cachedRanking = this._getCampusWideRankingSessionCache(campusName, targetDate, limit, dataVersion);
+    if (cachedRanking) {
+      if (onProgress) onProgress(1, 1, cachedRanking);
+      return cachedRanking;
+    }
+
     const campusStats = await this.getCampusStatistics(campusName);
     if (!campusStats) return [];
 
     const buildingDetails = campusStats.buildingDetails || [];
     const totalBuildings = buildingDetails.length;
     let loadedBuildings = 0;
-    const allRooms = [];
+    const topRooms = [];
 
     for (const building of buildingDetails) {
       try {
         // 尝试从 details.json 加载楼栋数据（快速）
         const details = await this.getBuildingDetails(campusName, building.name);
-        const compactDate = this._formatDateCompact(date);
         
         if (details && details.rooms) {
           // 从 details.json 提取房间消耗数据
@@ -1687,18 +1697,18 @@ const DataService = {
             if (roomData.balance_history) {
               const consumption = this._calculateConsumptionFromHistory(
                 roomData.balance_history,
-                date,
+                targetDate,
                 compactDate
               );
               if (consumption !== null) {
-                allRooms.push({
+                this._insertIntoTopRooms(topRooms, {
                   roomId,
                   roomName: roomData.room_name || roomId,
                   building: building.name,
                   campus: campusName,
                   consumption,
                   balance: roomData.current_balance || 0
-                });
+                }, limit);
               }
             }
           }
@@ -1707,14 +1717,14 @@ const DataService = {
           let ranking = await this.getBuildingConsumptionFromRoomCache(
             campusName,
             building.name,
-            date
+            targetDate
           );
           
           if (!ranking) {
             ranking = await this.getBuildingConsumptionRankingFast(
               campusName,
               building.name,
-              date === 'today' ? null : date,
+              targetDate === 'today' ? null : targetDate,
               null,
               false
             );
@@ -1722,25 +1732,25 @@ const DataService = {
           
           if (Array.isArray(ranking)) {
             ranking.forEach(r => {
-              allRooms.push({
+              this._insertIntoTopRooms(topRooms, {
                 roomId: r.roomId,
                 roomName: r.roomName,
                 building: building.name,
                 campus: campusName,
                 consumption: r.consumption || 0,
                 balance: r.balance || 0
-              });
+              }, limit);
             });
           } else if (ranking && ranking.data) {
             ranking.data.forEach(r => {
-              allRooms.push({
+              this._insertIntoTopRooms(topRooms, {
                 roomId: r.roomId,
                 roomName: r.roomName,
                 building: building.name,
                 campus: campusName,
                 consumption: r.consumption || 0,
                 balance: r.balance || 0
-              });
+              }, limit);
             });
           }
         }
@@ -1752,28 +1762,129 @@ const DataService = {
       
       // 每次加载完一栋楼，触发进度回调并更新部分结果
       if (onProgress) {
-        // 实时排序并取前 limit 个，并添加 rank 字段
-        const partialSorted = [...allRooms]
-          .sort((a, b) => b.consumption - a.consumption)
-          .slice(0, limit)
-          .map((room, index) => ({
-            ...room,
-            rank: index + 1
-          }));
-        onProgress(loadedBuildings, totalBuildings, partialSorted);
+        const partialSorted = this._rankTopRooms(topRooms);
+        if (onProgress(loadedBuildings, totalBuildings, partialSorted) === false) {
+          return partialSorted;
+        }
       }
     }
 
-    // 按耗电量降序排序，取前 limit 个
-    allRooms.sort((a, b) => b.consumption - a.consumption);
-    
-    // 添加排名
-    const result = allRooms.slice(0, limit).map((room, index) => ({
+    const result = this._rankTopRooms(topRooms);
+    this._saveCampusWideRankingSessionCache(campusName, targetDate, limit, dataVersion, result);
+
+    return result;
+  },
+
+  /**
+   * 将房间插入到固定长度的降序 TOP N 列表，避免全校区房间全量排序。
+   * @private
+   */
+  _insertIntoTopRooms(topRooms, room, limit) {
+    if (!room || limit <= 0) return;
+    const consumption = Number(room.consumption) || 0;
+    const normalizedRoom = {
+      ...room,
+      consumption
+    };
+
+    if (topRooms.length < limit) {
+      topRooms.push(normalizedRoom);
+      this._bubbleTopRoomUp(topRooms, topRooms.length - 1);
+      return;
+    }
+
+    if (consumption <= topRooms[topRooms.length - 1].consumption) return;
+
+    topRooms[topRooms.length - 1] = normalizedRoom;
+    this._bubbleTopRoomUp(topRooms, topRooms.length - 1);
+  },
+
+  /**
+   * 将新插入的元素向前移动，保持列表按耗电量降序排列。
+   * @private
+   */
+  _bubbleTopRoomUp(topRooms, index) {
+    while (index > 0 && topRooms[index].consumption > topRooms[index - 1].consumption) {
+      const prev = topRooms[index - 1];
+      topRooms[index - 1] = topRooms[index];
+      topRooms[index] = prev;
+      index--;
+    }
+  },
+
+  /**
+   * 为 TOP N 列表补充排名，返回新数组避免污染缓存中的基础数据。
+   * @private
+   */
+  _rankTopRooms(topRooms) {
+    return topRooms.map((room, index) => ({
       ...room,
       rank: index + 1
     }));
+  },
 
-    return result;
+  /**
+   * 校区 TOP N 排行榜使用 sessionStorage 缓存，避免一次会话内切换校区时重复计算。
+   * @private
+   */
+  _getCampusWideRankingSessionCache(campusName, date, limit, dataVersion = 'unknown') {
+    try {
+      if (typeof sessionStorage === 'undefined') return null;
+      const key = this._getCampusWideRankingSessionKey(campusName, date, limit, dataVersion);
+      const cached = sessionStorage.getItem(key);
+      if (!cached) return null;
+
+      const parsed = JSON.parse(cached);
+      if (!parsed || !Array.isArray(parsed.data)) return null;
+
+      console.log(`[SessionStorage命中] 校区排行榜: ${campusName} -> ${this._formatDateCompact(date)}, TOP ${limit}`);
+      return parsed.data;
+    } catch (error) {
+      console.warn('[SessionStorage] 读取校区排行榜缓存失败:', error);
+      return null;
+    }
+  },
+
+  /**
+   * @private
+   */
+  _saveCampusWideRankingSessionCache(campusName, date, limit, dataVersion, ranking) {
+    try {
+      if (typeof sessionStorage === 'undefined') return;
+      const key = this._getCampusWideRankingSessionKey(campusName, date, limit, dataVersion);
+      sessionStorage.setItem(key, JSON.stringify({
+        data: ranking,
+        updatedAt: Date.now()
+      }));
+      console.log(`[SessionStorage保存] 校区排行榜: ${campusName} -> ${this._formatDateCompact(date)}, TOP ${limit}`);
+    } catch (error) {
+      console.warn('[SessionStorage] 保存校区排行榜缓存失败:', error);
+    }
+  },
+
+  /**
+   * @private
+   */
+  _getCampusWideRankingSessionKey(campusName, date, limit, dataVersion = 'unknown') {
+    return `campus-wide-ranking:v1:${dataVersion}:${campusName}:${this._formatDateCompact(date)}:${limit}`;
+  },
+
+  /**
+   * @private
+   */
+  _clearCampusWideRankingSessionCache() {
+    try {
+      if (typeof sessionStorage === 'undefined') return;
+      const prefix = 'campus-wide-ranking:';
+      const keysToRemove = [];
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (key && key.startsWith(prefix)) keysToRemove.push(key);
+      }
+      keysToRemove.forEach(key => sessionStorage.removeItem(key));
+    } catch (error) {
+      console.warn('[SessionStorage] 清除校区排行榜缓存失败:', error);
+    }
   },
 
   /**
