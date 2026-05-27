@@ -20,10 +20,12 @@ const DataService = {
   _campusCache: new Map(),
   _buildingCache: new Map(),
   _roomCache: new Map(),
+  _beatPercentageCache: new Map(),
 
   // localStorage 缓存键前缀
   CACHE_PREFIX: '',
   CACHE_VERSION: 'v2',
+  RANKING_PERCENT_TTL_MS: 5 * 60 * 1000,
 
   // 数据版本缓存键
   DATA_VERSION_KEY: '__data_version__',
@@ -169,6 +171,8 @@ const DataService = {
         this._campusCache.clear();
         this._buildingCache.clear();
         this._roomCache.clear();
+        this._beatPercentageCache.clear();
+        this._clearBeatPercentageSessionCache();
       }
 
       // 保存当前版本号
@@ -191,6 +195,8 @@ const DataService = {
     this._campusCache.clear();
     this._buildingCache.clear();
     this._roomCache.clear();
+    this._beatPercentageCache.clear();
+    this._clearBeatPercentageSessionCache();
     console.log('[DataService] 所有缓存已清除');
   },
 
@@ -1989,7 +1995,8 @@ const DataService = {
       const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
       const roomIds = Object.keys(buildingSummary?.rooms || {});
       for (const roomId of roomIds) {
-        if (excludedRoomId && roomId === excludedRoomId) continue;
+        const roomData = buildingSummary?.rooms?.[roomId];
+        if (excludedRoomId && this._isSameRoomId(roomId, excludedRoomId, roomData)) continue;
 
         const consumption = await this._getRoomConsumption(
           campusName,
@@ -2030,11 +2037,9 @@ const DataService = {
     }
 
     if (dateType === 'week') {
-      const weekData = history.slice(-7).filter(item =>
-        item.consumption !== undefined && item.consumption !== null
-      );
-      if (weekData.length === 0) return null;
-      return weekData.reduce((sum, item) => sum + item.consumption, 0) / weekData.length;
+      const weekWindow = history.slice(-7);
+      if (weekWindow.length === 0) return null;
+      return weekWindow.reduce((sum, item) => sum + (item.consumption ?? 0), 0) / weekWindow.length;
     }
 
     const targetEntry = history.find(item =>
@@ -2072,6 +2077,79 @@ const DataService = {
   },
 
   /**
+   * @private
+   */
+  _getBeatPercentageCacheKey(campusName, buildingName, roomId, compactDate) {
+    return `beat-percentage:v1:${campusName}|${buildingName}|${String(roomId || '')}|${compactDate}`;
+  },
+
+  /**
+   * @private
+   */
+  _getBeatPercentageCache(cacheKey) {
+    const now = Date.now();
+    const memoryEntry = this._beatPercentageCache.get(cacheKey);
+    if (memoryEntry) {
+      if (memoryEntry.expiry > now) return memoryEntry.value;
+      this._beatPercentageCache.delete(cacheKey);
+    }
+
+    try {
+      if (typeof sessionStorage === 'undefined') return null;
+      const cached = sessionStorage.getItem(cacheKey);
+      if (!cached) return null;
+
+      const parsed = JSON.parse(cached);
+      if (!parsed || parsed.expiry <= now || !parsed.value) {
+        sessionStorage.removeItem(cacheKey);
+        return null;
+      }
+
+      this._beatPercentageCache.set(cacheKey, parsed);
+      return parsed.value;
+    } catch (error) {
+      console.warn('[SessionStorage] 读取排名百分比缓存失败:', error);
+      return null;
+    }
+  },
+
+  /**
+   * @private
+   */
+  _saveBeatPercentageCache(cacheKey, result) {
+    const entry = {
+      value: result,
+      expiry: Date.now() + this.RANKING_PERCENT_TTL_MS
+    };
+    this._beatPercentageCache.set(cacheKey, entry);
+
+    try {
+      if (typeof sessionStorage === 'undefined') return;
+      sessionStorage.setItem(cacheKey, JSON.stringify(entry));
+    } catch (error) {
+      console.warn('[SessionStorage] 保存排名百分比缓存失败:', error);
+    }
+  },
+
+  /**
+   * @private
+   */
+  _clearBeatPercentageSessionCache() {
+    try {
+      if (typeof sessionStorage === 'undefined') return;
+      const prefix = 'beat-percentage:';
+      const keysToRemove = [];
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (key && key.startsWith(prefix)) keysToRemove.push(key);
+      }
+      keysToRemove.forEach(key => sessionStorage.removeItem(key));
+    } catch (error) {
+      console.warn('[SessionStorage] 清除排名百分比缓存失败:', error);
+    }
+  },
+
+  /**
    * 计算某个房间在楼栋和校区中的排名百分比
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
@@ -2080,9 +2158,11 @@ const DataService = {
    * @returns {Promise<Object>} 包含 beatBuildingPercent 和 beatCampusPercent 的对象
    */
   async calculateBeatPercentage(campusName, buildingName, roomId, date = 'today') {
-    console.log('[calculateBeatPercentage] 开始计算', { campusName, buildingName, roomId, date });
-
     const compactDate = this._formatDateCompact(date);
+    const cacheKey = this._getBeatPercentageCacheKey(campusName, buildingName, roomId, compactDate);
+    const cachedResult = this._getBeatPercentageCache(cacheKey);
+    if (cachedResult) return cachedResult;
+
     const emptyResult = {
       beatBuildingPercent: 0,
       beatCampusPercent: 0,
@@ -2094,7 +2174,10 @@ const DataService = {
 
     try {
       const campusStats = await this.getCampusStatistics(campusName);
-      if (!campusStats?.buildingDetails) return emptyResult;
+      if (!campusStats?.buildingDetails) {
+        this._saveBeatPercentageCache(cacheKey, emptyResult);
+        return emptyResult;
+      }
 
       const currentRoomConsumption = await this._getRoomConsumption(
         campusName,
@@ -2105,7 +2188,7 @@ const DataService = {
       );
 
       if (currentRoomConsumption === null) {
-        console.log('[calculateBeatPercentage] 无法获取当前房间消耗数据');
+        this._saveBeatPercentageCache(cacheKey, emptyResult);
         return emptyResult;
       }
 
@@ -2147,7 +2230,7 @@ const DataService = {
         campusBeaten
       };
 
-      console.log('[calculateBeatPercentage] 计算完成', result);
+      this._saveBeatPercentageCache(cacheKey, result);
       return result;
     } catch (error) {
       console.error('[calculateBeatPercentage] 计算失败:', error);
