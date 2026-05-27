@@ -78,7 +78,10 @@ async def load_existing_summaries(summaries_dir: Path) -> Dict[str, Dict[str, An
 
     for room_file, result in zip(room_files, results):
         if result and 'room_name' in result:
-            existing_data[result['room_name']] = result
+            # Use campus/building/room_name as unique key to avoid collisions
+            # across buildings (e.g., "101" exists in multiple buildings)
+            key = f"{result['campus']}/{result['building']}/{result['room_name']}"
+            existing_data[key] = result
 
     logger.info(f"Loaded {len(existing_data)} existing room summaries")
     return existing_data
@@ -246,18 +249,21 @@ async def generate_hierarchical_summaries(
     # Merge new data with existing
     logger.info("Merging with existing data...")
     all_rooms_data = {}
-    
+
     # Start with existing data
-    for room_name, room_data in existing_summaries.items():
-        all_rooms_data[room_name] = room_data
+    for key, room_data in existing_summaries.items():
+        all_rooms_data[key] = room_data
 
     # Merge new data
     for new_data in new_rooms_data:
         room_name = new_data['room_name']
-        if room_name in all_rooms_data:
-            all_rooms_data[room_name] = merge_room_data(all_rooms_data[room_name], new_data)
+        campus = new_data.get('campus', 'Unknown')
+        building = new_data.get('building', 'Unknown')
+        key = f"{campus}/{building}/{room_name}"
+        if key in all_rooms_data:
+            all_rooms_data[key] = merge_room_data(all_rooms_data[key], new_data)
         else:
-            all_rooms_data[room_name] = new_data
+            all_rooms_data[key] = new_data
     
     logger.info(f"Total rooms after merge: {len(all_rooms_data)}")
     
