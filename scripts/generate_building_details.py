@@ -71,21 +71,21 @@ async def process_building(building_dir: Path) -> Dict[str, Any]:
     if not rooms_list:
         return None
 
-    # Read room files based on room IDs from summary.json
+    # Read room files based on room names from summary.json
     rooms_dir = building_dir / "rooms"
     rooms = {}
 
-    async def read_room_file(room_id: str) -> tuple:
-        room_file = rooms_dir / f"{room_id}.json"
+    async def read_room_file(room_name: str) -> tuple:
+        room_file = rooms_dir / f"{room_name}.json"
         room_data = await read_json_file(room_file)
-        return room_id, room_data
+        return room_name, room_data
 
-    tasks = [read_room_file(room_id) for room_id in rooms_list.keys()]
+    tasks = [read_room_file(room_name) for room_name in rooms_list.keys()]
     results = await asyncio.gather(*tasks)
 
-    for room_id, room_data in results:
-        if room_data and 'room_id' in room_data:
-            rooms[room_id] = room_data
+    for room_name, room_data in results:
+        if room_data and 'room_name' in room_data:
+            rooms[room_name] = room_data
 
     if not rooms:
         return None

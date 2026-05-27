@@ -35,26 +35,18 @@ def scan_database(database_dir: str = "./database"):
             for room_dir in building_dir.iterdir():
                 if not room_dir.is_dir():
                     continue
-                
-                # Room directory format: {room_name}-{room_id}
+
                 dir_name = room_dir.name
-                parts = dir_name.rsplit('-', 1)
-                
-                if len(parts) == 2:
-                    room_name = parts[0]
-                    room_id = parts[1]
-                    
-                    # Count available dates
-                    json_files = list(room_dir.glob("*.json"))
-                    date_count = len(json_files)
-                    
-                    if date_count > 0:
-                        structure[campus_name][building_name].append({
-                            "n": room_name,  # name (shortened)
-                            "i": room_id,    # id (shortened)
-                            "p": str(room_dir.relative_to(database_path)),  # path
-                            "r": date_count  # records
-                        })
+
+                json_files = list(room_dir.glob("*.json"))
+                date_count = len(json_files)
+
+                if date_count > 0:
+                    structure[campus_name][building_name].append({
+                        "n": dir_name,  # room name
+                        "p": str(room_dir.relative_to(database_path)),  # path
+                        "r": date_count  # records
+                    })
     
     return structure
 

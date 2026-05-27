@@ -87,7 +87,6 @@ def parse_html(html: str) -> dict:
             result["校区"] = check_data.get("sysName", "")
             result["楼栋"] = check_data.get("buildName", "")
             result["房间"] = check_data.get("roomName", "")
-            result["宿舍ID"] = check_data.get("id", "")
             result["学号"] = check_data.get("stuempno", "")
         except json.JSONDecodeError:
             pass
@@ -164,8 +163,8 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
                             last_error = {"id": room_id, "error": QueryError.PARSE_ERROR, "error_type": "parse_error", "success": False}
                             raise aiohttp.ClientConnectorError
 
-                        result["id"] = room_id
                         result["success"] = True
+                        result["id"] = room_id  # 用于内部追踪，save_result 会过滤掉
                         return result
 
         except asyncio.TimeoutError:
@@ -309,7 +308,7 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
 
 
 async def save_result(result: dict, output_dir: Path, quiet: bool = False):
-    """保存结果到文件，格式: {校区}/{楼栋}/{房间}-{房间id}/{日期}.json"""
+    """保存结果到文件，格式: {校区}/{楼栋}/{房间}/{日期}.json"""
     try:
         output_dir.mkdir(parents=True, exist_ok=True)
     except PermissionError:
@@ -324,13 +323,12 @@ async def save_result(result: dict, output_dir: Path, quiet: bool = False):
     campus = result.get("校区", "未知校区")
     building = result.get("楼栋", "未知楼栋")
     room = result.get("房间", "未知房间")
-    room_id = result.get("id", result.get("宿舍ID", ""))
 
     campus = re.sub(r'[<>:"/\\|?*]', '_', campus)
     building = re.sub(r'[<>:"/\\|?*]', '_', building)
     room = re.sub(r'[<>:"/\\|?*]', '_', room)
 
-    dir_path = output_dir / campus / building / f"{room}-{room_id}"
+    dir_path = output_dir / campus / building / room
     date_str = datetime.now().strftime("%Y%m%d")
     filename = f"{date_str}.json"
     filepath = dir_path / filename
@@ -351,9 +349,12 @@ async def save_result(result: dict, output_dir: Path, quiet: bool = False):
             print(f"\n警告: 文件 {filepath} 已存在，跳过保存")
         return False
 
+    # 移除 id 和 宿舍ID 字段
+    save_data = {k: v for k, v in result.items() if k not in ('id', '宿舍ID')}
+
     try:
         async with aiofiles.open(filepath, "w", encoding="utf-8") as f:
-            await f.write(json.dumps(result, ensure_ascii=False, indent=2))
+            await f.write(json.dumps(save_data, ensure_ascii=False, indent=2))
         return True
     except PermissionError:
         if not quiet:

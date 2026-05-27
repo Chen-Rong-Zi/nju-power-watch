@@ -51,35 +51,35 @@ async def write_json_file(file_path: Path, data: Dict[str, Any]) -> None:
 async def load_existing_summaries(summaries_dir: Path) -> Dict[str, Dict[str, Any]]:
     """
     Load existing room summaries from database/summaries/.
-    Returns: {room_id: room_data}
+    Returns: {room_name: room_data}
     """
     existing_data = {}
-    
+
     if not summaries_dir.exists():
         logger.info("No existing summaries found, starting fresh")
         return existing_data
-    
+
     logger.info("Loading existing summaries...")
-    
+
     room_files = list(summaries_dir.rglob("rooms/*.json"))
-    
+
     if not room_files:
         logger.info("No existing room summaries found")
         return existing_data
-    
+
     semaphore = asyncio.Semaphore(100)
-    
+
     async def read_with_limit(file_path: Path):
         async with semaphore:
             return await read_json_file(file_path)
-    
+
     tasks = [read_with_limit(f) for f in room_files]
     results = await asyncio.gather(*tasks)
-    
+
     for room_file, result in zip(room_files, results):
-        if result and 'room_id' in result:
-            existing_data[result['room_id']] = result
-    
+        if result and 'room_name' in result:
+            existing_data[result['room_name']] = result
+
     logger.info(f"Loaded {len(existing_data)} existing room summaries")
     return existing_data
 
@@ -87,55 +87,48 @@ async def load_existing_summaries(summaries_dir: Path) -> Dict[str, Dict[str, An
 async def process_room(room_dir: Path, read_semaphore: asyncio.Semaphore) -> Dict[str, Any]:
     """
     Process a single room directory asynchronously.
-    Returns simplified data: date → balance mapping.
+    Directory name is now just the room name (no ID suffix).
     """
-    dir_name = room_dir.name
-    parts = dir_name.rsplit('-', 1)
-    if len(parts) != 2 or not parts[1].isdigit():
-        return None
-    
-    room_id = parts[1]
-    room_name = parts[0]
-    
+    room_name = room_dir.name
+
     json_files = sorted(room_dir.glob("*.json"), key=lambda f: f.stem)
-    
+
     if not json_files:
         return None
-    
+
     async def read_with_limit(f: Path):
         async with read_semaphore:
             return await read_json_file(f)
-    
+
     tasks = [read_with_limit(f) for f in json_files]
     results = await asyncio.gather(*tasks)
-    
+
     balance_history = {}
     campus = None
     building = None
-    
+
     for idx, result in enumerate(results):
         if not result or not result.get('success', False):
             continue
-        
+
         if not campus:
             campus = result.get('校区', 'Unknown')
             building = result.get('楼栋', 'Unknown')
-        
+
         balance_str = result.get('剩余电量', '0度')
         balance = float(balance_str.replace('度', ''))
-        
+
         date = json_files[idx].stem
-        
+
         balance_history[date] = balance
-    
+
     if not balance_history:
         return None
-    
+
     latest_date = max(balance_history.keys())
     current_balance = balance_history[latest_date]
-    
+
     return {
-        'room_id': room_id,
         'room_name': room_name,
         'campus': campus,
         'building': building,
@@ -159,7 +152,7 @@ async def process_all_rooms(database_dir: Path) -> List[Dict[str, Any]]:
                 continue
             
             for room_dir in building_dir.iterdir():
-                if room_dir.is_dir() and '-' in room_dir.name:
+                if room_dir.is_dir() and room_dir.name not in ('archives', 'summaries'):
                     room_dirs.append(room_dir)
     
     logger.info(f"Found {len(room_dirs)} room directories with new data")
@@ -188,11 +181,11 @@ def merge_room_data(existing: Dict[str, Any], new: Dict[str, Any]) -> Dict[str, 
     """
     if not existing:
         return new
-    
+
     # Merge balance_history (keep ALL dates)
     merged_history = existing.get('balance_history', {}).copy()
     merged_history.update(new.get('balance_history', {}))
-    
+
     # Get latest balance
     if merged_history:
         latest_date = max(merged_history.keys())
@@ -200,14 +193,13 @@ def merge_room_data(existing: Dict[str, Any], new: Dict[str, Any]) -> Dict[str, 
     else:
         current_balance = new.get('current_balance', 0.0)
         latest_date = new.get('last_updated', datetime.now().strftime("%Y%m%d"))
-    
+
     return {
-        'room_id': new['room_id'],
         'room_name': new.get('room_name', existing.get('room_name', 'Unknown')),
         'campus': new.get('campus', existing.get('campus', 'Unknown')),
         'building': new.get('building', existing.get('building', 'Unknown')),
         'current_balance': current_balance,
-        'balance_history': merged_history,  # ALL historical data
+        'balance_history': merged_history,
         'last_updated': latest_date
     }
 
@@ -215,17 +207,17 @@ def merge_room_data(existing: Dict[str, Any], new: Dict[str, Any]) -> Dict[str, 
 def organize_by_hierarchy(rooms_data: List[Dict[str, Any]]) -> Dict[str, Dict[str, Dict[str, Dict]]]:
     """
     Organize processed room data by hierarchy.
-    Returns: {campus: {building: {room_id: room_data}}}
+    Returns: {campus: {building: {room_name: room_data}}}
     """
     hierarchy = defaultdict(lambda: defaultdict(dict))
-    
+
     for room_data in rooms_data:
         campus = room_data['campus']
         building = room_data['building']
-        room_id = room_data['room_id']
-        
-        hierarchy[campus][building][room_id] = room_data
-    
+        room_name = room_data['room_name']
+
+        hierarchy[campus][building][room_name] = room_data
+
     return hierarchy
 
 
@@ -256,16 +248,16 @@ async def generate_hierarchical_summaries(
     all_rooms_data = {}
     
     # Start with existing data
-    for room_id, room_data in existing_summaries.items():
-        all_rooms_data[room_id] = room_data
-    
+    for room_name, room_data in existing_summaries.items():
+        all_rooms_data[room_name] = room_data
+
     # Merge new data
     for new_data in new_rooms_data:
-        room_id = new_data['room_id']
-        if room_id in all_rooms_data:
-            all_rooms_data[room_id] = merge_room_data(all_rooms_data[room_id], new_data)
+        room_name = new_data['room_name']
+        if room_name in all_rooms_data:
+            all_rooms_data[room_name] = merge_room_data(all_rooms_data[room_name], new_data)
         else:
-            all_rooms_data[room_id] = new_data
+            all_rooms_data[room_name] = new_data
     
     logger.info(f"Total rooms after merge: {len(all_rooms_data)}")
     
@@ -300,11 +292,10 @@ async def generate_hierarchical_summaries(
             building_dir = campus_dir / "buildings" / building
             building_dir.mkdir(parents=True, exist_ok=True)
             
-            # Building summary: room_id → {room_name, current_balance, last_updated}
+            # Building summary: room_name → {current_balance, last_updated}
             building_rooms = {}
-            for room_id, room_data in rooms.items():
-                building_rooms[room_id] = {
-                    'room_name': room_data['room_name'],
+            for room_name, room_data in rooms.items():
+                building_rooms[room_name] = {
                     'current_balance': room_data['current_balance'],
                     'last_updated': room_data['last_updated']
                 }
@@ -321,8 +312,8 @@ async def generate_hierarchical_summaries(
             write_tasks.append(write_with_limit(building_file, building_summary))
             
             # Write individual room files
-            for room_id, room_data in rooms.items():
-                room_file = building_dir / "rooms" / f"{room_id}.json"
+            for room_name, room_data in rooms.items():
+                room_file = building_dir / "rooms" / f"{room_name}.json"
                 write_tasks.append(write_with_limit(room_file, room_data))
             
             buildings_stats[building] = {

@@ -38,20 +38,20 @@ python3 nju_electric_query.py -c 20 -d ./logs 53463 53464 53465
 
 ### 输出文件
 
-目录结构：`{校区}/{楼栋}/{房间}-{房间id}/{日期}.json`
+目录结构：`{校区}/{楼栋}/{房间}/{日期}.json`
 
 ```
 logs/
 ├── 仙林校区/
 │   ├── 19幢/
-│   │   └── 19栋第16层1613-53463/
+│   │   └── 19栋第16层1613/
 │   │       └── 20260515.json
 │   └── 4幢/
-│       └── 4A505-53464/
+│       └── 4A505/
 │           └── 20260515.json
 └── 苏州校区/
     └── 仁园-戊/
-        └── 戊504-53465/
+        └── 戊504/
             └── 20260515.json
 ```
 
@@ -61,7 +61,7 @@ logs/
 |
 | `-d, --dir` | 输出目录 | 无 |
 | `-c, --concurrency` | 最大并发数 | 10 |
-| `room_ids` | 宿舍ID列表 | 必填 |
+| `room_ids` | 缴费系统ID列表（仅用于API查询参数） | 必填 |
 
 ### 依赖
 
@@ -96,7 +96,7 @@ logs/
 ┌─────────────────────────────────────────────────────────────┐
 │                     现有余额数据                              │
 │  database/summaries/campuses/{campus}/buildings/{building}/ │
-│  rooms/{room_id}.json (包含 balance_history)                │
+│  rooms/{room_name}.json (包含 balance_history)              │
 └─────────────────────────────────────────────────────────────┘
                               ↓
                     前端加载数据
@@ -165,7 +165,10 @@ docs/database/summaries/
     ├── summary.json            # 校区摘要 (楼栋列表)
     └── buildings/{building}/
         ├── summary.json        # 楼栋摘要 (房间列表)
-        └── rooms/{room_id}.json # 房间历史数据
+        └── rooms/{room_name}.json # 房间历史数据
+
+config/
+└── room_ids.json               # 房间名→ID映射及历史记录
 ```
 
 ### 消耗量计算方法
@@ -208,5 +211,33 @@ function calculateConsumption(balanceHistory) {
 - Static JSON files (existing balance data), localStorage (computed cache)
 - localStorage (user preferences, room cache), sessionStorage (computed cache) (003-consumption-perspective-refactor)
 
+## 房间ID映射 (Room ID Mapping)
+
+缴费系统的 `room_id` 是动态的，可能被重新分配给其他房间。系统使用 `config/room_ids.json` 记录房间名与ID的对应关系及历史变更。
+
+### 映射文件结构
+
+```json
+{
+  "仙林校区": {
+    "1幢": {
+      "1A102": {
+        "current_id": "101223",
+        "previous_ids": ["100492"]
+      }
+    }
+  }
+}
+```
+
+### 相关脚本
+
+| 脚本 | 用途 |
+|------|------|
+| `scripts/update_mapping.py` | 查询API更新映射文件 |
+| `scripts/extract_room_ids.py` | 提取所有room_id（优先从映射文件） |
+| `scripts/migrate_room_ids.py` | 一次性迁移脚本（已执行） |
+
 ## Recent Changes
+- 004-room-id-refactor: Changed primary key from room_id to room_name, added room_ids.json mapping
 - 003-consumption-perspective-refactor: Changed from backend pre-computation to frontend calculation with caching
