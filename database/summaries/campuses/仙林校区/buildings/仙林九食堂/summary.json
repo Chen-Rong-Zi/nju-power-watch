@@ -3,79 +3,64 @@
   "campus": "仙林校区",
   "total_rooms": 15,
   "rooms": {
-    "32748": {
-      "room_name": "冉阔门口",
-      "current_balance": 358.61,
-      "last_updated": "20260527"
-    },
-    "40947": {
-      "room_name": "冉阔仓库照明总表",
-      "current_balance": 208.0,
-      "last_updated": "20260527"
-    },
-    "31579": {
-      "room_name": "巴黎贝甜",
-      "current_balance": 93.33,
-      "last_updated": "20260527"
-    },
-    "22670": {
-      "room_name": "巨百佐乌香锅（317门口）",
-      "current_balance": 214.85,
-      "last_updated": "20260527"
-    },
-    "17158": {
-      "room_name": "巨百餐饮（315门口）",
+    "巨百餐饮（315门口）": {
       "current_balance": 77.74,
       "last_updated": "20260527"
     },
-    "32731": {
-      "room_name": "冉阔铁板空调",
-      "current_balance": 0.0,
+    "桃源村（319门口）": {
+      "current_balance": 508.65,
       "last_updated": "20260527"
     },
-    "34635": {
-      "room_name": "麦当劳冷库",
-      "current_balance": 6244.96,
-      "last_updated": "20260527"
-    },
-    "30230": {
-      "room_name": "江南小镇空调",
-      "current_balance": 4.23,
-      "last_updated": "20260527"
-    },
-    "32837": {
-      "room_name": "江南小镇（325门口）",
-      "current_balance": 48.56,
-      "last_updated": "20260527"
-    },
-    "2175": {
-      "room_name": "巨佰佐鸟空调",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "32458": {
-      "room_name": "桃源村（321门口）",
-      "current_balance": 360.57,
-      "last_updated": "20260527"
-    },
-    "2200": {
-      "room_name": "巨百佐乌香锅空调",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "34864": {
-      "room_name": "巨百江南洗碗间",
+    "巨百江南洗碗间": {
       "current_balance": 208.51,
       "last_updated": "20260527"
     },
-    "32747": {
-      "room_name": "冉阔冰箱",
+    "冉阔门口": {
+      "current_balance": 358.61,
+      "last_updated": "20260527"
+    },
+    "江南小镇空调": {
+      "current_balance": 4.23,
+      "last_updated": "20260527"
+    },
+    "冉阔铁板空调": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "麦当劳冷库": {
+      "current_balance": 6244.96,
+      "last_updated": "20260527"
+    },
+    "巴黎贝甜": {
+      "current_balance": 93.33,
+      "last_updated": "20260527"
+    },
+    "桃源村（321门口）": {
+      "current_balance": 360.57,
+      "last_updated": "20260527"
+    },
+    "巨百佐乌香锅空调": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "巨百佐乌香锅（317门口）": {
+      "current_balance": 214.85,
+      "last_updated": "20260527"
+    },
+    "冉阔冰箱": {
       "current_balance": 55.06,
       "last_updated": "20260527"
     },
-    "40718": {
-      "room_name": "桃源村（319门口）",
-      "current_balance": 508.65,
+    "江南小镇（325门口）": {
+      "current_balance": 48.56,
+      "last_updated": "20260527"
+    },
+    "巨佰佐鸟空调": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "冉阔仓库照明总表": {
+      "current_balance": 208.0,
       "last_updated": "20260527"
     }
   }

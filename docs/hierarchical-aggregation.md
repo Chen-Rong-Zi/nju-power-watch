@@ -28,8 +28,8 @@ database/
         │       │   ├── summary.json       # 楼栋汇总
         │       │   │
         │       │   └── rooms/             # 房间级数据
-        │       │       ├── 53463.json     # 房间详情（日期→余额）
-        │       │       └── 53464.json
+        │       │       ├── 19栋第16层1613.json     # 房间详情（日期→余额）
+        │       │       └── 19栋第16层1614.json
         │       │
         │       └── 20幢/
         │           └── ...
@@ -140,14 +140,14 @@ database/
     "avg_trend": -0.13
   },
   "rooms": {
-    "53463": {
+    "19栋第16层1613": {
       "room_name": "19栋第16层1613",
       "current_balance": 125.50,
       "avg_7d": 128.30,
       "trend_30d": -0.15,
       "last_updated": "2026-05-15T02:00:00Z"
     },
-    "53464": {
+    "19栋第16层1614": {
       "room_name": "19栋第16层1614",
       "current_balance": 130.20,
       "avg_7d": 132.10,
@@ -164,16 +164,15 @@ database/
 
 ---
 
-### 4. 房间详情文件 (campuses/{campus}/buildings/{building}/rooms/{room_id}.json)
+### 4. 房间详情文件 (campuses/{campus}/buildings/{building}/rooms/{room_name}.json)
 
-**路径**: `database/summaries/campuses/仙林校区/buildings/19幢/rooms/53463.json`
+**路径**: `database/summaries/campuses/仙林校区/buildings/19幢/rooms/19栋第16层1613.json`
 
 **用途**: 查看特定房间的历史余额数据
 
 **数据结构**:
 ```json
 {
-  "room_id": "53463",
   "room_name": "19栋第16层1613",
   "campus": "仙林校区",
   "building": "19幢",
@@ -271,9 +270,8 @@ async function loadBuilding(campusName, buildingName) {
   const data = await response.json();
   
   // 显示房间列表（简略信息）
-  const rooms = Object.entries(data.rooms).map(([id, info]) => ({
-    id,
-    name: info.room_name,
+  const rooms = Object.entries(data.rooms).map(([name, info]) => ({
+    name,
     balance: info.current_balance,
     trend: info.trend_30d
   }));
@@ -286,9 +284,9 @@ async function loadBuilding(campusName, buildingName) {
 
 ```javascript
 // 加载房间详细数据
-async function loadRoom(campusName, buildingName, roomId) {
+async function loadRoom(campusName, buildingName, roomName) {
   const response = await fetch(
-    `database/summaries/campuses/${campusName}/buildings/${buildingName}/rooms/${roomId}.json`
+    `database/summaries/campuses/${campusName}/buildings/${buildingName}/rooms/${encodeURIComponent(roomName)}.json`
   );
   const data = await response.json();
   
@@ -422,9 +420,8 @@ async function loadBuilding(campusName, buildingName) {
   const data = await response.json();
   
   // 显示房间列表
-  const rooms = Object.entries(data.rooms).map(([id, info]) => ({
-    id,
-    name: info.room_name,
+  const rooms = Object.entries(data.rooms).map(([name, info]) => ({
+    name,
     balance: info.current_balance
   }));
   
@@ -436,9 +433,9 @@ async function loadBuilding(campusName, buildingName) {
 
 ```javascript
 // 加载房间数据并计算统计指标
-async function loadRoom(campusName, buildingName, roomId) {
+async function loadRoom(campusName, buildingName, roomName) {
   const response = await fetch(
-    `database/summaries/campuses/${campusName}/buildings/${buildingName}/rooms/${roomId}.json`
+    `database/summaries/campuses/${campusName}/buildings/${buildingName}/rooms/${encodeURIComponent(roomName)}.json`
   );
   const data = await response.json();
   
@@ -578,7 +575,7 @@ cat database/summaries/campuses/仙林校区/summary.json | jq
 cat database/summaries/campuses/仙林校区/buildings/19幢/summary.json | jq
 
 # 检查特定房间
-cat database/summaries/campuses/仙林校区/buildings/19幢/rooms/53463.json | jq
+cat database/summaries/campuses/仙林校区/buildings/19幢/rooms/19栋第16层1613.json | jq
 ```
 
 ---
@@ -588,7 +585,7 @@ cat database/summaries/campuses/仙林校区/buildings/19幢/rooms/53463.json | 
 ```
 原始数据: database/仙林校区/19幢/19栋第16层1613-53463/20260515.json
             ↓ (aggregate_data.py 处理)
-聚合数据: database/summaries/campuses/仙林校区/buildings/19幢/rooms/53463.json
+聚合数据: database/summaries/campuses/仙林校区/buildings/19幢/rooms/19栋第16层1613.json
 
 原始数据: 所有房间的每日JSON文件
             ↓ (aggregate_data.py 处理)

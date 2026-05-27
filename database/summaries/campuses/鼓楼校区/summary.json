@@ -1,126 +1,126 @@
 {
   "campus": "鼓楼校区",
-  "total_rooms": 3827,
+  "total_rooms": 3824,
   "buildings": {
-    "荟萃楼": {
-      "total_rooms": 35,
-      "avg_balance": 139.5
-    },
-    "南园16舍": {
-      "total_rooms": 27,
-      "avg_balance": 64.83
-    },
-    "南园13舍": {
-      "total_rooms": 84,
-      "avg_balance": 159.71
-    },
-    "南园14舍": {
-      "total_rooms": 101,
-      "avg_balance": 792.64
-    },
-    "南园4舍": {
-      "total_rooms": 144,
-      "avg_balance": 98.61
-    },
-    "南园7舍": {
-      "total_rooms": 185,
-      "avg_balance": 82.67
-    },
-    "南园3舍": {
-      "total_rooms": 216,
-      "avg_balance": 479.91
-    },
-    "陶园三栋": {
-      "total_rooms": 324,
-      "avg_balance": 183.42
-    },
-    "汉口路58号学生公寓1幢": {
-      "total_rooms": 73,
-      "avg_balance": 236.82
-    },
-    "南园21舍": {
-      "total_rooms": 158,
-      "avg_balance": 148.25
-    },
-    "南园20舍": {
-      "total_rooms": 137,
-      "avg_balance": 101.07
-    },
-    "陶园一栋": {
-      "total_rooms": 211,
-      "avg_balance": 159.11
-    },
-    "南园12舍": {
-      "total_rooms": 100,
-      "avg_balance": 220.47
-    },
-    "南园11舍": {
-      "total_rooms": 101,
-      "avg_balance": 74.29
-    },
-    "汉口路42号": {
-      "total_rooms": 4,
-      "avg_balance": 196.4
-    },
-    "东苑宿舍": {
-      "total_rooms": 36,
-      "avg_balance": 110.98
-    },
-    "出版社小楼": {
-      "total_rooms": 1,
-      "avg_balance": 0.0
-    },
-    "南园5舍": {
-      "total_rooms": 185,
-      "avg_balance": 93.21
-    },
-    "陶园二栋": {
-      "total_rooms": 337,
-      "avg_balance": 1204.93
+    "南园8舍": {
+      "total_rooms": 341,
+      "avg_balance": 156.95
     },
     "南园2舍": {
       "total_rooms": 231,
       "avg_balance": 376.58
     },
-    "汉口路58号学生公寓2幢": {
-      "total_rooms": 44,
-      "avg_balance": 210.97
-    },
-    "南园6舍": {
-      "total_rooms": 169,
-      "avg_balance": 117.44
-    },
-    "西苑留学生楼": {
-      "total_rooms": 271,
-      "avg_balance": 100.93
-    },
-    "陶园南楼": {
-      "total_rooms": 36,
-      "avg_balance": 170.98
-    },
-    "南园15舍": {
-      "total_rooms": 3,
-      "avg_balance": 0.0
+    "南园13舍": {
+      "total_rooms": 84,
+      "avg_balance": 159.71
     },
     "南园1舍": {
       "total_rooms": 206,
       "avg_balance": 447.7
     },
+    "陶园二栋": {
+      "total_rooms": 337,
+      "avg_balance": 1204.93
+    },
+    "南园5舍": {
+      "total_rooms": 184,
+      "avg_balance": 93.44
+    },
+    "南园14舍": {
+      "total_rooms": 101,
+      "avg_balance": 792.64
+    },
+    "南园6舍": {
+      "total_rooms": 169,
+      "avg_balance": 117.44
+    },
+    "南园20舍": {
+      "total_rooms": 137,
+      "avg_balance": 101.07
+    },
     "教超二层": {
       "total_rooms": 24,
       "avg_balance": 147.24
     },
-    "南园8舍": {
-      "total_rooms": 343,
-      "avg_balance": 156.69
+    "汉口路58号学生公寓2幢": {
+      "total_rooms": 44,
+      "avg_balance": 210.97
+    },
+    "汉口路58号学生公寓1幢": {
+      "total_rooms": 73,
+      "avg_balance": 236.82
+    },
+    "平仓巷宿舍": {
+      "total_rooms": 37,
+      "avg_balance": 222.48
+    },
+    "南园21舍": {
+      "total_rooms": 158,
+      "avg_balance": 148.25
+    },
+    "陶园一栋": {
+      "total_rooms": 211,
+      "avg_balance": 159.11
+    },
+    "南园15舍": {
+      "total_rooms": 3,
+      "avg_balance": 0.0
+    },
+    "南园7舍": {
+      "total_rooms": 185,
+      "avg_balance": 82.67
+    },
+    "南园16舍": {
+      "total_rooms": 27,
+      "avg_balance": 64.83
+    },
+    "陶园三栋": {
+      "total_rooms": 324,
+      "avg_balance": 183.42
+    },
+    "东苑宿舍": {
+      "total_rooms": 36,
+      "avg_balance": 110.98
+    },
+    "南园4舍": {
+      "total_rooms": 144,
+      "avg_balance": 98.61
+    },
+    "南园12舍": {
+      "total_rooms": 100,
+      "avg_balance": 220.47
+    },
+    "汉口路42号": {
+      "total_rooms": 4,
+      "avg_balance": 196.4
+    },
+    "陶园南楼": {
+      "total_rooms": 36,
+      "avg_balance": 170.98
+    },
+    "南园11舍": {
+      "total_rooms": 101,
+      "avg_balance": 74.29
+    },
+    "出版社小楼": {
+      "total_rooms": 1,
+      "avg_balance": 0.0
+    },
+    "南园3舍": {
+      "total_rooms": 216,
+      "avg_balance": 479.91
     },
     "鼓楼门面房": {
       "total_rooms": 4,
       "avg_balance": 1317.65
     },
-    "平仓巷宿舍": {
-      "total_rooms": 37,
-      "avg_balance": 222.48
+    "西苑留学生楼": {
+      "total_rooms": 271,
+      "avg_balance": 100.93
+    },
+    "荟萃楼": {
+      "total_rooms": 35,
+      "avg_balance": 139.5
     }
   }
 }

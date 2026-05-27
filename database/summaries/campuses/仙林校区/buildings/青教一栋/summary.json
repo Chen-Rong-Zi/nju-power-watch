@@ -3,243 +3,195 @@
   "campus": "仙林校区",
   "total_rooms": 48,
   "rooms": {
-    "47694": {
-      "room_name": "青教一栋第6层604",
-      "current_balance": 190.05,
-      "last_updated": "20260527"
-    },
-    "14316": {
-      "room_name": "青教一栋第2层203",
-      "current_balance": 116.77,
-      "last_updated": "20260527"
-    },
-    "39639": {
-      "room_name": "青教一栋第4层403",
-      "current_balance": 286.89,
-      "last_updated": "20260527"
-    },
-    "65270": {
-      "room_name": "青教一栋第6层603",
-      "current_balance": 62.28,
-      "last_updated": "20260527"
-    },
-    "42092": {
-      "room_name": "青教一栋第4层407",
-      "current_balance": 156.79,
-      "last_updated": "20260527"
-    },
-    "8286": {
-      "room_name": "青教一栋第3层306",
-      "current_balance": 11.25,
-      "last_updated": "20260527"
-    },
-    "32913": {
-      "room_name": "青教一栋第2层207",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "17912": {
-      "room_name": "青教一栋第5层504",
-      "current_balance": 108.26,
-      "last_updated": "20260527"
-    },
-    "33168": {
-      "room_name": "青教一栋第3层303",
-      "current_balance": 26.82,
-      "last_updated": "20260527"
-    },
-    "22811": {
-      "room_name": "青教一栋第4层404",
-      "current_balance": 307.62,
-      "last_updated": "20260527"
-    },
-    "99765": {
-      "room_name": "青教一栋第1层103",
+    "青教一栋第1层103": {
       "current_balance": 139.89,
       "last_updated": "20260527"
     },
-    "31726": {
-      "room_name": "青教一栋第1层107",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "90688": {
-      "room_name": "青教一栋第6层605",
-      "current_balance": 12.75,
-      "last_updated": "20260527"
-    },
-    "12026": {
-      "room_name": "青教一栋第5层501",
-      "current_balance": 64.3,
-      "last_updated": "20260527"
-    },
-    "41770": {
-      "room_name": "青教一栋第6层607",
-      "current_balance": 77.73,
-      "last_updated": "20260527"
-    },
-    "79469": {
-      "room_name": "青教一栋第1层106",
-      "current_balance": 68.51,
-      "last_updated": "20260527"
-    },
-    "33101": {
-      "room_name": "青教一栋第1层104",
-      "current_balance": 27.35,
-      "last_updated": "20260527"
-    },
-    "31442": {
-      "room_name": "青教一栋第6层602",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "38122": {
-      "room_name": "青教一栋第5层503",
-      "current_balance": 93.43,
-      "last_updated": "20260527"
-    },
-    "64946": {
-      "room_name": "0601",
-      "current_balance": 294.87,
-      "last_updated": "20260527"
-    },
-    "37942": {
-      "room_name": "青教一栋第5层506",
+    "青教一栋第5层506": {
       "current_balance": 70.88,
       "last_updated": "20260527"
     },
-    "39892": {
-      "room_name": "青教一栋第5层508",
-      "current_balance": 146.97,
-      "last_updated": "20260527"
-    },
-    "5389": {
-      "room_name": "0203",
+    "青教一栋第2层203": {
       "current_balance": 116.77,
       "last_updated": "20260527"
     },
-    "96153": {
-      "room_name": "青教三栋第6层605",
-      "current_balance": 12.75,
-      "last_updated": "20260527"
-    },
-    "93998": {
-      "room_name": "青教一栋第4层401",
-      "current_balance": 73.32,
-      "last_updated": "20260527"
-    },
-    "79467": {
-      "room_name": "青教一栋第1层102",
-      "current_balance": 390.18,
-      "last_updated": "20260527"
-    },
-    "30442": {
-      "room_name": "青教一栋第2层204",
-      "current_balance": 46.71,
-      "last_updated": "20260527"
-    },
-    "33144": {
-      "room_name": "青教一栋第3层304",
-      "current_balance": 30.51,
-      "last_updated": "20260527"
-    },
-    "53937": {
-      "room_name": "青教一栋第2层202",
-      "current_balance": 119.27,
-      "last_updated": "20260527"
-    },
-    "40228": {
-      "room_name": "青教一栋第2层206",
-      "current_balance": 188.51,
-      "last_updated": "20260527"
-    },
-    "70596": {
-      "room_name": "青教一栋第6层601",
-      "current_balance": 294.87,
-      "last_updated": "20260527"
-    },
-    "64762": {
-      "room_name": "青教一栋第1层101",
-      "current_balance": 148.76,
-      "last_updated": "20260527"
-    },
-    "32631": {
-      "room_name": "青教一栋第2层201",
-      "current_balance": 131.32,
-      "last_updated": "20260527"
-    },
-    "2323": {
-      "room_name": "青教一栋第4层405",
-      "current_balance": 99.38,
-      "last_updated": "20260527"
-    },
-    "7679": {
-      "room_name": "青教一栋第4层402",
+    "青教一栋第4层402": {
       "current_balance": 16.01,
       "last_updated": "20260527"
     },
-    "90864": {
-      "room_name": "青教一栋第1层108",
-      "current_balance": 8.96,
-      "last_updated": "20260527"
-    },
-    "42537": {
-      "room_name": "青教一栋第4层408",
-      "current_balance": 281.67,
-      "last_updated": "20260527"
-    },
-    "2720": {
-      "room_name": "0308",
-      "current_balance": 155.19,
-      "last_updated": "20260527"
-    },
-    "35201": {
-      "room_name": "青教一栋第5层502",
-      "current_balance": 285.75,
-      "last_updated": "20260527"
-    },
-    "11719": {
-      "room_name": "青教一栋第2层205",
-      "current_balance": 93.43,
-      "last_updated": "20260527"
-    },
-    "29111": {
-      "room_name": "青教一栋第4层406",
-      "current_balance": 4.35,
-      "last_updated": "20260527"
-    },
-    "38392": {
-      "room_name": "青教一栋第3层307",
+    "青教一栋第3层307": {
       "current_balance": 885.79,
       "last_updated": "20260527"
     },
-    "90727": {
-      "room_name": "青教一栋第1层105",
-      "current_balance": 166.75,
+    "青教一栋第3层306": {
+      "current_balance": 11.25,
       "last_updated": "20260527"
     },
-    "65015": {
-      "room_name": "青教一栋第5层505",
-      "current_balance": 78.31,
+    "青教一栋第4层403": {
+      "current_balance": 286.89,
       "last_updated": "20260527"
     },
-    "93293": {
-      "room_name": "青教一栋第5层507",
+    "青教一栋第2层202": {
+      "current_balance": 119.27,
+      "last_updated": "20260527"
+    },
+    "青教一栋第5层507": {
       "current_balance": 60.46,
       "last_updated": "20260527"
     },
-    "39557": {
-      "room_name": "青教一栋第3层301",
+    "青教一栋第1层102": {
+      "current_balance": 390.18,
+      "last_updated": "20260527"
+    },
+    "青教一栋第6层607": {
+      "current_balance": 77.73,
+      "last_updated": "20260527"
+    },
+    "青教一栋第2层205": {
+      "current_balance": 93.43,
+      "last_updated": "20260527"
+    },
+    "青教一栋第4层404": {
+      "current_balance": 307.62,
+      "last_updated": "20260527"
+    },
+    "青教一栋第3层301": {
       "current_balance": 63.78,
       "last_updated": "20260527"
     },
-    "48132": {
-      "room_name": "青教一栋第3层305",
+    "青教一栋第1层105": {
+      "current_balance": 166.75,
+      "last_updated": "20260527"
+    },
+    "青教一栋第4层408": {
+      "current_balance": 281.67,
+      "last_updated": "20260527"
+    },
+    "青教一栋第1层104": {
+      "current_balance": 27.35,
+      "last_updated": "20260527"
+    },
+    "青教一栋第6层601": {
+      "current_balance": 294.87,
+      "last_updated": "20260527"
+    },
+    "0203": {
+      "current_balance": 116.77,
+      "last_updated": "20260527"
+    },
+    "青教一栋第4层405": {
+      "current_balance": 99.38,
+      "last_updated": "20260527"
+    },
+    "青教一栋第2层204": {
+      "current_balance": 46.71,
+      "last_updated": "20260527"
+    },
+    "青教一栋第5层501": {
+      "current_balance": 64.3,
+      "last_updated": "20260527"
+    },
+    "青教一栋第1层108": {
+      "current_balance": 8.96,
+      "last_updated": "20260527"
+    },
+    "青教一栋第3层303": {
+      "current_balance": 26.82,
+      "last_updated": "20260527"
+    },
+    "青教一栋第4层406": {
+      "current_balance": 4.35,
+      "last_updated": "20260527"
+    },
+    "青教一栋第2层207": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "青教一栋第5层502": {
+      "current_balance": 285.75,
+      "last_updated": "20260527"
+    },
+    "0308": {
+      "current_balance": 155.19,
+      "last_updated": "20260527"
+    },
+    "青教一栋第1层107": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "青教一栋第6层602": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "青教一栋第6层603": {
+      "current_balance": 62.28,
+      "last_updated": "20260527"
+    },
+    "青教一栋第1层106": {
+      "current_balance": 68.51,
+      "last_updated": "20260527"
+    },
+    "青教一栋第5层503": {
+      "current_balance": 93.43,
+      "last_updated": "20260527"
+    },
+    "青教一栋第2层206": {
+      "current_balance": 188.51,
+      "last_updated": "20260527"
+    },
+    "青教一栋第4层407": {
+      "current_balance": 156.79,
+      "last_updated": "20260527"
+    },
+    "青教一栋第5层508": {
+      "current_balance": 146.97,
+      "last_updated": "20260527"
+    },
+    "青教一栋第1层101": {
+      "current_balance": 148.76,
+      "last_updated": "20260527"
+    },
+    "青教一栋第6层604": {
+      "current_balance": 190.05,
+      "last_updated": "20260527"
+    },
+    "青教一栋第3层305": {
       "current_balance": 312.74,
       "last_updated": "20260527"
     },
-    "80107": {
-      "room_name": "青教一栋第3层308",
+    "0601": {
+      "current_balance": 294.87,
+      "last_updated": "20260527"
+    },
+    "青教一栋第2层201": {
+      "current_balance": 131.32,
+      "last_updated": "20260527"
+    },
+    "青教一栋第5层504": {
+      "current_balance": 108.26,
+      "last_updated": "20260527"
+    },
+    "青教三栋第6层605": {
+      "current_balance": 12.75,
+      "last_updated": "20260527"
+    },
+    "青教一栋第5层505": {
+      "current_balance": 78.31,
+      "last_updated": "20260527"
+    },
+    "青教一栋第4层401": {
+      "current_balance": 73.32,
+      "last_updated": "20260527"
+    },
+    "青教一栋第3层304": {
+      "current_balance": 30.51,
+      "last_updated": "20260527"
+    },
+    "青教一栋第6层605": {
+      "current_balance": 12.75,
+      "last_updated": "20260527"
+    },
+    "青教一栋第3层308": {
       "current_balance": 155.19,
       "last_updated": "20260527"
     }

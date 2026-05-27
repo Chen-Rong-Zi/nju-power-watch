@@ -871,9 +871,8 @@
               allRoomsCache.push({
                 campus: room.campus,
                 building: room.building,
-                roomId: room.id,
                 roomName: room.name,
-                searchKey: `${room.campus} ${room.building} ${room.name} ${room.id}`.toLowerCase()
+                searchKey: `${room.campus} ${room.building} ${room.name}`.toLowerCase()
               });
             });
 
@@ -928,8 +927,8 @@
     // 房间名排序函数
     function sortRooms(rooms) {
       return rooms.sort((a, b) => {
-        const nameA = a.name || a.id || '';
-        const nameB = b.name || b.id || '';
+        const nameA = a.name || '';
+        const nameB = b.name || '';
 
         // 提取数字部分进行比较
         const numA = parseInt(nameA.match(/\d+/)?.[0] || '999999');
@@ -1000,14 +999,12 @@
         // 使用 data 属性传递参数，避免特殊字符问题
         const campus = escapeHtml(r.campus);
         const building = escapeHtml(r.building);
-        const roomId = escapeHtml(r.roomId);
         const roomName = escapeHtml(r.roomName);
 
         return `
           <div class="search-result-item"
                data-campus="${campus}"
                data-building="${building}"
-               data-room-id="${roomId}"
                data-room-name="${roomName}">
             <div class="search-result-main">${r.roomName}</div>
             <div class="search-result-sub">${r.campus} · ${r.building}</div>
@@ -1020,9 +1017,8 @@
         item.addEventListener('click', () => {
           const campus = item.dataset.campus;
           const building = item.dataset.building;
-          const roomId = item.dataset.roomId;
           const roomName = item.dataset.roomName;
-          selectSearchResult(campus, building, roomId, roomName);
+          selectSearchResult(campus, building, roomName);
         });
       });
 
@@ -1037,7 +1033,7 @@
     }
 
     // 选择搜索结果
-    async function selectSearchResult(campus, building, roomId, roomName) {
+    async function selectSearchResult(campus, building, roomName) {
       // 隐藏搜索结果
       document.getElementById('search-results').style.display = 'none';
       document.getElementById('config-search').value = `${campus}  ${building}  ${roomName}`;
@@ -1066,13 +1062,13 @@
       const roomSelect = document.getElementById('config-room');
       let found = false;
 
-      // 方式1: 直接匹配 roomId
-      if (roomSelect.querySelector(`option[value="${roomId}"]`)) {
-        roomSelect.value = roomId;
+      // 匹配 roomName
+      if (roomSelect.querySelector(`option[value="${roomName}"]`)) {
+        roomSelect.value = roomName;
         found = true;
       }
 
-      // 方式2: 匹配 roomName
+      // Fallback: 匹配 data-name 属性
       if (!found) {
         const optionByName = roomSelect.querySelector(`option[data-name="${roomName}"]`);
         if (optionByName) {
@@ -1081,13 +1077,10 @@
         }
       }
 
-      // 方式3: 遍历查找包含 roomName 或 roomId 的选项
+      // Last resort: 文本内容匹配
       if (!found) {
         for (const option of roomSelect.options) {
-          if (option.value === roomId ||
-              option.dataset.name === roomName ||
-              option.textContent === roomName ||
-              (roomId && option.value.includes(roomId)) ||
+          if (option.textContent === roomName ||
               (roomName && option.textContent.includes(roomName))) {
             roomSelect.value = option.value;
             found = true;
@@ -1097,7 +1090,7 @@
       }
 
       if (!found) {
-        console.warn('无法找到匹配的房间选项:', { campus, building, roomId, roomName });
+        console.warn('无法找到匹配的房间选项:', { campus, building, roomName });
       }
     }
 
@@ -1171,7 +1164,7 @@
       const roomData = await DataService.getRoomHistory(
         userConfig.campus,
         userConfig.building,
-        userConfig.roomId
+        userConfig.roomName
       );
 
       if (roomData && roomData.history && roomData.history.length > 0) {
@@ -1465,7 +1458,7 @@
         roomSelect.innerHTML = '<option value="">请选择房间</option>';
         sortedRooms.forEach(room => {
           const option = document.createElement('option');
-          option.value = room.id;
+          option.value = room.name;
           option.textContent = room.name;
           option.dataset.name = room.name;
           roomSelect.appendChild(option);
@@ -1478,15 +1471,15 @@
       const campus = document.getElementById('config-campus').value;
       const building = document.getElementById('config-building').value;
       const roomSelect = document.getElementById('config-room');
-      const roomId = roomSelect.value;
-      const roomName = roomSelect.options[roomSelect.selectedIndex]?.dataset.name || roomId;
+      const roomName = roomSelect.value;
+      const displayName = roomSelect.options[roomSelect.selectedIndex]?.dataset.name || roomName;
 
-      if (!campus || !building || !roomId) {
+      if (!campus || !building || !roomName) {
         alert('请完整填写所有选项');
         return;
       }
 
-      userConfig = { campus, building, roomId, roomName };
+      userConfig = { campus, building, roomName, displayName };
       DataService.setUserConfig(userConfig);
       hideConfig();
       loadRoomData();

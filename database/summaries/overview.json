@@ -1,21 +1,22 @@
 {
-  "generated_at": "2026-05-27T06:19:39.498198",
-  "total_rooms": 16657,
+  "generated_at": "2026-05-28T03:35:17.850828",
+  "data_version": "20260528-refactor-data-model",
+  "total_rooms": 16644,
   "campuses": {
     "苏州校区": {
       "total_rooms": 1531,
       "buildings_count": 16
     },
     "仙林校区": {
-      "total_rooms": 9549,
+      "total_rooms": 9543,
       "buildings_count": 37
     },
     "鼓楼校区": {
-      "total_rooms": 3827,
+      "total_rooms": 3824,
       "buildings_count": 30
     },
     "浦口校区": {
-      "total_rooms": 1750,
+      "total_rooms": 1746,
       "buildings_count": 23
     }
   },

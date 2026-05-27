@@ -128,9 +128,9 @@ background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);  /* 紫色 */
 // 在 app.js 中添加
 let selectedRooms = [];
 
-function addToComparison(roomId) {
-    if (!selectedRooms.includes(roomId)) {
-        selectedRooms.push(roomId);
+function addToComparison(roomName) {
+    if (!selectedRooms.includes(roomName)) {
+        selectedRooms.push(roomName);
         updateComparisonChart();
     }
 }

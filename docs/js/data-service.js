@@ -6,7 +6,7 @@
  * - ./database/summaries/overview.json - 总览数据
  * - ./database/summaries/campuses/校区名/summary.json - 校区汇总
  * - ./database/summaries/campuses/校区名/buildings/楼栋名/summary.json - 楼栋汇总
- * - ./database/summaries/campuses/校区名/buildings/楼栋名/rooms/宿舍ID.json - 房间历史
+ * - ./database/summaries/campuses/校区名/buildings/楼栋名/rooms/房间名.json - 房间历史
  * - ./database/校区/楼栋/房间名-宿舍ID/日期.json - 每日详细数据
  */
 
@@ -35,7 +35,7 @@ const DataService = {
    *    键: `{校区}.{楼栋}.耗电排序`
    *    值: {
    *      '20250127': [
-   *        { roomId, roomName, consumption, balance, rank },
+   *        { roomName, consumption, balance, rank },
    *        ...
    *      ],
    *      '20250128': [...]
@@ -52,7 +52,7 @@ const DataService = {
    * 3. 楼栋房间列表缓存：
    *    键: `{校区}.{楼栋}.房间列表`
    *    值: {
-   *      '房间ID': { name: '101', room_name: '4A211', current_balance: 45.2, last_updated: '...' },
+   *      '房间名': { name: '101', room_name: '4A211', current_balance: 45.2, last_updated: '...' },
    *      ...
    *    }
    */
@@ -289,7 +289,7 @@ const DataService = {
   /**
    * 获取楼栋详情数据（包含所有房间的完整历史）
    * 用于校区视角快速计算耗电量，避免请求大量单独房间文件
-   * @returns {Object|null} { building, campus, total_rooms, rooms: { roomId: { room_id, room_name, ... } } }
+   * @returns {Object|null} { building, campus, total_rooms, rooms: { roomName: { room_name, ... } } }
    */
   async getBuildingDetails(campusName, buildingName) {
     const cacheKey = `details:${campusName}/${buildingName}`;
@@ -321,9 +321,8 @@ const DataService = {
   async getRooms(campusName, buildingName) {
     const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
     if (buildingSummary && buildingSummary.rooms) {
-      return Object.entries(buildingSummary.rooms).map(([id, data]) => ({
-        id,
-        name: data.room_name,
+      return Object.entries(buildingSummary.rooms).map(([roomName, data]) => ({
+        name: roomName,
         currentBalance: data.current_balance,
         lastUpdated: data.last_updated
       }));
@@ -334,15 +333,15 @@ const DataService = {
   /**
    * 获取房间历史数据（从汇总文件）
    */
-  async getRoomHistory(campusName, buildingName, roomId) {
-    const cacheKey = `${campusName}/${buildingName}/${roomId}`;
+  async getRoomHistory(campusName, buildingName, roomName) {
+    const cacheKey = `${campusName}/${buildingName}/${roomName}`;
     if (this._roomCache.has(cacheKey)) {
       return this._roomCache.get(cacheKey);
     }
 
     try {
       const response = await fetch(
-        `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${roomId}.json`
+        `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${encodeURIComponent(roomName)}.json`
       );
       const data = await response.json();
 
@@ -387,11 +386,11 @@ const DataService = {
    * 获取特定日期的消耗数据
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
-   * @param {string} roomId 房间ID
+   * @param {string} roomName 房间名
    * @param {string} dateType 日期类型: 'today', 'yesterday', 'week', 或具体日期(YYYY-MM-DD)
    */
-  async getConsumptionByDate(campusName, buildingName, roomId, dateType) {
-    const history = await this.getRoomHistory(campusName, buildingName, roomId);
+  async getConsumptionByDate(campusName, buildingName, roomName, dateType) {
+    const history = await this.getRoomHistory(campusName, buildingName, roomName);
     if (!history || !history.history || history.history.length === 0) {
       return 0;
     }
@@ -438,31 +437,31 @@ const DataService = {
    * 当一个请求完成时，立即开始下一个请求
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
-   * @param {string[]} roomIds 房间ID列表
-   * @param {Function} onRoomLoaded 单个房间加载完成回调 (roomId, roomData, loaded, total)
+   * @param {string[]} roomNames 房间名列表
+   * @param {Function} onRoomLoaded 单个房间加载完成回调 (roomName, roomData, loaded, total)
    * @param {number} poolSize 请求池大小（默认100）
    */
-  async poolRoomHistory(campusName, buildingName, roomIds, onRoomLoaded, poolSize = 100) {
+  async poolRoomHistory(campusName, buildingName, roomNames, onRoomLoaded, poolSize = 100) {
     let loaded = 0;
-    const total = roomIds.length;
+    const total = roomNames.length;
     let currentIndex = 0;
     const activeRequests = new Set();
 
     // 处理单个房间的请求
-    const processRoom = async (roomId) => {
-      const cacheKey = `${campusName}/${buildingName}/${roomId}`;
+    const processRoom = async (roomName) => {
+      const cacheKey = `${campusName}/${buildingName}/${roomName}`;
 
       // 检查缓存
       if (this._roomCache.has(cacheKey)) {
         const data = this._roomCache.get(cacheKey);
         loaded++;
-        onRoomLoaded(roomId, data, loaded, total);
-        return { roomId, data };
+        onRoomLoaded(roomName, data, loaded, total);
+        return { roomName, data };
       }
 
       try {
         const response = await fetch(
-          `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${roomId}.json`
+          `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${encodeURIComponent(roomName)}.json`
         );
         const rawData = await response.json();
 
@@ -495,13 +494,13 @@ const DataService = {
 
         this._roomCache.set(cacheKey, data);
         loaded++;
-        onRoomLoaded(roomId, data, loaded, total);
+        onRoomLoaded(roomName, data, loaded, total);
 
-        return { roomId, data };
+        return { roomName, data };
       } catch (error) {
         loaded++;
-        onRoomLoaded(roomId, null, loaded, total);
-        return { roomId, data: null, error };
+        onRoomLoaded(roomName, null, loaded, total);
+        return { roomName, data: null, error };
       }
     };
 
@@ -510,9 +509,9 @@ const DataService = {
       if (currentIndex >= total) return null;
 
       const roomIndex = currentIndex++;
-      const roomId = roomIds[roomIndex];
+      const roomName = roomNames[roomIndex];
 
-      const promise = processRoom(roomId);
+      const promise = processRoom(roomName);
       activeRequests.add(promise);
 
       const result = await promise;
@@ -543,33 +542,33 @@ const DataService = {
    * 支持实时计算和排序动画
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
-   * @param {string[]} roomIds 房间ID列表
-   * @param {Function} onRoomLoaded 单个房间加载完成回调 (roomId, roomData)
+   * @param {string[]} roomNames 房间名列表
+   * @param {Function} onRoomLoaded 单个房间加载完成回调 (roomName, roomData)
    * @param {number} concurrency 并发数（默认10）
    */
-  async streamRoomHistory(campusName, buildingName, roomIds, onRoomLoaded, concurrency = 100) {
+  async streamRoomHistory(campusName, buildingName, roomNames, onRoomLoaded, concurrency = 100) {
     // 使用请求池模式，更高效
-    return this.poolRoomHistory(campusName, buildingName, roomIds, onRoomLoaded, concurrency);
+    return this.poolRoomHistory(campusName, buildingName, roomNames, onRoomLoaded, concurrency);
   },
 
   /**
    * 批量获取房间历史数据（请求池模式，更高效）
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
-   * @param {string[]} roomIds 房间ID列表
+   * @param {string[]} roomNames 房间名列表
    * @param {number} poolSize 请求池大小（默认100）
    * @param {Function} onProgress 进度回调 (loaded, total)
    */
-  async batchGetRoomHistory(campusName, buildingName, roomIds, poolSize = 100, onProgress = null) {
+  async batchGetRoomHistory(campusName, buildingName, roomNames, poolSize = 100, onProgress = null) {
     const results = new Map();
 
     // 使用请求池模式获取数据
     await this.poolRoomHistory(
       campusName,
       buildingName,
-      roomIds,
-      (roomId, data, loaded, total) => {
-        if (data) results.set(roomId, data);
+      roomNames,
+      (roomName, data, loaded, total) => {
+        if (data) results.set(roomName, data);
         if (onProgress) onProgress(loaded, total);
       },
       poolSize
@@ -601,14 +600,14 @@ const DataService = {
     const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
     if (!buildingSummary || !buildingSummary.rooms) return [];
 
-    const roomIds = Object.keys(buildingSummary.rooms);
+    const roomNames = Object.keys(buildingSummary.rooms);
     const roomMap = buildingSummary.rooms;
 
     // 使用请求池模式批量获取房间数据（100并发）
     const roomDataMap = await this.batchGetRoomHistory(
       campusName,
       buildingName,
-      roomIds,
+      roomNames,
       100, // 请求池大小
       onProgress
     );
@@ -621,9 +620,9 @@ const DataService = {
 
     // 构建排行数据
     const rankings = [];
-    for (const roomId of roomIds) {
-      const roomInfo = roomMap[roomId];
-      const roomData = roomDataMap.get(roomId);
+    for (const roomName of roomNames) {
+      const roomInfo = roomMap[roomName];
+      const roomData = roomDataMap.get(roomName);
 
       if (roomData && roomData.history && roomData.history.length > 0) {
         // 尝试从历史中找到指定日期的消耗
@@ -635,8 +634,7 @@ const DataService = {
         const entry = targetEntry || roomData.history[roomData.history.length - 1];
 
         rankings.push({
-          roomId,
-          roomName: roomInfo.room_name,
+          roomName,
           consumption: entry?.consumption || 0,
           balance: entry?.electricity || roomInfo.current_balance
           // 注意：不再保存 campus、building、history 等冗余字段
@@ -667,20 +665,20 @@ const DataService = {
     if (!buildingSummary || !buildingSummary.rooms) return null;
 
     const roomMap = buildingSummary.rooms;
-    const roomIds = Object.keys(roomMap);
+    const roomNames = Object.keys(roomMap);
 
     // 尝试从房间缓存读取每个房间的指定日期消耗
     const rankings = [];
     let cachedCount = 0;
     let usedDate = compactDate;
 
-    for (const roomId of roomIds) {
-      const roomInfo = roomMap[roomId];
-      let roomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomId, compactDate);
+    for (const roomName of roomNames) {
+      const roomInfo = roomMap[roomName];
+      let roomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomName, compactDate);
 
       // 如果指定日期没有缓存，尝试获取该房间最新的可用日期
       if (!roomCache || roomCache.consumption === undefined) {
-        const allRoomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomId);
+        const allRoomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomName);
         if (allRoomCache) {
           // 找到最新的可用日期
           const dates = Object.keys(allRoomCache).sort().reverse();
@@ -694,8 +692,7 @@ const DataService = {
 
       if (roomCache && roomCache.consumption !== undefined) {
         rankings.push({
-          roomId,
-          roomName: roomInfo.room_name,
+          roomName,
           consumption: roomCache.consumption,
           balance: roomCache.electricity
         });
@@ -708,7 +705,7 @@ const DataService = {
       return null;
     }
 
-    console.log(`[缓存构建] ${campusName}.${buildingName}: ${cachedCount}/${roomIds.length} 间从缓存读取 (请求:${compactDate}, 实际:${usedDate})`);
+    console.log(`[缓存构建] ${campusName}.${buildingName}: ${cachedCount}/${roomNames.length} 间从缓存读取 (请求:${compactDate}, 实际:${usedDate})`);
 
     // 保存到排名缓存以便下次更快访问（使用请求的日期作为键）
     await this.saveRankingCache(campusName, buildingName, date, rankings);
@@ -733,12 +730,11 @@ const DataService = {
 
     // 获取每个房间的历史数据以计算消耗
     for (const room of rooms) {
-      const history = await this.getRoomHistory(campusName, buildingName, room.id);
+      const history = await this.getRoomHistory(campusName, buildingName, room.name);
       if (history && history.history) {
         // 找到最近一天的消耗
         const lastEntry = history.history[history.history.length - 1];
         rankings.push({
-          roomId: room.id,
           roomName: room.name,
           consumption: lastEntry?.consumption || 0,
           balance: room.currentBalance,
@@ -1142,8 +1138,8 @@ const DataService = {
         if (buildingDetails && buildingDetails.rooms) {
           // 从 details.json 计算耗电量
           const compactDate = this._formatDateCompact(targetDate);
-          for (const roomId in buildingDetails.rooms) {
-            const roomData = buildingDetails.rooms[roomId];
+          for (const roomName in buildingDetails.rooms) {
+            const roomData = buildingDetails.rooms[roomName];
             if (roomData.balance_history) {
               const consumption = this._calculateConsumptionFromHistory(
                 roomData.balance_history,
@@ -1313,18 +1309,18 @@ const DataService = {
    * 获取房间某日的耗电量缓存
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
-   * @param {string} roomId 房间ID
+   * @param {string} roomName 房间名
    * @param {string} date 日期 (可选，不传则返回所有日期)
    */
   /**
    * 获取房间耗电量缓存
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
-   * @param {string} roomId 房间ID或房间名
+   * @param {string} roomName 房间名
    * @param {string} date 日期（可选）
    */
-  async getRoomConsumptionCache(campusName, buildingName, roomId, date = null) {
-    const key = this._getCacheKey('room', campusName, buildingName, roomId);
+  async getRoomConsumptionCache(campusName, buildingName, roomName, date = null) {
+    const key = this._getCacheKey('room', campusName, buildingName, roomName);
     const cache = await IDB.get(key);
 
     if (!cache) return null;
@@ -1341,13 +1337,13 @@ const DataService = {
    * 保存房间耗电量到缓存
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
-   * @param {string} roomId 房间ID或房间名
+   * @param {string} roomName 房间名
    * @param {string} date 日期
    * @param {Object} data { electricity, consumption }
    */
-  async saveRoomConsumptionCache(campusName, buildingName, roomId, date, data) {
+  async saveRoomConsumptionCache(campusName, buildingName, roomName, date, data) {
     const compactDate = this._formatDateCompact(date);
-    const key = this._getCacheKey('room', campusName, buildingName, roomId);
+    const key = this._getCacheKey('room', campusName, buildingName, roomName);
 
     // 获取现有缓存或创建新的
     let cache = await IDB.get(key) || {};
@@ -1365,16 +1361,16 @@ const DataService = {
    * 批量保存房间耗电量到缓存
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
-   * @param {Map} roomDataMap roomId -> roomData 的映射
+   * @param {Map} roomDataMap roomName -> roomData 的映射
    */
   async batchSaveRoomConsumptionCache(campusName, buildingName, roomDataMap) {
     const entries = [];
     const now = Date.now();
 
-    for (const [roomId, roomData] of roomDataMap) {
+    for (const [roomName, roomData] of roomDataMap) {
       if (!roomData || !roomData.history) continue;
 
-      const key = this._getCacheKey('room', campusName, buildingName, roomId);
+      const key = this._getCacheKey('room', campusName, buildingName, roomName);
       let cache = await IDB.get(key) || {};
 
       // 遍历历史数据，保存每个日期的耗电量
@@ -1419,7 +1415,7 @@ const DataService = {
    * 保存楼栋房间列表到缓存
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
-   * @param {Object} roomsData 房间数据 { roomId: roomInfo }
+   * @param {Object} roomsData 房间数据 { roomName: roomInfo }
    */
   async saveRoomsListCache(campusName, buildingName, roomsData) {
     const key = this._getCacheKey('rooms', campusName, buildingName);
@@ -1444,9 +1440,8 @@ const DataService = {
       const cached = await this.getRoomsListCache(campusName, building.name);
       if (cached) {
         // 缓存命中，立即回调
-        const rooms = Object.entries(cached).map(([id, data]) => ({
-          id,
-          name: data.room_name,
+        const rooms = Object.entries(cached).map(([roomName, data]) => ({
+          name: roomName,
           currentBalance: data.current_balance,
           lastUpdated: data.last_updated
         }));
@@ -1461,9 +1456,8 @@ const DataService = {
           // 保存到缓存
           await this.saveRoomsListCache(campusName, building.name, buildingSummary.rooms);
 
-          const rooms = Object.entries(buildingSummary.rooms).map(([id, data]) => ({
-            id,
-            name: data.room_name,
+          const rooms = Object.entries(buildingSummary.rooms).map(([roomName, data]) => ({
+            name: roomName,
             currentBalance: data.current_balance,
             lastUpdated: data.last_updated
           }));
@@ -1507,9 +1501,8 @@ const DataService = {
         // 检查缓存
         const cached = await this.getRoomsListCache(campusName, building.name);
         if (cached) {
-          const rooms = Object.entries(cached).map(([id, data]) => ({
-            id,
-            name: data.room_name,
+          const rooms = Object.entries(cached).map(([roomName, data]) => ({
+            name: roomName,
             campus: campusName,
             building: building.name,
             currentBalance: data.current_balance
@@ -1525,9 +1518,8 @@ const DataService = {
           if (buildingSummary && buildingSummary.rooms) {
             await this.saveRoomsListCache(campusName, building.name, buildingSummary.rooms);
 
-            const rooms = Object.entries(buildingSummary.rooms).map(([id, data]) => ({
-              id,
-              name: data.room_name,
+            const rooms = Object.entries(buildingSummary.rooms).map(([roomName, data]) => ({
+              name: roomName,
               campus: campusName,
               building: building.name,
               currentBalance: data.current_balance
@@ -1570,7 +1562,7 @@ const DataService = {
     const buildingDetails = campusStats.buildingDetails || [];
 
     // 先收集所有楼栋的所有房间的 balance_history
-    // dailyConsumption[date][roomId] = consumption （可为0）
+    // dailyConsumption[date][roomName] = consumption （可为0）
     const dailyConsumption = {};
     const allDateSet = new Set();
 
@@ -1578,8 +1570,8 @@ const DataService = {
       const details = await this.getBuildingDetails(campusName, bd.name);
       if (!details || !details.rooms) continue;
 
-      for (const roomId in details.rooms) {
-        const bh = details.rooms[roomId].balance_history;
+      for (const roomName in details.rooms) {
+        const bh = details.rooms[roomName].balance_history;
         if (!bh) continue;
 
         const dates = Object.keys(bh).sort();
@@ -1594,8 +1586,8 @@ const DataService = {
           allDateSet.add(date);
 
           if (!dailyConsumption[date]) dailyConsumption[date] = {};
-          if (!dailyConsumption[date][roomId]) {
-            dailyConsumption[date][roomId] = cons;
+          if (!dailyConsumption[date][roomName]) {
+            dailyConsumption[date][roomName] = cons;
           }
         }
       }
@@ -1618,8 +1610,8 @@ const DataService = {
 
       let totalCons = 0;
       let count = 0;
-      for (const roomId in roomsOnDate) {
-        totalCons += roomsOnDate[roomId];
+      for (const roomName in roomsOnDate) {
+        totalCons += roomsOnDate[roomName];
         count++;
       }
 
@@ -1649,8 +1641,8 @@ const DataService = {
     const dailyConsumption = {};
     const allDateSet = new Set();
 
-    for (const roomId in details.rooms) {
-      const bh = details.rooms[roomId].balance_history;
+    for (const roomName in details.rooms) {
+      const bh = details.rooms[roomName].balance_history;
       if (!bh) continue;
 
       const dates = Object.keys(bh).sort();
@@ -1664,8 +1656,8 @@ const DataService = {
         allDateSet.add(date);
 
         if (!dailyConsumption[date]) dailyConsumption[date] = {};
-        if (!dailyConsumption[date][roomId]) {
-          dailyConsumption[date][roomId] = cons;
+        if (!dailyConsumption[date][roomName]) {
+          dailyConsumption[date][roomName] = cons;
         }
       }
     }
@@ -1685,8 +1677,8 @@ const DataService = {
 
       let totalCons = 0;
       let count = 0;
-      for (const roomId in roomsOnDate) {
-        totalCons += roomsOnDate[roomId];
+      for (const roomName in roomsOnDate) {
+        totalCons += roomsOnDate[roomName];
         count++;
       }
 
@@ -1734,8 +1726,8 @@ const DataService = {
         
         if (details && details.rooms) {
           // 从 details.json 提取房间消耗数据
-          for (const roomId in details.rooms) {
-            const roomData = details.rooms[roomId];
+          for (const roomName in details.rooms) {
+            const roomData = details.rooms[roomName];
             if (roomData.balance_history) {
               const consumption = this._calculateConsumptionFromHistory(
                 roomData.balance_history,
@@ -1744,8 +1736,7 @@ const DataService = {
               );
               if (consumption !== null) {
                 this._insertIntoTopRooms(topRooms, {
-                  roomId,
-                  roomName: roomData.room_name || roomId,
+                  roomName,
                   building: building.name,
                   campus: campusName,
                   consumption,
@@ -1771,11 +1762,10 @@ const DataService = {
               false
             );
           }
-          
+
           if (Array.isArray(ranking)) {
             ranking.forEach(r => {
               this._insertIntoTopRooms(topRooms, {
-                roomId: r.roomId,
                 roomName: r.roomName,
                 building: building.name,
                 campus: campusName,
@@ -1786,7 +1776,6 @@ const DataService = {
           } else if (ranking && ranking.data) {
             ranking.data.forEach(r => {
               this._insertIntoTopRooms(topRooms, {
-                roomId: r.roomId,
                 roomName: r.roomName,
                 building: building.name,
                 campus: campusName,

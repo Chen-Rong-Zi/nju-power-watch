@@ -6,7 +6,6 @@
 
 ```json
 {
-  "room_id": "53463",
   "room_name": "19栋第16层1613",
   "campus": "仙林校区",
   "building": "19幢",
@@ -30,15 +29,15 @@
 
 ```javascript
 // 加载单个房间数据
-async function loadRoom(campus, building, roomId) {
+async function loadRoom(campus, building, roomName) {
   const response = await fetch(
-    `database/summaries/campuses/${campus}/buildings/${building}/rooms/${roomId}.json`
+    `database/summaries/campuses/${campus}/buildings/${building}/rooms/${encodeURIComponent(roomName)}.json`
   );
   return await response.json();
 }
 
 // 使用示例
-const room = await loadRoom('仙林校区', '19幢', '53463');
+const room = await loadRoom('仙林校区', '19幢', '19栋第16层1613');
 ```
 
 ### 2. 计算任意时间范围的统计
@@ -270,7 +269,7 @@ renderHistoryChart(room, 'balanceChart');
   <script>
     async function init() {
       // 加载数据
-      const room = await loadRoom('仙林校区', '19幢', '53463');
+      const room = await loadRoom('仙林校区', '19幢', '19栋第16层1613');
       
       // 显示基本信息
       document.getElementById('room-name').textContent = room.room_name;
@@ -333,8 +332,8 @@ const overview = await fetch('database/summaries/overview.json').then(r => r.jso
 
 // 用户点击某个房间时再加载详细数据
 document.getElementById('room-list').addEventListener('click', async (e) => {
-  const roomId = e.target.dataset.roomId;
-  const room = await loadRoom(campus, building, roomId);
+  const roomName = e.target.dataset.roomName;
+  const room = await loadRoom(campus, building, roomName);
   // ... 显示详情
 });
 ```

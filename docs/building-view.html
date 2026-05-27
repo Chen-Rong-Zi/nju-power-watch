@@ -385,11 +385,6 @@
       font-weight: 500;
       font-size: 15px;
     }
-    .room-id {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--muted);
-    }
 
     /* 消耗量 */
     .consumption {
@@ -1083,7 +1078,7 @@
     };
 
     // 三级缓存
-    const roomDataCache = new Map();      // 缓存房间历史数据: key = "校区/楼栋/房间ID"
+    const roomDataCache = new Map();      // 缓存房间历史数据: key = "校区/楼栋/房间名"
     const consumptionCache = new Map();    // 缓存计算结果: key = "校区/楼栋/日期"
 
     let trendChart = null;
@@ -1368,9 +1363,8 @@
 
         // 转换缓存格式，从 state 补充 campus 和 building
         let allRankings = localStorageCache.data.map((item, idx) => ({
-          room: item.room || item.roomName,
-          roomName: item.room || item.roomName,
-          roomId: item.roomId,
+          room: item.roomName || item.name,
+          roomName: item.roomName || item.name,
           consumption: item.consumption,
           balance: item.balance,
           campus: state.campus,
@@ -1392,7 +1386,7 @@
           // 更新 IndexedDB 缓存，标记为已排序（只保存必要字段）
           const sortedCacheData = allRankings.map(item => ({
             room: item.roomName,
-            roomId: item.roomId,
+            roomName: item.roomName,
             consumption: item.consumption,
             balance: item.balance
           }));
@@ -1433,7 +1427,7 @@
       }
 
       const roomMap = buildingSummary.rooms;
-      const roomIds = Object.keys(roomMap);
+      const roomNames = Object.keys(roomMap);
 
       // 如果需要动画，显示进度条和空列表
       const progressEl = document.getElementById('animation-progress');
@@ -1461,9 +1455,9 @@
         await DataService.streamRoomHistory(
           state.campus,
           state.building,
-          roomIds,
+          roomNames,
           // 每个房间加载完成时的回调
-          (roomId, roomData, loaded, total) => {
+          (roomName, roomData, loaded, total) => {
             // 检查是否被取消
             if (thisLoadId !== state.currentLoadId) return;
 
@@ -1477,13 +1471,13 @@
 
             // 如果数据有效，立即计算消耗量并更新排行榜
             if (roomData && roomData.history && roomData.history.length > 0) {
-              const roomInfo = roomMap[roomId];
+              const roomInfo = roomMap[roomName];
               const consumption = calculateConsumption(roomData.history, state.date);
 
               if (consumption !== null) {
                 const item = {
-                  room: roomInfo.room_name,
-                  roomId: roomId,
+                  room: roomName,
+                  roomName: roomName,
                   consumption: consumption,
                   balance: roomInfo.current_balance,
                   campus: state.campus,
@@ -1497,7 +1491,7 @@
                   // 更新前10名列表
                   const inserted = insertIntoTop10(currentTop10, item);
                   // 立即渲染更新（CSS动画会处理视觉效果）
-                  renderTop10Immediate(currentTop10, listEl, inserted ? item.roomId : null, loaded, total);
+                  renderTop10Immediate(currentTop10, listEl, inserted ? item.roomName : null, loaded, total);
                 }
               }
             }
@@ -1510,7 +1504,7 @@
         const roomDataMap = await DataService.batchGetRoomHistory(
           state.campus,
           state.building,
-          roomIds,
+          roomNames,
           15,
           (loaded, total) => {
             if (thisLoadId !== state.currentLoadId) return;
@@ -1523,17 +1517,17 @@
         );
 
         // 处理获取到的数据
-        for (const roomId of roomIds) {
-          const roomInfo = roomMap[roomId];
-          const roomData = roomDataMap.get(roomId);
+        for (const roomName of roomNames) {
+          const roomInfo = roomMap[roomName];
+          const roomData = roomDataMap.get(roomName);
 
           if (roomData && roomData.history && roomData.history.length > 0) {
             const consumption = calculateConsumption(roomData.history, state.date);
 
             if (consumption !== null) {
               const item = {
-                room: roomInfo.room_name,
-                roomId: roomId,
+                room: roomName,
+                roomName: roomName,
                 consumption: consumption,
                 balance: roomInfo.current_balance,
                 campus: state.campus,
@@ -1544,7 +1538,7 @@
               // 如果需要动画，更新前10名显示
               if (!hasAnimationShown) {
                 const inserted = insertIntoTop10(currentTop10, item);
-                renderTop10Immediate(currentTop10, listEl, inserted ? item.roomId : null, processedCount, roomIds.length);
+                renderTop10Immediate(currentTop10, listEl, inserted ? item.roomName : null, processedCount, roomNames.length);
               }
             }
           }
@@ -1572,7 +1566,7 @@
       // 同时保存到 IndexedDB 缓存（只保存必要字段，标记为已排序）
       const cacheData = allRankings.map(item => ({
         room: item.roomName || item.room,
-        roomId: item.roomId,
+        roomName: item.roomName || item.room,
         consumption: item.consumption,
         balance: item.balance
       }));
@@ -1617,7 +1611,7 @@
     }
 
     // ==================== 即时渲染前10名（新进入的房间高亮） ====================
-    function renderTop10Immediate(top10, listEl, newRoomId = null, loaded = 0, total = 0) {
+    function renderTop10Immediate(top10, listEl, newRoomName = null, loaded = 0, total = 0) {
       // 渲染当前前10名
       let html = '';
 
@@ -1645,16 +1639,16 @@
         const item = top10[i];
         const rank = i + 1;
         const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
-        const isNew = item.roomId === newRoomId;
+        const isNew = item.roomName === newRoomName;
         const isUserRoom = state.userConfig &&
           state.userConfig.campus === state.campus &&
           state.userConfig.building === state.building &&
-          item.roomId === state.userConfig.roomId;
+          item.roomName === state.userConfig.roomName;
 
         html += `
           <div class="ranking-item ${rankClass} ${isNew ? 'new-entry' : ''}"
-               data-room-id="${item.roomId}"
-               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomId}', '${item.room}')"
+               data-room-name="${item.roomName}"
+               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomName}')"
                style="cursor: pointer;">
             <div class="rank-badge">#${rank}</div>
             <div class="room-info">
@@ -1901,16 +1895,15 @@
         const isUserRoom = state.userConfig &&
           state.userConfig.campus === state.campus &&
           state.userConfig.building === state.building &&
-          item.roomId === state.userConfig.roomId;
+          (item.roomName) === state.userConfig.roomName;
 
         const html = `
           <div class="ranking-item ${isUserRoom ? 'user-room' : ''}"
-               data-room-id="${item.roomId}"
-               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomId}', '${item.room}')">
+               data-room-name="${item.roomName}"
+               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomName}')">
             <div class="rank-badge ${rankClass}">${displayRank}</div>
             <div class="room-info">
               <div class="room-name">${item.room}${isUserRoom ? ' (我的房间)' : ''}</div>
-              <div class="room-id">ID: ${item.roomId}</div>
             </div>
             <div class="consumption">
               <div class="consumption-value">${item.consumption.toFixed(2)}</div>
@@ -1996,13 +1989,13 @@
                              state.userConfig.building === state.building;
 
       // 在排行榜中查找用户房间
-      let userRoomData = rankings.find(r => r.roomId === state.userConfig.roomId);
+      let userRoomData = rankings.find(r => r.roomName === state.userConfig.roomName);
       let estimatedRank = null;
 
       // 如果用户房间不在排行榜中，尝试获取数据并估算位次
       if (!userRoomData && isSameBuilding) {
         // 尝试获取用户房间的历史数据
-        const roomHistory = await DataService.getRoomHistory(state.campus, state.building, state.userConfig.roomId);
+        const roomHistory = await DataService.getRoomHistory(state.campus, state.building, state.userConfig.roomName);
 
         if (roomHistory && roomHistory.history) {
           const consumption = calculateConsumption(roomHistory.history, state.date);
@@ -2019,7 +2012,7 @@
 
             userRoomData = {
               room: state.userConfig.roomName,
-              roomId: state.userConfig.roomId,
+              roomName: state.userConfig.roomName,
               consumption: consumption,
               rank: estimatedRank,
               estimated: true
@@ -2052,7 +2045,7 @@
     }
 
     // ==================== 房间详情面板 ====================
-    async function viewRoomDetail(campus, building, roomId, roomName) {
+    async function viewRoomDetail(campus, building, roomName) {
       const overlay = document.getElementById('detail-overlay');
       const title = document.getElementById('detail-title');
       const subtitle = document.getElementById('detail-subtitle');
@@ -2074,7 +2067,7 @@
 
       // 获取房间数据
       try {
-        const history = await DataService.getRoomHistory(campus, building, roomId);
+        const history = await DataService.getRoomHistory(campus, building, roomName);
         if (!history) {
           content.innerHTML = `
             <div class="detail-loading">

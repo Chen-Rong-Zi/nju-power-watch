@@ -18,7 +18,7 @@ database/summaries/
     ├── summary.json                       # 校区汇总
     └── buildings/{building}/
         ├── summary.json                   # 楼栋汇总
-        └── rooms/{room_id}.json           # 房间详情（完整历史）
+        └── rooms/{room_name}.json           # 房间详情（完整历史）
 ```
 
 **优势**：
@@ -103,7 +103,7 @@ python scripts/serve_docs.py
   "campus": "仙林校区",
   "total_rooms": 50,
   "rooms": {
-    "53463": {
+    "1613": {
       "room_name": "1613",
       "current_balance": 125.50,
       "last_updated": "20260515"
@@ -118,7 +118,6 @@ python scripts/serve_docs.py
 ### room detail (NEW!)
 ```json
 {
-  "room_id": "53463",
   "room_name": "1613",
   "campus": "仙林校区",
   "building": "19幢",
@@ -226,9 +225,9 @@ async function loadCampus(campus) {
 }
 
 // 用户选择房间时才加载房间详情
-async function loadRoom(campus, building, roomId) {
+async function loadRoom(campus, building, roomName) {
   return await fetch(
-    `./database/summaries/campuses/${campus}/buildings/${building}/rooms/${roomId}.json`
+    `./database/summaries/campuses/${campus}/buildings/${building}/rooms/${encodeURIComponent(roomName)}.json`
   ).then(r => r.json());
 }
 ```

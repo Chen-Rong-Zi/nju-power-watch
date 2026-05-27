@@ -3,919 +3,736 @@
   "campus": "仙林校区",
   "total_rooms": 183,
   "rooms": {
-    "15737": {
-      "room_name": "10幢第3层304-1房间",
-      "current_balance": 450.64,
-      "last_updated": "20260527"
-    },
-    "94698": {
-      "room_name": "10幢第5层501-2房间",
-      "current_balance": 123.06,
-      "last_updated": "20260527"
-    },
-    "37609": {
-      "room_name": "10幢第4层401-3房间",
-      "current_balance": 942.76,
-      "last_updated": "20260527"
-    },
-    "38550": {
-      "room_name": "10幢第6层607-1房间",
-      "current_balance": 593.36,
-      "last_updated": "20260527"
-    },
-    "15612": {
-      "room_name": "10幢第6层604-1房间",
-      "current_balance": 664.16,
-      "last_updated": "20260527"
-    },
-    "43841": {
-      "room_name": "10幢第2层205-3房间",
-      "current_balance": 138.45,
-      "last_updated": "20260527"
-    },
-    "90269": {
-      "room_name": "10幢第6层608-3房间",
-      "current_balance": 187.36,
-      "last_updated": "20260527"
-    },
-    "63936": {
-      "room_name": "10幢第1层102-4房间",
-      "current_balance": 59.42,
-      "last_updated": "20260527"
-    },
-    "32493": {
-      "room_name": "10幢第6层603-4房间",
-      "current_balance": 165.05,
-      "last_updated": "20260527"
-    },
-    "34772": {
-      "room_name": "10幢第6层606-4房间",
-      "current_balance": 45.34,
-      "last_updated": "20260527"
-    },
-    "12889": {
-      "room_name": "10幢第5层508-1房间",
-      "current_balance": 605.0,
-      "last_updated": "20260527"
-    },
-    "42135": {
-      "room_name": "10幢第6层602-1房间",
-      "current_balance": 531.66,
-      "last_updated": "20260527"
-    },
-    "73563": {
-      "room_name": "10幢第2层202-1房间",
-      "current_balance": 657.93,
-      "last_updated": "20260527"
-    },
-    "25764": {
-      "room_name": "10幢第5层504-1房间",
-      "current_balance": 170.45,
-      "last_updated": "20260527"
-    },
-    "34655": {
-      "room_name": "10幢第3层306-2房间",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "95209": {
-      "room_name": "10幢第2层203-2房间",
-      "current_balance": 674.25,
-      "last_updated": "20260527"
-    },
-    "15971": {
-      "room_name": "10幢第3层301-4房间",
-      "current_balance": 169.96,
-      "last_updated": "20260527"
-    },
-    "37692": {
-      "room_name": "10幢第5层503-2房间",
-      "current_balance": 127.09,
-      "last_updated": "20260527"
-    },
-    "61762": {
-      "room_name": "10幢第4层403-4房间",
-      "current_balance": 49.67,
-      "last_updated": "20260527"
-    },
-    "92266": {
-      "room_name": "10幢第5层508-4房间",
-      "current_balance": 17.49,
-      "last_updated": "20260527"
-    },
-    "28141": {
-      "room_name": "10幢第1层105-1房间",
-      "current_balance": 8.71,
-      "last_updated": "20260527"
-    },
-    "72368": {
-      "room_name": "10幢第1层104-1房间",
-      "current_balance": 28.77,
-      "last_updated": "20260527"
-    },
-    "84529": {
-      "room_name": "10幢第4层402-1房间",
-      "current_balance": 22.26,
-      "last_updated": "20260527"
-    },
-    "90921": {
-      "room_name": "10幢第4层407-2房间",
-      "current_balance": 594.99,
-      "last_updated": "20260527"
-    },
-    "11522": {
-      "room_name": "10幢第3层307-1房间",
-      "current_balance": 9.72,
-      "last_updated": "20260527"
-    },
-    "12485": {
-      "room_name": "10幢第4层408-3房间",
-      "current_balance": 281.55,
-      "last_updated": "20260527"
-    },
-    "83102": {
-      "room_name": "10幢第3层302-2房间",
-      "current_balance": 444.64,
-      "last_updated": "20260527"
-    },
-    "12241": {
-      "room_name": "10幢第5层505-4房间",
-      "current_balance": 66.2,
-      "last_updated": "20260527"
-    },
-    "53749": {
-      "room_name": "10幢第6层607-4房间",
-      "current_balance": 4.33,
-      "last_updated": "20260527"
-    },
-    "37685": {
-      "room_name": "10幢第6层601-3房间",
-      "current_balance": 322.58,
-      "last_updated": "20260527"
-    },
-    "59583": {
-      "room_name": "10幢第4层405-2房间",
-      "current_balance": 278.64,
-      "last_updated": "20260527"
-    },
-    "14837": {
-      "room_name": "10幢第5层501-4房间",
-      "current_balance": 185.63,
-      "last_updated": "20260527"
-    },
-    "98685": {
-      "room_name": "10幢第4层402-2房间",
-      "current_balance": 43.69,
-      "last_updated": "20260527"
-    },
-    "33715": {
-      "room_name": "10幢第3层302-4房间",
-      "current_balance": 42.17,
-      "last_updated": "20260527"
-    },
-    "90810": {
-      "room_name": "1043",
-      "current_balance": 25.83,
-      "last_updated": "20260527"
-    },
-    "68668": {
-      "room_name": "10幢第3层301-1房间",
-      "current_balance": 272.4,
-      "last_updated": "20260527"
-    },
-    "35161": {
-      "room_name": "10幢第3层308-2房间",
-      "current_balance": 44.22,
-      "last_updated": "20260527"
-    },
-    "87449": {
-      "room_name": "10幢第1层101-3房间",
-      "current_balance": 315.3,
-      "last_updated": "20260527"
-    },
-    "63519": {
-      "room_name": "10幢第2层205-4房间",
-      "current_balance": 56.91,
-      "last_updated": "20260527"
-    },
-    "12434": {
-      "room_name": "10幢第1层103-3房间",
-      "current_balance": 83.35,
-      "last_updated": "20260527"
-    },
-    "88892": {
-      "room_name": "10幢第1层104-2房间",
-      "current_balance": 424.98,
-      "last_updated": "20260527"
-    },
-    "54925": {
-      "room_name": "10幢第5层506-1房间",
-      "current_balance": 109.18,
-      "last_updated": "20260527"
-    },
-    "74065": {
-      "room_name": "10幢第4层404-4房间",
-      "current_balance": 113.18,
-      "last_updated": "20260527"
-    },
-    "95744": {
-      "room_name": "10幢第2层208-2房间",
-      "current_balance": 625.15,
-      "last_updated": "20260527"
-    },
-    "95668": {
-      "room_name": "10幢第1层101-2房间",
-      "current_balance": 45.04,
-      "last_updated": "20260527"
-    },
-    "97475": {
-      "room_name": "10幢第2层203-4房间",
-      "current_balance": 78.75,
-      "last_updated": "20260527"
-    },
-    "83510": {
-      "room_name": "10幢第5层506-2房间",
-      "current_balance": 399.59,
-      "last_updated": "20260527"
-    },
-    "80647": {
-      "room_name": "10幢第2层204-2房间",
-      "current_balance": 318.36,
-      "last_updated": "20260527"
-    },
-    "46808": {
-      "room_name": "10幢第4层401-2房间",
-      "current_balance": 542.97,
-      "last_updated": "20260527"
-    },
-    "88719": {
-      "room_name": "10幢第6层603-2房间",
-      "current_balance": 473.31,
-      "last_updated": "20260527"
-    },
-    "89329": {
-      "room_name": "10幢第2层207-3房间",
-      "current_balance": 65.35,
-      "last_updated": "20260527"
-    },
-    "22752": {
-      "room_name": "10幢第5层505-3房间",
-      "current_balance": 489.03,
-      "last_updated": "20260527"
-    },
-    "94180": {
-      "room_name": "10幢第1层104-4房间",
-      "current_balance": 54.52,
-      "last_updated": "20260527"
-    },
-    "15961": {
-      "room_name": "10幢第5层506-4房间",
-      "current_balance": 385.44,
-      "last_updated": "20260527"
-    },
-    "26979": {
-      "room_name": "10幢第2层208-4房间",
-      "current_balance": 85.67,
-      "last_updated": "20260527"
-    },
-    "42489": {
-      "room_name": "10幢第4层406-2房间",
-      "current_balance": 144.91,
-      "last_updated": "20260527"
-    },
-    "32818": {
-      "room_name": "10幢第3层303-4房间",
-      "current_balance": 16.06,
-      "last_updated": "20260527"
-    },
-    "88907": {
-      "room_name": "10幢第1层105-3房间",
-      "current_balance": 6.49,
-      "last_updated": "20260527"
-    },
-    "75945": {
-      "room_name": "10幢第6层603-3房间",
-      "current_balance": 111.04,
-      "last_updated": "20260527"
-    },
-    "55991": {
-      "room_name": "10幢第4层407-3房间",
-      "current_balance": 432.95,
-      "last_updated": "20260527"
-    },
-    "51279": {
-      "room_name": "10幢第2层207-2房间",
-      "current_balance": 43.57,
-      "last_updated": "20260527"
-    },
-    "25520": {
-      "room_name": "10幢第3层303-1房间",
-      "current_balance": 729.85,
-      "last_updated": "20260527"
-    },
-    "89365": {
-      "room_name": "10幢第6层604-4房间",
-      "current_balance": 189.93,
-      "last_updated": "20260527"
-    },
-    "91988": {
-      "room_name": "10幢第3层305-1房间",
-      "current_balance": 1081.27,
-      "last_updated": "20260527"
-    },
-    "94520": {
-      "room_name": "10幢第3层304-4房间",
-      "current_balance": 41.73,
-      "last_updated": "20260527"
-    },
-    "61319": {
-      "room_name": "4054",
-      "current_balance": 7.65,
-      "last_updated": "20260527"
-    },
-    "63166": {
-      "room_name": "10幢第4层408-1房间",
-      "current_balance": 36.54,
-      "last_updated": "20260527"
-    },
-    "91346": {
-      "room_name": "10幢第6层601-4房间",
-      "current_balance": 20.04,
-      "last_updated": "20260527"
-    },
-    "67628": {
-      "room_name": "10幢第2层204-4房间",
-      "current_balance": 5.96,
-      "last_updated": "20260527"
-    },
-    "42928": {
-      "room_name": "10幢第6层606-3房间",
-      "current_balance": 485.97,
-      "last_updated": "20260527"
-    },
-    "59398": {
-      "room_name": "10幢第4层408-2房间",
-      "current_balance": 715.64,
-      "last_updated": "20260527"
-    },
-    "13795": {
-      "room_name": "10幢第5层502-4房间",
-      "current_balance": 20.21,
-      "last_updated": "20260527"
-    },
-    "86692": {
-      "room_name": "10幢第2层205-1房间",
-      "current_balance": 877.61,
-      "last_updated": "20260527"
-    },
-    "47462": {
-      "room_name": "10幢第5层504-3房间",
-      "current_balance": 239.22,
-      "last_updated": "20260527"
-    },
-    "53647": {
-      "room_name": "10幢第4层402-4房间",
-      "current_balance": 35.21,
-      "last_updated": "20260527"
-    },
-    "32488": {
-      "room_name": "10幢第2层206-4房间",
+    "10幢第2层206-4房间": {
       "current_balance": 8.34,
       "last_updated": "20260527"
     },
-    "93489": {
-      "room_name": "10幢第5层508-2房间",
-      "current_balance": 18.44,
-      "last_updated": "20260527"
-    },
-    "36936": {
-      "room_name": "10幢第1层101-1房间",
-      "current_balance": 21.12,
-      "last_updated": "20260527"
-    },
-    "94365": {
-      "room_name": "10幢第2层202-4房间",
-      "current_balance": 35.44,
-      "last_updated": "20260527"
-    },
-    "19960": {
-      "room_name": "10幢第5层503-1房间",
-      "current_balance": 82.64,
-      "last_updated": "20260527"
-    },
-    "25993": {
-      "room_name": "10幢第3层301-2房间",
-      "current_balance": 50.86,
-      "last_updated": "20260527"
-    },
-    "60181": {
-      "room_name": "10幢第6层608-1房间",
-      "current_balance": 362.6,
-      "last_updated": "20260527"
-    },
-    "32942": {
-      "room_name": "10幢第1层104-3房间",
-      "current_balance": 25.83,
-      "last_updated": "20260527"
-    },
-    "55431": {
-      "room_name": "10幢第2层203-1房间",
-      "current_balance": 158.69,
-      "last_updated": "20260527"
-    },
-    "42148": {
-      "room_name": "10幢第2层201-4房间",
-      "current_balance": 147.11,
-      "last_updated": "20260527"
-    },
-    "25205": {
-      "room_name": "10幢第5层501-3房间",
-      "current_balance": 85.32,
-      "last_updated": "20260527"
-    },
-    "88074": {
-      "room_name": "10幢第5层502-3房间",
-      "current_balance": 54.53,
-      "last_updated": "20260527"
-    },
-    "17956": {
-      "room_name": "10幢第4层408-4房间",
-      "current_balance": 67.14,
-      "last_updated": "20260527"
-    },
-    "24075": {
-      "room_name": "10幢第5层507-3房间",
-      "current_balance": 33.34,
-      "last_updated": "20260527"
-    },
-    "47177": {
-      "room_name": "10幢第6层607-3房间",
-      "current_balance": 14.24,
-      "last_updated": "20260527"
-    },
-    "63881": {
-      "room_name": "10幢第6层602-2房间",
-      "current_balance": 526.92,
-      "last_updated": "20260527"
-    },
-    "42451": {
-      "room_name": "10幢第3层308-3房间",
-      "current_balance": 309.56,
-      "last_updated": "20260527"
-    },
-    "13727": {
-      "room_name": "10幢第2层202-3房间",
-      "current_balance": 7.08,
-      "last_updated": "20260527"
-    },
-    "91849": {
-      "room_name": "10幢第3层307-2房间",
-      "current_balance": 614.73,
-      "last_updated": "20260527"
-    },
-    "16817": {
-      "room_name": "10幢第4层404-1房间",
-      "current_balance": 682.33,
-      "last_updated": "20260527"
-    },
-    "70693": {
-      "room_name": "10幢第5层507-2房间",
-      "current_balance": 9.53,
-      "last_updated": "20260527"
-    },
-    "15473": {
-      "room_name": "10幢第6层605-2房间",
-      "current_balance": 146.65,
-      "last_updated": "20260527"
-    },
-    "59027": {
-      "room_name": "10幢第2层208-3房间",
-      "current_balance": 96.96,
-      "last_updated": "20260527"
-    },
-    "36929": {
-      "room_name": "10幢第5层503-3房间",
-      "current_balance": 93.21,
-      "last_updated": "20260527"
-    },
-    "14493": {
-      "room_name": "10幢第2层208-1房间",
-      "current_balance": 88.87,
-      "last_updated": "20260527"
-    },
-    "11787": {
-      "room_name": "10幢第5层505-2房间",
-      "current_balance": 127.25,
-      "last_updated": "20260527"
-    },
-    "92817": {
-      "room_name": "10幢第5层501-1房间",
-      "current_balance": 957.43,
-      "last_updated": "20260527"
-    },
-    "29489": {
-      "room_name": "10幢第3层308-1房间",
-      "current_balance": 317.5,
-      "last_updated": "20260527"
-    },
-    "55408": {
-      "room_name": "10幢第6层601-1房间",
-      "current_balance": 6.41,
-      "last_updated": "20260527"
-    },
-    "5168": {
-      "room_name": "10幢第3层306-1房间",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "39593": {
-      "room_name": "10幢第2层206-2房间",
-      "current_balance": 16.39,
-      "last_updated": "20260527"
-    },
-    "33495": {
-      "room_name": "10幢第2层203-3房间",
-      "current_balance": 570.26,
-      "last_updated": "20260527"
-    },
-    "13112": {
-      "room_name": "10幢第6层605-4房间",
-      "current_balance": 5.18,
-      "last_updated": "20260527"
-    },
-    "33678": {
-      "room_name": "10幢第2层204-1房间",
-      "current_balance": 396.91,
-      "last_updated": "20260527"
-    },
-    "33855": {
-      "room_name": "10幢第1层103-1房间",
-      "current_balance": 18.97,
-      "last_updated": "20260527"
-    },
-    "53388": {
-      "room_name": "10幢第4层406-3房间",
-      "current_balance": 207.96,
-      "last_updated": "20260527"
-    },
-    "13698": {
-      "room_name": "10幢第3层305-2房间",
-      "current_balance": 6.34,
-      "last_updated": "20260527"
-    },
-    "91077": {
-      "room_name": "10幢第3层303-3房间",
-      "current_balance": 876.85,
-      "last_updated": "20260527"
-    },
-    "96449": {
-      "room_name": "10幢第5层504-4房间",
-      "current_balance": 46.07,
-      "last_updated": "20260527"
-    },
-    "79258": {
-      "room_name": "10幢第2层201-1房间",
-      "current_balance": 78.81,
-      "last_updated": "20260527"
-    },
-    "14026": {
-      "room_name": "10幢第6层603-1房间",
-      "current_balance": 260.11,
-      "last_updated": "20260527"
-    },
-    "101182": {
-      "room_name": "10幢第1层105-2房间",
-      "current_balance": 20.78,
-      "last_updated": "20260527"
-    },
-    "30503": {
-      "room_name": "10幢第2层201-2房间",
-      "current_balance": 988.91,
-      "last_updated": "20260527"
-    },
-    "51272": {
-      "room_name": "10幢第6层606-2房间",
-      "current_balance": 109.22,
-      "last_updated": "20260527"
-    },
-    "80473": {
-      "room_name": "2022",
+    "2022": {
       "current_balance": 221.85,
       "last_updated": "20260527"
     },
-    "48430": {
-      "room_name": "10幢第6层602-3房间",
-      "current_balance": 228.46,
-      "last_updated": "20260527"
-    },
-    "88161": {
-      "room_name": "10幢第2层207-4房间",
+    "10幢第2层207-4房间": {
       "current_balance": 29.22,
       "last_updated": "20260527"
     },
-    "11435": {
-      "room_name": "10幢第3层307-3房间",
-      "current_balance": 77.5,
-      "last_updated": "20260527"
-    },
-    "93711": {
-      "room_name": "10幢第4层406-4房间",
-      "current_balance": 165.81,
-      "last_updated": "20260527"
-    },
-    "87375": {
-      "room_name": "10幢第6层605-3房间",
-      "current_balance": 24.86,
-      "last_updated": "20260527"
-    },
-    "55574": {
-      "room_name": "10幢第2层206-3房间",
-      "current_balance": 414.17,
-      "last_updated": "20260527"
-    },
-    "63567": {
-      "room_name": "10幢第1层103-4房间",
-      "current_balance": 146.65,
-      "last_updated": "20260527"
-    },
-    "38189": {
-      "room_name": "10幢第3层308-4房间",
-      "current_balance": 2.77,
-      "last_updated": "20260527"
-    },
-    "3504": {
-      "room_name": "10幢第4层403-3房间",
-      "current_balance": 36.4,
-      "last_updated": "20260527"
-    },
-    "37902": {
-      "room_name": "10幢第2层202-2房间",
-      "current_balance": 221.85,
-      "last_updated": "20260527"
-    },
-    "59708": {
-      "room_name": "10幢第2层206-1房间",
-      "current_balance": 84.55,
-      "last_updated": "20260527"
-    },
-    "40154": {
-      "room_name": "10幢第5层505-1房间",
-      "current_balance": 17.34,
-      "last_updated": "20260527"
-    },
-    "90825": {
-      "room_name": "10幢第3层304-3房间",
-      "current_balance": 13.48,
-      "last_updated": "20260527"
-    },
-    "96983": {
-      "room_name": "10幢第4层405-3房间",
-      "current_balance": 190.77,
-      "last_updated": "20260527"
-    },
-    "93223": {
-      "room_name": "2074",
-      "current_balance": 29.22,
-      "last_updated": "20260527"
-    },
-    "30588": {
-      "room_name": "10幢第4层401-1房间",
-      "current_balance": 1445.7,
-      "last_updated": "20260527"
-    },
-    "82373": {
-      "room_name": "4021",
-      "current_balance": 22.26,
-      "last_updated": "20260527"
-    },
-    "4551": {
-      "room_name": "10幢第3层301-3房间",
-      "current_balance": 2.62,
-      "last_updated": "20260527"
-    },
-    "15213": {
-      "room_name": "10幢第3层306-3房间",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "31673": {
-      "room_name": "10幢第6层608-2房间",
-      "current_balance": 46.2,
-      "last_updated": "20260527"
-    },
-    "28445": {
-      "room_name": "10幢第5层508-3房间",
-      "current_balance": 946.68,
-      "last_updated": "20260527"
-    },
-    "32236": {
-      "room_name": "10幢第6层602-4房间",
-      "current_balance": 7.73,
-      "last_updated": "20260527"
-    },
-    "30350": {
-      "room_name": "10幢第6层606-1房间",
-      "current_balance": 142.27,
-      "last_updated": "20260527"
-    },
-    "88994": {
-      "room_name": "10幢第1层105-4房间",
-      "current_balance": 15.61,
-      "last_updated": "20260527"
-    },
-    "31674": {
-      "room_name": "10幢第6层608-4房间",
-      "current_balance": 64.32,
-      "last_updated": "20260527"
-    },
-    "18500": {
-      "room_name": "10幢第3层303-2房间",
-      "current_balance": 96.45,
-      "last_updated": "20260527"
-    },
-    "6246": {
-      "room_name": "10幢第4层406-1房间",
+    "10幢第4层406-1房间": {
       "current_balance": 2.21,
       "last_updated": "20260527"
     },
-    "62662": {
-      "room_name": "10幢第1层102-2房间",
-      "current_balance": 101.21,
-      "last_updated": "20260527"
-    },
-    "31670": {
-      "room_name": "10幢第2层201-3房间",
-      "current_balance": 530.57,
-      "last_updated": "20260527"
-    },
-    "12696": {
-      "room_name": "10幢第3层306-4房间",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "62935": {
-      "room_name": "10幢第3层307-4房间",
-      "current_balance": 11.29,
-      "last_updated": "20260527"
-    },
-    "12749": {
-      "room_name": "10幢第4层401-4房间",
-      "current_balance": 224.66,
-      "last_updated": "20260527"
-    },
-    "38213": {
-      "room_name": "10幢第6层607-2房间",
-      "current_balance": 703.89,
-      "last_updated": "20260527"
-    },
-    "39001": {
-      "room_name": "10幢第5层502-1房间",
-      "current_balance": 126.92,
-      "last_updated": "20260527"
-    },
-    "86509": {
-      "room_name": "10幢第5层504-2房间",
-      "current_balance": 479.99,
-      "last_updated": "20260527"
-    },
-    "87654": {
-      "room_name": "10幢第5层502-2房间",
-      "current_balance": 135.9,
-      "last_updated": "20260527"
-    },
-    "57788": {
-      "room_name": "10幢第4层407-1房间",
+    "10幢第4层407-1房间": {
       "current_balance": 283.94,
       "last_updated": "20260527"
     },
-    "96784": {
-      "room_name": "10幢第1层102-1房间",
+    "10幢第3层302-2房间": {
+      "current_balance": 444.64,
+      "last_updated": "20260527"
+    },
+    "10幢第3层303-2房间": {
+      "current_balance": 96.45,
+      "last_updated": "20260527"
+    },
+    "10幢第2层208-3房间": {
+      "current_balance": 96.96,
+      "last_updated": "20260527"
+    },
+    "10幢第6层606-2房间": {
+      "current_balance": 109.22,
+      "last_updated": "20260527"
+    },
+    "10幢第6层607-2房间": {
+      "current_balance": 703.89,
+      "last_updated": "20260527"
+    },
+    "10幢第1层102-1房间": {
       "current_balance": 215.46,
       "last_updated": "20260527"
     },
-    "13502": {
-      "room_name": "10幢第4层405-1房间",
-      "current_balance": 27.73,
+    "10幢第1层103-1房间": {
+      "current_balance": 18.97,
       "last_updated": "20260527"
     },
-    "12361": {
-      "room_name": "10幢第5层507-1房间",
-      "current_balance": 56.99,
+    "10幢第5层505-3房间": {
+      "current_balance": 489.03,
       "last_updated": "20260527"
     },
-    "88713": {
-      "room_name": "10幢第3层304-2房间",
-      "current_balance": 571.87,
+    "10幢第5层504-3房间": {
+      "current_balance": 239.22,
       "last_updated": "20260527"
     },
-    "88750": {
-      "room_name": "10幢第6层605-1房间",
-      "current_balance": 553.71,
+    "10幢第2层203-3房间": {
+      "current_balance": 570.26,
       "last_updated": "20260527"
     },
-    "9814": {
-      "room_name": "10幢第1层101-4房间",
-      "current_balance": 71.3,
+    "10幢第2层202-3房间": {
+      "current_balance": 7.08,
       "last_updated": "20260527"
     },
-    "35342": {
-      "room_name": "10幢第4层404-2房间",
+    "10幢第3层308-2房间": {
+      "current_balance": 44.22,
+      "last_updated": "20260527"
+    },
+    "10幢第4层404-2房间": {
       "current_balance": 53.79,
       "last_updated": "20260527"
     },
-    "86092": {
-      "room_name": "10幢第2层207-1房间",
-      "current_balance": 84.59,
+    "10幢第4层405-2房间": {
+      "current_balance": 278.64,
       "last_updated": "20260527"
     },
-    "60932": {
-      "room_name": "10幢第4层403-1房间",
-      "current_balance": 909.89,
+    "10幢第3层301-1房间": {
+      "current_balance": 272.4,
       "last_updated": "20260527"
     },
-    "61704": {
-      "room_name": "10幢第4层403-2房间",
-      "current_balance": 131.3,
+    "10幢第6层604-1房间": {
+      "current_balance": 664.16,
       "last_updated": "20260527"
     },
-    "35368": {
-      "room_name": "10幢第6层601-2房间",
-      "current_balance": 612.93,
+    "10幢第6层605-1房间": {
+      "current_balance": 553.71,
       "last_updated": "20260527"
     },
-    "45066": {
-      "room_name": "10幢第4层404-3房间",
-      "current_balance": 154.53,
+    "10幢第1层101-2房间": {
+      "current_balance": 45.04,
       "last_updated": "20260527"
     },
-    "62401": {
-      "room_name": "10幢第4层407-4房间",
-      "current_balance": 98.59,
+    "10幢第5层501-4房间": {
+      "current_balance": 185.63,
       "last_updated": "20260527"
     },
-    "38046": {
-      "room_name": "10幢第2层205-2房间",
-      "current_balance": 67.48,
+    "10幢第4层403-4房间": {
+      "current_balance": 49.67,
       "last_updated": "20260527"
     },
-    "91361": {
-      "room_name": "10幢第3层302-3房间",
-      "current_balance": 1144.45,
+    "10幢第4层402-4房间": {
+      "current_balance": 35.21,
       "last_updated": "20260527"
     },
-    "54399": {
-      "room_name": "10幢第5层506-3房间",
-      "current_balance": 174.43,
+    "10幢第5层507-2房间": {
+      "current_balance": 9.53,
       "last_updated": "20260527"
     },
-    "29493": {
-      "room_name": "10幢第6层604-3房间",
+    "10幢第5层506-2房间": {
+      "current_balance": 399.59,
+      "last_updated": "20260527"
+    },
+    "10幢第2层203-1房间": {
+      "current_balance": 158.69,
+      "last_updated": "20260527"
+    },
+    "10幢第2层202-1房间": {
+      "current_balance": 657.93,
+      "last_updated": "20260527"
+    },
+    "10幢第6层604-3房间": {
       "current_balance": 43.77,
       "last_updated": "20260527"
     },
-    "12355": {
-      "room_name": "10幢第5层507-4房间",
-      "current_balance": 16.39,
+    "10幢第6层605-3房间": {
+      "current_balance": 24.86,
       "last_updated": "20260527"
     },
-    "60510": {
-      "room_name": "10幢第3层305-3房间",
-      "current_balance": 573.12,
+    "10幢第3层301-3房间": {
+      "current_balance": 2.62,
       "last_updated": "20260527"
     },
-    "96785": {
-      "room_name": "10幢第4层405-4房间",
-      "current_balance": 7.65,
+    "10幢第2层208-1房间": {
+      "current_balance": 88.87,
       "last_updated": "20260527"
     },
-    "24176": {
-      "room_name": "10幢第3层305-4房间",
+    "10幢第1层103-3房间": {
+      "current_balance": 83.35,
+      "last_updated": "20260527"
+    },
+    "10幢第4层406-3房间": {
+      "current_balance": 207.96,
+      "last_updated": "20260527"
+    },
+    "10幢第4层407-3房间": {
+      "current_balance": 432.95,
+      "last_updated": "20260527"
+    },
+    "10幢第4层408-4房间": {
+      "current_balance": 67.14,
+      "last_updated": "20260527"
+    },
+    "10幢第5层505-1房间": {
+      "current_balance": 17.34,
+      "last_updated": "20260527"
+    },
+    "10幢第5层504-1房间": {
+      "current_balance": 170.45,
+      "last_updated": "20260527"
+    },
+    "10幢第2层201-2房间": {
+      "current_balance": 988.91,
+      "last_updated": "20260527"
+    },
+    "10幢第3层305-4房间": {
       "current_balance": 45.15,
       "last_updated": "20260527"
     },
-    "88405": {
-      "room_name": "10幢第4层402-3房间",
-      "current_balance": 32.49,
+    "10幢第3层304-4房间": {
+      "current_balance": 41.73,
       "last_updated": "20260527"
     },
-    "37755": {
-      "room_name": "10幢第2层204-3房间",
+    "10幢第6层601-4房间": {
+      "current_balance": 20.04,
+      "last_updated": "20260527"
+    },
+    "2074": {
+      "current_balance": 29.22,
+      "last_updated": "20260527"
+    },
+    "10幢第1层101-4房间": {
+      "current_balance": 71.3,
+      "last_updated": "20260527"
+    },
+    "10幢第4层404-4房间": {
+      "current_balance": 113.18,
+      "last_updated": "20260527"
+    },
+    "10幢第4层405-4房间": {
+      "current_balance": 7.65,
+      "last_updated": "20260527"
+    },
+    "10幢第5层501-2房间": {
+      "current_balance": 123.06,
+      "last_updated": "20260527"
+    },
+    "10幢第2层204-1房间": {
+      "current_balance": 396.91,
+      "last_updated": "20260527"
+    },
+    "10幢第2层205-1房间": {
+      "current_balance": 877.61,
+      "last_updated": "20260527"
+    },
+    "10幢第3层308-4房间": {
+      "current_balance": 2.77,
+      "last_updated": "20260527"
+    },
+    "1043": {
+      "current_balance": 25.83,
+      "last_updated": "20260527"
+    },
+    "10幢第3层307-3房间": {
+      "current_balance": 77.5,
+      "last_updated": "20260527"
+    },
+    "10幢第3层306-3房间": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "10幢第6层603-3房间": {
+      "current_balance": 111.04,
+      "last_updated": "20260527"
+    },
+    "10幢第6层602-3房间": {
+      "current_balance": 228.46,
+      "last_updated": "20260527"
+    },
+    "10幢第5层508-1房间": {
+      "current_balance": 605.0,
+      "last_updated": "20260527"
+    },
+    "10幢第4层401-3房间": {
+      "current_balance": 942.76,
+      "last_updated": "20260527"
+    },
+    "10幢第1层105-3房间": {
+      "current_balance": 6.49,
+      "last_updated": "20260527"
+    },
+    "10幢第1层104-3房间": {
+      "current_balance": 25.83,
+      "last_updated": "20260527"
+    },
+    "10幢第5层502-1房间": {
+      "current_balance": 126.92,
+      "last_updated": "20260527"
+    },
+    "10幢第5层503-1房间": {
+      "current_balance": 82.64,
+      "last_updated": "20260527"
+    },
+    "10幢第2层206-2房间": {
+      "current_balance": 16.39,
+      "last_updated": "20260527"
+    },
+    "10幢第2层207-2房间": {
+      "current_balance": 43.57,
+      "last_updated": "20260527"
+    },
+    "10幢第6层608-3房间": {
+      "current_balance": 187.36,
+      "last_updated": "20260527"
+    },
+    "4021": {
+      "current_balance": 22.26,
+      "last_updated": "20260527"
+    },
+    "10幢第6层606-4房间": {
+      "current_balance": 45.34,
+      "last_updated": "20260527"
+    },
+    "10幢第6层607-4房间": {
+      "current_balance": 4.33,
+      "last_updated": "20260527"
+    },
+    "10幢第3层302-4房间": {
+      "current_balance": 42.17,
+      "last_updated": "20260527"
+    },
+    "10幢第3层303-4房间": {
+      "current_balance": 16.06,
+      "last_updated": "20260527"
+    },
+    "10幢第2层201-4房间": {
+      "current_balance": 147.11,
+      "last_updated": "20260527"
+    },
+    "10幢第6层601-2房间": {
+      "current_balance": 612.93,
+      "last_updated": "20260527"
+    },
+    "10幢第1层105-1房间": {
+      "current_balance": 8.71,
+      "last_updated": "20260527"
+    },
+    "10幢第1层104-1房间": {
+      "current_balance": 28.77,
+      "last_updated": "20260527"
+    },
+    "10幢第4层401-1房间": {
+      "current_balance": 1445.7,
+      "last_updated": "20260527"
+    },
+    "10幢第3层305-2房间": {
+      "current_balance": 6.34,
+      "last_updated": "20260527"
+    },
+    "10幢第3层304-2房间": {
+      "current_balance": 571.87,
+      "last_updated": "20260527"
+    },
+    "10幢第4层408-2房间": {
+      "current_balance": 715.64,
+      "last_updated": "20260527"
+    },
+    "10幢第5层502-3房间": {
+      "current_balance": 54.53,
+      "last_updated": "20260527"
+    },
+    "10幢第5层503-3房间": {
+      "current_balance": 93.21,
+      "last_updated": "20260527"
+    },
+    "10幢第6层608-1房间": {
+      "current_balance": 362.6,
+      "last_updated": "20260527"
+    },
+    "10幢第2层204-3房间": {
       "current_balance": 7.12,
       "last_updated": "20260527"
     },
-    "60011": {
-      "room_name": "10幢第6层604-2房间",
-      "current_balance": 18.57,
+    "10幢第2层205-3房间": {
+      "current_balance": 138.45,
       "last_updated": "20260527"
     },
-    "31946": {
-      "room_name": "10幢第5层503-4房间",
+    "10幢第6层603-1房间": {
+      "current_balance": 260.11,
+      "last_updated": "20260527"
+    },
+    "10幢第6层602-1房间": {
+      "current_balance": 531.66,
+      "last_updated": "20260527"
+    },
+    "10幢第5层508-3房间": {
+      "current_balance": 946.68,
+      "last_updated": "20260527"
+    },
+    "10幢第4层403-2房间": {
+      "current_balance": 131.3,
+      "last_updated": "20260527"
+    },
+    "10幢第4层402-2房间": {
+      "current_balance": 43.69,
+      "last_updated": "20260527"
+    },
+    "10幢第3层307-1房间": {
+      "current_balance": 9.72,
+      "last_updated": "20260527"
+    },
+    "10幢第3层306-1房间": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "10幢第5层507-4房间": {
+      "current_balance": 16.39,
+      "last_updated": "20260527"
+    },
+    "10幢第5层506-4房间": {
+      "current_balance": 385.44,
+      "last_updated": "20260527"
+    },
+    "10幢第1层101-3房间": {
+      "current_balance": 315.3,
+      "last_updated": "20260527"
+    },
+    "10幢第4层405-3房间": {
+      "current_balance": 190.77,
+      "last_updated": "20260527"
+    },
+    "10幢第4层404-3房间": {
+      "current_balance": 154.53,
+      "last_updated": "20260527"
+    },
+    "10幢第3层308-3房间": {
+      "current_balance": 309.56,
+      "last_updated": "20260527"
+    },
+    "10幢第2层202-2房间": {
+      "current_balance": 221.85,
+      "last_updated": "20260527"
+    },
+    "10幢第2层203-2房间": {
+      "current_balance": 674.25,
+      "last_updated": "20260527"
+    },
+    "10幢第5层506-1房间": {
+      "current_balance": 109.18,
+      "last_updated": "20260527"
+    },
+    "10幢第5层507-1房间": {
+      "current_balance": 56.99,
+      "last_updated": "20260527"
+    },
+    "4054": {
+      "current_balance": 7.65,
+      "last_updated": "20260527"
+    },
+    "10幢第3层306-4房间": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "10幢第3层307-4房间": {
+      "current_balance": 11.29,
+      "last_updated": "20260527"
+    },
+    "10幢第6层602-4房间": {
+      "current_balance": 7.73,
+      "last_updated": "20260527"
+    },
+    "10幢第6层603-4房间": {
+      "current_balance": 165.05,
+      "last_updated": "20260527"
+    },
+    "10幢第4层401-4房间": {
+      "current_balance": 224.66,
+      "last_updated": "20260527"
+    },
+    "10幢第1层104-4房间": {
+      "current_balance": 54.52,
+      "last_updated": "20260527"
+    },
+    "10幢第1层105-4房间": {
+      "current_balance": 15.61,
+      "last_updated": "20260527"
+    },
+    "10幢第2层201-1房间": {
+      "current_balance": 78.81,
+      "last_updated": "20260527"
+    },
+    "10幢第5层504-2房间": {
+      "current_balance": 479.99,
+      "last_updated": "20260527"
+    },
+    "10幢第5层505-2房间": {
+      "current_balance": 127.25,
+      "last_updated": "20260527"
+    },
+    "10幢第6层608-4房间": {
+      "current_balance": 64.32,
+      "last_updated": "20260527"
+    },
+    "10幢第2层208-2房间": {
+      "current_balance": 625.15,
+      "last_updated": "20260527"
+    },
+    "10幢第6层607-3房间": {
+      "current_balance": 14.24,
+      "last_updated": "20260527"
+    },
+    "10幢第6层606-3房间": {
+      "current_balance": 485.97,
+      "last_updated": "20260527"
+    },
+    "10幢第3层303-3房间": {
+      "current_balance": 876.85,
+      "last_updated": "20260527"
+    },
+    "10幢第3层302-3房间": {
+      "current_balance": 1144.45,
+      "last_updated": "20260527"
+    },
+    "10幢第2层201-3房间": {
+      "current_balance": 530.57,
+      "last_updated": "20260527"
+    },
+    "10幢第3层303-1房间": {
+      "current_balance": 729.85,
+      "last_updated": "20260527"
+    },
+    "10幢第3层302-1房间": {
+      "current_balance": 195.44,
+      "last_updated": "20260527"
+    },
+    "10幢第4层407-2房间": {
+      "current_balance": 594.99,
+      "last_updated": "20260527"
+    },
+    "10幢第4层406-2房间": {
+      "current_balance": 144.91,
+      "last_updated": "20260527"
+    },
+    "10幢第1层102-2房间": {
+      "current_balance": 101.21,
+      "last_updated": "20260527"
+    },
+    "10幢第6层607-1房间": {
+      "current_balance": 593.36,
+      "last_updated": "20260527"
+    },
+    "10幢第6层606-1房间": {
+      "current_balance": 142.27,
+      "last_updated": "20260527"
+    },
+    "10幢第5层503-4房间": {
       "current_balance": 210.92,
       "last_updated": "20260527"
     },
-    "83667": {
-      "room_name": "10幢第3层302-1房间",
-      "current_balance": 195.44,
+    "10幢第5层502-4房间": {
+      "current_balance": 20.21,
+      "last_updated": "20260527"
+    },
+    "10幢第2层205-4房间": {
+      "current_balance": 56.91,
+      "last_updated": "20260527"
+    },
+    "10幢第2层204-4房间": {
+      "current_balance": 5.96,
+      "last_updated": "20260527"
+    },
+    "10幢第3层301-2房间": {
+      "current_balance": 50.86,
+      "last_updated": "20260527"
+    },
+    "10幢第4层405-1房间": {
+      "current_balance": 27.73,
+      "last_updated": "20260527"
+    },
+    "10幢第4层404-1房间": {
+      "current_balance": 682.33,
+      "last_updated": "20260527"
+    },
+    "10幢第1层101-1房间": {
+      "current_balance": 21.12,
+      "last_updated": "20260527"
+    },
+    "10幢第6层605-2房间": {
+      "current_balance": 146.65,
+      "last_updated": "20260527"
+    },
+    "10幢第6层604-2房间": {
+      "current_balance": 18.57,
+      "last_updated": "20260527"
+    },
+    "10幢第5层508-4房间": {
+      "current_balance": 17.49,
+      "last_updated": "20260527"
+    },
+    "10幢第5层506-3房间": {
+      "current_balance": 174.43,
+      "last_updated": "20260527"
+    },
+    "10幢第5层507-3房间": {
+      "current_balance": 33.34,
+      "last_updated": "20260527"
+    },
+    "10幢第3层308-1房间": {
+      "current_balance": 317.5,
+      "last_updated": "20260527"
+    },
+    "10幢第4层408-1房间": {
+      "current_balance": 36.54,
+      "last_updated": "20260527"
+    },
+    "10幢第2层207-3房间": {
+      "current_balance": 65.35,
+      "last_updated": "20260527"
+    },
+    "10幢第2层206-3房间": {
+      "current_balance": 414.17,
+      "last_updated": "20260527"
+    },
+    "10幢第6层608-2房间": {
+      "current_balance": 46.2,
+      "last_updated": "20260527"
+    },
+    "10幢第2层208-4房间": {
+      "current_balance": 85.67,
+      "last_updated": "20260527"
+    },
+    "10幢第1层104-2房间": {
+      "current_balance": 424.98,
+      "last_updated": "20260527"
+    },
+    "10幢第1层105-2房间": {
+      "current_balance": 20.78,
+      "last_updated": "20260527"
+    },
+    "10幢第6层601-1房间": {
+      "current_balance": 6.41,
+      "last_updated": "20260527"
+    },
+    "10幢第3层304-1房间": {
+      "current_balance": 450.64,
+      "last_updated": "20260527"
+    },
+    "10幢第3层305-1房间": {
+      "current_balance": 1081.27,
+      "last_updated": "20260527"
+    },
+    "10幢第4层401-2房间": {
+      "current_balance": 542.97,
+      "last_updated": "20260527"
+    },
+    "10幢第5层504-4房间": {
+      "current_balance": 46.07,
+      "last_updated": "20260527"
+    },
+    "10幢第5层505-4房间": {
+      "current_balance": 66.2,
+      "last_updated": "20260527"
+    },
+    "10幢第2层202-4房间": {
+      "current_balance": 35.44,
+      "last_updated": "20260527"
+    },
+    "10幢第2层203-4房间": {
+      "current_balance": 78.75,
+      "last_updated": "20260527"
+    },
+    "10幢第6层602-2房间": {
+      "current_balance": 526.92,
+      "last_updated": "20260527"
+    },
+    "10幢第6层603-2房间": {
+      "current_balance": 473.31,
+      "last_updated": "20260527"
+    },
+    "10幢第3层306-2房间": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "10幢第3层307-2房间": {
+      "current_balance": 614.73,
+      "last_updated": "20260527"
+    },
+    "10幢第4层402-1房间": {
+      "current_balance": 22.26,
+      "last_updated": "20260527"
+    },
+    "10幢第4层403-1房间": {
+      "current_balance": 909.89,
+      "last_updated": "20260527"
+    },
+    "10幢第5层501-3房间": {
+      "current_balance": 85.32,
+      "last_updated": "20260527"
+    },
+    "10幢第4层402-3房间": {
+      "current_balance": 32.49,
+      "last_updated": "20260527"
+    },
+    "10幢第4层403-3房间": {
+      "current_balance": 36.4,
+      "last_updated": "20260527"
+    },
+    "10幢第5层508-2房间": {
+      "current_balance": 18.44,
+      "last_updated": "20260527"
+    },
+    "10幢第2层205-2房间": {
+      "current_balance": 67.48,
+      "last_updated": "20260527"
+    },
+    "10幢第2层204-2房间": {
+      "current_balance": 318.36,
+      "last_updated": "20260527"
+    },
+    "10幢第5层501-1房间": {
+      "current_balance": 957.43,
+      "last_updated": "20260527"
+    },
+    "10幢第6层605-4房间": {
+      "current_balance": 5.18,
+      "last_updated": "20260527"
+    },
+    "10幢第6层604-4房间": {
+      "current_balance": 189.93,
+      "last_updated": "20260527"
+    },
+    "10幢第3层301-4房间": {
+      "current_balance": 169.96,
+      "last_updated": "20260527"
+    },
+    "10幢第1层103-4房间": {
+      "current_balance": 146.65,
+      "last_updated": "20260527"
+    },
+    "10幢第1层102-4房间": {
+      "current_balance": 59.42,
+      "last_updated": "20260527"
+    },
+    "10幢第4层407-4房间": {
+      "current_balance": 98.59,
+      "last_updated": "20260527"
+    },
+    "10幢第4层406-4房间": {
+      "current_balance": 165.81,
+      "last_updated": "20260527"
+    },
+    "10幢第2层207-1房间": {
+      "current_balance": 84.59,
+      "last_updated": "20260527"
+    },
+    "10幢第2层206-1房间": {
+      "current_balance": 84.55,
+      "last_updated": "20260527"
+    },
+    "10幢第5层503-2房间": {
+      "current_balance": 127.09,
+      "last_updated": "20260527"
+    },
+    "10幢第5层502-2房间": {
+      "current_balance": 135.9,
+      "last_updated": "20260527"
+    },
+    "10幢第4层408-3房间": {
+      "current_balance": 281.55,
+      "last_updated": "20260527"
+    },
+    "10幢第3层304-3房间": {
+      "current_balance": 13.48,
+      "last_updated": "20260527"
+    },
+    "10幢第3层305-3房间": {
+      "current_balance": 573.12,
+      "last_updated": "20260527"
+    },
+    "10幢第6层601-3房间": {
+      "current_balance": 322.58,
       "last_updated": "20260527"
     }
   }

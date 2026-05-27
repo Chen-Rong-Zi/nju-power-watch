@@ -7,7 +7,7 @@ const IDB = {
   _db: null,
   DB_NAME: 'ElecCache',
   STORE_NAME: 'cache',
-  DB_VERSION: 1,
+  DB_VERSION: 2,
 
   /**
    * 初始化数据库
@@ -20,7 +20,14 @@ const IDB = {
 
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
-        if (!db.objectStoreNames.contains(this.STORE_NAME)) {
+        // Version 2: 清除旧缓存（旧缓存以房间ID为键，迁移后改用房间名）
+        if (event.oldVersion < 2) {
+          if (db.objectStoreNames.contains(this.STORE_NAME)) {
+            db.deleteObjectStore(this.STORE_NAME);
+          }
+          const store = db.createObjectStore(this.STORE_NAME, { keyPath: 'key' });
+          store.createIndex('updatedAt', 'updatedAt', { unique: false });
+        } else if (!db.objectStoreNames.contains(this.STORE_NAME)) {
           const store = db.createObjectStore(this.STORE_NAME, { keyPath: 'key' });
           store.createIndex('updatedAt', 'updatedAt', { unique: false });
         }

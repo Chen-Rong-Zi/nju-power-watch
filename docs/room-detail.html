@@ -424,8 +424,7 @@
       params = {
         campus: urlParams.get('campus'),
         building: urlParams.get('building'),
-        roomId: urlParams.get('roomId'),
-        roomName: urlParams.get('roomName') || '未知房间',
+        room: urlParams.get('room') || '未知房间',
         returnUrl: urlParams.get('returnUrl') // 获取返回URL
       };
 
@@ -442,7 +441,7 @@
       parseUrlParams();
       setupEventListeners();
 
-      if (params.campus && params.building && params.roomId) {
+      if (params.campus && params.building && params.room) {
         await loadRoomData();
       } else {
         showError();
@@ -455,7 +454,7 @@
         const history = await DataService.getRoomHistory(
           params.campus,
           params.building,
-          params.roomId
+          params.room
         );
 
         if (history && history.history && history.history.length > 0) {
@@ -485,7 +484,7 @@
       const weekData = roomData.slice(-7);
 
       // 填充房间信息
-      document.getElementById('room-name').textContent = params.roomName;
+      document.getElementById('room-name').textContent = params.room;
       document.getElementById('room-campus').textContent = params.campus;
       document.getElementById('room-building').textContent = params.building;
       document.getElementById('current-balance').textContent = latest.balance.toFixed(1) + '度';

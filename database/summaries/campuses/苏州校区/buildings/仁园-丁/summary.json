@@ -3,384 +3,308 @@
   "campus": "苏州校区",
   "total_rooms": 76,
   "rooms": {
-    "45505": {
-      "room_name": "丁406",
-      "current_balance": 67.59,
-      "last_updated": "20260527"
-    },
-    "44730": {
-      "room_name": "丁810",
-      "current_balance": 348.15,
-      "last_updated": "20260527"
-    },
-    "70884": {
-      "room_name": "丁408",
-      "current_balance": 339.61,
-      "last_updated": "20260527"
-    },
-    "44691": {
-      "room_name": "丁207",
-      "current_balance": 202.94,
-      "last_updated": "20260527"
-    },
-    "40116": {
-      "room_name": "丁311",
-      "current_balance": 332.28,
-      "last_updated": "20260527"
-    },
-    "57578": {
-      "room_name": "丁705",
-      "current_balance": 339.74,
-      "last_updated": "20260527"
-    },
-    "55765": {
-      "room_name": "丁507",
-      "current_balance": 309.3,
-      "last_updated": "20260527"
-    },
-    "56444": {
-      "room_name": "丁607",
-      "current_balance": 144.72,
-      "last_updated": "20260527"
-    },
-    "40151": {
-      "room_name": "丁308",
-      "current_balance": 134.21,
-      "last_updated": "20260527"
-    },
-    "45256": {
-      "room_name": "丁506",
-      "current_balance": 183.55,
-      "last_updated": "20260527"
-    },
-    "55449": {
-      "room_name": "丁503",
-      "current_balance": 327.59,
-      "last_updated": "20260527"
-    },
-    "45411": {
-      "room_name": "丁305",
-      "current_balance": 819.0,
-      "last_updated": "20260527"
-    },
-    "44663": {
-      "room_name": "丁411",
-      "current_balance": 29.24,
-      "last_updated": "20260527"
-    },
-    "39959": {
-      "room_name": "丁704",
-      "current_balance": 324.71,
-      "last_updated": "20260527"
-    },
-    "69127": {
-      "room_name": "丁409",
-      "current_balance": 676.42,
-      "last_updated": "20260527"
-    },
-    "45513": {
-      "room_name": "丁306",
-      "current_balance": 277.37,
-      "last_updated": "20260527"
-    },
-    "44455": {
-      "room_name": "丁505",
-      "current_balance": 1501.79,
-      "last_updated": "20260527"
-    },
-    "44331": {
-      "room_name": "丁403",
-      "current_balance": 87.65,
-      "last_updated": "20260527"
-    },
-    "44918": {
-      "room_name": "丁206",
-      "current_balance": 206.86,
-      "last_updated": "20260527"
-    },
-    "70443": {
-      "room_name": "丁307",
-      "current_balance": 197.68,
-      "last_updated": "20260527"
-    },
-    "40115": {
-      "room_name": "丁310",
-      "current_balance": 180.81,
-      "last_updated": "20260527"
-    },
-    "71530": {
-      "room_name": "丁804",
-      "current_balance": 303.7,
-      "last_updated": "20260527"
-    },
-    "46087": {
-      "room_name": "丁703",
-      "current_balance": 261.24,
-      "last_updated": "20260527"
-    },
-    "42705": {
-      "room_name": "丁301",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "71935": {
-      "room_name": "丁805",
-      "current_balance": 396.95,
-      "last_updated": "20260527"
-    },
-    "58627": {
-      "room_name": "丁205",
-      "current_balance": 672.86,
-      "last_updated": "20260527"
-    },
-    "40055": {
-      "room_name": "丁601",
-      "current_balance": 47.0,
-      "last_updated": "20260527"
-    },
-    "23031": {
-      "room_name": "丁802",
+    "丁802": {
       "current_balance": 313.3,
       "last_updated": "20260527"
     },
-    "40131": {
-      "room_name": "丁204",
-      "current_balance": 164.89,
+    "丁506": {
+      "current_balance": 183.55,
       "last_updated": "20260527"
     },
-    "56615": {
-      "room_name": "丁605",
-      "current_balance": 185.5,
-      "last_updated": "20260527"
-    },
-    "40164": {
-      "room_name": "丁304",
-      "current_balance": 268.87,
-      "last_updated": "20260527"
-    },
-    "45416": {
-      "room_name": "丁511",
-      "current_balance": 84.04,
-      "last_updated": "20260527"
-    },
-    "71205": {
-      "room_name": "丁407",
-      "current_balance": 77.02,
-      "last_updated": "20260527"
-    },
-    "44393": {
-      "room_name": "丁806",
-      "current_balance": 73.52,
-      "last_updated": "20260527"
-    },
-    "45531": {
-      "room_name": "丁202",
-      "current_balance": 41.36,
-      "last_updated": "20260527"
-    },
-    "40165": {
-      "room_name": "丁303",
-      "current_balance": 390.53,
-      "last_updated": "20260527"
-    },
-    "48081": {
-      "room_name": "丁401",
-      "current_balance": 344.87,
-      "last_updated": "20260527"
-    },
-    "60531": {
-      "room_name": "丁609",
-      "current_balance": 62.54,
-      "last_updated": "20260527"
-    },
-    "44457": {
-      "room_name": "丁509",
-      "current_balance": 241.97,
-      "last_updated": "20260527"
-    },
-    "45441": {
-      "room_name": "丁809",
-      "current_balance": 145.83,
-      "last_updated": "20260527"
-    },
-    "45433": {
-      "room_name": "丁801",
-      "current_balance": 400.89,
-      "last_updated": "20260527"
-    },
-    "45128": {
-      "room_name": "丁701",
-      "current_balance": 61.65,
-      "last_updated": "20260527"
-    },
-    "40033": {
-      "room_name": "丁611",
-      "current_balance": 550.39,
-      "last_updated": "20260527"
-    },
-    "40170": {
-      "room_name": "丁309",
-      "current_balance": 295.09,
-      "last_updated": "20260527"
-    },
-    "40152": {
-      "room_name": "丁203",
-      "current_balance": 65.88,
-      "last_updated": "20260527"
-    },
-    "45328": {
-      "room_name": "丁510",
+    "丁510": {
       "current_balance": 76.67,
       "last_updated": "20260527"
     },
-    "28598": {
-      "room_name": "丁606",
-      "current_balance": 228.05,
-      "last_updated": "20260527"
-    },
-    "60266": {
-      "room_name": "丁811",
-      "current_balance": 334.96,
-      "last_updated": "20260527"
-    },
-    "61402": {
-      "room_name": "丁708",
-      "current_balance": 65.37,
-      "last_updated": "20260527"
-    },
-    "44351": {
-      "room_name": "丁610",
-      "current_balance": 511.8,
-      "last_updated": "20260527"
-    },
-    "44339": {
-      "room_name": "丁501",
-      "current_balance": 107.26,
-      "last_updated": "20260527"
-    },
-    "45178": {
-      "room_name": "丁807",
-      "current_balance": 94.93,
-      "last_updated": "20260527"
-    },
-    "40037": {
-      "room_name": "丁602",
-      "current_balance": 204.61,
-      "last_updated": "20260527"
-    },
-    "44375": {
-      "room_name": "丁711",
-      "current_balance": 174.1,
-      "last_updated": "20260527"
-    },
-    "40038": {
-      "room_name": "丁603",
-      "current_balance": 184.86,
-      "last_updated": "20260527"
-    },
-    "19139": {
-      "room_name": "丁707",
-      "current_balance": 604.45,
-      "last_updated": "20260527"
-    },
-    "40035": {
-      "room_name": "丁608",
-      "current_balance": 122.43,
-      "last_updated": "20260527"
-    },
-    "45237": {
-      "room_name": "丁302",
-      "current_balance": 257.94,
-      "last_updated": "20260527"
-    },
-    "64000": {
-      "room_name": "丁706",
-      "current_balance": 90.13,
-      "last_updated": "20260527"
-    },
-    "46304": {
-      "room_name": "丁210",
-      "current_balance": 358.64,
-      "last_updated": "20260527"
-    },
-    "4151": {
-      "room_name": "丁201",
-      "current_balance": 0.0,
-      "last_updated": "20260527"
-    },
-    "56087": {
-      "room_name": "丁402",
+    "丁402": {
       "current_balance": 344.03,
       "last_updated": "20260527"
     },
-    "45421": {
-      "room_name": "丁709",
-      "current_balance": 693.23,
+    "丁707": {
+      "current_balance": 604.45,
       "last_updated": "20260527"
     },
-    "45371": {
-      "room_name": "丁504",
-      "current_balance": 673.37,
+    "丁204": {
+      "current_balance": 164.89,
       "last_updated": "20260527"
     },
-    "40062": {
-      "room_name": "丁502",
-      "current_balance": 289.44,
+    "丁711": {
+      "current_balance": 174.1,
       "last_updated": "20260527"
     },
-    "45269": {
-      "room_name": "丁808",
-      "current_balance": 221.01,
+    "丁603": {
+      "current_balance": 184.86,
       "last_updated": "20260527"
     },
-    "44438": {
-      "room_name": "丁404",
-      "current_balance": 213.11,
+    "丁208": {
+      "current_balance": 46.84,
       "last_updated": "20260527"
     },
-    "46216": {
-      "room_name": "丁410",
-      "current_balance": 116.43,
-      "last_updated": "20260527"
-    },
-    "44605": {
-      "room_name": "丁209",
+    "丁209": {
       "current_balance": 741.91,
       "last_updated": "20260527"
     },
-    "54250": {
-      "room_name": "丁803",
-      "current_balance": 190.99,
+    "丁602": {
+      "current_balance": 204.61,
       "last_updated": "20260527"
     },
-    "45079": {
-      "room_name": "丁604",
-      "current_balance": 290.92,
+    "丁205": {
+      "current_balance": 672.86,
       "last_updated": "20260527"
     },
-    "45359": {
-      "room_name": "丁710",
+    "丁710": {
       "current_balance": 469.12,
       "last_updated": "20260527"
     },
-    "45212": {
-      "room_name": "丁508",
-      "current_balance": 298.54,
+    "丁706": {
+      "current_balance": 90.13,
       "last_updated": "20260527"
     },
-    "45300": {
-      "room_name": "丁702",
-      "current_balance": 413.39,
+    "丁301": {
+      "current_balance": 0.0,
       "last_updated": "20260527"
     },
-    "44397": {
-      "room_name": "丁405",
+    "丁403": {
+      "current_balance": 87.65,
+      "last_updated": "20260527"
+    },
+    "丁511": {
+      "current_balance": 84.04,
+      "last_updated": "20260527"
+    },
+    "丁507": {
+      "current_balance": 309.3,
+      "last_updated": "20260527"
+    },
+    "丁803": {
+      "current_balance": 190.99,
+      "last_updated": "20260527"
+    },
+    "丁808": {
+      "current_balance": 221.01,
+      "last_updated": "20260527"
+    },
+    "丁408": {
+      "current_balance": 339.61,
+      "last_updated": "20260527"
+    },
+    "丁609": {
+      "current_balance": 62.54,
+      "last_updated": "20260527"
+    },
+    "丁804": {
+      "current_balance": 303.7,
+      "last_updated": "20260527"
+    },
+    "丁404": {
+      "current_balance": 213.11,
+      "last_updated": "20260527"
+    },
+    "丁306": {
+      "current_balance": 277.37,
+      "last_updated": "20260527"
+    },
+    "丁701": {
+      "current_balance": 61.65,
+      "last_updated": "20260527"
+    },
+    "丁202": {
+      "current_balance": 41.36,
+      "last_updated": "20260527"
+    },
+    "丁605": {
+      "current_balance": 185.5,
+      "last_updated": "20260527"
+    },
+    "丁310": {
+      "current_balance": 180.81,
+      "last_updated": "20260527"
+    },
+    "丁604": {
+      "current_balance": 290.92,
+      "last_updated": "20260527"
+    },
+    "丁311": {
+      "current_balance": 332.28,
+      "last_updated": "20260527"
+    },
+    "丁203": {
+      "current_balance": 65.88,
+      "last_updated": "20260527"
+    },
+    "丁307": {
+      "current_balance": 197.68,
+      "last_updated": "20260527"
+    },
+    "丁405": {
       "current_balance": 148.19,
       "last_updated": "20260527"
     },
-    "45308": {
-      "room_name": "丁208",
-      "current_balance": 46.84,
+    "丁501": {
+      "current_balance": 107.26,
+      "last_updated": "20260527"
+    },
+    "丁805": {
+      "current_balance": 396.95,
+      "last_updated": "20260527"
+    },
+    "丁608": {
+      "current_balance": 122.43,
+      "last_updated": "20260527"
+    },
+    "丁409": {
+      "current_balance": 676.42,
+      "last_updated": "20260527"
+    },
+    "丁809": {
+      "current_balance": 145.83,
+      "last_updated": "20260527"
+    },
+    "丁308": {
+      "current_balance": 134.21,
+      "last_updated": "20260527"
+    },
+    "丁607": {
+      "current_balance": 144.72,
+      "last_updated": "20260527"
+    },
+    "丁703": {
+      "current_balance": 261.24,
+      "last_updated": "20260527"
+    },
+    "丁304": {
+      "current_balance": 268.87,
+      "last_updated": "20260527"
+    },
+    "丁611": {
+      "current_balance": 550.39,
+      "last_updated": "20260527"
+    },
+    "丁406": {
+      "current_balance": 67.59,
+      "last_updated": "20260527"
+    },
+    "丁810": {
+      "current_balance": 348.15,
+      "last_updated": "20260527"
+    },
+    "丁502": {
+      "current_balance": 289.44,
+      "last_updated": "20260527"
+    },
+    "丁410": {
+      "current_balance": 116.43,
+      "last_updated": "20260527"
+    },
+    "丁806": {
+      "current_balance": 73.52,
+      "last_updated": "20260527"
+    },
+    "丁411": {
+      "current_balance": 29.24,
+      "last_updated": "20260527"
+    },
+    "丁807": {
+      "current_balance": 94.93,
+      "last_updated": "20260527"
+    },
+    "丁503": {
+      "current_balance": 327.59,
+      "last_updated": "20260527"
+    },
+    "丁407": {
+      "current_balance": 77.02,
+      "last_updated": "20260527"
+    },
+    "丁811": {
+      "current_balance": 334.96,
+      "last_updated": "20260527"
+    },
+    "丁305": {
+      "current_balance": 819.0,
+      "last_updated": "20260527"
+    },
+    "丁610": {
+      "current_balance": 511.8,
+      "last_updated": "20260527"
+    },
+    "丁702": {
+      "current_balance": 413.39,
+      "last_updated": "20260527"
+    },
+    "丁201": {
+      "current_balance": 0.0,
+      "last_updated": "20260527"
+    },
+    "丁606": {
+      "current_balance": 228.05,
+      "last_updated": "20260527"
+    },
+    "丁309": {
+      "current_balance": 295.09,
+      "last_updated": "20260527"
+    },
+    "丁601": {
+      "current_balance": 47.0,
+      "last_updated": "20260527"
+    },
+    "丁206": {
+      "current_balance": 206.86,
+      "last_updated": "20260527"
+    },
+    "丁705": {
+      "current_balance": 339.74,
+      "last_updated": "20260527"
+    },
+    "丁210": {
+      "current_balance": 358.64,
+      "last_updated": "20260527"
+    },
+    "丁302": {
+      "current_balance": 257.94,
+      "last_updated": "20260527"
+    },
+    "丁504": {
+      "current_balance": 673.37,
+      "last_updated": "20260527"
+    },
+    "丁709": {
+      "current_balance": 693.23,
+      "last_updated": "20260527"
+    },
+    "丁508": {
+      "current_balance": 298.54,
+      "last_updated": "20260527"
+    },
+    "丁509": {
+      "current_balance": 241.97,
+      "last_updated": "20260527"
+    },
+    "丁708": {
+      "current_balance": 65.37,
+      "last_updated": "20260527"
+    },
+    "丁801": {
+      "current_balance": 400.89,
+      "last_updated": "20260527"
+    },
+    "丁505": {
+      "current_balance": 1501.79,
+      "last_updated": "20260527"
+    },
+    "丁401": {
+      "current_balance": 344.87,
+      "last_updated": "20260527"
+    },
+    "丁303": {
+      "current_balance": 390.53,
+      "last_updated": "20260527"
+    },
+    "丁704": {
+      "current_balance": 324.71,
+      "last_updated": "20260527"
+    },
+    "丁207": {
+      "current_balance": 202.94,
       "last_updated": "20260527"
     }
   }

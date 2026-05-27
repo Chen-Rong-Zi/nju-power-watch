@@ -3,14 +3,12 @@
   "campus": "浦口校区",
   "total_rooms": 2,
   "rooms": {
-    "14349": {
-      "room_name": "4064",
-      "current_balance": 26.36,
+    "4063": {
+      "current_balance": 100.71,
       "last_updated": "20260527"
     },
-    "14367": {
-      "room_name": "4063",
-      "current_balance": 100.71,
+    "4064": {
+      "current_balance": 26.36,
       "last_updated": "20260527"
     }
   }

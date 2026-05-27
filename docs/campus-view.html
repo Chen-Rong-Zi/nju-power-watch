@@ -790,7 +790,7 @@
 
       // 数据覆盖提示（显示加载进度）
       const coverageHint = document.getElementById('coverage-hint');
-      const coverage = roomCount > 0 ? (partial.roomsWithData / roomCount * 100).toFixed(0) : 0;
+      const coverage = roomCount > 0 ? Math.floor(partial.roomsWithData / roomCount * 100) : 0;
       if (loaded !== undefined && total !== undefined && loaded < total) {
         coverageHint.textContent = `正在加载 ${loaded}/${total} 栋楼... (${coverage}%)`;
       } else {
@@ -815,13 +815,14 @@
 
       // 数据覆盖提示
       const coverageHint = document.getElementById('coverage-hint');
-      const coverage = consumption.roomCount > 0 ? (consumption.roomsWithData / consumption.roomCount * 100).toFixed(0) : 0;
+      const rawCoverage = consumption.roomCount > 0 ? consumption.roomsWithData / consumption.roomCount * 100 : 0;
+      const coverage = Math.floor(rawCoverage);
       coverageHint.textContent = `数据覆盖: ${consumption.roomsWithData}/${consumption.roomCount} 间 (${coverage}%)`;
 
       // 变化趋势：显示数据覆盖率
       const changeEl = document.getElementById('dash-change');
-      if (coverage < 100) {
-        changeEl.innerHTML = `<span>数据加载中</span><span>${coverage}%</span>`;
+      if (rawCoverage < 100) {
+        changeEl.innerHTML = `<span>数据完整度: </span><span>${coverage}%</span>`;
         changeEl.className = 'dash-change down';
       } else {
         changeEl.innerHTML = `<span>数据完整</span><span>100%</span>`;

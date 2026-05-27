@@ -3,18 +3,15 @@
   "campus": "仙林校区",
   "total_rooms": 3,
   "rooms": {
-    "65451": {
-      "room_name": "0210",
+    "教工一食堂 风味小吃": {
       "current_balance": 0.0,
       "last_updated": "20260527"
     },
-    "69032": {
-      "room_name": "教工一食堂 风味小吃",
+    "十食堂 煎饼": {
       "current_balance": 0.0,
       "last_updated": "20260527"
     },
-    "64730": {
-      "room_name": "十食堂 煎饼",
+    "0210": {
       "current_balance": 0.0,
       "last_updated": "20260527"
     }
