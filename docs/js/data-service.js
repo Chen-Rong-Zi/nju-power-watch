@@ -1927,6 +1927,232 @@ const DataService = {
     } catch (error) {
       console.warn('[SessionStorage] 清除校区排行榜缓存失败:', error);
     }
+  },
+
+  /**
+   * 获取单个房间的消耗数据（支持 details.json、房间文件和缓存回退）
+   * @private
+   */
+  async _getRoomConsumption(campusName, buildingName, roomId, date, compactDate, options = {}) {
+    const normalizedRoomId = String(roomId || '');
+
+    if (!options.skipDetailsLookup) {
+      const details = await this.getBuildingDetails(campusName, buildingName);
+      const roomData = this._findRoomInMap(details?.rooms, normalizedRoomId);
+      const consumption = this._calculateConsumptionFromHistory(
+        roomData?.balance_history,
+        date,
+        compactDate
+      );
+      if (consumption !== null) return consumption;
+    }
+
+    try {
+      const roomHistory = await this.getRoomHistory(campusName, buildingName, normalizedRoomId);
+      const consumption = this._calculateConsumptionFromHistoryArray(
+        roomHistory?.history,
+        date,
+        compactDate
+      );
+      if (consumption !== null) return consumption;
+    } catch (error) {
+      console.warn(`获取房间 ${normalizedRoomId} 历史失败:`, error);
+    }
+
+    return null;
+  },
+
+  /**
+   * 获取楼栋内所有可比较房间的消耗数据
+   * @private
+   */
+  async _getBuildingRoomConsumptions(campusName, buildingName, date, compactDate, selectedRoomId = null) {
+    const consumptions = [];
+    const excludedRoomId = selectedRoomId ? String(selectedRoomId) : null;
+
+    const details = await this.getBuildingDetails(campusName, buildingName);
+    if (details?.rooms) {
+      for (const [roomId, roomData] of Object.entries(details.rooms)) {
+        if (excludedRoomId && this._isSameRoomId(roomId, excludedRoomId, roomData)) continue;
+
+        const consumption = this._calculateConsumptionFromHistory(
+          roomData.balance_history,
+          date,
+          compactDate
+        );
+        if (consumption !== null) consumptions.push(consumption);
+      }
+      return consumptions;
+    }
+
+    try {
+      const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
+      const roomIds = Object.keys(buildingSummary?.rooms || {});
+      for (const roomId of roomIds) {
+        if (excludedRoomId && roomId === excludedRoomId) continue;
+
+        const consumption = await this._getRoomConsumption(
+          campusName,
+          buildingName,
+          roomId,
+          date,
+          compactDate,
+          { skipDetailsLookup: true }
+        );
+        if (consumption !== null) consumptions.push(consumption);
+      }
+    } catch (error) {
+      console.warn(`获取楼栋 ${buildingName} 房间数据失败:`, error);
+    }
+
+    return consumptions;
+  },
+
+  /**
+   * 从房间历史数组计算消耗量
+   * @private
+   */
+  _calculateConsumptionFromHistoryArray(history, dateType, compactDate) {
+    if (!Array.isArray(history) || history.length === 0) return null;
+
+    if (dateType === 'today') {
+      const latest = history[history.length - 1];
+      return latest?.consumption !== undefined && latest.consumption !== null
+        ? latest.consumption
+        : null;
+    }
+
+    if (dateType === 'yesterday') {
+      const yesterday = history[history.length - 2];
+      return yesterday?.consumption !== undefined && yesterday.consumption !== null
+        ? yesterday.consumption
+        : null;
+    }
+
+    if (dateType === 'week') {
+      const weekData = history.slice(-7).filter(item =>
+        item.consumption !== undefined && item.consumption !== null
+      );
+      if (weekData.length === 0) return null;
+      return weekData.reduce((sum, item) => sum + item.consumption, 0) / weekData.length;
+    }
+
+    const targetEntry = history.find(item =>
+      item.date === compactDate || item.formattedDate === dateType
+    );
+    return targetEntry?.consumption !== undefined && targetEntry.consumption !== null
+      ? targetEntry.consumption
+      : null;
+  },
+
+  /**
+   * 在房间映射中兼容 string/number roomId 查找
+   * @private
+   */
+  _findRoomInMap(rooms, roomId) {
+    if (!rooms) return null;
+    const normalizedRoomId = String(roomId || '');
+    if (rooms[normalizedRoomId]) return rooms[normalizedRoomId];
+
+    const matched = Object.entries(rooms).find(([key, roomData]) =>
+      this._isSameRoomId(key, normalizedRoomId, roomData)
+    );
+    return matched ? matched[1] : null;
+  },
+
+  /**
+   * 判断房间 ID 是否一致
+   * @private
+   */
+  _isSameRoomId(roomId, targetRoomId, roomData = null) {
+    const normalizedRoomId = String(roomId || '');
+    const normalizedTarget = String(targetRoomId || '');
+    return normalizedRoomId === normalizedTarget ||
+      String(roomData?.room_id || '') === normalizedTarget;
+  },
+
+  /**
+   * 计算某个房间在楼栋和校区中的排名百分比
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string} roomId 房间ID
+   * @param {string} date 日期类型：'today', 'yesterday', 'week', 或具体日期
+   * @returns {Promise<Object>} 包含 beatBuildingPercent 和 beatCampusPercent 的对象
+   */
+  async calculateBeatPercentage(campusName, buildingName, roomId, date = 'today') {
+    console.log('[calculateBeatPercentage] 开始计算', { campusName, buildingName, roomId, date });
+
+    const compactDate = this._formatDateCompact(date);
+    const emptyResult = {
+      beatBuildingPercent: 0,
+      beatCampusPercent: 0,
+      buildingRoomCount: 0,
+      campusRoomCount: 0,
+      buildingBeaten: 0,
+      campusBeaten: 0
+    };
+
+    try {
+      const campusStats = await this.getCampusStatistics(campusName);
+      if (!campusStats?.buildingDetails) return emptyResult;
+
+      const currentRoomConsumption = await this._getRoomConsumption(
+        campusName,
+        buildingName,
+        roomId,
+        date,
+        compactDate
+      );
+
+      if (currentRoomConsumption === null) {
+        console.log('[calculateBeatPercentage] 无法获取当前房间消耗数据');
+        return emptyResult;
+      }
+
+      let buildingRoomCount = 0;
+      let buildingBeaten = 0;
+      let campusRoomCount = 0;
+      let campusBeaten = 0;
+
+      for (const building of campusStats.buildingDetails) {
+        try {
+          const consumptions = await this._getBuildingRoomConsumptions(
+            campusName,
+            building.name,
+            date,
+            compactDate,
+            building.name === buildingName ? roomId : null
+          );
+
+          for (const consumption of consumptions) {
+            campusRoomCount++;
+            if (consumption < currentRoomConsumption) campusBeaten++;
+
+            if (building.name === buildingName) {
+              buildingRoomCount++;
+              if (consumption < currentRoomConsumption) buildingBeaten++;
+            }
+          }
+        } catch (error) {
+          console.warn(`跳过楼栋 ${building.name}:`, error);
+        }
+      }
+
+      const result = {
+        beatBuildingPercent: buildingRoomCount > 0 ? (buildingBeaten / buildingRoomCount) * 100 : 0,
+        beatCampusPercent: campusRoomCount > 0 ? (campusBeaten / campusRoomCount) * 100 : 0,
+        buildingRoomCount,
+        campusRoomCount,
+        buildingBeaten,
+        campusBeaten
+      };
+
+      console.log('[calculateBeatPercentage] 计算完成', result);
+      return result;
+    } catch (error) {
+      console.error('[calculateBeatPercentage] 计算失败:', error);
+      return emptyResult;
+    }
   }
 };
 
