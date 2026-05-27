@@ -472,54 +472,6 @@
       font-weight: 600;
     }
 
-    /* 排名百分比卡片 */
-    .ranking-percent-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow);
-    }
-    .ranking-title {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 600;
-      margin: 0 0 20px 0;
-      text-align: center;
-    }
-    .ranking-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-    @media (max-width: 600px) {
-      .ranking-grid { grid-template-columns: 1fr; }
-    }
-    .ranking-item {
-      text-align: center;
-      padding: 20px;
-      background: color-mix(in oklch, var(--accent) 5%, transparent);
-      border-radius: var(--radius);
-      border: 1px solid color-mix(in oklch, var(--accent) 20%, transparent);
-    }
-    .ranking-label {
-      color: var(--muted);
-      font-size: 14px;
-      font-family: var(--font-mono);
-      margin-bottom: 8px;
-    }
-    .ranking-percent-value {
-      font-family: var(--font-display);
-      font-size: 36px;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-    .ranking-sub {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
     /* 配置面板 */
     .config-panel {
       position: fixed;
@@ -727,27 +679,6 @@
           <div class="stat-value" id="stat-min">--</div>
         </div>
       </div>
-      
-      <!-- 排名百分比卡片 -->
-      <div class="ranking-percent-card" id="ranking-percent-card" style="display: none; margin-top: 20px;">
-        <h3 class="ranking-title">🏆 今日用电排名</h3>
-        <div class="ranking-grid">
-          <div class="ranking-item">
-            <div class="ranking-label">在本楼栋</div>
-            <div class="ranking-percent-value" id="beat-building-percent">--</div>
-            <div class="ranking-sub">打败了 <span id="building-beaten">--</span> 个房间（共 <span id="building-room-count">--</span> 个）</div>
-          </div>
-          <div class="ranking-item">
-            <div class="ranking-label">在全校区</div>
-            <div class="ranking-percent-value" id="beat-campus-percent">--</div>
-            <div class="ranking-sub">打败了 <span id="campus-beaten">--</span> 个房间（共 <span id="campus-room-count">--</span> 个）</div>
-          </div>
-        </div>
-        <div class="ranking-loading" id="ranking-loading" style="text-align: center; padding: 20px; display: none;">
-          <div class="loading-spinner"></div>
-          <div id="ranking-loading-text" style="color: var(--muted); margin-top: 10px;">计算排名中...</div>
-        </div>
-      </div>
     </section>
 
     <!-- 未配置提示 -->
@@ -890,7 +821,6 @@
     let chartInstance = null;
     let mockData = [];
     let allRoomsCache = null; // 缓存所有房间数据用于搜索
-    let rankingLoadToken = 0;
 
     // 初始化
     document.addEventListener('DOMContentLoaded', async () => {
@@ -1256,76 +1186,6 @@
         generateMockData();
       }
       updateUI();
-      
-      // 加载排名数据
-      loadRankingData();
-    }
-    
-    // 加载排名数据
-    async function loadRankingData(retryCount = 0) {
-      if (!userConfig) return;
-      if (!userConfig.campus || !userConfig.building || !userConfig.roomId) return;
-      
-      const loadToken = ++rankingLoadToken;
-      const rankingCard = document.getElementById('ranking-percent-card');
-      const rankingGrid = rankingCard.querySelector('.ranking-grid');
-      const rankingLoading = document.getElementById('ranking-loading');
-      const rankingLoadingText = document.getElementById('ranking-loading-text');
-      const rankingSpinner = rankingLoading.querySelector('.loading-spinner');
-      
-      rankingCard.style.display = 'block';
-      rankingGrid.style.display = 'none';
-      rankingLoading.style.display = 'block';
-      rankingSpinner.style.display = 'block';
-      // 重置loading文本为初始状态
-      rankingLoadingText.textContent = '计算排名中...';
-      
-      console.log('[loadRankingData] 开始加载排名数据', userConfig);
-      
-      try {
-        const result = await DataService.calculateBeatPercentage(
-          userConfig.campus,
-          userConfig.building,
-          userConfig.roomId,
-          'today'
-        );
-        if (loadToken !== rankingLoadToken) return;
-        
-        console.log('[loadRankingData] 收到结果', result);
-        
-        // 更新显示 - 即使数据为0也显示
-        document.getElementById('beat-building-percent').textContent = result.beatBuildingPercent.toFixed(0) + '%';
-        document.getElementById('beat-campus-percent').textContent = result.beatCampusPercent.toFixed(0) + '%';
-        document.getElementById('building-room-count').textContent = result.buildingRoomCount;
-        document.getElementById('campus-room-count').textContent = result.campusRoomCount;
-        document.getElementById('building-beaten').textContent = result.buildingBeaten;
-        document.getElementById('campus-beaten').textContent = result.campusBeaten;
-        
-        // 只有在两个都没有数据时才显示提示
-        if (result.buildingRoomCount === 0 && result.campusRoomCount === 0) {
-          console.log('[loadRankingData] 完全没有数据');
-          rankingSpinner.style.display = 'none';
-          rankingLoadingText.textContent = '暂无排名数据';
-        } else {
-          // 有数据，隐藏loading
-          rankingGrid.style.display = 'grid';
-          rankingLoading.style.display = 'none';
-        }
-        
-      } catch (error) {
-        if (loadToken !== rankingLoadToken) return;
-        console.error('[loadRankingData] 加载排名数据失败:', error);
-        rankingSpinner.style.display = 'none';
-        rankingLoadingText.textContent = '排名数据暂不可用';
-        
-        // 3秒后尝试重新加载（最多重试1次，避免无限循环）
-        if (retryCount < 1) {
-          setTimeout(() => {
-            if (loadToken !== rankingLoadToken) return;
-            loadRankingData(retryCount + 1);
-          }, 3000);
-        }
-      }
     }
 
     // 生成模拟数据
