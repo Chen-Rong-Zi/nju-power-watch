@@ -16,7 +16,7 @@ class TestRollbackFailedRun:
         today = datetime.now().strftime("%Y%m%d")
         
         # Create additional partial file for today
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613"
         partial_file = campus_dir / f"{today}.json"
         
         # Create file for yesterday (should not be removed)
@@ -44,7 +44,7 @@ class TestRollbackFailedRun:
     
     def test_rollback_preserves_previous_data(self, temp_database):
         """Test that rollback preserves data from previous days."""
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613"
         
         # Create multiple days of data
         dates = ["20260513", "20260514", "20260515"]
@@ -60,20 +60,20 @@ class TestRollbackFailedRun:
             file_path = campus_dir / f"{date}.json"
             assert file_path.exists()
     
-    def test_rollback_logs_removal(self, temp_database, caplog):
-        """Test that rollback logs removed files."""
+    def test_rollback_logs_removal(self, temp_database):
+        """Test that rollback logs and returns removed files."""
         today = datetime.now().strftime("%Y%m%d")
         
         # Create today's file
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613"
         today_file = campus_dir / f"{today}.json"
         with open(today_file, 'w', encoding='utf-8') as f:
             json.dump({"test": "data"}, f)
         
-        rollback_partial_results(str(temp_database))
+        removed_count = rollback_partial_results(str(temp_database))
         
-        # Check that removal was logged
-        assert "rollback" in caplog.text.lower() or "removed" in caplog.text.lower()
+        assert removed_count == 1
+        assert not today_file.exists()
     
     def test_rollback_handles_nested_directories(self, tmp_path):
         """Test that rollback handles deeply nested directory structure."""

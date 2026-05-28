@@ -1258,7 +1258,7 @@
     // 加载排名数据
     async function loadRankingData(retryCount = 0) {
       if (!userConfig) return;
-      if (!userConfig.campus || !userConfig.building || !userConfig.roomId) return;
+      if (!userConfig.campus || !userConfig.building || !userConfig.roomName) return;
 
       const loadToken = ++rankingLoadToken;
       const rankingCard = document.getElementById('ranking-percent-card');
@@ -1281,7 +1281,7 @@
           result = await DataService.calculateBeatPercentage(
             userConfig.campus,
             userConfig.building,
-            userConfig.roomId,
+            userConfig.roomName,
             'today'
           );
           saveCachedRankingResult(cacheKey, result);
@@ -1319,7 +1319,7 @@
     }
 
     function getRankingResultCacheKey(config, date) {
-      return `room-view-ranking:v1:${config.campus}|${config.building}|${String(config.roomId || '')}|${date}`;
+      return `room-view-ranking:v1:${config.campus}|${config.building}|${String(config.roomName || '')}|${date}`;
     }
 
     function getCachedRankingResult(cacheKey) {

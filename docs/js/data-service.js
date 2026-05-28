@@ -1956,12 +1956,12 @@ const DataService = {
    * 获取单个房间的消耗数据（支持 details.json、房间文件和缓存回退）
    * @private
    */
-  async _getRoomConsumption(campusName, buildingName, roomId, date, compactDate, options = {}) {
-    const normalizedRoomId = String(roomId || '');
+  async _getRoomConsumption(campusName, buildingName, roomName, date, compactDate, options = {}) {
+    if (!roomName) return null;
 
     if (!options.skipDetailsLookup) {
       const details = await this.getBuildingDetails(campusName, buildingName);
-      const roomData = this._findRoomInMap(details?.rooms, normalizedRoomId);
+      const roomData = details?.rooms?.[roomName];
       const consumption = this._calculateConsumptionFromHistory(
         roomData?.balance_history,
         date,
@@ -1971,7 +1971,7 @@ const DataService = {
     }
 
     try {
-      const roomHistory = await this.getRoomHistory(campusName, buildingName, normalizedRoomId);
+      const roomHistory = await this.getRoomHistory(campusName, buildingName, roomName);
       const consumption = this._calculateConsumptionFromHistoryArray(
         roomHistory?.history,
         date,
@@ -1979,7 +1979,7 @@ const DataService = {
       );
       if (consumption !== null) return consumption;
     } catch (error) {
-      console.warn(`获取房间 ${normalizedRoomId} 历史失败:`, error);
+      console.warn(`获取房间 ${roomName} 历史失败:`, error);
     }
 
     return null;
@@ -2000,14 +2000,13 @@ const DataService = {
       roomConsumptions: new Map()
     };
 
-    const addConsumption = (roomId, roomData, consumption) => {
+    const addConsumption = (roomName, roomData, consumption) => {
       if (consumption === null || consumption === undefined) return;
       const numericConsumption = Number(consumption);
       if (!Number.isFinite(numericConsumption)) return;
 
       stats.consumptions.push(numericConsumption);
-      this._rememberRoomConsumption(stats.roomConsumptions, roomId, numericConsumption);
-      this._rememberRoomConsumption(stats.roomConsumptions, roomData?.room_id, numericConsumption);
+      this._rememberRoomConsumption(stats.roomConsumptions, roomName, numericConsumption);
     };
 
     const cachedRanking = await this.getRankingCache(campusName, buildingName, date);
@@ -2017,29 +2016,29 @@ const DataService = {
 
     if (cachedRows && cachedRows.length > 0) {
       for (const row of cachedRows) {
-        addConsumption(row.roomId, row, row.consumption);
+        addConsumption(row.roomName, row, row.consumption);
       }
     } else {
       const details = await this.getBuildingDetails(campusName, buildingName);
       if (details?.rooms) {
-        for (const [roomId, roomData] of Object.entries(details.rooms)) {
+        for (const [roomName, roomData] of Object.entries(details.rooms)) {
           addConsumption(
-            roomId,
+            roomName,
             roomData,
             this._calculateConsumptionFromHistory(roomData.balance_history, date, compactDate)
           );
         }
       } else {
         const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
-        const roomIds = Object.keys(buildingSummary?.rooms || {});
-        for (const roomId of roomIds) {
+        const roomNames = Object.keys(buildingSummary?.rooms || {});
+        for (const roomName of roomNames) {
           addConsumption(
-            roomId,
-            buildingSummary.rooms[roomId],
+            roomName,
+            buildingSummary.rooms[roomName],
             await this._getRoomConsumption(
               campusName,
               buildingName,
-              roomId,
+              roomName,
               date,
               compactDate,
               { skipDetailsLookup: true }
@@ -2065,28 +2064,26 @@ const DataService = {
   /**
    * @private
    */
-  _rememberRoomConsumption(roomConsumptions, roomId, consumption) {
-    const normalizedRoomId = String(roomId || '');
-    if (!normalizedRoomId) return;
-    roomConsumptions.set(normalizedRoomId, consumption);
+  _rememberRoomConsumption(roomConsumptions, roomName, consumption) {
+    if (!roomName) return;
+    roomConsumptions.set(roomName, consumption);
   },
 
   /**
    * @private
    */
-  _getRoomConsumptionFromStats(stats, roomId) {
-    if (!stats?.roomConsumptions) return null;
-    const normalizedRoomId = String(roomId || '');
-    if (!normalizedRoomId || !stats.roomConsumptions.has(normalizedRoomId)) return null;
-    return stats.roomConsumptions.get(normalizedRoomId);
+  _getRoomConsumptionFromStats(stats, roomName) {
+    if (!stats?.roomConsumptions || !roomName) return null;
+    if (!stats.roomConsumptions.has(roomName)) return null;
+    return stats.roomConsumptions.get(roomName);
   },
 
   /**
    * @private
    */
-  _hasRoomConsumptionInStats(stats, roomId) {
-    if (!stats?.roomConsumptions) return false;
-    return stats.roomConsumptions.has(String(roomId || ''));
+  _hasRoomConsumptionInStats(stats, roomName) {
+    if (!stats?.roomConsumptions || !roomName) return false;
+    return stats.roomConsumptions.has(roomName);
   },
 
   /**
@@ -2143,36 +2140,10 @@ const DataService = {
   },
 
   /**
-   * 在房间映射中兼容 string/number roomId 查找
    * @private
    */
-  _findRoomInMap(rooms, roomId) {
-    if (!rooms) return null;
-    const normalizedRoomId = String(roomId || '');
-    if (rooms[normalizedRoomId]) return rooms[normalizedRoomId];
-
-    const matched = Object.entries(rooms).find(([key, roomData]) =>
-      this._isSameRoomId(key, normalizedRoomId, roomData)
-    );
-    return matched ? matched[1] : null;
-  },
-
-  /**
-   * 判断房间 ID 是否一致
-   * @private
-   */
-  _isSameRoomId(roomId, targetRoomId, roomData = null) {
-    const normalizedRoomId = String(roomId || '');
-    const normalizedTarget = String(targetRoomId || '');
-    return normalizedRoomId === normalizedTarget ||
-      String(roomData?.room_id || '') === normalizedTarget;
-  },
-
-  /**
-   * @private
-   */
-  _getBeatPercentageCacheKey(campusName, buildingName, roomId, compactDate) {
-    return `beat-percentage:v1:${campusName}|${buildingName}|${String(roomId || '')}|${compactDate}`;
+  _getBeatPercentageCacheKey(campusName, buildingName, roomName, compactDate) {
+    return `beat-percentage:v1:${campusName}|${buildingName}|${roomName}|${compactDate}`;
   },
 
   /**
@@ -2245,13 +2216,13 @@ const DataService = {
    * 计算某个房间在楼栋和校区中的排名百分比
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
-   * @param {string} roomId 房间ID
+   * @param {string} roomName 房间名
    * @param {string} date 日期类型：'today', 'yesterday', 'week', 或具体日期
    * @returns {Promise<Object>} 包含 beatBuildingPercent 和 beatCampusPercent 的对象
    */
-  async calculateBeatPercentage(campusName, buildingName, roomId, date = 'today') {
+  async calculateBeatPercentage(campusName, buildingName, roomName, date = 'today') {
     const compactDate = this._formatDateCompact(date);
-    const cacheKey = this._getBeatPercentageCacheKey(campusName, buildingName, roomId, compactDate);
+    const cacheKey = this._getBeatPercentageCacheKey(campusName, buildingName, roomName, compactDate);
     const cachedResult = this._getBeatPercentageCache(cacheKey);
     if (cachedResult) return cachedResult;
 
@@ -2278,12 +2249,12 @@ const DataService = {
         compactDate
       );
 
-      let currentRoomConsumption = this._getRoomConsumptionFromStats(currentBuildingStats, roomId);
+      let currentRoomConsumption = this._getRoomConsumptionFromStats(currentBuildingStats, roomName);
       if (currentRoomConsumption === null) {
         currentRoomConsumption = await this._getRoomConsumption(
           campusName,
           buildingName,
-          roomId,
+          roomName,
           date,
           compactDate
         );
@@ -2307,7 +2278,7 @@ const DataService = {
           const beatenInBuilding = this._countLessThan(stats.consumptions, currentRoomConsumption);
 
           if (building.name === buildingName) {
-            const excludesCurrentRoom = this._hasRoomConsumptionInStats(stats, roomId);
+            const excludesCurrentRoom = this._hasRoomConsumptionInStats(stats, roomName);
             buildingRoomCount = Math.max(0, stats.roomCount - (excludesCurrentRoom ? 1 : 0));
             buildingBeaten = beatenInBuilding;
             campusRoomCount += buildingRoomCount;

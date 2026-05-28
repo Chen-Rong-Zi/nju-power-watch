@@ -9,13 +9,11 @@ from datetime import datetime
 
 @pytest.fixture
 def sample_daily_record():
-    """Sample daily electricity record for testing."""
+    """Sample daily electricity record for testing (room_name as primary key)."""
     return {
-        "id": "53463",
         "校区": "仙林校区",
         "楼栋": "19幢",
         "房间": "19栋第16层1613",
-        "宿舍ID": "53463",
         "学号": "",
         "剩余电量": "125.50度",
         "timestamp": "2026-05-15T02:00:00Z",
@@ -35,18 +33,16 @@ def temp_database(tmp_path):
     database = tmp_path / "database"
     database.mkdir()
     
-    # Create sample campus structure
-    campus_dir = database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+    # Create sample campus structure (room_name as directory name, no room_id suffix)
+    campus_dir = database / "仙林校区" / "19幢" / "19栋第16层1613"
     campus_dir.mkdir(parents=True)
     
     # Create sample daily file
     sample_file = campus_dir / "20260515.json"
     sample_data = {
-        "id": "53463",
         "校区": "仙林校区",
         "楼栋": "19幢",
         "房间": "19栋第16层1613",
-        "宿舍ID": "53463",
         "学号": "",
         "剩余电量": "125.50度",
         "timestamp": "2026-05-15T02:00:00Z",
@@ -107,7 +103,7 @@ def sample_summary_data():
         "total_rooms": 1,
         "query_success_rate": 1.0,
         "rooms": {
-            "53463": {
+            "19栋第16层1613": {
                 "campus": "仙林校区",
                 "building": "19幢",
                 "room": "19栋第16层1613",

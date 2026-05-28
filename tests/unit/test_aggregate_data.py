@@ -1,9 +1,10 @@
 """
 Tests for aggregate_data.py script.
 
-NOTE: These tests need to be updated for the new API after the room_id → room_name refactoring.
-The old functions (load_room_data, compute_statistics, generate_summary) have been replaced
-with new functions (process_room, merge_room_data, generate_hierarchical_summaries).
+NOTE: These tests test the old functions (load_room_data, compute_statistics, generate_summary)
+which have been replaced with new async functions (process_room, merge_room_data,
+generate_hierarchical_summaries). The data format below uses room_name as primary key
+(no room_id fields, directories named after room_name without room_id suffix).
 """
 import pytest
 
@@ -20,8 +21,8 @@ class TestLoadRoomData:
     
     def test_load_single_room_data(self, temp_database):
         """Test loading data for a single room."""
-        room_id = "53463"
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        room_name = "19栋第16层1613"
+        campus_dir = temp_database / "仙林校区" / "19幢" / room_name
         campus_dir.mkdir(parents=True, exist_ok=True)
         
         # Create multiple days of data
@@ -33,7 +34,6 @@ class TestLoadRoomData:
             balance = 100.0 + days_ago
             
             data = {
-                "id": room_id,
                 "剩余电量": f"{balance}度",
                 "timestamp": date.isoformat(),
                 "success": True
@@ -42,7 +42,7 @@ class TestLoadRoomData:
             with open(file, 'w', encoding='utf-8') as f:
                 json.dump(data, f)
         
-        df = load_room_data(str(temp_database), room_id)
+        df = load_room_data(str(temp_database), room_name)
         
         assert df is not None
         assert len(df) == 10
@@ -50,20 +50,19 @@ class TestLoadRoomData:
     
     def test_load_room_with_no_data_returns_none(self, temp_database):
         """Test that missing room data returns None."""
-        df = load_room_data(str(temp_database), "nonexistent")
+        df = load_room_data(str(temp_database), "nonexistent_room")
         assert df is None
     
     def test_load_room_filters_failed_queries(self, temp_database):
         """Test that failed queries are excluded."""
-        room_id = "53463"
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        room_name = "19栋第16层1613"
+        campus_dir = temp_database / "仙林校区" / "19幢" / room_name
         campus_dir.mkdir(parents=True, exist_ok=True)
         
         # Create successful query
         success_file = campus_dir / "20260515.json"
         with open(success_file, 'w') as f:
             json.dump({
-                "id": room_id,
                 "剩余电量": "100.0度",
                 "success": True
             }, f)
@@ -72,11 +71,10 @@ class TestLoadRoomData:
         failed_file = campus_dir / "20260514.json"
         with open(failed_file, 'w') as f:
             json.dump({
-                "id": room_id,
                 "success": False
             }, f)
         
-        df = load_room_data(str(temp_database), room_id)
+        df = load_room_data(str(temp_database), room_name)
         
         assert df is not None
         assert len(df) == 1  # Only successful query
@@ -90,8 +88,8 @@ class TestComputeStatistics:
         import pandas as pd
         import numpy as np
         
-        room_id = "53463"
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        room_name = "19栋第16层1613"
+        campus_dir = temp_database / "仙林校区" / "19幢" / room_name
         campus_dir.mkdir(parents=True, exist_ok=True)
         
         # Create 30 days of data with increasing balance
@@ -104,17 +102,16 @@ class TestComputeStatistics:
             
             with open(file, 'w') as f:
                 json.dump({
-                    "id": room_id,
                     "剩余电量": f"{balance}度",
                     "校区": "仙林校区",
                     "楼栋": "19幢",
-                    "房间": "19栋第16层1613",
+                    "房间": room_name,
                     "timestamp": date.isoformat(),
                     "success": True
                 }, f)
         
-        df = load_room_data(str(temp_database), room_id)
-        stats = compute_statistics(df, room_id, str(temp_database))
+        df = load_room_data(str(temp_database), room_name)
+        stats = compute_statistics(df, room_name, str(temp_database))
         
         assert stats is not None
         assert 'current_balance' in stats
@@ -133,8 +130,8 @@ class TestComputeStatistics:
     
     def test_compute_statistics_partial_data(self, temp_database):
         """Test computing statistics with partial data (< 30 days)."""
-        room_id = "53463"
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        room_name = "19栋第16层1613"
+        campus_dir = temp_database / "仙林校区" / "19幢" / room_name
         campus_dir.mkdir(parents=True, exist_ok=True)
         
         # Create only 5 days of data
@@ -146,17 +143,16 @@ class TestComputeStatistics:
             
             with open(file, 'w') as f:
                 json.dump({
-                    "id": room_id,
                     "剩余电量": f"{100.0 + days_ago}度",
                     "校区": "仙林校区",
                     "楼栋": "19幢",
-                    "房间": "19栋第16层1613",
+                    "房间": room_name,
                     "timestamp": date.isoformat(),
                     "success": True
                 }, f)
         
-        df = load_room_data(str(temp_database), room_id)
-        stats = compute_statistics(df, room_id, str(temp_database))
+        df = load_room_data(str(temp_database), room_name)
+        stats = compute_statistics(df, room_name, str(temp_database))
         
         assert stats is not None
         # Should still compute even with partial data
@@ -165,8 +161,8 @@ class TestComputeStatistics:
     
     def test_compute_trend_negative(self, temp_database):
         """Test that trend is negative when balance decreases."""
-        room_id = "53463"
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        room_name = "19栋第16层1613"
+        campus_dir = temp_database / "仙林校区" / "19幢" / room_name
         campus_dir.mkdir(parents=True, exist_ok=True)
         
         # Create data with decreasing balance
@@ -179,17 +175,16 @@ class TestComputeStatistics:
             
             with open(file, 'w') as f:
                 json.dump({
-                    "id": room_id,
                     "剩余电量": f"{balance}度",
                     "校区": "仙林校区",
                     "楼栋": "19幢",
-                    "房间": "19栋第16层1613",
+                    "房间": room_name,
                     "timestamp": date.isoformat(),
                     "success": True
                 }, f)
         
-        df = load_room_data(str(temp_database), room_id)
-        stats = compute_statistics(df, room_id, str(temp_database))
+        df = load_room_data(str(temp_database), room_name)
+        stats = compute_statistics(df, room_name, str(temp_database))
         
         assert stats['trend_30d'] < 0  # Negative trend
 
@@ -200,8 +195,9 @@ class TestGenerateSummary:
     def test_generate_summary_multiple_rooms(self, temp_database):
         """Test generating summary for multiple rooms."""
         # Create data for two rooms
-        for room_id in ["53463", "53464"]:
-            campus_dir = temp_database / "仙林校区" / "19幢" / f"Room-{room_id}"
+        room_names = ["19栋第16层1613", "19栋第16层1614"]
+        for room_name in room_names:
+            campus_dir = temp_database / "仙林校区" / "19幢" / room_name
             campus_dir.mkdir(parents=True, exist_ok=True)
             
             for days_ago in range(7):
@@ -212,11 +208,10 @@ class TestGenerateSummary:
                 
                 with open(file, 'w') as f:
                     json.dump({
-                        "id": room_id,
                         "剩余电量": f"{100.0}度",
                         "校区": "仙林校区",
                         "楼栋": "19幢",
-                        "房间": f"Room-{room_id}",
+                        "房间": room_name,
                         "timestamp": date.isoformat(),
                         "success": True
                     }, f)
@@ -226,15 +221,15 @@ class TestGenerateSummary:
         assert summary is not None
         assert summary['total_rooms'] == 2
         assert len(summary['rooms']) == 2
-        assert '53463' in summary['rooms']
-        assert '53464' in summary['rooms']
+        for room_name in room_names:
+            assert room_name in summary['rooms']
     
     def test_summary_file_size_under_limit(self, temp_database, tmp_path):
         """Test that summary file size is under 500KB."""
         # Create data for 50 rooms
         for i in range(50):
-            room_id = f"53{str(i).zfill(3)}"
-            campus_dir = temp_database / "仙林校区" / "19幢" / f"Room-{room_id}"
+            room_name = f"19栋第{i+1}层{str(i+1).zfill(4)}"
+            campus_dir = temp_database / "仙林校区" / "19幢" / room_name
             campus_dir.mkdir(parents=True, exist_ok=True)
             
             for days_ago in range(10):
@@ -245,11 +240,10 @@ class TestGenerateSummary:
                 
                 with open(file, 'w') as f:
                     json.dump({
-                        "id": room_id,
                         "剩余电量": f"{100.0 + i}度",
                         "校区": "仙林校区",
                         "楼栋": "19幢",
-                        "房间": f"Room-{room_id}",
+                        "房间": room_name,
                         "timestamp": date.isoformat(),
                         "success": True
                     }, f)

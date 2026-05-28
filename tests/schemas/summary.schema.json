@@ -24,7 +24,7 @@
     },
     "rooms": {
       "type": "object",
-      "description": "Map of room_id to room summary",
+      "description": "Map of room_name to room summary",
       "additionalProperties": {
         "$ref": "#/definitions/room_summary"
       }

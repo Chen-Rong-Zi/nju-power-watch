@@ -2,7 +2,8 @@
 Integration tests for aggregation workflow.
 
 NOTE: These tests need to be updated for the new API after the room_id → room_name refactoring.
-The old functions have been replaced with new async functions.
+The old functions have been replaced with new async functions. The data format below
+uses room_name as primary key (no room_id fields, directories named after room_name).
 """
 import pytest
 
@@ -20,8 +21,8 @@ class TestAggregationWorkflow:
     def test_complete_aggregation_workflow(self, temp_database, tmp_path):
         """Test complete workflow from raw data to summary generation."""
         # Setup: Create realistic dataset
-        room_id = "53463"
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        room_name = "19栋第16层1613"
+        campus_dir = temp_database / "仙林校区" / "19幢" / room_name
         campus_dir.mkdir(parents=True, exist_ok=True)
         
         # Create 30 days of realistic data
@@ -36,11 +37,9 @@ class TestAggregationWorkflow:
             balance = initial_balance + (days_ago * daily_consumption)
             
             data = {
-                "id": room_id,
                 "校区": "仙林校区",
                 "楼栋": "19幢",
-                "房间": "19栋第16层1613",
-                "宿舍ID": room_id,
+                "房间": room_name,
                 "剩余电量": f"{balance}度",
                 "timestamp": date.isoformat(),
                 "success": True
@@ -56,9 +55,9 @@ class TestAggregationWorkflow:
         assert summary is not None
         assert 'generated_at' in summary
         assert 'rooms' in summary
-        assert room_id in summary['rooms']
+        assert room_name in summary['rooms']
         
-        room_stats = summary['rooms'][room_id]
+        room_stats = summary['rooms'][room_name]
         
         # Verify: Statistics accuracy
         assert room_stats['current_balance'] == initial_balance  # Most recent (today)
@@ -74,8 +73,8 @@ class TestAggregationWorkflow:
     
     def test_aggregation_handles_missing_days(self, temp_database):
         """Test that aggregation handles gaps in data."""
-        room_id = "53463"
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        room_name = "19栋第16层1613"
+        campus_dir = temp_database / "仙林校区" / "19幢" / room_name
         campus_dir.mkdir(parents=True, exist_ok=True)
         
         # Create sparse data (every other day)
@@ -87,11 +86,10 @@ class TestAggregationWorkflow:
             
             with open(file, 'w') as f:
                 json.dump({
-                    "id": room_id,
                     "剩余电量": f"{100.0 + days_ago}度",
                     "校区": "仙林校区",
                     "楼栋": "19幢",
-                    "房间": "19栋第16层1613",
+                    "房间": room_name,
                     "timestamp": date.isoformat(),
                     "success": True
                 }, f)
@@ -100,8 +98,8 @@ class TestAggregationWorkflow:
         summary = generate_summary(str(temp_database))
         
         assert summary is not None
-        assert room_id in summary['rooms']
-        assert summary['rooms'][room_id]['current_balance'] == 100.0
+        assert room_name in summary['rooms']
+        assert summary['rooms'][room_name]['current_balance'] == 100.0
     
     def test_aggregation_performance(self, temp_database):
         """Test that aggregation completes within time limit."""
@@ -109,8 +107,8 @@ class TestAggregationWorkflow:
         
         # Create data for 100 rooms with 30 days each
         for i in range(100):
-            room_id = f"53{str(i).zfill(3)}"
-            campus_dir = temp_database / "仙林校区" / "19幢" / f"Room-{room_id}"
+            room_name = f"19栋第{i+1}层{str(i+1).zfill(4)}"
+            campus_dir = temp_database / "仙林校区" / "19幢" / room_name
             campus_dir.mkdir(parents=True, exist_ok=True)
             
             for days_ago in range(30):
@@ -121,11 +119,10 @@ class TestAggregationWorkflow:
                 
                 with open(file, 'w') as f:
                     json.dump({
-                        "id": room_id,
                         "剩余电量": f"{100.0}度",
                         "校区": "仙林校区",
                         "楼栋": "19幢",
-                        "房间": f"Room-{room_id}",
+                        "房间": room_name,
                         "timestamp": date.isoformat(),
                         "success": True
                     }, f)
@@ -142,8 +139,8 @@ class TestAggregationWorkflow:
         """Test that generated summary matches schema."""
         import jsonschema
         
-        room_id = "53463"
-        campus_dir = temp_database / "仙林校区" / "19幢" / "19栋第16层1613-53463"
+        room_name = "19栋第16层1613"
+        campus_dir = temp_database / "仙林校区" / "19幢" / room_name
         campus_dir.mkdir(parents=True, exist_ok=True)
         
         # Create sample data
@@ -155,11 +152,10 @@ class TestAggregationWorkflow:
             
             with open(file, 'w') as f:
                 json.dump({
-                    "id": room_id,
                     "剩余电量": f"{100.0}度",
                     "校区": "仙林校区",
                     "楼栋": "19幢",
-                    "房间": "19栋第16层1613",
+                    "房间": room_name,
                     "timestamp": date.isoformat(),
                     "success": True
                 }, f)
