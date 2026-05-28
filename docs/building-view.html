@@ -2433,33 +2433,8 @@
         }
       }
 
-      // 均值标注线
-      let meanAnnotation = {};
-      if (bestFit.mu !== undefined) {
-        const meanVal = bestFit.type === 'bimodal'
-          ? bestFit.weight * bestFit.mu1 + (1 - bestFit.weight) * bestFit.mu2
-          : bestFit.mu;
-        meanAnnotation = {
-          meanLine: {
-            type: 'line',
-            xMin: meanVal,
-            xMax: meanVal,
-            borderColor: 'oklch(55% 0.15 160)',
-            borderWidth: 1.5,
-            borderDash: [4, 4],
-            label: {
-              display: true,
-              content: `均值: ${meanVal.toFixed(2)}度`,
-              position: 'end',
-              backgroundColor: 'oklch(55% 0.15 160)',
-              color: '#fff',
-              font: { size: 10 },
-              padding: { top: 3, bottom: 3, left: 6, right: 6 },
-              borderRadius: 3
-            }
-          }
-        };
-      }
+      // 分布类型特定的统计学标注
+      const distAnnotations = DistributionAnalyzer.getDistributionAnnotations(bestFit, histogram);
 
       distChart = new Chart(ctx, {
         type: 'bar',
@@ -2566,7 +2541,7 @@
             },
             annotation: {
               annotations: {
-                ...meanAnnotation,
+                ...distAnnotations,
                 ...userAnnotation
               }
             }
