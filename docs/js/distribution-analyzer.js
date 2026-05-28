@@ -419,7 +419,7 @@ const DistributionAnalyzer = {
         type: 'box',
         xMin: valueToIndex(mu - 3 * sigma),
         xMax: valueToIndex(mu + 3 * sigma),
-        backgroundColor: 'rgba(99, 102, 241, 0.04)',
+        backgroundColor: 'rgba(99, 102, 241, 0.06)',
         borderWidth: 0
       };
     }
@@ -430,13 +430,13 @@ const DistributionAnalyzer = {
         type: 'box',
         xMin: valueToIndex(mu - 2 * sigma),
         xMax: valueToIndex(mu + 2 * sigma),
-        backgroundColor: 'rgba(99, 102, 241, 0.08)',
+        backgroundColor: 'rgba(99, 102, 241, 0.12)',
         borderWidth: 0,
         label: {
           display: true,
           content: '±2σ (95.4%)',
           position: 'top',
-          color: '#c7d2fe',
+          color: '#3730a3',
           font: { size: 11 },
           padding: 2
         }
@@ -449,7 +449,7 @@ const DistributionAnalyzer = {
         type: 'box',
         xMin: valueToIndex(mu - sigma),
         xMax: valueToIndex(mu + sigma),
-        backgroundColor: 'rgba(99, 102, 241, 0.15)',
+        backgroundColor: 'rgba(99, 102, 241, 0.20)',
         borderWidth: 1,
         borderColor: '#818cf8',
         borderDash: [4, 4],
@@ -457,7 +457,7 @@ const DistributionAnalyzer = {
           display: true,
           content: '±1σ (68.3%)',
           position: 'top',
-          color: '#c7d2fe',
+          color: '#3730a3',
           font: { size: 12, weight: 'bold' },
           padding: { top: 4, bottom: 2, left: 6, right: 6 }
         }
@@ -526,7 +526,7 @@ const DistributionAnalyzer = {
         type: 'box',
         xMin: valueToIndex(q1),
         xMax: valueToIndex(q3),
-        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+        backgroundColor: 'rgba(99, 102, 241, 0.15)',
         borderWidth: 1,
         borderColor: '#818cf8',
         borderDash: [3, 3],
@@ -534,7 +534,7 @@ const DistributionAnalyzer = {
           display: true,
           content: 'IQR (Q1-Q3)',
           position: 'top',
-          color: '#c7d2fe',
+          color: '#3730a3',
           font: { size: 11 },
           padding: 2
         }
@@ -613,7 +613,7 @@ const DistributionAnalyzer = {
           display: true,
           content: '中位数≈',
           position: 'end',
-          color: '#bae6fd',
+          color: '#0c4a6e',
           font: { size: 10 },
           padding: 2
         }
@@ -626,7 +626,7 @@ const DistributionAnalyzer = {
         type: 'box',
         xMin: valueToIndex(mean),
         xMax: valueToIndex(Math.min(mean + 2 * Math.sqrt(k) * theta, xMax)),
-        backgroundColor: 'rgba(99, 102, 241, 0.03)',
+        backgroundColor: 'rgba(99, 102, 241, 0.05)',
         borderWidth: 0,
         label: {
           display: true,
@@ -693,7 +693,7 @@ const DistributionAnalyzer = {
         type: 'box',
         xMin: valueToIndex(mu1 - sigma1),
         xMax: valueToIndex(mu1 + sigma1),
-        backgroundColor: 'rgba(220, 100, 80, 0.08)',
+        backgroundColor: 'rgba(220, 100, 80, 0.12)',
         borderWidth: 1,
         borderColor: '#f472b6',
         borderDash: [3, 3]
@@ -706,7 +706,7 @@ const DistributionAnalyzer = {
         type: 'box',
         xMin: valueToIndex(mu2 - sigma2),
         xMax: valueToIndex(mu2 + sigma2),
-        backgroundColor: 'rgba(80, 100, 220, 0.08)',
+        backgroundColor: 'rgba(80, 100, 220, 0.12)',
         borderWidth: 1,
         borderColor: '#818cf8',
         borderDash: [3, 3]

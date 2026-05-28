@@ -835,10 +835,11 @@
       font-size: 18px;
       font-weight: 600;
       margin: 0;
+      color: #1e293b;
     }
     .dist-subtitle {
       font-size: 13px;
-      color: var(--muted);
+      color: #475569;
       margin-top: 4px;
     }
     .dist-fit-badge {
@@ -870,13 +871,14 @@
     }
     .dist-stat-label {
       font-size: 12px;
-      color: var(--muted);
+      color: #64748b;
       margin-bottom: 4px;
     }
     .dist-stat-value {
       font-size: 16px;
       font-weight: 600;
       font-family: var(--font-mono);
+      color: #1e293b;
     }
     .dist-user-marker {
       display: flex;
@@ -913,6 +915,7 @@
       font-size: 18px;
       font-weight: 600;
       margin-bottom: 4px;
+      color: #1e293b;
     }
     .dist-click-info-grid {
       display: grid;
@@ -925,11 +928,12 @@
       justify-content: space-between;
     }
     .dist-click-info-item .label {
-      color: var(--muted);
+      color: #64748b;
     }
     .dist-click-info-item .value {
       font-family: var(--font-mono);
       font-weight: 600;
+      color: #1e293b;
     }
     .dist-rooms-section {
       margin-top: 12px;
@@ -939,7 +943,7 @@
     .dist-rooms-title {
       font-weight: 600;
       margin-bottom: 8px;
-      color: var(--text);
+      color: #1e293b;
     }
     .dist-rooms-list {
       border: 1px solid var(--border);
@@ -1025,7 +1029,7 @@
     }
     .dist-room-pagination .page-info {
       font-size: 12px;
-      color: var(--muted);
+      color: #475569;
       min-width: 80px;
       text-align: center;
     }
@@ -1048,7 +1052,7 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 13px;
-      color: #e0e7ff;
+      color: #334155;
       transition: opacity 0.2s;
     }
     .dist-legend-item.disabled {
@@ -2635,7 +2639,7 @@
           plugins: {
             legend: {
               labels: {
-                color: '#e0e7ff',
+                color: '#334155',
                 font: { size: 14, weight: '500' },
                 boxWidth: 16,
                 padding: 16
@@ -2697,32 +2701,32 @@
             x: {
               grid: { display: false },
               ticks: {
-                color: '#a5b4fc',
+                color: '#475569',
                 font: { size: 13, weight: '500' },
                 maxRotation: 0
               },
               title: {
                 display: true,
                 text: '日耗电量 (度)',
-                color: '#818cf8',
+                color: '#1e293b',
                 font: { size: 15, weight: '600' }
               }
             },
             y: {
               beginAtZero: true,
               grid: {
-                color: '#334155',
+                color: '#e2e8f0',
                 drawBorder: false
               },
               ticks: {
-                color: '#a5b4fc',
+                color: '#475569',
                 font: { size: 13, weight: '500' },
                 callback: function(value) { return Number.isInteger(value) ? value : ''; }
               },
               title: {
                 display: true,
                 text: '房间数',
-                color: '#818cf8',
+                color: '#1e293b',
                 font: { size: 15, weight: '600' }
               }
             }
@@ -2925,8 +2929,11 @@
       const binMid = histogram.bins[idx];
 
       // 找出在这个区间内的所有房间
-      distBinRooms = rankings ? rankings.filter(r => r.consumption >= low && r.consumption < high)
-        .sort((a, b) => b.consumption - a.consumption) : [];
+      // 最后一个bin用 <= 包含上边界，其余用 < 避免重复
+      const isLastBin = idx === histogram.edges.length - 2;
+      distBinRooms = rankings ? rankings.filter(r =>
+        r.consumption >= low && (isLastBin ? r.consumption <= high : r.consumption < high)
+      ).sort((a, b) => b.consumption - a.consumption) : [];
       distBinCurrentPage = 1;
 
       const clickInfo = document.getElementById('dist-click-info');
