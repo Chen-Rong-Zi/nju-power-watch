@@ -160,66 +160,6 @@
       outline: none;
     }
 
-    /* 用户位次卡片 */
-    .user-rank-card {
-      background: linear-gradient(135deg, color-mix(in oklch, var(--accent) 12%, transparent), var(--surface));
-      border: 2px solid color-mix(in oklch, var(--accent) 40%, transparent);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      margin-bottom: 24px;
-      display: none;
-    }
-    .user-rank-card.show { display: block; }
-    .user-rank-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .user-rank-badge {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 700;
-    }
-    .user-rank-info h3 {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 600;
-      margin: 0 0 4px;
-    }
-    .user-rank-info p {
-      color: var(--muted);
-      font-size: 13px;
-      margin: 0;
-    }
-    .user-rank-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-    .user-rank-stat {
-      text-align: center;
-    }
-    .user-rank-stat-value {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .user-rank-stat-label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
     /* 统计摘要 */
     .stats-row {
       display: grid;
@@ -875,8 +815,260 @@
       font-size: 14px;
       margin-right: 6px;
     }
+    /* 分布图表 */
+    .dist-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+    .dist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .dist-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+      color: #1e293b;
+    }
+    .dist-subtitle {
+      font-size: 13px;
+      color: #475569;
+      margin-top: 4px;
+    }
+    .dist-fit-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      background: color-mix(in oklch, var(--accent) 12%, transparent);
+      color: var(--accent);
+    }
+    .dist-chart-container {
+      position: relative;
+      height: 480px;
+    }
+    .dist-stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .dist-stat {
+      background: color-mix(in oklch, var(--bg) 60%, transparent);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .dist-stat-label {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+    .dist-stat-value {
+      font-size: 16px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      color: #1e293b;
+    }
+    .dist-user-marker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      background: color-mix(in oklch, var(--warning) 10%, transparent);
+      border: 1px solid color-mix(in oklch, var(--warning) 30%, transparent);
+      margin-top: 16px;
+    }
+    .dist-user-marker-icon {
+      font-size: 20px;
+    }
+    .dist-user-marker-text {
+      font-size: 14px;
+    }
+    .dist-user-marker-percentile {
+      font-weight: 700;
+      color: var(--warning);
+    }
+    .dist-click-info {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      background: color-mix(in oklch, var(--accent) 8%, transparent);
+      border: 1px solid color-mix(in oklch, var(--accent) 20%, transparent);
+      font-size: 14px;
+      line-height: 1.7;
+      display: none;
+    }
+    .dist-click-info-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #1e293b;
+    }
+    .dist-click-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 6px 16px;
+      margin-top: 8px;
+    }
+    .dist-click-info-item {
+      display: flex;
+      justify-content: space-between;
+    }
+    .dist-click-info-item .label {
+      color: #64748b;
+    }
+    .dist-click-info-item .value {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .dist-rooms-section {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid color-mix(in oklch, var(--accent) 20%, transparent);
+    }
+    .dist-rooms-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1e293b;
+    }
+    .dist-rooms-list {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .dist-room-item {
+      display: grid;
+      grid-template-columns: 50px 1fr 90px;
+      gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .dist-room-item:last-child {
+      border-bottom: none;
+    }
+    .dist-room-item:hover {
+      background: color-mix(in oklch, var(--accent) 5%, transparent);
+      transform: translateX(4px);
+    }
+    .dist-room-item .rank-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .dist-room-item .room-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .dist-room-item .room-info .room-name {
+      font-weight: 500;
+      font-size: 15px;
+      color: var(--text);
+    }
+    .dist-room-item .consumption {
+      text-align: right;
+    }
+    .dist-room-item .consumption-value {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .dist-room-item .consumption-unit {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .dist-room-pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+    }
+    .dist-room-pagination .page-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .dist-room-pagination .page-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+    }
+    .dist-room-pagination .page-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .dist-room-pagination .page-info {
+      font-size: 12px;
+      color: #475569;
+      min-width: 80px;
+      text-align: center;
+    }
+    /* 分布图标注图例 */
+    .dist-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .dist-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #334155;
+      transition: opacity 0.2s;
+    }
+    .dist-legend-item.disabled {
+      opacity: 0.4;
+    }
+    .dist-legend-color {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+    }
+    .dist-legend-item:hover {
+      background: var(--hover);
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 </head>
 <body>
   <nav class="topnav">
@@ -920,31 +1112,6 @@
       </div>
     </div>
 
-    <!-- 用户位次卡片 -->
-    <div class="user-rank-card" id="user-rank-card">
-      <div class="user-rank-header">
-        <div class="user-rank-badge" id="user-rank-badge">--</div>
-        <div class="user-rank-info">
-          <h3>您的房间排名</h3>
-          <p id="user-rank-room">--</p>
-        </div>
-      </div>
-      <div class="user-rank-stats">
-        <div class="user-rank-stat">
-          <div class="user-rank-stat-value" id="user-rank-pos">--</div>
-          <div class="user-rank-stat-label">排名</div>
-        </div>
-        <div class="user-rank-stat">
-          <div class="user-rank-stat-value" id="user-rank-consumption">--</div>
-          <div class="user-rank-stat-label">当日消耗</div>
-        </div>
-        <div class="user-rank-stat">
-          <div class="user-rank-stat-value" id="user-rank-percentile">--</div>
-          <div class="user-rank-stat-label">超过房间</div>
-        </div>
-      </div>
-    </div>
-
     <!-- 统计摘要 -->
     <div class="stats-row" id="stats-row" style="display: none;">
       <div class="stat-card stat-card-hover">
@@ -965,6 +1132,43 @@
         <div class="consumption-tooltip" id="tip-max"></div>
         <div class="stat-label">最高消耗</div>
         <div class="stat-value" id="stat-max">--</div>
+      </div>
+    </div>
+
+    <!-- 耗电分布图表 -->
+    <div class="dist-card" id="dist-card" style="display: none;">
+      <div class="dist-header">
+        <div>
+          <h2 class="dist-title" id="dist-title">耗电量分布</h2>
+          <div class="dist-subtitle" id="dist-subtitle">各房间耗电量分布情况</div>
+        </div>
+        <div class="dist-fit-badge" id="dist-fit-badge" style="display: none;">
+          <span>📊</span>
+          <span id="dist-fit-type"></span>
+        </div>
+      </div>
+      <div class="dist-chart-container">
+        <canvas id="dist-chart"></canvas>
+      </div>
+      <div class="dist-legend" id="dist-legend" style="display: none;"></div>
+      <div class="dist-stats-row" id="dist-stats-row" style="display: none;"></div>
+      <div class="dist-user-marker" id="dist-user-marker" style="display: none;">
+        <span class="dist-user-marker-icon">📍</span>
+        <span class="dist-user-marker-text">
+          你的宿舍耗电 <strong id="dist-user-consumption"></strong> 度，
+          超过 <span class="dist-user-marker-percentile" id="dist-user-percentile"></span> 的房间
+        </span>
+      </div>
+      <div class="dist-click-info" id="dist-click-info"></div>
+    </div>
+
+    <!-- 楼栋耗电趋势 -->
+    <div class="chart-card" id="trend-card" style="display: none;">
+      <div class="chart-header">
+        <h2 class="chart-title" id="trend-title">楼栋耗电趋势</h2>
+      </div>
+      <div class="chart-container">
+        <canvas id="trend-chart"></canvas>
       </div>
     </div>
 
@@ -1027,17 +1231,6 @@
       </div>
     </div>
 
-    <!-- 楼栋耗电趋势 -->
-    <div class="chart-card" id="trend-card" style="display: none;">
-      <div class="chart-header">
-        <h2 class="chart-title" id="trend-title">楼栋耗电趋势</h2>
-      </div>
-      <div class="chart-container">
-        <canvas id="trend-chart"></canvas>
-      </div>
-    </div>
-  </main>
-
   <!-- 房间详情面板 -->
   <div class="detail-overlay" id="detail-overlay" onclick="closeDetailPanel(event)">
     <div class="detail-panel" id="detail-panel" onclick="event.stopPropagation()">
@@ -1057,6 +1250,7 @@
 
 <script src="js/indexeddb-service.js"></script>
 <script src="js/data-service.js?v=20260525-v3"></script>
+<script src="js/distribution-analyzer.js"></script>
   <script>
     // 验证 DataService 是否正确加载
     if (typeof DataService === 'undefined') {
@@ -1274,6 +1468,7 @@
     function hideBuildingTrend() {
       const trendCard = document.getElementById('trend-card');
       trendCard.style.display = 'none';
+      hideDistributionChart();
     }
 
     async function loadBuildingTrend(campus, building) {
@@ -1311,10 +1506,11 @@
       // 同时隐藏统计和分页
       const statsRow = document.getElementById('stats-row');
       const pagination = document.getElementById('pagination');
-      const userRankCard = document.getElementById('user-rank-card');
       if (statsRow) statsRow.style.display = 'none';
       if (pagination) pagination.style.display = 'none';
-      if (userRankCard) userRankCard.classList.remove('show');
+      // 隐藏分布图表和趋势图表
+      hideDistributionChart();
+      hideBuildingTrend();
     }
 
     // ==================== 排序切换 ====================
@@ -1408,7 +1604,6 @@
       document.getElementById('empty-state').style.display = 'none';
       document.getElementById('no-data-state').style.display = 'none';
       document.getElementById('stats-row').style.display = 'none';
-      document.getElementById('user-rank-card').classList.remove('show');
       document.getElementById('pagination').style.display = 'none';
       updateCacheStatus('计算中...', true);
 
@@ -1856,8 +2051,8 @@
       setTip('tip-avg', avg);
       setTip('tip-max', max);
 
-      await showUserRankCard(rankings);
       renderCurrentPage();
+      renderDistributionChart(rankings);
     }
 
     // ==================== 从缓存显示 ====================
@@ -1972,76 +2167,6 @@
       if (!isNaN(page) && page >= 1) {
         goToPage(page);
       }
-    }
-
-    // ==================== 用户位次卡片 ====================
-    async function showUserRankCard(rankings) {
-      // 检查用户是否配置了房间
-      if (!state.userConfig) {
-        document.getElementById('user-rank-card').classList.remove('show');
-        return;
-      }
-
-      const card = document.getElementById('user-rank-card');
-
-      // 检查是否在同一楼栋
-      const isSameBuilding = state.userConfig.campus === state.campus &&
-                             state.userConfig.building === state.building;
-
-      // 在排行榜中查找用户房间
-      let userRoomData = rankings.find(r => r.roomName === state.userConfig.roomName);
-      let estimatedRank = null;
-
-      // 如果用户房间不在排行榜中，尝试获取数据并估算位次
-      if (!userRoomData && isSameBuilding) {
-        // 尝试获取用户房间的历史数据
-        const roomHistory = await DataService.getRoomHistory(state.campus, state.building, state.userConfig.roomName);
-
-        if (roomHistory && roomHistory.history) {
-          const consumption = calculateConsumption(roomHistory.history, state.date);
-
-          if (consumption !== null) {
-            // 估算位次：找到第一个消耗量小于用户消耗量的位置
-            const sortedRankings = [...rankings].sort((a, b) => b.consumption - a.consumption);
-            estimatedRank = sortedRankings.findIndex(r => r.consumption < consumption) + 1;
-
-            if (estimatedRank === 0) {
-              // 用户消耗量比所有人都大
-              estimatedRank = 1;
-            }
-
-            userRoomData = {
-              room: state.userConfig.roomName,
-              roomName: state.userConfig.roomName,
-              consumption: consumption,
-              rank: estimatedRank,
-              estimated: true
-            };
-          }
-        }
-      } else if (!userRoomData) {
-        // 用户不在同一楼栋，不显示位次卡片
-        document.getElementById('user-rank-card').classList.remove('show');
-        return;
-      }
-
-      // 显示卡片
-      card.classList.add('show');
-
-      const rank = userRoomData.rank;
-      const isEstimated = userRoomData.estimated;
-
-      document.getElementById('user-rank-badge').textContent = isEstimated ? `~${rank}` : rank;
-      document.getElementById('user-rank-room').textContent =
-        userRoomData.room + (isEstimated ? ' (估算位次)' : '');
-      document.getElementById('user-rank-pos').textContent =
-        isEstimated ? `约 #${rank}` : `#${rank}`;
-      document.getElementById('user-rank-consumption').textContent =
-        userRoomData.consumption.toFixed(2) + '度';
-
-      const percentile = Math.round((1 - rank / rankings.length) * 100);
-      document.getElementById('user-rank-percentile').textContent =
-        Math.max(0, percentile) + '%';
     }
 
     // ==================== 房间详情面板 ====================
@@ -2350,7 +2475,7 @@
       document.getElementById('animation-progress').style.display = 'none';
       document.getElementById('stats-row').style.display = 'none';
       document.getElementById('pagination').style.display = 'none';
-      document.getElementById('user-rank-card').classList.remove('show');
+      hideDistributionChart();
       updateCacheStatus('等待选择', false);
     }
 
@@ -2362,7 +2487,7 @@
       document.getElementById('animation-progress').style.display = 'none';
       document.getElementById('stats-row').style.display = 'none';
       document.getElementById('pagination').style.display = 'none';
-      document.getElementById('user-rank-card').classList.remove('show');
+      hideDistributionChart();
       updateCacheStatus('无数据', false);
     }
 
@@ -2382,6 +2507,556 @@
     // ==================== 工具函数 ====================
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // ==================== 耗电分布图表 ====================
+    let distChart = null;
+    let distSelectedBin = -1;
+    let distHistogram = null;
+    let distValues = null;
+
+    function renderDistributionChart(rankings) {
+      const values = rankings.map(r => r.consumption).filter(v => v > 0);
+      if (values.length < 5) {
+        document.getElementById('dist-card').style.display = 'none';
+        return;
+      }
+
+      const result = DistributionAnalyzer.analyze(values);
+      if (!result.bestFit) {
+        document.getElementById('dist-card').style.display = 'none';
+        return;
+      }
+
+      const { bestFit, allFits, histogram } = result;
+      distHistogram = histogram;
+      distValues = values;
+      distSelectedBin = -1;
+
+      document.getElementById('dist-card').style.display = 'block';
+      document.getElementById('dist-title').textContent = `${state.building} · 耗电量分布`;
+      document.getElementById('dist-subtitle').textContent = `基于 ${values.length} 个房间的${getDateDisplayText(state.date)}数据`;
+
+      document.getElementById('dist-fit-badge').style.display = 'inline-flex';
+      document.getElementById('dist-fit-type').textContent = bestFit.typeName;
+
+      const ctx = document.getElementById('dist-chart').getContext('2d');
+      if (distChart) distChart.destroy();
+
+      // 将实际值转换为bin索引（用于类别型x轴）
+      const xMin = histogram.edges[0];
+      const xMax = histogram.edges[histogram.edges.length - 1];
+      const binWidth = histogram.edges[1] - histogram.edges[0];
+      const valueToIndex = (value) => {
+        if (value < xMin) return -0.5;
+        if (value > xMax) return histogram.bins.length - 0.5;
+        return (value - xMin) / binWidth - 0.5;
+      };
+
+      // 用户宿舍标注线
+      const userConfig = state.userConfig;
+      let userConsumption = null;
+      let userAnnotation = {};
+      if (userConfig && userConfig.campus === state.campus && userConfig.building === state.building) {
+        const userItem = rankings.find(r => r.roomName === userConfig.roomName);
+        if (userItem) {
+          userConsumption = userItem.consumption;
+          userAnnotation = {
+            userLine: {
+              type: 'line',
+              xMin: valueToIndex(userConsumption),
+              xMax: valueToIndex(userConsumption),
+              borderColor: '#f472b6',
+              borderWidth: 2,
+              borderDash: [6, 3],
+              label: {
+                display: true,
+                content: `我的宿舍: ${userConsumption.toFixed(2)}度`,
+                position: 'start',
+                backgroundColor: '#ec4899',
+                color: '#fff',
+                font: { size: 12, weight: 'bold' },
+                padding: { top: 4, bottom: 4, left: 8, right: 8 },
+                borderRadius: 4
+              }
+            }
+          };
+        }
+      }
+
+      // 分布类型特定的统计学标注
+      const distAnnotations = DistributionAnalyzer.getDistributionAnnotations(bestFit, histogram);
+
+      distChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: histogram.bins.map(b => b.toFixed(1)),
+          datasets: [
+            {
+              label: '房间数',
+              data: histogram.counts,
+              backgroundColor: histogram.counts.map(() => 'rgba(99, 102, 241, 0.35)'),
+              borderColor: histogram.counts.map(() => 'rgba(99, 102, 241, 0.7)'),
+              borderWidth: 1,
+              borderRadius: 3,
+              barPercentage: 0.95,
+              categoryPercentage: 1.0,
+              order: 2
+            },
+            {
+              label: bestFit.typeName + '拟合',
+              type: 'line',
+              data: DistributionAnalyzer.fitCurveAtBinTops(bestFit, histogram),
+              borderColor: 'oklch(65% 0.18 25)',
+              borderWidth: 2.5,
+              pointRadius: 3,
+              pointBackgroundColor: 'oklch(65% 0.18 25)',
+              tension: 0.3,
+              fill: false,
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          },
+          onClick: (event, elements) => {
+            if (elements.length === 0) {
+              clearDistBinSelection();
+              return;
+            }
+            const idx = elements[0].index;
+            if (distSelectedBin === idx) {
+              clearDistBinSelection();
+            } else {
+              selectDistBin(idx, histogram, values, bestFit, rankings);
+            }
+          },
+          plugins: {
+            legend: {
+              labels: {
+                color: '#334155',
+                font: { size: 14, weight: '500' },
+                boxWidth: 16,
+                padding: 16
+              }
+            },
+            tooltip: {
+              backgroundColor: '#1e293b',
+              titleColor: '#f1f5f9',
+              bodyColor: '#f1f5f9',
+              borderColor: '#334155',
+              borderWidth: 1,
+              padding: 12,
+              cornerRadius: 8,
+              callbacks: {
+                title: function(items) {
+                  const idx = items[0].dataIndex;
+                  const low = histogram.edges[idx]?.toFixed(1);
+                  const high = histogram.edges[idx + 1]?.toFixed(1);
+                  return `${low} - ${high} 度`;
+                },
+                afterTitle: function(items) {
+                  const idx = items[0].dataIndex;
+                  const cumPct = histogram.cumulativePercent[idx];
+                  return `累计: 前 ${cumPct}% 房间`;
+                },
+                label: function(context) {
+                  if (context.datasetIndex === 0) {
+                    const idx = context.dataIndex;
+                    const count = histogram.counts[idx];
+                    const pct = (count / values.length * 100).toFixed(1);
+                    return `${count} 个房间 (${pct}%)`;
+                  } else {
+                    return bestFit.typeName + '拟合';
+                  }
+                },
+                afterBody: function(items) {
+                  const idx = items[0].dataIndex;
+                  const cumPct = histogram.cumulativePercent[idx];
+                  const prevCumPct = idx > 0 ? histogram.cumulativePercent[idx - 1] : 0;
+                  const lines = [];
+                  lines.push(`---`);
+                  lines.push(`截至此区间: ${histogram.cumulativeCounts[idx]} / ${values.length} 间`);
+                  lines.push(`超过前 ${prevCumPct}% 的房间`);
+                  if (cumPct < 100) {
+                    lines.push(`位于前 ${cumPct}% 以内`);
+                  }
+                  return lines;
+                }
+              }
+            },
+            annotation: {
+              annotations: {
+                ...distAnnotations,
+                ...userAnnotation
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: {
+                color: '#475569',
+                font: { size: 13, weight: '500' },
+                maxRotation: 0
+              },
+              title: {
+                display: true,
+                text: '日耗电量 (度)',
+                color: '#1e293b',
+                font: { size: 15, weight: '600' }
+              }
+            },
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: '#e2e8f0',
+                drawBorder: false
+              },
+              ticks: {
+                color: '#475569',
+                font: { size: 13, weight: '500' },
+                callback: function(value) { return Number.isInteger(value) ? value : ''; }
+              },
+              title: {
+                display: true,
+                text: '房间数',
+                color: '#1e293b',
+                font: { size: 15, weight: '600' }
+              }
+            }
+          }
+        }
+      });
+
+      renderDistStats(bestFit, values);
+      renderDistLegend(bestFit);
+
+      if (userConsumption !== null) {
+        const pResult = DistributionAnalyzer.computePercentile(values, userConsumption);
+        document.getElementById('dist-user-marker').style.display = 'flex';
+        document.getElementById('dist-user-consumption').textContent = userConsumption.toFixed(2);
+        document.getElementById('dist-user-percentile').textContent = pResult.percentile.toFixed(1) + '%';
+      } else {
+        document.getElementById('dist-user-marker').style.display = 'none';
+      }
+
+      document.getElementById('dist-click-info').style.display = 'none';
+    }
+
+    function renderDistStats(bestFit, values) {
+      const statsRow = document.getElementById('dist-stats-row');
+      statsRow.style.display = 'grid';
+
+      const mean = values.reduce((s, v) => s + v, 0) / values.length;
+      const sorted = [...values].sort((a, b) => a - b);
+      const median = sorted[Math.floor(sorted.length / 2)];
+      const stdDev = Math.sqrt(values.reduce((s, v) => s + (v - mean) ** 2, 0) / values.length);
+
+      let statsHtml = `
+        <div class="dist-stat">
+          <div class="dist-stat-label">均值</div>
+          <div class="dist-stat-value">${mean.toFixed(2)} 度</div>
+        </div>
+        <div class="dist-stat">
+          <div class="dist-stat-label">中位数</div>
+          <div class="dist-stat-value">${median.toFixed(2)} 度</div>
+        </div>
+        <div class="dist-stat">
+          <div class="dist-stat-label">标准差</div>
+          <div class="dist-stat-value">${stdDev.toFixed(2)} 度</div>
+        </div>
+        <div class="dist-stat">
+          <div class="dist-stat-label">拟合类型</div>
+          <div class="dist-stat-value">${bestFit.typeName}</div>
+        </div>
+      `;
+
+      if (bestFit.type === 'normal' || bestFit.type === 'lognormal') {
+        statsHtml += `
+          <div class="dist-stat">
+            <div class="dist-stat-label">μ (位置)</div>
+            <div class="dist-stat-value">${bestFit.params.mu}</div>
+          </div>
+          <div class="dist-stat">
+            <div class="dist-stat-label">σ (尺度)</div>
+            <div class="dist-stat-value">${bestFit.params.sigma}</div>
+          </div>
+        `;
+      } else if (bestFit.type === 'gamma') {
+        statsHtml += `
+          <div class="dist-stat">
+            <div class="dist-stat-label">k (形状)</div>
+            <div class="dist-stat-value">${bestFit.params.k}</div>
+          </div>
+          <div class="dist-stat">
+            <div class="dist-stat-label">θ (尺度)</div>
+            <div class="dist-stat-value">${bestFit.params.theta}</div>
+          </div>
+        `;
+      } else if (bestFit.type === 'bimodal') {
+        statsHtml += `
+          <div class="dist-stat">
+            <div class="dist-stat-label">峰1 μ₁</div>
+            <div class="dist-stat-value">${bestFit.params.mu1}</div>
+          </div>
+          <div class="dist-stat">
+            <div class="dist-stat-label">峰2 μ₂</div>
+            <div class="dist-stat-value">${bestFit.params.mu2}</div>
+          </div>
+          <div class="dist-stat">
+            <div class="dist-stat-label">混合权重</div>
+            <div class="dist-stat-value">${bestFit.params.weight}</div>
+          </div>
+        `;
+      }
+
+      statsRow.innerHTML = statsHtml;
+    }
+
+    // 渲染标注图例并支持切换
+    function renderDistLegend(bestFit) {
+      const legendEl = document.getElementById('dist-legend');
+      legendEl.style.display = 'flex';
+
+      const legendItems = {
+        normal: [
+          { key: 'muLine', color: '#818cf8', label: 'μ (均值)' },
+          { key: 'sigma1', color: 'rgba(99, 102, 241, 0.15)', label: '±1σ (68.3%)' },
+          { key: 'sigma2', color: 'rgba(99, 102, 241, 0.08)', label: '±2σ (95.4%)' },
+          { key: 'sigma3', color: 'rgba(99, 102, 241, 0.04)', label: '±3σ (99.7%)' }
+        ],
+        lognormal: [
+          { key: 'medianLine', color: '#818cf8', label: '中位数' },
+          { key: 'modeLine', color: '#f472b6', label: '众数' },
+          { key: 'iqr', color: 'rgba(99, 102, 241, 0.1)', label: 'IQR (Q1-Q3)' }
+        ],
+        gamma: [
+          { key: 'meanLine', color: '#818cf8', label: '均值' },
+          { key: 'modeLine', color: '#f472b6', label: '众数' },
+          { key: 'medianLine', color: '#38bdf8', label: '中位数≈' },
+          { key: 'skewArea', color: 'rgba(99, 102, 241, 0.03)', label: '右偏区域' }
+        ],
+        bimodal: [
+          { key: 'peak1Line', color: '#f472b6', label: 'μ₁ (峰1)' },
+          { key: 'peak2Line', color: '#818cf8', label: 'μ₂ (峰2)' },
+          { key: 'peak1Sigma', color: 'rgba(220, 100, 80, 0.08)', label: '峰1 ±1σ' },
+          { key: 'peak2Sigma', color: 'rgba(80, 100, 220, 0.08)', label: '峰2 ±1σ' }
+        ]
+      };
+
+      const items = legendItems[bestFit.type] || [];
+      legendEl.innerHTML = items.map(item => `
+        <div class="dist-legend-item" data-key="${item.key}" onclick="toggleDistAnnotation('${item.key}')">
+          <div class="dist-legend-color" style="background: ${item.color}; border: 1px solid ${item.color.includes('rgba') ? 'rgba(99, 102, 241, 0.3)' : item.color};"></div>
+          <span>${item.label}</span>
+        </div>
+      `).join('');
+    }
+
+    // 切换标注显示
+    window.distAnnotationState = {};
+    function toggleDistAnnotation(key) {
+      if (!distChart) return;
+
+      const annotation = distChart.options.plugins.annotation.annotations[key];
+      if (!annotation) return;
+
+      // 首次点击时初始化为 true（可见），然后取反
+      if (window.distAnnotationState[key] === undefined) {
+        window.distAnnotationState[key] = true;
+      }
+      window.distAnnotationState[key] = !window.distAnnotationState[key];
+      annotation.display = window.distAnnotationState[key];
+
+      // 更新图例样式
+      const legendItem = document.querySelector(`.dist-legend-item[data-key="${key}"]`);
+      if (legendItem) {
+        legendItem.classList.toggle('disabled', !window.distAnnotationState[key]);
+      }
+
+      distChart.update('none');
+    }
+
+    // 区间房间列表分页状态
+    let distBinRooms = [];
+    let distBinCurrentPage = 1;
+    const distBinItemsPerPage = 20;
+
+    function selectDistBin(idx, histogram, values, bestFit, rankings) {
+      distSelectedBin = idx;
+      const ds = distChart.data.datasets[0];
+
+      ds.backgroundColor = histogram.counts.map((_, i) =>
+        i === idx ? 'rgba(99, 102, 241, 0.8)' : 'rgba(99, 102, 241, 0.15)');
+      ds.borderColor = histogram.counts.map((_, i) =>
+        i === idx ? 'rgba(99, 102, 241, 1)' : 'rgba(99, 102, 241, 0.3)');
+
+      const low = histogram.edges[idx];
+      const high = histogram.edges[idx + 1];
+      const cumPct = histogram.cumulativePercent[idx];
+      const prevCumPct = idx > 0 ? histogram.cumulativePercent[idx - 1] : 0;
+
+      // 直接添加标注，避免spread导致的Proxy问题
+      const annotations = distChart.options.plugins.annotation.annotations;
+      annotations.selectedBinLeft = {
+        type: 'line',
+        xMin: idx - 0.5,
+        xMax: idx - 0.5,
+        borderColor: 'rgba(99, 102, 241, 0.6)',
+        borderWidth: 1.5,
+        borderDash: [3, 3]
+      };
+      annotations.selectedBinRight = {
+        type: 'line',
+        xMin: idx + 0.5,
+        xMax: idx + 0.5,
+        borderColor: 'rgba(99, 102, 241, 0.6)',
+        borderWidth: 1.5,
+        borderDash: [3, 3]
+      };
+
+      distChart.update('none');
+
+      const count = histogram.counts[idx];
+      const pct = (count / values.length * 100).toFixed(1);
+      const mean = values.reduce((s, v) => s + v, 0) / values.length;
+      const binMid = histogram.bins[idx];
+
+      // 找出在这个区间内的所有房间
+      // 最后一个bin用 <= 包含上边界，其余用 < 避免重复
+      const isLastBin = idx === histogram.edges.length - 2;
+      distBinRooms = rankings ? rankings.filter(r =>
+        r.consumption >= low && (isLastBin ? r.consumption <= high : r.consumption < high)
+      ).sort((a, b) => b.consumption - a.consumption) : [];
+      distBinCurrentPage = 1;
+
+      const clickInfo = document.getElementById('dist-click-info');
+      clickInfo.style.display = 'block';
+
+      clickInfo.innerHTML = `
+        <div class="dist-click-info-title">${low.toFixed(1)} - ${high.toFixed(1)} 度 区间详情</div>
+        <div class="dist-click-info-grid">
+          <div class="dist-click-info-item">
+            <span class="label">房间数</span>
+            <span class="value">${count} 间 (${pct}%)</span>
+          </div>
+          <div class="dist-click-info-item">
+            <span class="label">累计房间</span>
+            <span class="value">${histogram.cumulativeCounts[idx]} / ${values.length}</span>
+          </div>
+          <div class="dist-click-info-item">
+            <span class="label">累计百分比</span>
+            <span class="value">前 ${cumPct}%</span>
+          </div>
+          <div class="dist-click-info-item">
+            <span class="label">区间中位数</span>
+            <span class="value">${binMid.toFixed(2)} 度</span>
+          </div>
+          <div class="dist-click-info-item">
+            <span class="label">偏离均值</span>
+            <span class="value">${(binMid - mean >= 0 ? '+' : '')}${(binMid - mean).toFixed(2)} 度</span>
+          </div>
+          <div class="dist-click-info-item">
+            <span class="label">所在百分位</span>
+            <span class="value">${prevCumPct}% - ${cumPct}%</span>
+          </div>
+        </div>
+        <div class="dist-rooms-section" id="dist-rooms-section"></div>
+      `;
+
+      renderDistBinRooms();
+    }
+
+    function renderDistBinRooms() {
+      const section = document.getElementById('dist-rooms-section');
+      if (!section) return;
+
+      if (distBinRooms.length === 0) {
+        section.innerHTML = '';
+        return;
+      }
+
+      const totalPages = Math.ceil(distBinRooms.length / distBinItemsPerPage);
+      distBinCurrentPage = Math.max(1, Math.min(distBinCurrentPage, totalPages));
+      const startIdx = (distBinCurrentPage - 1) * distBinItemsPerPage;
+      const pageItems = distBinRooms.slice(startIdx, startIdx + distBinItemsPerPage);
+
+      let html = `<div class="dist-rooms-title">该区间房间 (${distBinRooms.length} 间)</div>`;
+      html += `<div class="dist-rooms-list">`;
+
+      pageItems.forEach((item, i) => {
+        const globalIdx = startIdx + i;
+        const rankClass = globalIdx < 3 ? `rank-${globalIdx + 1}` : 'rank-other';
+        html += `
+          <div class="dist-room-item" onclick="viewRoomDetail('${item.campus || state.campus}', '${item.building || state.building}', '${item.roomName}')">
+            <div class="rank-badge ${rankClass}">${globalIdx + 1}</div>
+            <div class="room-info">
+              <div class="room-name">${item.roomName || item.room}</div>
+            </div>
+            <div class="consumption">
+              <div class="consumption-value">${item.consumption.toFixed(2)}</div>
+              <div class="consumption-unit">度/日</div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+
+      if (totalPages > 1) {
+        html += `
+          <div class="dist-room-pagination">
+            <button class="page-btn" onclick="distBinPrevPage()" ${distBinCurrentPage === 1 ? 'disabled' : ''}>上一页</button>
+            <span class="page-info">第 ${distBinCurrentPage} 页 / 共 ${totalPages} 页</span>
+            <button class="page-btn" onclick="distBinNextPage()" ${distBinCurrentPage === totalPages ? 'disabled' : ''}>下一页</button>
+          </div>
+        `;
+      }
+
+      section.innerHTML = html;
+    }
+
+    function distBinPrevPage() {
+      if (distBinCurrentPage > 1) {
+        distBinCurrentPage--;
+        renderDistBinRooms();
+      }
+    }
+
+    function distBinNextPage() {
+      const totalPages = Math.ceil(distBinRooms.length / distBinItemsPerPage);
+      if (distBinCurrentPage < totalPages) {
+        distBinCurrentPage++;
+        renderDistBinRooms();
+      }
+    }
+
+    function clearDistBinSelection() {
+      if (!distChart || !distHistogram) return;
+      distSelectedBin = -1;
+      const ds = distChart.data.datasets[0];
+
+      ds.backgroundColor = distHistogram.counts.map(() => 'rgba(99, 102, 241, 0.35)');
+      ds.borderColor = distHistogram.counts.map(() => 'rgba(99, 102, 241, 0.7)');
+
+      // 直接删除标注，避免spread导致的Proxy问题
+      const annotations = distChart.options.plugins.annotation.annotations;
+      if (annotations.selectedBinLeft) delete annotations.selectedBinLeft;
+      if (annotations.selectedBinRight) delete annotations.selectedBinRight;
+
+      distChart.update('none');
+
+      document.getElementById('dist-click-info').style.display = 'none';
+    }
+
+    function hideDistributionChart() {
+      document.getElementById('dist-card').style.display = 'none';
     }
   </script>
   <script>
