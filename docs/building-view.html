@@ -998,6 +998,42 @@
       </div>
     </div>
 
+    <!-- 耗电分布图表 -->
+    <div class="dist-card" id="dist-card" style="display: none;">
+      <div class="dist-header">
+        <div>
+          <h2 class="dist-title" id="dist-title">耗电量分布</h2>
+          <div class="dist-subtitle" id="dist-subtitle">各房间耗电量分布情况</div>
+        </div>
+        <div class="dist-fit-badge" id="dist-fit-badge" style="display: none;">
+          <span>📊</span>
+          <span id="dist-fit-type"></span>
+        </div>
+      </div>
+      <div class="dist-chart-container">
+        <canvas id="dist-chart"></canvas>
+      </div>
+      <div class="dist-stats-row" id="dist-stats-row" style="display: none;"></div>
+      <div class="dist-user-marker" id="dist-user-marker" style="display: none;">
+        <span class="dist-user-marker-icon">📍</span>
+        <span class="dist-user-marker-text">
+          你的宿舍耗电 <strong id="dist-user-consumption"></strong> 度，
+          超过 <span class="dist-user-marker-percentile" id="dist-user-percentile"></span> 的房间
+        </span>
+      </div>
+      <div class="dist-click-info" id="dist-click-info"></div>
+    </div>
+
+    <!-- 楼栋耗电趋势 -->
+    <div class="chart-card" id="trend-card" style="display: none;">
+      <div class="chart-header">
+        <h2 class="chart-title" id="trend-title">楼栋耗电趋势</h2>
+      </div>
+      <div class="chart-container">
+        <canvas id="trend-chart"></canvas>
+      </div>
+    </div>
+
     <!-- 排行榜 -->
     <div class="ranking-card">
       <div class="ranking-header">
@@ -1055,42 +1091,6 @@
         <div class="empty-icon">🏢</div>
         <div class="empty-text">请选择校区和楼栋查看排行榜</div>
       </div>
-    </div>
-
-    <!-- 楼栋耗电趋势 -->
-    <div class="chart-card" id="trend-card" style="display: none;">
-      <div class="chart-header">
-        <h2 class="chart-title" id="trend-title">楼栋耗电趋势</h2>
-      </div>
-      <div class="chart-container">
-        <canvas id="trend-chart"></canvas>
-      </div>
-    </div>
-
-    <!-- 耗电分布图表 -->
-    <div class="dist-card" id="dist-card" style="display: none;">
-      <div class="dist-header">
-        <div>
-          <h2 class="dist-title" id="dist-title">耗电量分布</h2>
-          <div class="dist-subtitle" id="dist-subtitle">各房间耗电量分布情况</div>
-        </div>
-        <div class="dist-fit-badge" id="dist-fit-badge" style="display: none;">
-          <span>📊</span>
-          <span id="dist-fit-type"></span>
-        </div>
-      </div>
-      <div class="dist-chart-container">
-        <canvas id="dist-chart"></canvas>
-      </div>
-      <div class="dist-stats-row" id="dist-stats-row" style="display: none;"></div>
-      <div class="dist-user-marker" id="dist-user-marker" style="display: none;">
-        <span class="dist-user-marker-icon">📍</span>
-        <span class="dist-user-marker-text">
-          你的宿舍耗电 <strong id="dist-user-consumption"></strong> 度，
-          超过 <span class="dist-user-marker-percentile" id="dist-user-percentile"></span> 的房间
-        </span>
-      </div>
-      <div class="dist-click-info" id="dist-click-info"></div>
     </div>
 
   <!-- 房间详情面板 -->
