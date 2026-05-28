@@ -565,6 +565,51 @@ const DataService = {
   },
 
   /**
+   * 通用异步任务并发池
+   * 以 concurrency 上限并行执行一组零参异步函数
+   * @param {Array<() => Promise>} taskFactories
+   * @param {number} concurrency 并发上限（默认6）
+   * @returns {Promise<Array<{status: string, value?: any, reason?: Error}>>}
+   */
+  async _poolTasks(taskFactories, concurrency = 6) {
+    const results = new Array(taskFactories.length);
+    let nextIndex = 0;
+    let completed = 0;
+    const total = taskFactories.length;
+
+    return new Promise((resolve) => {
+      if (total === 0) { resolve(results); return; }
+
+      const startNext = () => {
+        if (nextIndex >= total) return;
+        const idx = nextIndex++;
+        const task = taskFactories[idx];
+
+        Promise.resolve().then(() => task()).then(
+          (value) => {
+            results[idx] = { status: 'fulfilled', value };
+          },
+          (reason) => {
+            results[idx] = { status: 'rejected', reason };
+          }
+        ).finally(() => {
+          completed++;
+          if (completed < total) {
+            startNext();
+          } else {
+            resolve(results);
+          }
+        });
+      };
+
+      const initialCount = Math.min(concurrency, total);
+      for (let i = 0; i < initialCount; i++) {
+        startNext();
+      }
+    });
+  },
+
+  /**
    * 批量获取房间历史数据（请求池模式，更高效）
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
@@ -2270,26 +2315,40 @@ const DataService = {
       let campusRoomCount = 0;
       let campusBeaten = 0;
 
-      for (const building of campusStats.buildingDetails) {
-        try {
-          const stats = building.name === buildingName
-            ? currentBuildingStats
-            : await this._getBuildingConsumptionStats(campusName, building.name, date, compactDate);
-          const beatenInBuilding = this._countLessThan(stats.consumptions, currentRoomConsumption);
+      const otherBuildings = campusStats.buildingDetails.filter(
+        b => b.name !== buildingName
+      );
 
-          if (building.name === buildingName) {
-            const excludesCurrentRoom = this._hasRoomConsumptionInStats(stats, roomName);
-            buildingRoomCount = Math.max(0, stats.roomCount - (excludesCurrentRoom ? 1 : 0));
-            buildingBeaten = beatenInBuilding;
-            campusRoomCount += buildingRoomCount;
-            campusBeaten += beatenInBuilding;
-          } else {
-            campusRoomCount += stats.roomCount;
-            campusBeaten += beatenInBuilding;
-          }
-        } catch (error) {
-          console.warn(`跳过楼栋 ${building.name}:`, error);
+      const results = otherBuildings.length > 0
+        ? await this._poolTasks(
+            otherBuildings.map(b => () =>
+              this._getBuildingConsumptionStats(campusName, b.name, date, compactDate)
+            ),
+            6
+          )
+        : [];
+
+      for (let i = 0; i < results.length; i++) {
+        const building = otherBuildings[i];
+        if (results[i].status === 'rejected') {
+          console.warn(`跳过楼栋 ${building.name}:`, results[i].reason);
+          continue;
         }
+        const stats = results[i].value;
+        const beatenInBuilding = this._countLessThan(stats.consumptions, currentRoomConsumption);
+        campusRoomCount += stats.roomCount;
+        campusBeaten += beatenInBuilding;
+      }
+
+      // 自己的楼栋：使用已加载的统计数据
+      {
+        const stats = currentBuildingStats;
+        const beatenInBuilding = this._countLessThan(stats.consumptions, currentRoomConsumption);
+        const excludesCurrentRoom = this._hasRoomConsumptionInStats(stats, roomName);
+        buildingRoomCount = Math.max(0, stats.roomCount - (excludesCurrentRoom ? 1 : 0));
+        buildingBeaten = beatenInBuilding;
+        campusRoomCount += buildingRoomCount;
+        campusBeaten += beatenInBuilding;
       }
 
       const result = {
