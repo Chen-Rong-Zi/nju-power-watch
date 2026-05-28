@@ -398,15 +398,15 @@ const DistributionAnalyzer = {
         type: 'line',
         xMin: valueToIndex(mu),
         xMax: valueToIndex(mu),
-        borderColor: 'oklch(55% 0.15 160)',
+        borderColor: '#818cf8',
         borderWidth: 2,
         label: {
           display: true,
           content: `μ=${mu.toFixed(2)}`,
           position: 'start',
-          backgroundColor: 'oklch(55% 0.15 160)',
+          backgroundColor: '#6366f1',
           color: '#fff',
-          font: { size: 10, weight: 'bold' },
+          font: { size: 12, weight: 'bold' },
           padding: { top: 2, bottom: 2, left: 6, right: 6 },
           borderRadius: 3
         }
@@ -436,8 +436,8 @@ const DistributionAnalyzer = {
           display: true,
           content: '±2σ (95.4%)',
           position: 'top',
-          color: 'oklch(55% 0.15 160)',
-          font: { size: 9 },
+          color: '#c7d2fe',
+          font: { size: 11 },
           padding: 2
         }
       };
@@ -451,14 +451,14 @@ const DistributionAnalyzer = {
         xMax: valueToIndex(mu + sigma),
         backgroundColor: 'rgba(99, 102, 241, 0.15)',
         borderWidth: 1,
-        borderColor: 'oklch(55% 0.15 160)',
+        borderColor: '#818cf8',
         borderDash: [4, 4],
         label: {
           display: true,
           content: '±1σ (68.3%)',
           position: 'top',
-          color: 'oklch(55% 0.15 160)',
-          font: { size: 10, weight: 'bold' },
+          color: '#c7d2fe',
+          font: { size: 12, weight: 'bold' },
           padding: { top: 4, bottom: 2, left: 6, right: 6 }
         }
       };
@@ -486,15 +486,15 @@ const DistributionAnalyzer = {
         type: 'line',
         xMin: valueToIndex(median),
         xMax: valueToIndex(median),
-        borderColor: 'oklch(55% 0.15 160)',
+        borderColor: '#818cf8',
         borderWidth: 2,
         label: {
           display: true,
           content: `中位数 ${median.toFixed(1)}`,
           position: 'start',
-          backgroundColor: 'oklch(55% 0.15 160)',
+          backgroundColor: '#6366f1',
           color: '#fff',
-          font: { size: 10 },
+          font: { size: 12 },
           padding: { top: 2, bottom: 2, left: 6, right: 6 },
           borderRadius: 3
         }
@@ -504,16 +504,16 @@ const DistributionAnalyzer = {
         type: 'line',
         xMin: valueToIndex(mode),
         xMax: valueToIndex(mode),
-        borderColor: 'oklch(65% 0.18 25)',
+        borderColor: '#f472b6',
         borderWidth: 1.5,
         borderDash: [4, 3],
         label: {
           display: true,
           content: `众数 ${mode.toFixed(1)}`,
           position: 'end',
-          backgroundColor: 'oklch(65% 0.18 25)',
+          backgroundColor: '#ec4899',
           color: '#fff',
-          font: { size: 9 },
+          font: { size: 11 },
           padding: { top: 2, bottom: 2, left: 5, right: 5 },
           borderRadius: 2
         }
@@ -528,14 +528,14 @@ const DistributionAnalyzer = {
         xMax: valueToIndex(q3),
         backgroundColor: 'rgba(99, 102, 241, 0.1)',
         borderWidth: 1,
-        borderColor: 'oklch(55% 0.15 160)',
+        borderColor: '#818cf8',
         borderDash: [3, 3],
         label: {
           display: true,
           content: 'IQR (Q1-Q3)',
           position: 'top',
-          color: 'oklch(55% 0.15 160)',
-          font: { size: 9 },
+          color: '#c7d2fe',
+          font: { size: 11 },
           padding: 2
         }
       };
@@ -562,16 +562,16 @@ const DistributionAnalyzer = {
         type: 'line',
         xMin: valueToIndex(mean),
         xMax: valueToIndex(mean),
-        borderColor: 'oklch(55% 0.15 160)',
+        borderColor: '#818cf8',
         borderWidth: 2,
         borderDash: [6, 3],
         label: {
           display: true,
           content: `均值 ${mean.toFixed(2)}`,
           position: 'start',
-          backgroundColor: 'oklch(55% 0.15 160)',
+          backgroundColor: '#6366f1',
           color: '#fff',
-          font: { size: 10 },
+          font: { size: 12 },
           padding: { top: 2, bottom: 2, left: 6, right: 6 },
           borderRadius: 3
         }
@@ -584,16 +584,16 @@ const DistributionAnalyzer = {
         type: 'line',
         xMin: valueToIndex(mode),
         xMax: valueToIndex(mode),
-        borderColor: 'oklch(65% 0.18 25)',
+        borderColor: '#f472b6',
         borderWidth: 1.5,
         borderDash: [4, 3],
         label: {
           display: true,
           content: `众数 ${mode.toFixed(2)}`,
           position: 'end',
-          backgroundColor: 'oklch(65% 0.18 25)',
+          backgroundColor: '#ec4899',
           color: '#fff',
-          font: { size: 9 },
+          font: { size: 11 },
           padding: { top: 2, bottom: 2, left: 5, right: 5 },
           borderRadius: 2
         }
@@ -606,15 +606,15 @@ const DistributionAnalyzer = {
         type: 'line',
         xMin: valueToIndex(medianApprox),
         xMax: valueToIndex(medianApprox),
-        borderColor: 'oklch(50% 0.12 250)',
+        borderColor: '#38bdf8',
         borderWidth: 1,
         borderDash: [3, 3],
         label: {
           display: true,
           content: '中位数≈',
           position: 'end',
-          color: 'oklch(50% 0.12 250)',
-          font: { size: 8 },
+          color: '#bae6fd',
+          font: { size: 10 },
           padding: 2
         }
       };
@@ -633,7 +633,7 @@ const DistributionAnalyzer = {
           content: '右偏→',
           position: { x: 'end', y: 'end' },
           color: 'rgba(100, 100, 120, 0.5)',
-          font: { size: 9 },
+          font: { size: 11 },
           padding: 4
         }
       };
@@ -654,15 +654,15 @@ const DistributionAnalyzer = {
         type: 'line',
         xMin: valueToIndex(mu1),
         xMax: valueToIndex(mu1),
-        borderColor: 'oklch(65% 0.18 25)',
+        borderColor: '#f472b6',
         borderWidth: 2,
         label: {
           display: true,
           content: `μ₁=${mu1.toFixed(1)}`,
           position: 'start',
-          backgroundColor: 'oklch(65% 0.18 25)',
+          backgroundColor: '#ec4899',
           color: '#fff',
-          font: { size: 10, weight: 'bold' },
+          font: { size: 12, weight: 'bold' },
           padding: { top: 2, bottom: 2, left: 6, right: 6 },
           borderRadius: 3
         }
@@ -672,15 +672,15 @@ const DistributionAnalyzer = {
         type: 'line',
         xMin: valueToIndex(mu2),
         xMax: valueToIndex(mu2),
-        borderColor: 'oklch(55% 0.15 160)',
+        borderColor: '#818cf8',
         borderWidth: 2,
         label: {
           display: true,
           content: `μ₂=${mu2.toFixed(1)}`,
           position: 'start',
-          backgroundColor: 'oklch(55% 0.15 160)',
+          backgroundColor: '#6366f1',
           color: '#fff',
-          font: { size: 10, weight: 'bold' },
+          font: { size: 12, weight: 'bold' },
           padding: { top: 2, bottom: 2, left: 6, right: 6 },
           borderRadius: 3
         }
@@ -695,7 +695,7 @@ const DistributionAnalyzer = {
         xMax: valueToIndex(mu1 + sigma1),
         backgroundColor: 'rgba(220, 100, 80, 0.08)',
         borderWidth: 1,
-        borderColor: 'oklch(65% 0.18 25)',
+        borderColor: '#f472b6',
         borderDash: [3, 3]
       };
     }
@@ -708,7 +708,7 @@ const DistributionAnalyzer = {
         xMax: valueToIndex(mu2 + sigma2),
         backgroundColor: 'rgba(80, 100, 220, 0.08)',
         borderWidth: 1,
-        borderColor: 'oklch(55% 0.15 160)',
+        borderColor: '#818cf8',
         borderDash: [3, 3]
       };
     }
