@@ -20,10 +20,14 @@ const DataService = {
   _campusCache: new Map(),
   _buildingCache: new Map(),
   _roomCache: new Map(),
+  _beatPercentageCache: new Map(),
+  _buildingConsumptionStatsCache: new Map(),
+  _balanceHistoryDatesCache: new WeakMap(),
 
   // localStorage 缓存键前缀
   CACHE_PREFIX: '',
   CACHE_VERSION: 'v2',
+  RANKING_PERCENT_TTL_MS: 5 * 60 * 1000,
 
   // 数据版本缓存键
   DATA_VERSION_KEY: '__data_version__',
@@ -169,6 +173,11 @@ const DataService = {
         this._campusCache.clear();
         this._buildingCache.clear();
         this._roomCache.clear();
+        this._beatPercentageCache.clear();
+        this._buildingConsumptionStatsCache.clear();
+        this._balanceHistoryDatesCache = new WeakMap();
+        this._clearCampusWideRankingSessionCache();
+        this._clearBeatPercentageSessionCache();
       }
 
       // 保存当前版本号
@@ -191,6 +200,10 @@ const DataService = {
     this._campusCache.clear();
     this._buildingCache.clear();
     this._roomCache.clear();
+    this._beatPercentageCache.clear();
+    this._buildingConsumptionStatsCache.clear();
+    this._balanceHistoryDatesCache = new WeakMap();
+    this._clearBeatPercentageSessionCache();
     console.log('[DataService] 所有缓存已清除');
   },
 
@@ -1226,8 +1239,7 @@ const DataService = {
   _calculateConsumptionFromHistory(balanceHistory, dateType, compactDate) {
     if (!balanceHistory) return null;
 
-    // 将对象转为排序后的数组
-    const dates = Object.keys(balanceHistory).sort();
+    const dates = this._getBalanceHistoryDates(balanceHistory);
     if (dates.length === 0) return null;
 
     // 找到目标日期的索引
@@ -1269,6 +1281,28 @@ const DataService = {
 
     // 只有余额减少才算消耗（充值会导致余额增加）
     return prevBalance > currBalance ? prevBalance - currBalance : 0;
+  },
+
+  /**
+   * 获取 balance_history 的升序日期列表，并在对象生命周期内复用。
+   * @private
+   */
+  _getBalanceHistoryDates(balanceHistory) {
+    if (!balanceHistory || typeof balanceHistory !== 'object') return [];
+
+    const cachedDates = this._balanceHistoryDatesCache.get(balanceHistory);
+    if (cachedDates) return cachedDates;
+
+    const dates = Object.keys(balanceHistory);
+    for (let i = 1; i < dates.length; i++) {
+      if (dates[i - 1] > dates[i]) {
+        dates.sort();
+        break;
+      }
+    }
+
+    this._balanceHistoryDatesCache.set(balanceHistory, dates);
+    return dates;
   },
 
   /**
@@ -1915,6 +1949,392 @@ const DataService = {
       keysToRemove.forEach(key => sessionStorage.removeItem(key));
     } catch (error) {
       console.warn('[SessionStorage] 清除校区排行榜缓存失败:', error);
+    }
+  },
+
+  /**
+   * 获取单个房间的消耗数据（支持 details.json、房间文件和缓存回退）
+   * @private
+   */
+  async _getRoomConsumption(campusName, buildingName, roomId, date, compactDate, options = {}) {
+    const normalizedRoomId = String(roomId || '');
+
+    if (!options.skipDetailsLookup) {
+      const details = await this.getBuildingDetails(campusName, buildingName);
+      const roomData = this._findRoomInMap(details?.rooms, normalizedRoomId);
+      const consumption = this._calculateConsumptionFromHistory(
+        roomData?.balance_history,
+        date,
+        compactDate
+      );
+      if (consumption !== null) return consumption;
+    }
+
+    try {
+      const roomHistory = await this.getRoomHistory(campusName, buildingName, normalizedRoomId);
+      const consumption = this._calculateConsumptionFromHistoryArray(
+        roomHistory?.history,
+        date,
+        compactDate
+      );
+      if (consumption !== null) return consumption;
+    } catch (error) {
+      console.warn(`获取房间 ${normalizedRoomId} 历史失败:`, error);
+    }
+
+    return null;
+  },
+
+  /**
+   * 获取楼栋内可比较房间的消耗统计。
+   * 结果按消耗量升序保存，后续计算“打败多少房间”可用二分而不是逐个扫描。
+   * @private
+   */
+  async _getBuildingConsumptionStats(campusName, buildingName, date, compactDate) {
+    const cacheKey = this._getBuildingConsumptionStatsCacheKey(campusName, buildingName, compactDate);
+    const cachedStats = this._buildingConsumptionStatsCache.get(cacheKey);
+    if (cachedStats) return cachedStats;
+
+    const stats = {
+      consumptions: [],
+      roomConsumptions: new Map()
+    };
+
+    const addConsumption = (roomId, roomData, consumption) => {
+      if (consumption === null || consumption === undefined) return;
+      const numericConsumption = Number(consumption);
+      if (!Number.isFinite(numericConsumption)) return;
+
+      stats.consumptions.push(numericConsumption);
+      this._rememberRoomConsumption(stats.roomConsumptions, roomId, numericConsumption);
+      this._rememberRoomConsumption(stats.roomConsumptions, roomData?.room_id, numericConsumption);
+    };
+
+    const cachedRanking = await this.getRankingCache(campusName, buildingName, date);
+    const cachedRows = Array.isArray(cachedRanking)
+      ? cachedRanking
+      : (Array.isArray(cachedRanking?.data) ? cachedRanking.data : null);
+
+    if (cachedRows && cachedRows.length > 0) {
+      for (const row of cachedRows) {
+        addConsumption(row.roomId, row, row.consumption);
+      }
+    } else {
+      const details = await this.getBuildingDetails(campusName, buildingName);
+      if (details?.rooms) {
+        for (const [roomId, roomData] of Object.entries(details.rooms)) {
+          addConsumption(
+            roomId,
+            roomData,
+            this._calculateConsumptionFromHistory(roomData.balance_history, date, compactDate)
+          );
+        }
+      } else {
+        const buildingSummary = await this.getBuildingSummary(campusName, buildingName);
+        const roomIds = Object.keys(buildingSummary?.rooms || {});
+        for (const roomId of roomIds) {
+          addConsumption(
+            roomId,
+            buildingSummary.rooms[roomId],
+            await this._getRoomConsumption(
+              campusName,
+              buildingName,
+              roomId,
+              date,
+              compactDate,
+              { skipDetailsLookup: true }
+            )
+          );
+        }
+      }
+    }
+
+    stats.consumptions.sort((a, b) => a - b);
+    stats.roomCount = stats.consumptions.length;
+    this._buildingConsumptionStatsCache.set(cacheKey, stats);
+    return stats;
+  },
+
+  /**
+   * @private
+   */
+  _getBuildingConsumptionStatsCacheKey(campusName, buildingName, compactDate) {
+    return `${campusName}|${buildingName}|${compactDate}`;
+  },
+
+  /**
+   * @private
+   */
+  _rememberRoomConsumption(roomConsumptions, roomId, consumption) {
+    const normalizedRoomId = String(roomId || '');
+    if (!normalizedRoomId) return;
+    roomConsumptions.set(normalizedRoomId, consumption);
+  },
+
+  /**
+   * @private
+   */
+  _getRoomConsumptionFromStats(stats, roomId) {
+    if (!stats?.roomConsumptions) return null;
+    const normalizedRoomId = String(roomId || '');
+    if (!normalizedRoomId || !stats.roomConsumptions.has(normalizedRoomId)) return null;
+    return stats.roomConsumptions.get(normalizedRoomId);
+  },
+
+  /**
+   * @private
+   */
+  _hasRoomConsumptionInStats(stats, roomId) {
+    if (!stats?.roomConsumptions) return false;
+    return stats.roomConsumptions.has(String(roomId || ''));
+  },
+
+  /**
+   * 返回升序数组中小于 value 的元素数量。
+   * @private
+   */
+  _countLessThan(sortedValues, value) {
+    let low = 0;
+    let high = sortedValues.length;
+    while (low < high) {
+      const mid = Math.floor((low + high) / 2);
+      if (sortedValues[mid] < value) {
+        low = mid + 1;
+      } else {
+        high = mid;
+      }
+    }
+    return low;
+  },
+
+  /**
+   * 从房间历史数组计算消耗量
+   * @private
+   */
+  _calculateConsumptionFromHistoryArray(history, dateType, compactDate) {
+    if (!Array.isArray(history) || history.length === 0) return null;
+
+    if (dateType === 'today') {
+      const latest = history[history.length - 1];
+      return latest?.consumption !== undefined && latest.consumption !== null
+        ? latest.consumption
+        : null;
+    }
+
+    if (dateType === 'yesterday') {
+      const yesterday = history[history.length - 2];
+      return yesterday?.consumption !== undefined && yesterday.consumption !== null
+        ? yesterday.consumption
+        : null;
+    }
+
+    if (dateType === 'week') {
+      const weekWindow = history.slice(-7);
+      if (weekWindow.length === 0) return null;
+      return weekWindow.reduce((sum, item) => sum + (item.consumption ?? 0), 0) / weekWindow.length;
+    }
+
+    const targetEntry = history.find(item =>
+      item.date === compactDate || item.formattedDate === dateType
+    );
+    return targetEntry?.consumption !== undefined && targetEntry.consumption !== null
+      ? targetEntry.consumption
+      : null;
+  },
+
+  /**
+   * 在房间映射中兼容 string/number roomId 查找
+   * @private
+   */
+  _findRoomInMap(rooms, roomId) {
+    if (!rooms) return null;
+    const normalizedRoomId = String(roomId || '');
+    if (rooms[normalizedRoomId]) return rooms[normalizedRoomId];
+
+    const matched = Object.entries(rooms).find(([key, roomData]) =>
+      this._isSameRoomId(key, normalizedRoomId, roomData)
+    );
+    return matched ? matched[1] : null;
+  },
+
+  /**
+   * 判断房间 ID 是否一致
+   * @private
+   */
+  _isSameRoomId(roomId, targetRoomId, roomData = null) {
+    const normalizedRoomId = String(roomId || '');
+    const normalizedTarget = String(targetRoomId || '');
+    return normalizedRoomId === normalizedTarget ||
+      String(roomData?.room_id || '') === normalizedTarget;
+  },
+
+  /**
+   * @private
+   */
+  _getBeatPercentageCacheKey(campusName, buildingName, roomId, compactDate) {
+    return `beat-percentage:v1:${campusName}|${buildingName}|${String(roomId || '')}|${compactDate}`;
+  },
+
+  /**
+   * @private
+   */
+  _getBeatPercentageCache(cacheKey) {
+    const now = Date.now();
+    const memoryEntry = this._beatPercentageCache.get(cacheKey);
+    if (memoryEntry) {
+      if (memoryEntry.expiry > now) return memoryEntry.value;
+      this._beatPercentageCache.delete(cacheKey);
+    }
+
+    try {
+      if (typeof sessionStorage === 'undefined') return null;
+      const cached = sessionStorage.getItem(cacheKey);
+      if (!cached) return null;
+
+      const parsed = JSON.parse(cached);
+      if (!parsed || parsed.expiry <= now || !parsed.value) {
+        sessionStorage.removeItem(cacheKey);
+        return null;
+      }
+
+      this._beatPercentageCache.set(cacheKey, parsed);
+      return parsed.value;
+    } catch (error) {
+      console.warn('[SessionStorage] 读取排名百分比缓存失败:', error);
+      return null;
+    }
+  },
+
+  /**
+   * @private
+   */
+  _saveBeatPercentageCache(cacheKey, result) {
+    const entry = {
+      value: result,
+      expiry: Date.now() + this.RANKING_PERCENT_TTL_MS
+    };
+    this._beatPercentageCache.set(cacheKey, entry);
+
+    try {
+      if (typeof sessionStorage === 'undefined') return;
+      sessionStorage.setItem(cacheKey, JSON.stringify(entry));
+    } catch (error) {
+      console.warn('[SessionStorage] 保存排名百分比缓存失败:', error);
+    }
+  },
+
+  /**
+   * @private
+   */
+  _clearBeatPercentageSessionCache() {
+    try {
+      if (typeof sessionStorage === 'undefined') return;
+      const prefix = 'beat-percentage:';
+      const keysToRemove = [];
+      for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (key && key.startsWith(prefix)) keysToRemove.push(key);
+      }
+      keysToRemove.forEach(key => sessionStorage.removeItem(key));
+    } catch (error) {
+      console.warn('[SessionStorage] 清除排名百分比缓存失败:', error);
+    }
+  },
+
+  /**
+   * 计算某个房间在楼栋和校区中的排名百分比
+   * @param {string} campusName 校区名
+   * @param {string} buildingName 楼栋名
+   * @param {string} roomId 房间ID
+   * @param {string} date 日期类型：'today', 'yesterday', 'week', 或具体日期
+   * @returns {Promise<Object>} 包含 beatBuildingPercent 和 beatCampusPercent 的对象
+   */
+  async calculateBeatPercentage(campusName, buildingName, roomId, date = 'today') {
+    const compactDate = this._formatDateCompact(date);
+    const cacheKey = this._getBeatPercentageCacheKey(campusName, buildingName, roomId, compactDate);
+    const cachedResult = this._getBeatPercentageCache(cacheKey);
+    if (cachedResult) return cachedResult;
+
+    const emptyResult = {
+      beatBuildingPercent: 0,
+      beatCampusPercent: 0,
+      buildingRoomCount: 0,
+      campusRoomCount: 0,
+      buildingBeaten: 0,
+      campusBeaten: 0
+    };
+
+    try {
+      const campusStats = await this.getCampusStatistics(campusName);
+      if (!campusStats?.buildingDetails) {
+        this._saveBeatPercentageCache(cacheKey, emptyResult);
+        return emptyResult;
+      }
+
+      const currentBuildingStats = await this._getBuildingConsumptionStats(
+        campusName,
+        buildingName,
+        date,
+        compactDate
+      );
+
+      let currentRoomConsumption = this._getRoomConsumptionFromStats(currentBuildingStats, roomId);
+      if (currentRoomConsumption === null) {
+        currentRoomConsumption = await this._getRoomConsumption(
+          campusName,
+          buildingName,
+          roomId,
+          date,
+          compactDate
+        );
+      }
+
+      if (currentRoomConsumption === null) {
+        this._saveBeatPercentageCache(cacheKey, emptyResult);
+        return emptyResult;
+      }
+
+      let buildingRoomCount = 0;
+      let buildingBeaten = 0;
+      let campusRoomCount = 0;
+      let campusBeaten = 0;
+
+      for (const building of campusStats.buildingDetails) {
+        try {
+          const stats = building.name === buildingName
+            ? currentBuildingStats
+            : await this._getBuildingConsumptionStats(campusName, building.name, date, compactDate);
+          const beatenInBuilding = this._countLessThan(stats.consumptions, currentRoomConsumption);
+
+          if (building.name === buildingName) {
+            const excludesCurrentRoom = this._hasRoomConsumptionInStats(stats, roomId);
+            buildingRoomCount = Math.max(0, stats.roomCount - (excludesCurrentRoom ? 1 : 0));
+            buildingBeaten = beatenInBuilding;
+            campusRoomCount += buildingRoomCount;
+            campusBeaten += beatenInBuilding;
+          } else {
+            campusRoomCount += stats.roomCount;
+            campusBeaten += beatenInBuilding;
+          }
+        } catch (error) {
+          console.warn(`跳过楼栋 ${building.name}:`, error);
+        }
+      }
+
+      const result = {
+        beatBuildingPercent: buildingRoomCount > 0 ? (buildingBeaten / buildingRoomCount) * 100 : 0,
+        beatCampusPercent: campusRoomCount > 0 ? (campusBeaten / campusRoomCount) * 100 : 0,
+        buildingRoomCount,
+        campusRoomCount,
+        buildingBeaten,
+        campusBeaten
+      };
+
+      this._saveBeatPercentageCache(cacheKey, result);
+      return result;
+    } catch (error) {
+      console.error('[calculateBeatPercentage] 计算失败:', error);
+      return emptyResult;
     }
   }
 };

@@ -472,6 +472,55 @@
       font-weight: 600;
     }
 
+    /* 排名百分比卡片 */
+    .ranking-percent-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .ranking-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 20px 0;
+      text-align: center;
+    }
+    .ranking-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 600px) {
+      .ranking-grid { grid-template-columns: 1fr; }
+    }
+    .ranking-item {
+      text-align: center;
+      padding: 20px;
+      background: color-mix(in oklch, var(--accent) 5%, transparent);
+      border-radius: var(--radius);
+      border: 1px solid color-mix(in oklch, var(--accent) 20%, transparent);
+    }
+    .ranking-label {
+      color: var(--muted);
+      font-size: 14px;
+      font-family: var(--font-mono);
+      margin-bottom: 8px;
+    }
+    .ranking-percent-value {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .ranking-sub {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     /* 配置面板 */
     .config-panel {
       position: fixed;
@@ -740,6 +789,27 @@
       </div>
     </section>
 
+    <!-- 排名百分比卡片 -->
+    <section class="ranking-percent-card" id="ranking-percent-card" style="display: none;">
+      <h3 class="ranking-title"><span aria-hidden="true">🏆</span> 今日用电排名</h3>
+      <div class="ranking-grid">
+        <div class="ranking-item">
+          <div class="ranking-label">在本楼栋</div>
+          <div class="ranking-percent-value" id="beat-building-percent">--</div>
+          <div class="ranking-sub">打败了 <span id="building-beaten">--</span> 个房间（可比较 <span id="building-room-count">--</span> 个）</div>
+        </div>
+        <div class="ranking-item">
+          <div class="ranking-label">在全校区</div>
+          <div class="ranking-percent-value" id="beat-campus-percent">--</div>
+          <div class="ranking-sub">打败了 <span id="campus-beaten">--</span> 个房间（可比较 <span id="campus-room-count">--</span> 个）</div>
+        </div>
+      </div>
+      <div class="ranking-loading" id="ranking-loading" style="text-align: center; padding: 20px; display: none;">
+        <div class="loading-spinner"></div>
+        <div id="ranking-loading-text" style="color: var(--muted); margin-top: 10px;">计算排名中...</div>
+      </div>
+    </section>
+
     <!-- 充值预估 -->
     <section class="recharge-section" id="recharge-section" style="display: none;">
       <h2 class="section-title">充值建议</h2>
@@ -820,6 +890,9 @@
     let userConfig = null;
     let chartInstance = null;
     let mockData = [];
+    let rankingLoadToken = 0;
+    const rankingResultCache = new Map();
+    const RANKING_RESULT_TTL_MS = DataService.RANKING_PERCENT_TTL_MS || 5 * 60 * 1000;
     let allRoomsCache = null; // 缓存所有房间数据用于搜索
 
     // 初始化
@@ -1179,6 +1252,114 @@
         generateMockData();
       }
       updateUI();
+      loadRankingData();
+    }
+
+    // 加载排名数据
+    async function loadRankingData(retryCount = 0) {
+      if (!userConfig) return;
+      if (!userConfig.campus || !userConfig.building || !userConfig.roomId) return;
+
+      const loadToken = ++rankingLoadToken;
+      const rankingCard = document.getElementById('ranking-percent-card');
+      const rankingGrid = rankingCard.querySelector('.ranking-grid');
+      const rankingLoading = document.getElementById('ranking-loading');
+      const rankingLoadingText = document.getElementById('ranking-loading-text');
+      const rankingSpinner = rankingLoading.querySelector('.loading-spinner');
+
+      rankingCard.style.display = 'block';
+      rankingGrid.style.display = 'none';
+      rankingLoading.style.display = 'block';
+      rankingSpinner.style.display = 'block';
+      rankingLoadingText.textContent = '计算排名中...';
+
+      try {
+        const cacheKey = getRankingResultCacheKey(userConfig, 'today');
+        let result = getCachedRankingResult(cacheKey);
+
+        if (!result) {
+          result = await DataService.calculateBeatPercentage(
+            userConfig.campus,
+            userConfig.building,
+            userConfig.roomId,
+            'today'
+          );
+          saveCachedRankingResult(cacheKey, result);
+        }
+
+        if (loadToken !== rankingLoadToken) return;
+
+        document.getElementById('beat-building-percent').textContent = result.beatBuildingPercent.toFixed(0) + '%';
+        document.getElementById('beat-campus-percent').textContent = result.beatCampusPercent.toFixed(0) + '%';
+        document.getElementById('building-room-count').textContent = result.buildingRoomCount;
+        document.getElementById('campus-room-count').textContent = result.campusRoomCount;
+        document.getElementById('building-beaten').textContent = result.buildingBeaten;
+        document.getElementById('campus-beaten').textContent = result.campusBeaten;
+
+        if (result.buildingRoomCount === 0 && result.campusRoomCount === 0) {
+          rankingSpinner.style.display = 'none';
+          rankingLoadingText.textContent = '暂无排名数据';
+        } else {
+          rankingGrid.style.display = 'grid';
+          rankingLoading.style.display = 'none';
+        }
+      } catch (error) {
+        if (loadToken !== rankingLoadToken) return;
+        console.error('[loadRankingData] 加载排名数据失败:', error);
+        rankingSpinner.style.display = 'none';
+        rankingLoadingText.textContent = '排名数据暂不可用';
+
+        if (retryCount < 1) {
+          setTimeout(() => {
+            if (loadToken !== rankingLoadToken) return;
+            loadRankingData(retryCount + 1);
+          }, 3000);
+        }
+      }
+    }
+
+    function getRankingResultCacheKey(config, date) {
+      return `room-view-ranking:v1:${config.campus}|${config.building}|${String(config.roomId || '')}|${date}`;
+    }
+
+    function getCachedRankingResult(cacheKey) {
+      const now = Date.now();
+      const memoryEntry = rankingResultCache.get(cacheKey);
+      if (memoryEntry) {
+        if (memoryEntry.expiry > now) return memoryEntry.value;
+        rankingResultCache.delete(cacheKey);
+      }
+
+      try {
+        const cached = sessionStorage.getItem(cacheKey);
+        if (!cached) return null;
+
+        const parsed = JSON.parse(cached);
+        if (!parsed || parsed.expiry <= now || !parsed.value) {
+          sessionStorage.removeItem(cacheKey);
+          return null;
+        }
+
+        rankingResultCache.set(cacheKey, parsed);
+        return parsed.value;
+      } catch (error) {
+        console.warn('[loadRankingData] 读取排名缓存失败:', error);
+        return null;
+      }
+    }
+
+    function saveCachedRankingResult(cacheKey, result) {
+      const entry = {
+        value: result,
+        expiry: Date.now() + RANKING_RESULT_TTL_MS
+      };
+      rankingResultCache.set(cacheKey, entry);
+
+      try {
+        sessionStorage.setItem(cacheKey, JSON.stringify(entry));
+      } catch (error) {
+        console.warn('[loadRankingData] 保存排名缓存失败:', error);
+      }
     }
 
     // 生成模拟数据
