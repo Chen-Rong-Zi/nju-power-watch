@@ -160,66 +160,6 @@
       outline: none;
     }
 
-    /* 用户位次卡片 */
-    .user-rank-card {
-      background: linear-gradient(135deg, color-mix(in oklch, var(--accent) 12%, transparent), var(--surface));
-      border: 2px solid color-mix(in oklch, var(--accent) 40%, transparent);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      margin-bottom: 24px;
-      display: none;
-    }
-    .user-rank-card.show { display: block; }
-    .user-rank-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .user-rank-badge {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 700;
-    }
-    .user-rank-info h3 {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 600;
-      margin: 0 0 4px;
-    }
-    .user-rank-info p {
-      color: var(--muted);
-      font-size: 13px;
-      margin: 0;
-    }
-    .user-rank-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-    .user-rank-stat {
-      text-align: center;
-    }
-    .user-rank-stat-value {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .user-rank-stat-label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
     /* 统计摘要 */
     .stats-row {
       display: grid;
@@ -1035,31 +975,6 @@
       </div>
     </div>
 
-    <!-- 用户位次卡片 -->
-    <div class="user-rank-card" id="user-rank-card">
-      <div class="user-rank-header">
-        <div class="user-rank-badge" id="user-rank-badge">--</div>
-        <div class="user-rank-info">
-          <h3>您的房间排名</h3>
-          <p id="user-rank-room">--</p>
-        </div>
-      </div>
-      <div class="user-rank-stats">
-        <div class="user-rank-stat">
-          <div class="user-rank-stat-value" id="user-rank-pos">--</div>
-          <div class="user-rank-stat-label">排名</div>
-        </div>
-        <div class="user-rank-stat">
-          <div class="user-rank-stat-value" id="user-rank-consumption">--</div>
-          <div class="user-rank-stat-label">当日消耗</div>
-        </div>
-        <div class="user-rank-stat">
-          <div class="user-rank-stat-value" id="user-rank-percentile">--</div>
-          <div class="user-rank-stat-label">超过房间</div>
-        </div>
-      </div>
-    </div>
-
     <!-- 统计摘要 -->
     <div class="stats-row" id="stats-row" style="display: none;">
       <div class="stat-card stat-card-hover">
@@ -1453,10 +1368,8 @@
       // 同时隐藏统计和分页
       const statsRow = document.getElementById('stats-row');
       const pagination = document.getElementById('pagination');
-      const userRankCard = document.getElementById('user-rank-card');
       if (statsRow) statsRow.style.display = 'none';
       if (pagination) pagination.style.display = 'none';
-      if (userRankCard) userRankCard.classList.remove('show');
     }
 
     // ==================== 排序切换 ====================
@@ -1550,7 +1463,6 @@
       document.getElementById('empty-state').style.display = 'none';
       document.getElementById('no-data-state').style.display = 'none';
       document.getElementById('stats-row').style.display = 'none';
-      document.getElementById('user-rank-card').classList.remove('show');
       document.getElementById('pagination').style.display = 'none';
       updateCacheStatus('计算中...', true);
 
@@ -1998,7 +1910,6 @@
       setTip('tip-avg', avg);
       setTip('tip-max', max);
 
-      await showUserRankCard(rankings);
       renderCurrentPage();
       renderDistributionChart(rankings);
     }
@@ -2115,76 +2026,6 @@
       if (!isNaN(page) && page >= 1) {
         goToPage(page);
       }
-    }
-
-    // ==================== 用户位次卡片 ====================
-    async function showUserRankCard(rankings) {
-      // 检查用户是否配置了房间
-      if (!state.userConfig) {
-        document.getElementById('user-rank-card').classList.remove('show');
-        return;
-      }
-
-      const card = document.getElementById('user-rank-card');
-
-      // 检查是否在同一楼栋
-      const isSameBuilding = state.userConfig.campus === state.campus &&
-                             state.userConfig.building === state.building;
-
-      // 在排行榜中查找用户房间
-      let userRoomData = rankings.find(r => r.roomName === state.userConfig.roomName);
-      let estimatedRank = null;
-
-      // 如果用户房间不在排行榜中，尝试获取数据并估算位次
-      if (!userRoomData && isSameBuilding) {
-        // 尝试获取用户房间的历史数据
-        const roomHistory = await DataService.getRoomHistory(state.campus, state.building, state.userConfig.roomName);
-
-        if (roomHistory && roomHistory.history) {
-          const consumption = calculateConsumption(roomHistory.history, state.date);
-
-          if (consumption !== null) {
-            // 估算位次：找到第一个消耗量小于用户消耗量的位置
-            const sortedRankings = [...rankings].sort((a, b) => b.consumption - a.consumption);
-            estimatedRank = sortedRankings.findIndex(r => r.consumption < consumption) + 1;
-
-            if (estimatedRank === 0) {
-              // 用户消耗量比所有人都大
-              estimatedRank = 1;
-            }
-
-            userRoomData = {
-              room: state.userConfig.roomName,
-              roomName: state.userConfig.roomName,
-              consumption: consumption,
-              rank: estimatedRank,
-              estimated: true
-            };
-          }
-        }
-      } else if (!userRoomData) {
-        // 用户不在同一楼栋，不显示位次卡片
-        document.getElementById('user-rank-card').classList.remove('show');
-        return;
-      }
-
-      // 显示卡片
-      card.classList.add('show');
-
-      const rank = userRoomData.rank;
-      const isEstimated = userRoomData.estimated;
-
-      document.getElementById('user-rank-badge').textContent = isEstimated ? `~${rank}` : rank;
-      document.getElementById('user-rank-room').textContent =
-        userRoomData.room + (isEstimated ? ' (估算位次)' : '');
-      document.getElementById('user-rank-pos').textContent =
-        isEstimated ? `约 #${rank}` : `#${rank}`;
-      document.getElementById('user-rank-consumption').textContent =
-        userRoomData.consumption.toFixed(2) + '度';
-
-      const percentile = Math.round((1 - rank / rankings.length) * 100);
-      document.getElementById('user-rank-percentile').textContent =
-        Math.max(0, percentile) + '%';
     }
 
     // ==================== 房间详情面板 ====================
@@ -2493,7 +2334,6 @@
       document.getElementById('animation-progress').style.display = 'none';
       document.getElementById('stats-row').style.display = 'none';
       document.getElementById('pagination').style.display = 'none';
-      document.getElementById('user-rank-card').classList.remove('show');
       hideDistributionChart();
       updateCacheStatus('等待选择', false);
     }
@@ -2506,7 +2346,6 @@
       document.getElementById('animation-progress').style.display = 'none';
       document.getElementById('stats-row').style.display = 'none';
       document.getElementById('pagination').style.display = 'none';
-      document.getElementById('user-rank-card').classList.remove('show');
       hideDistributionChart();
       updateCacheStatus('无数据', false);
     }
