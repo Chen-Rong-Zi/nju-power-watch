@@ -1370,6 +1370,9 @@
       const pagination = document.getElementById('pagination');
       if (statsRow) statsRow.style.display = 'none';
       if (pagination) pagination.style.display = 'none';
+      // 隐藏分布图表和趋势图表
+      hideDistributionChart();
+      hideBuildingTrend();
     }
 
     // ==================== 排序切换 ====================
@@ -2402,6 +2405,16 @@
       const ctx = document.getElementById('dist-chart').getContext('2d');
       if (distChart) distChart.destroy();
 
+      // 将实际值转换为bin索引（用于类别型x轴）
+      const xMin = histogram.edges[0];
+      const xMax = histogram.edges[histogram.edges.length - 1];
+      const binWidth = histogram.edges[1] - histogram.edges[0];
+      const valueToIndex = (value) => {
+        if (value < xMin) return -0.5;
+        if (value > xMax) return histogram.bins.length - 0.5;
+        return (value - xMin) / binWidth - 0.5;
+      };
+
       // 用户宿舍标注线
       const userConfig = state.userConfig;
       let userConsumption = null;
@@ -2413,8 +2426,8 @@
           userAnnotation = {
             userLine: {
               type: 'line',
-              xMin: userConsumption,
-              xMax: userConsumption,
+              xMin: valueToIndex(userConsumption),
+              xMax: valueToIndex(userConsumption),
               borderColor: 'oklch(55% 0.20 25)',
               borderWidth: 2,
               borderDash: [6, 3],

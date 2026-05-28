@@ -360,20 +360,28 @@ const DistributionAnalyzer = {
    * @returns {object} Chart.js annotation 配置对象
    */
   getDistributionAnnotations(fit, histogram) {
-    if (!fit) return {};
+    if (!fit || !histogram.edges || histogram.edges.length < 2) return {};
 
     const xMin = histogram.edges[0];
     const xMax = histogram.edges[histogram.edges.length - 1];
+    const binWidth = histogram.edges[1] - histogram.edges[0];
+
+    // 将实际值转换为bin索引（用于类别型x轴）
+    const valueToIndex = (value) => {
+      if (value < xMin) return -0.5;
+      if (value > xMax) return histogram.bins.length - 0.5;
+      return (value - xMin) / binWidth - 0.5;
+    };
 
     switch (fit.type) {
       case 'normal':
-        return this._normalAnnotations(fit, xMin, xMax);
+        return this._normalAnnotations(fit, xMin, xMax, valueToIndex);
       case 'lognormal':
-        return this._lognormalAnnotations(fit, xMin, xMax);
+        return this._lognormalAnnotations(fit, xMin, xMax, valueToIndex);
       case 'gamma':
-        return this._gammaAnnotations(fit, xMin, xMax);
+        return this._gammaAnnotations(fit, xMin, xMax, valueToIndex);
       case 'bimodal':
-        return this._bimodalAnnotations(fit, xMin, xMax);
+        return this._bimodalAnnotations(fit, xMin, xMax, valueToIndex);
       default:
         return {};
     }
@@ -382,19 +390,19 @@ const DistributionAnalyzer = {
   /**
    * 正态分布标注：μ中轴线 + ±1σ/±2σ/±3σ 区间
    */
-  _normalAnnotations(fit, xMin, xMax) {
+  _normalAnnotations(fit, xMin, xMax, valueToIndex) {
     const { mu, sigma } = fit;
     const annotations = {
       // μ 中轴线
       muLine: {
         type: 'line',
-        xMin: mu,
-        xMax: mu,
+        xMin: valueToIndex(mu),
+        xMax: valueToIndex(mu),
         borderColor: 'oklch(55% 0.15 160)',
         borderWidth: 2,
         label: {
           display: true,
-          content: 'μ',
+          content: `μ=${mu.toFixed(2)}`,
           position: 'start',
           backgroundColor: 'oklch(55% 0.15 160)',
           color: '#fff',
@@ -409,8 +417,8 @@ const DistributionAnalyzer = {
     if (mu - 3 * sigma >= xMin && mu + 3 * sigma <= xMax) {
       annotations.sigma3 = {
         type: 'box',
-        xMin: mu - 3 * sigma,
-        xMax: mu + 3 * sigma,
+        xMin: valueToIndex(mu - 3 * sigma),
+        xMax: valueToIndex(mu + 3 * sigma),
         backgroundColor: 'rgba(99, 102, 241, 0.04)',
         borderWidth: 0
       };
@@ -420,8 +428,8 @@ const DistributionAnalyzer = {
     if (mu - 2 * sigma >= xMin && mu + 2 * sigma <= xMax) {
       annotations.sigma2 = {
         type: 'box',
-        xMin: mu - 2 * sigma,
-        xMax: mu + 2 * sigma,
+        xMin: valueToIndex(mu - 2 * sigma),
+        xMax: valueToIndex(mu + 2 * sigma),
         backgroundColor: 'rgba(99, 102, 241, 0.08)',
         borderWidth: 0,
         label: {
@@ -439,8 +447,8 @@ const DistributionAnalyzer = {
     if (mu - sigma >= xMin && mu + sigma <= xMax) {
       annotations.sigma1 = {
         type: 'box',
-        xMin: mu - sigma,
-        xMax: mu + sigma,
+        xMin: valueToIndex(mu - sigma),
+        xMax: valueToIndex(mu + sigma),
         backgroundColor: 'rgba(99, 102, 241, 0.15)',
         borderWidth: 1,
         borderColor: 'oklch(55% 0.15 160)',
@@ -462,7 +470,7 @@ const DistributionAnalyzer = {
   /**
    * 对数正态分布标注：中位数 + 四分位区间 + 众数
    */
-  _lognormalAnnotations(fit, xMin, xMax) {
+  _lognormalAnnotations(fit, xMin, xMax, valueToIndex) {
     const { mu, sigma } = fit;
     // 中位数 = e^μ
     const median = Math.exp(mu);
@@ -476,8 +484,8 @@ const DistributionAnalyzer = {
       // 中位数线
       medianLine: {
         type: 'line',
-        xMin: median,
-        xMax: median,
+        xMin: valueToIndex(median),
+        xMax: valueToIndex(median),
         borderColor: 'oklch(55% 0.15 160)',
         borderWidth: 2,
         label: {
@@ -494,8 +502,8 @@ const DistributionAnalyzer = {
       // 众数线
       modeLine: {
         type: 'line',
-        xMin: mode,
-        xMax: mode,
+        xMin: valueToIndex(mode),
+        xMax: valueToIndex(mode),
         borderColor: 'oklch(65% 0.18 25)',
         borderWidth: 1.5,
         borderDash: [4, 3],
@@ -516,8 +524,8 @@ const DistributionAnalyzer = {
     if (q1 >= xMin && q3 <= xMax) {
       annotations.iqr = {
         type: 'box',
-        xMin: q1,
-        xMax: q3,
+        xMin: valueToIndex(q1),
+        xMax: valueToIndex(q3),
         backgroundColor: 'rgba(99, 102, 241, 0.1)',
         borderWidth: 1,
         borderColor: 'oklch(55% 0.15 160)',
@@ -539,7 +547,7 @@ const DistributionAnalyzer = {
   /**
    * Gamma分布标注：均值 + 众数 + 中位数
    */
-  _gammaAnnotations(fit, xMin, xMax) {
+  _gammaAnnotations(fit, xMin, xMax, valueToIndex) {
     const { k, theta } = fit;
     // 均值 = kθ
     const mean = k * theta;
@@ -552,8 +560,8 @@ const DistributionAnalyzer = {
       // 均值线
       meanLine: {
         type: 'line',
-        xMin: mean,
-        xMax: mean,
+        xMin: valueToIndex(mean),
+        xMax: valueToIndex(mean),
         borderColor: 'oklch(55% 0.15 160)',
         borderWidth: 2,
         borderDash: [6, 3],
@@ -574,8 +582,8 @@ const DistributionAnalyzer = {
     if (k > 1 && mode >= xMin && mode <= xMax) {
       annotations.modeLine = {
         type: 'line',
-        xMin: mode,
-        xMax: mode,
+        xMin: valueToIndex(mode),
+        xMax: valueToIndex(mode),
         borderColor: 'oklch(65% 0.18 25)',
         borderWidth: 1.5,
         borderDash: [4, 3],
@@ -596,8 +604,8 @@ const DistributionAnalyzer = {
     if (medianApprox >= xMin && medianApprox <= xMax && Math.abs(medianApprox - mean) > 0.1) {
       annotations.medianLine = {
         type: 'line',
-        xMin: medianApprox,
-        xMax: medianApprox,
+        xMin: valueToIndex(medianApprox),
+        xMax: valueToIndex(medianApprox),
         borderColor: 'oklch(50% 0.12 250)',
         borderWidth: 1,
         borderDash: [3, 3],
@@ -616,8 +624,8 @@ const DistributionAnalyzer = {
     if (mean < xMax * 0.7) {
       annotations.skewArea = {
         type: 'box',
-        xMin: mean,
-        xMax: Math.min(mean + 2 * Math.sqrt(k) * theta, xMax),
+        xMin: valueToIndex(mean),
+        xMax: valueToIndex(Math.min(mean + 2 * Math.sqrt(k) * theta, xMax)),
         backgroundColor: 'rgba(99, 102, 241, 0.03)',
         borderWidth: 0,
         label: {
@@ -637,15 +645,15 @@ const DistributionAnalyzer = {
   /**
    * 双峰分布标注：两个峰的位置 + 各自σ区间
    */
-  _bimodalAnnotations(fit, xMin, xMax) {
+  _bimodalAnnotations(fit, xMin, xMax, valueToIndex) {
     const { mu1, sigma1, mu2, sigma2, weight } = fit;
 
     const annotations = {
       // 峰1位置线
       peak1Line: {
         type: 'line',
-        xMin: mu1,
-        xMax: mu1,
+        xMin: valueToIndex(mu1),
+        xMax: valueToIndex(mu1),
         borderColor: 'oklch(65% 0.18 25)',
         borderWidth: 2,
         label: {
@@ -662,8 +670,8 @@ const DistributionAnalyzer = {
       // 峰2位置线
       peak2Line: {
         type: 'line',
-        xMin: mu2,
-        xMax: mu2,
+        xMin: valueToIndex(mu2),
+        xMax: valueToIndex(mu2),
         borderColor: 'oklch(55% 0.15 160)',
         borderWidth: 2,
         label: {
@@ -683,8 +691,8 @@ const DistributionAnalyzer = {
     if (mu1 - sigma1 >= xMin && mu1 + sigma1 <= xMax) {
       annotations.peak1Sigma = {
         type: 'box',
-        xMin: mu1 - sigma1,
-        xMax: mu1 + sigma1,
+        xMin: valueToIndex(mu1 - sigma1),
+        xMax: valueToIndex(mu1 + sigma1),
         backgroundColor: 'rgba(220, 100, 80, 0.08)',
         borderWidth: 1,
         borderColor: 'oklch(65% 0.18 25)',
@@ -696,8 +704,8 @@ const DistributionAnalyzer = {
     if (mu2 - sigma2 >= xMin && mu2 + sigma2 <= xMax) {
       annotations.peak2Sigma = {
         type: 'box',
-        xMin: mu2 - sigma2,
-        xMax: mu2 + sigma2,
+        xMin: valueToIndex(mu2 - sigma2),
+        xMax: valueToIndex(mu2 + sigma2),
         backgroundColor: 'rgba(80, 100, 220, 0.08)',
         borderWidth: 1,
         borderColor: 'oklch(55% 0.15 160)',
