@@ -854,7 +854,7 @@
     }
     .dist-chart-container {
       position: relative;
-      height: 320px;
+      height: 400px;
     }
     .dist-stats-row {
       display: grid;
@@ -928,6 +928,75 @@
     .dist-click-info-item .value {
       font-family: var(--font-mono);
       font-weight: 600;
+    }
+    .dist-rooms-section {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid color-mix(in oklch, var(--accent) 20%, transparent);
+    }
+    .dist-rooms-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .dist-rooms-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 6px;
+    }
+    .dist-room-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .dist-room-item:hover {
+      background: var(--hover);
+    }
+    .dist-room-item .room-name {
+      color: var(--text);
+      font-size: 13px;
+    }
+    .dist-room-item .room-consumption {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    /* 分布图标注图例 */
+    .dist-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .dist-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: opacity 0.2s;
+    }
+    .dist-legend-item.disabled {
+      opacity: 0.4;
+    }
+    .dist-legend-color {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+    }
+    .dist-legend-item:hover {
+      background: var(--hover);
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -1013,6 +1082,7 @@
       <div class="dist-chart-container">
         <canvas id="dist-chart"></canvas>
       </div>
+      <div class="dist-legend" id="dist-legend" style="display: none;"></div>
       <div class="dist-stats-row" id="dist-stats-row" style="display: none;"></div>
       <div class="dist-user-marker" id="dist-user-marker" style="display: none;">
         <span class="dist-user-marker-icon">📍</span>
@@ -2495,16 +2565,16 @@
             if (distSelectedBin === idx) {
               clearDistBinSelection();
             } else {
-              selectDistBin(idx, histogram, values, bestFit);
+              selectDistBin(idx, histogram, values, bestFit, rankings);
             }
           },
           plugins: {
             legend: {
               labels: {
-                color: '#94a3b8',
-                font: { size: 12 },
-                boxWidth: 12,
-                padding: 12
+                color: '#cbd5e1',
+                font: { size: 14, weight: '500' },
+                boxWidth: 16,
+                padding: 16
               }
             },
             tooltip: {
@@ -2563,15 +2633,15 @@
             x: {
               grid: { display: false },
               ticks: {
-                color: '#94a3b8',
-                font: { size: 10 },
+                color: '#cbd5e1',
+                font: { size: 12 },
                 maxRotation: 0
               },
               title: {
                 display: true,
                 text: '日耗电量 (度)',
-                color: '#94a3b8',
-                font: { size: 12 }
+                color: '#e2e8f0',
+                font: { size: 14, weight: '500' }
               }
             },
             y: {
@@ -2581,15 +2651,15 @@
                 drawBorder: false
               },
               ticks: {
-                color: '#94a3b8',
-                font: { size: 11 },
+                color: '#cbd5e1',
+                font: { size: 12 },
                 callback: function(value) { return Number.isInteger(value) ? value : ''; }
               },
               title: {
                 display: true,
                 text: '房间数',
-                color: '#94a3b8',
-                font: { size: 12 }
+                color: '#e2e8f0',
+                font: { size: 14, weight: '500' }
               }
             }
           }
@@ -2597,6 +2667,7 @@
       });
 
       renderDistStats(bestFit, values);
+      renderDistLegend(bestFit);
 
       if (userConsumption !== null) {
         const pResult = DistributionAnalyzer.computePercentile(values, userConsumption);
@@ -2680,7 +2751,68 @@
       statsRow.innerHTML = statsHtml;
     }
 
-    function selectDistBin(idx, histogram, values, bestFit) {
+    // 渲染标注图例并支持切换
+    function renderDistLegend(bestFit) {
+      const legendEl = document.getElementById('dist-legend');
+      legendEl.style.display = 'flex';
+
+      const legendItems = {
+        normal: [
+          { key: 'muLine', color: 'oklch(55% 0.15 160)', label: 'μ (均值)' },
+          { key: 'sigma1', color: 'rgba(99, 102, 241, 0.15)', label: '±1σ (68.3%)' },
+          { key: 'sigma2', color: 'rgba(99, 102, 241, 0.08)', label: '±2σ (95.4%)' },
+          { key: 'sigma3', color: 'rgba(99, 102, 241, 0.04)', label: '±3σ (99.7%)' }
+        ],
+        lognormal: [
+          { key: 'medianLine', color: 'oklch(55% 0.15 160)', label: '中位数' },
+          { key: 'modeLine', color: 'oklch(65% 0.18 25)', label: '众数' },
+          { key: 'iqr', color: 'rgba(99, 102, 241, 0.1)', label: 'IQR (Q1-Q3)' }
+        ],
+        gamma: [
+          { key: 'meanLine', color: 'oklch(55% 0.15 160)', label: '均值' },
+          { key: 'modeLine', color: 'oklch(65% 0.18 25)', label: '众数' },
+          { key: 'medianLine', color: 'oklch(50% 0.12 250)', label: '中位数≈' },
+          { key: 'skewArea', color: 'rgba(99, 102, 241, 0.03)', label: '右偏区域' }
+        ],
+        bimodal: [
+          { key: 'peak1Line', color: 'oklch(65% 0.18 25)', label: 'μ₁ (峰1)' },
+          { key: 'peak2Line', color: 'oklch(55% 0.15 160)', label: 'μ₂ (峰2)' },
+          { key: 'peak1Sigma', color: 'rgba(220, 100, 80, 0.08)', label: '峰1 ±1σ' },
+          { key: 'peak2Sigma', color: 'rgba(80, 100, 220, 0.08)', label: '峰2 ±1σ' }
+        ]
+      };
+
+      const items = legendItems[bestFit.type] || [];
+      legendEl.innerHTML = items.map(item => `
+        <div class="dist-legend-item" data-key="${item.key}" onclick="toggleDistAnnotation('${item.key}')">
+          <div class="dist-legend-color" style="background: ${item.color}; border: 1px solid ${item.color.includes('rgba') ? 'rgba(99, 102, 241, 0.3)' : item.color};"></div>
+          <span>${item.label}</span>
+        </div>
+      `).join('');
+    }
+
+    // 切换标注显示
+    window.distAnnotationState = {};
+    function toggleDistAnnotation(key) {
+      if (!distChart) return;
+
+      const annotation = distChart.options.plugins.annotation.annotations[key];
+      if (!annotation) return;
+
+      // 切换显示状态
+      window.distAnnotationState[key] = !window.distAnnotationState[key];
+      annotation.display = window.distAnnotationState[key] === false ? false : true;
+
+      // 更新图例样式
+      const legendItem = document.querySelector(`.dist-legend-item[data-key="${key}"]`);
+      if (legendItem) {
+        legendItem.classList.toggle('disabled', window.distAnnotationState[key] === false);
+      }
+
+      distChart.update();
+    }
+
+    function selectDistBin(idx, histogram, values, bestFit, rankings) {
       distSelectedBin = idx;
       const ds = distChart.data.datasets[0];
 
@@ -2694,21 +2826,22 @@
       const cumPct = histogram.cumulativePercent[idx];
       const prevCumPct = idx > 0 ? histogram.cumulativePercent[idx - 1] : 0;
 
+      // 使用bin索引而非实际值（类别型x轴）
       const currentAnnotations = distChart.options.plugins.annotation.annotations;
       distChart.options.plugins.annotation.annotations = {
         ...currentAnnotations,
         selectedBinLeft: {
           type: 'line',
-          xMin: low,
-          xMax: low,
+          xMin: idx - 0.5,
+          xMax: idx - 0.5,
           borderColor: 'rgba(99, 102, 241, 0.6)',
           borderWidth: 1.5,
           borderDash: [3, 3]
         },
         selectedBinRight: {
           type: 'line',
-          xMin: high,
-          xMax: high,
+          xMin: idx + 0.5,
+          xMax: idx + 0.5,
           borderColor: 'rgba(99, 102, 241, 0.6)',
           borderWidth: 1.5,
           borderDash: [3, 3]
@@ -2722,8 +2855,32 @@
       const mean = values.reduce((s, v) => s + v, 0) / values.length;
       const binMid = histogram.bins[idx];
 
+      // 找出在这个区间内的房间
+      const roomsInBin = rankings ? rankings.filter(r => r.consumption >= low && r.consumption < high)
+        .sort((a, b) => b.consumption - a.consumption)
+        .slice(0, 10) : [];
+
       const clickInfo = document.getElementById('dist-click-info');
       clickInfo.style.display = 'block';
+
+      // 生成房间列表HTML
+      let roomsListHtml = '';
+      if (roomsInBin.length > 0) {
+        roomsListHtml = `
+          <div class="dist-rooms-section">
+            <div class="dist-rooms-title">📋 该区间房间 (显示前10间)</div>
+            <div class="dist-rooms-list">
+              ${roomsInBin.map(r => `
+                <div class="dist-room-item" onclick="showRoomDetail('${r.roomName}')">
+                  <span class="room-name">${r.roomName}</span>
+                  <span class="room-consumption">${r.consumption.toFixed(2)}度</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
       clickInfo.innerHTML = `
         <div class="dist-click-info-title">📊 ${low.toFixed(1)} - ${high.toFixed(1)} 度 区间详情</div>
         <div class="dist-click-info-grid">
@@ -2752,6 +2909,7 @@
             <span class="value">${prevCumPct}% - ${cumPct}%</span>
           </div>
         </div>
+        ${roomsListHtml}
       `;
     }
 
