@@ -351,5 +351,360 @@ const DistributionAnalyzer = {
     return histogram.bins.map(binCenter => {
       return fit.pdf(binCenter) * binWidth * totalCount;
     });
+  },
+
+  /**
+   * 生成分布类型特定的标注数据
+   * @param {object} fit - 拟合结果（含 type, mu, sigma 等参数）
+   * @param {object} histogram - 直方图数据（含 edges 用于确定范围）
+   * @returns {object} Chart.js annotation 配置对象
+   */
+  getDistributionAnnotations(fit, histogram) {
+    if (!fit) return {};
+
+    const xMin = histogram.edges[0];
+    const xMax = histogram.edges[histogram.edges.length - 1];
+
+    switch (fit.type) {
+      case 'normal':
+        return this._normalAnnotations(fit, xMin, xMax);
+      case 'lognormal':
+        return this._lognormalAnnotations(fit, xMin, xMax);
+      case 'gamma':
+        return this._gammaAnnotations(fit, xMin, xMax);
+      case 'bimodal':
+        return this._bimodalAnnotations(fit, xMin, xMax);
+      default:
+        return {};
+    }
+  },
+
+  /**
+   * 正态分布标注：μ中轴线 + ±1σ/±2σ/±3σ 区间
+   */
+  _normalAnnotations(fit, xMin, xMax) {
+    const { mu, sigma } = fit;
+    const annotations = {
+      // μ 中轴线
+      muLine: {
+        type: 'line',
+        xMin: mu,
+        xMax: mu,
+        borderColor: 'oklch(55% 0.15 160)',
+        borderWidth: 2,
+        label: {
+          display: true,
+          content: 'μ',
+          position: 'start',
+          backgroundColor: 'oklch(55% 0.15 160)',
+          color: '#fff',
+          font: { size: 10, weight: 'bold' },
+          padding: { top: 2, bottom: 2, left: 6, right: 6 },
+          borderRadius: 3
+        }
+      }
+    };
+
+    // ±3σ 区间 (99.7%) - 最底层
+    if (mu - 3 * sigma >= xMin && mu + 3 * sigma <= xMax) {
+      annotations.sigma3 = {
+        type: 'box',
+        xMin: mu - 3 * sigma,
+        xMax: mu + 3 * sigma,
+        backgroundColor: 'rgba(99, 102, 241, 0.04)',
+        borderWidth: 0
+      };
+    }
+
+    // ±2σ 区间 (95.4%)
+    if (mu - 2 * sigma >= xMin && mu + 2 * sigma <= xMax) {
+      annotations.sigma2 = {
+        type: 'box',
+        xMin: mu - 2 * sigma,
+        xMax: mu + 2 * sigma,
+        backgroundColor: 'rgba(99, 102, 241, 0.08)',
+        borderWidth: 0,
+        label: {
+          display: true,
+          content: '±2σ (95.4%)',
+          position: 'top',
+          color: 'oklch(55% 0.15 160)',
+          font: { size: 9 },
+          padding: 2
+        }
+      };
+    }
+
+    // ±1σ 区间 (68.3%)
+    if (mu - sigma >= xMin && mu + sigma <= xMax) {
+      annotations.sigma1 = {
+        type: 'box',
+        xMin: mu - sigma,
+        xMax: mu + sigma,
+        backgroundColor: 'rgba(99, 102, 241, 0.15)',
+        borderWidth: 1,
+        borderColor: 'oklch(55% 0.15 160)',
+        borderDash: [4, 4],
+        label: {
+          display: true,
+          content: '±1σ (68.3%)',
+          position: 'top',
+          color: 'oklch(55% 0.15 160)',
+          font: { size: 10, weight: 'bold' },
+          padding: { top: 4, bottom: 2, left: 6, right: 6 }
+        }
+      };
+    }
+
+    return annotations;
+  },
+
+  /**
+   * 对数正态分布标注：中位数 + 四分位区间 + 众数
+   */
+  _lognormalAnnotations(fit, xMin, xMax) {
+    const { mu, sigma } = fit;
+    // 中位数 = e^μ
+    const median = Math.exp(mu);
+    // 众数 = e^(μ - σ²)
+    const mode = Math.exp(mu - sigma * sigma);
+    // Q1 ≈ e^(μ - 0.67σ), Q3 ≈ e^(μ + 0.67σ)
+    const q1 = Math.exp(mu - 0.6745 * sigma);
+    const q3 = Math.exp(mu + 0.6745 * sigma);
+
+    const annotations = {
+      // 中位数线
+      medianLine: {
+        type: 'line',
+        xMin: median,
+        xMax: median,
+        borderColor: 'oklch(55% 0.15 160)',
+        borderWidth: 2,
+        label: {
+          display: true,
+          content: `中位数 ${median.toFixed(1)}`,
+          position: 'start',
+          backgroundColor: 'oklch(55% 0.15 160)',
+          color: '#fff',
+          font: { size: 10 },
+          padding: { top: 2, bottom: 2, left: 6, right: 6 },
+          borderRadius: 3
+        }
+      },
+      // 众数线
+      modeLine: {
+        type: 'line',
+        xMin: mode,
+        xMax: mode,
+        borderColor: 'oklch(65% 0.18 25)',
+        borderWidth: 1.5,
+        borderDash: [4, 3],
+        label: {
+          display: true,
+          content: `众数 ${mode.toFixed(1)}`,
+          position: 'end',
+          backgroundColor: 'oklch(65% 0.18 25)',
+          color: '#fff',
+          font: { size: 9 },
+          padding: { top: 2, bottom: 2, left: 5, right: 5 },
+          borderRadius: 2
+        }
+      }
+    };
+
+    // Q1-Q3 四分位区间
+    if (q1 >= xMin && q3 <= xMax) {
+      annotations.iqr = {
+        type: 'box',
+        xMin: q1,
+        xMax: q3,
+        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+        borderWidth: 1,
+        borderColor: 'oklch(55% 0.15 160)',
+        borderDash: [3, 3],
+        label: {
+          display: true,
+          content: 'IQR (Q1-Q3)',
+          position: 'top',
+          color: 'oklch(55% 0.15 160)',
+          font: { size: 9 },
+          padding: 2
+        }
+      };
+    }
+
+    return annotations;
+  },
+
+  /**
+   * Gamma分布标注：均值 + 众数 + 中位数
+   */
+  _gammaAnnotations(fit, xMin, xMax) {
+    const { k, theta } = fit;
+    // 均值 = kθ
+    const mean = k * theta;
+    // 众数 = (k-1)θ (当 k >= 1)
+    const mode = k >= 1 ? (k - 1) * theta : 0;
+    // 中位数近似：使用 Wilson-Hilferty 近似
+    const medianApprox = k * theta * Math.pow(1 - 1 / (9 * k), 3);
+
+    const annotations = {
+      // 均值线
+      meanLine: {
+        type: 'line',
+        xMin: mean,
+        xMax: mean,
+        borderColor: 'oklch(55% 0.15 160)',
+        borderWidth: 2,
+        borderDash: [6, 3],
+        label: {
+          display: true,
+          content: `均值 ${mean.toFixed(2)}`,
+          position: 'start',
+          backgroundColor: 'oklch(55% 0.15 160)',
+          color: '#fff',
+          font: { size: 10 },
+          padding: { top: 2, bottom: 2, left: 6, right: 6 },
+          borderRadius: 3
+        }
+      }
+    };
+
+    // 众数线 (仅当 k > 1 时有意义)
+    if (k > 1 && mode >= xMin && mode <= xMax) {
+      annotations.modeLine = {
+        type: 'line',
+        xMin: mode,
+        xMax: mode,
+        borderColor: 'oklch(65% 0.18 25)',
+        borderWidth: 1.5,
+        borderDash: [4, 3],
+        label: {
+          display: true,
+          content: `众数 ${mode.toFixed(2)}`,
+          position: 'end',
+          backgroundColor: 'oklch(65% 0.18 25)',
+          color: '#fff',
+          font: { size: 9 },
+          padding: { top: 2, bottom: 2, left: 5, right: 5 },
+          borderRadius: 2
+        }
+      };
+    }
+
+    // 中位数近似线
+    if (medianApprox >= xMin && medianApprox <= xMax && Math.abs(medianApprox - mean) > 0.1) {
+      annotations.medianLine = {
+        type: 'line',
+        xMin: medianApprox,
+        xMax: medianApprox,
+        borderColor: 'oklch(50% 0.12 250)',
+        borderWidth: 1,
+        borderDash: [3, 3],
+        label: {
+          display: true,
+          content: '中位数≈',
+          position: 'end',
+          color: 'oklch(50% 0.12 250)',
+          font: { size: 8 },
+          padding: 2
+        }
+      };
+    }
+
+    // 右偏态方向标注（浅色区域）
+    if (mean < xMax * 0.7) {
+      annotations.skewArea = {
+        type: 'box',
+        xMin: mean,
+        xMax: Math.min(mean + 2 * Math.sqrt(k) * theta, xMax),
+        backgroundColor: 'rgba(99, 102, 241, 0.03)',
+        borderWidth: 0,
+        label: {
+          display: true,
+          content: '右偏→',
+          position: { x: 'end', y: 'end' },
+          color: 'rgba(100, 100, 120, 0.5)',
+          font: { size: 9 },
+          padding: 4
+        }
+      };
+    }
+
+    return annotations;
+  },
+
+  /**
+   * 双峰分布标注：两个峰的位置 + 各自σ区间
+   */
+  _bimodalAnnotations(fit, xMin, xMax) {
+    const { mu1, sigma1, mu2, sigma2, weight } = fit;
+
+    const annotations = {
+      // 峰1位置线
+      peak1Line: {
+        type: 'line',
+        xMin: mu1,
+        xMax: mu1,
+        borderColor: 'oklch(65% 0.18 25)',
+        borderWidth: 2,
+        label: {
+          display: true,
+          content: `μ₁=${mu1.toFixed(1)}`,
+          position: 'start',
+          backgroundColor: 'oklch(65% 0.18 25)',
+          color: '#fff',
+          font: { size: 10, weight: 'bold' },
+          padding: { top: 2, bottom: 2, left: 6, right: 6 },
+          borderRadius: 3
+        }
+      },
+      // 峰2位置线
+      peak2Line: {
+        type: 'line',
+        xMin: mu2,
+        xMax: mu2,
+        borderColor: 'oklch(55% 0.15 160)',
+        borderWidth: 2,
+        label: {
+          display: true,
+          content: `μ₂=${mu2.toFixed(1)}`,
+          position: 'start',
+          backgroundColor: 'oklch(55% 0.15 160)',
+          color: '#fff',
+          font: { size: 10, weight: 'bold' },
+          padding: { top: 2, bottom: 2, left: 6, right: 6 },
+          borderRadius: 3
+        }
+      }
+    };
+
+    // 峰1的 ±1σ 区间
+    if (mu1 - sigma1 >= xMin && mu1 + sigma1 <= xMax) {
+      annotations.peak1Sigma = {
+        type: 'box',
+        xMin: mu1 - sigma1,
+        xMax: mu1 + sigma1,
+        backgroundColor: 'rgba(220, 100, 80, 0.08)',
+        borderWidth: 1,
+        borderColor: 'oklch(65% 0.18 25)',
+        borderDash: [3, 3]
+      };
+    }
+
+    // 峰2的 ±1σ 区间
+    if (mu2 - sigma2 >= xMin && mu2 + sigma2 <= xMax) {
+      annotations.peak2Sigma = {
+        type: 'box',
+        xMin: mu2 - sigma2,
+        xMax: mu2 + sigma2,
+        backgroundColor: 'rgba(80, 100, 220, 0.08)',
+        borderWidth: 1,
+        borderColor: 'oklch(55% 0.15 160)',
+        borderDash: [3, 3]
+      };
+    }
+
+    return annotations;
   }
 };
