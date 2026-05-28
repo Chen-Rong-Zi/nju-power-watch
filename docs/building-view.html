@@ -2809,7 +2809,7 @@
         legendItem.classList.toggle('disabled', window.distAnnotationState[key] === false);
       }
 
-      distChart.update();
+      distChart.update('none');
     }
 
     function selectDistBin(idx, histogram, values, bestFit, rankings) {
@@ -2826,29 +2826,26 @@
       const cumPct = histogram.cumulativePercent[idx];
       const prevCumPct = idx > 0 ? histogram.cumulativePercent[idx - 1] : 0;
 
-      // 使用bin索引而非实际值（类别型x轴）
-      const currentAnnotations = distChart.options.plugins.annotation.annotations;
-      distChart.options.plugins.annotation.annotations = {
-        ...currentAnnotations,
-        selectedBinLeft: {
-          type: 'line',
-          xMin: idx - 0.5,
-          xMax: idx - 0.5,
-          borderColor: 'rgba(99, 102, 241, 0.6)',
-          borderWidth: 1.5,
-          borderDash: [3, 3]
-        },
-        selectedBinRight: {
-          type: 'line',
-          xMin: idx + 0.5,
-          xMax: idx + 0.5,
-          borderColor: 'rgba(99, 102, 241, 0.6)',
-          borderWidth: 1.5,
-          borderDash: [3, 3]
-        }
+      // 直接添加标注，避免spread导致的Proxy问题
+      const annotations = distChart.options.plugins.annotation.annotations;
+      annotations.selectedBinLeft = {
+        type: 'line',
+        xMin: idx - 0.5,
+        xMax: idx - 0.5,
+        borderColor: 'rgba(99, 102, 241, 0.6)',
+        borderWidth: 1.5,
+        borderDash: [3, 3]
+      };
+      annotations.selectedBinRight = {
+        type: 'line',
+        xMin: idx + 0.5,
+        xMax: idx + 0.5,
+        borderColor: 'rgba(99, 102, 241, 0.6)',
+        borderWidth: 1.5,
+        borderDash: [3, 3]
       };
 
-      distChart.update();
+      distChart.update('none');
 
       const count = histogram.counts[idx];
       const pct = (count / values.length * 100).toFixed(1);
@@ -2921,12 +2918,12 @@
       ds.backgroundColor = distHistogram.counts.map(() => 'rgba(99, 102, 241, 0.35)');
       ds.borderColor = distHistogram.counts.map(() => 'rgba(99, 102, 241, 0.7)');
 
-      const annotations = { ...distChart.options.plugins.annotation.annotations };
-      delete annotations.selectedBinLeft;
-      delete annotations.selectedBinRight;
-      distChart.options.plugins.annotation.annotations = annotations;
+      // 直接删除标注，避免spread导致的Proxy问题
+      const annotations = distChart.options.plugins.annotation.annotations;
+      if (annotations.selectedBinLeft) delete annotations.selectedBinLeft;
+      if (annotations.selectedBinRight) delete annotations.selectedBinRight;
 
-      distChart.update();
+      distChart.update('none');
 
       document.getElementById('dist-click-info').style.display = 'none';
     }
