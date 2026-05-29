@@ -2212,62 +2212,6 @@
       // 更新分页控件
       updatePagination(totalPages);
     }
-      state.currentPage = Math.max(1, Math.min(state.currentPage, totalPages));
-
-      const startIdx = (state.currentPage - 1) * state.itemsPerPage;
-      const endIdx = startIdx + state.itemsPerPage;
-      const pageItems = displayRankings.slice(startIdx, endIdx);
-
-      // 渲染项目
-      pageItems.forEach(item => {
-        const displayRank = state.sortDesc ? item.rank : (rankings.length - item.rank + 1);
-        const rankClass = displayRank <= 3 ? `rank-${displayRank}` : 'rank-other';
-        const isUserRoom = state.userConfig &&
-          state.userConfig.campus === state.campus &&
-          state.userConfig.building === state.building &&
-          (item.roomName) === state.userConfig.roomName;
-
-        const html = `
-          <div class="ranking-item ${isUserRoom ? 'user-room' : ''}"
-               data-room-name="${item.roomName}"
-               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomName}')">
-            <div class="rank-badge ${rankClass}">${displayRank}</div>
-            <div class="room-info">
-              <div class="room-name">${item.room}${isUserRoom ? ' (我的房间)' : ''}</div>
-            </div>
-            <div class="consumption">
-              <div class="consumption-value">${item.consumption.toFixed(2)}</div>
-              <div class="consumption-unit">度/日</div>
-            </div>
-          </div>
-        `;
-        listEl.insertAdjacentHTML('beforeend', html);
-      });
-
-      // 渲染无数据房间（排在末尾，样式淡化）
-      pageNoDataRooms.forEach(item => {
-        const html = `
-          <div class="ranking-item no-data"
-               data-room-name="${item.roomName}"
-               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomName}')"
-               style="opacity: 0.5; background: var(--surface);">
-            <div class="rank-badge" style="background: var(--border); color: var(--muted);">-</div>
-            <div class="room-info">
-              <div class="room-name" style="color: var(--muted);">${item.roomName}</div>
-              <div style="font-size: 11px; color: var(--muted);">暂无该日期数据</div>
-            </div>
-            <div class="consumption">
-              <div class="consumption-value" style="color: var(--muted);">--</div>
-              <div class="consumption-unit">度/日</div>
-            </div>
-          </div>
-        `;
-        listEl.insertAdjacentHTML('beforeend', html);
-      });
-
-      // 更新分页控件
-      updatePagination(totalPages);
-    }
 
     // ==================== 分页控制 ====================
     function updatePagination(totalPages) {
