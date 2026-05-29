@@ -1362,17 +1362,20 @@ const DataService = {
    */
   _aggregateCampusResult(campusName, campusStats, buildingsWithData) {
     let totalConsumption = 0;
-    let totalRoomCount = 0;
+    let totalRooms = 0;
+    let totalRoomsWithData = 0;
     const buildings = {};
 
     for (const b of buildingsWithData) {
       totalConsumption += b.consumption || 0;
-      totalRoomCount += b.roomCount || 0;
+      totalRooms += b.total_rooms || 0;
+      totalRoomsWithData += b.roomCount || 0;  // roomCount 是有数据的房间数
       buildings[b.name] = {
         consumption: b.consumption || 0,
-        roomCount: b.roomCount || 0,
-        total_rooms: b.total_rooms || 0,
-        avgConsumption: b.avgConsumption || 0
+        roomCount: b.roomCount || 0,           // 有数据房间数
+        total_rooms: b.total_rooms || 0,       // 总房间数
+        avgConsumption: b.avgConsumption || 0,
+        dataCompleteness: b.total_rooms > 0 ? (b.roomCount / b.total_rooms) : 0
       };
     }
 
@@ -1382,8 +1385,9 @@ const DataService = {
       totalConsumption,
       buildingCount: campusStats.buildings || 0,
       roomCount: campusRoomCount,
-      roomsWithData: totalRoomCount,
-      avgConsumption: campusRoomCount > 0 ? totalConsumption / campusRoomCount : 0,
+      roomsWithData: totalRoomsWithData,
+      dataCompleteness: campusRoomCount > 0 ? totalRoomsWithData / campusRoomCount : 0,
+      avgConsumption: totalRoomsWithData > 0 ? totalConsumption / totalRoomsWithData : 0,
       buildings
     };
   },
