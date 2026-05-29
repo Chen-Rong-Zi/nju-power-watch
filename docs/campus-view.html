@@ -728,8 +728,7 @@
       if (!fallback) return;
       const banner = document.getElementById('fallback-banner');
       const text = document.getElementById('fallback-banner-text');
-      const coveragePercent = Math.round(fallback.coverage * 100);
-      text.innerHTML = `今日数据暂无，显示 <strong>${fallback.formattedDate}</strong> 的数据（覆盖 ${coveragePercent}% 房间）`;
+      text.innerHTML = `今日数据暂无，显示 <strong>${fallback.formattedDate}</strong> 的数据`;
       banner.style.display = 'flex';
       fallbackInfo = fallback;
     }
