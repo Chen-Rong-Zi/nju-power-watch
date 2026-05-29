@@ -1548,7 +1548,7 @@
       if (consumptionCache.has(cacheKey)) {
         updateCacheStatus('已缓存', false);
         const cachedData = consumptionCache.get(cacheKey);
-        displayRanking(cachedData);
+        displayRanking(cachedData.rankings || cachedData, cachedData.noDataRooms || []);
         return;
       }
 
