@@ -379,11 +379,14 @@ const DataService = {
         }
       }
 
+      // dailyConsumption 改为今日消耗（按日期匹配）
+      const todayCompact = this._formatDateCompact('today');
+      const todayEntry = history.find(h => h.date === todayCompact);
+
       const result = {
         ...data,
         history,
-        dailyConsumption: history.length > 1 ?
-          history[history.length - 1].consumption : 0,
+        dailyConsumption: todayEntry?.consumption ?? null,
         avgConsumption: this.calculateAvgConsumption(history)
       };
 
@@ -405,24 +408,14 @@ const DataService = {
   async getConsumptionByDate(campusName, buildingName, roomName, dateType) {
     const history = await this.getRoomHistory(campusName, buildingName, roomName);
     if (!history || !history.history || history.history.length === 0) {
-      return 0;
+      return null;
     }
 
     const hist = history.history;
+    const compactDate = this._formatDateCompact(dateType);
 
-    if (dateType === 'today') {
-      return hist[hist.length - 1]?.consumption || 0;
-    } else if (dateType === 'yesterday') {
-      return hist[hist.length - 2]?.consumption || 0;
-    } else if (dateType === 'week') {
-      const weekData = hist.slice(-7);
-      return weekData.reduce((sum, h) => sum + (h.consumption || 0), 0) / 7;
-    } else {
-      // 特定日期 (YYYY-MM-DD 或 YYYYMMDD)
-      const targetDate = dateType.includes('-') ? dateType.replace(/-/g, '') : dateType;
-      const found = hist.find(h => h.date === targetDate || h.formattedDate === dateType);
-      return found?.consumption || 0;
-    }
+    // 使用统一的方法计算
+    return this._calculateConsumptionFromHistoryArray(hist, dateType, compactDate);
   },
 
   /**
@@ -1293,44 +1286,47 @@ const DataService = {
     const dates = this._getBalanceHistoryDates(balanceHistory);
     if (dates.length === 0) return null;
 
-    // 找到目标日期的索引
-    let targetIdx;
-    if (dateType === 'today') {
-      targetIdx = dates.length - 1;
-      // 今天需要至少有两天数据才能计算
-      if (targetIdx <= 0) return null;
-    } else if (dateType === 'yesterday') {
-      targetIdx = dates.length - 2;
-      if (targetIdx < 0) return null;
-    } else if (dateType === 'week') {
-      // 计算最近7天的平均消耗
-      const recentDates = dates.slice(-7);
-      if (recentDates.length < 2) return null;
+    // today/yesterday 转换为具体日期
+    let targetDate = compactDate;
+    if (dateType === 'today' || dateType === 'yesterday') {
+      targetDate = this._formatDateCompact(dateType);
+    }
+
+    if (dateType === 'week') {
+      // 计算最近7天的日期范围
+      const today = new Date();
+      const weekDates = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        weekDates.push(this._dateToCompact(d));
+      }
+
+      // 筛选该范围内的日期
+      const validDates = dates.filter(d => weekDates.includes(d));
+      if (validDates.length < 2) return null;
 
       let totalConsumption = 0;
       let count = 0;
-      for (let i = 1; i < recentDates.length; i++) {
-        const prevBalance = balanceHistory[recentDates[i - 1]];
-        const currBalance = balanceHistory[recentDates[i]];
+      for (let i = 1; i < validDates.length; i++) {
+        const prevBalance = balanceHistory[validDates[i - 1]];
+        const currBalance = balanceHistory[validDates[i]];
         if (prevBalance > currBalance) {
           totalConsumption += prevBalance - currBalance;
           count++;
         }
       }
       return count > 0 ? totalConsumption / count : 0;
-    } else {
-      // 自定义日期
-      targetIdx = dates.indexOf(compactDate);
-      if (targetIdx === -1 || targetIdx === 0) return null;
     }
 
-    if (targetIdx <= 0) return null;
+    // 按日期查找
+    const targetIdx = dates.indexOf(targetDate);
+    if (targetIdx === -1 || targetIdx === 0) return null;
 
     // 计算消耗量：前一天余额 - 当天余额
     const prevBalance = balanceHistory[dates[targetIdx - 1]];
     const currBalance = balanceHistory[dates[targetIdx]];
 
-    // 只有余额减少才算消耗（充值会导致余额增加）
     return prevBalance > currBalance ? prevBalance - currBalance : 0;
   },
 
@@ -2166,28 +2162,34 @@ const DataService = {
   _calculateConsumptionFromHistoryArray(history, dateType, compactDate) {
     if (!Array.isArray(history) || history.length === 0) return null;
 
-    if (dateType === 'today') {
-      const latest = history[history.length - 1];
-      return latest?.consumption !== undefined && latest.consumption !== null
-        ? latest.consumption
-        : null;
-    }
+    // today/yesterday 转换为具体日期后匹配
+    let targetDate = compactDate;
 
-    if (dateType === 'yesterday') {
-      const yesterday = history[history.length - 2];
-      return yesterday?.consumption !== undefined && yesterday.consumption !== null
-        ? yesterday.consumption
-        : null;
+    if (dateType === 'today' || dateType === 'yesterday') {
+      targetDate = this._formatDateCompact(dateType);
     }
 
     if (dateType === 'week') {
-      const weekWindow = history.slice(-7);
-      if (weekWindow.length === 0) return null;
-      return weekWindow.reduce((sum, item) => sum + (item.consumption ?? 0), 0) / weekWindow.length;
+      // 计算最近7天的日期范围
+      const today = new Date();
+      const weekDates = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        weekDates.push(this._dateToCompact(d));
+      }
+
+      // 筛选该范围内的数据
+      const weekData = history.filter(item => weekDates.includes(item.date));
+      if (weekData.length === 0) return null;
+
+      const sum = weekData.reduce((total, item) => total + (item.consumption ?? 0), 0);
+      return sum / weekData.length;
     }
 
+    // 按日期匹配
     const targetEntry = history.find(item =>
-      item.date === compactDate || item.formattedDate === dateType
+      item.date === targetDate || item.formattedDate === dateType
     );
     return targetEntry?.consumption !== undefined && targetEntry.consumption !== null
       ? targetEntry.consumption

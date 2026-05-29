@@ -1942,22 +1942,46 @@
     function calculateConsumption(history, dateType) {
       if (!history || history.length === 0) return null;
 
-      if (dateType === 'today') {
-        const today = history[history.length - 1];
-        return today?.consumption ?? null;
-      } else if (dateType === 'yesterday') {
-        const yesterday = history[history.length - 2];
-        return yesterday?.consumption ?? null;
-      } else if (dateType === 'week') {
-        const weekData = history.slice(-7);
-        if (weekData.length === 0) return null;
-        const sum = weekData.reduce((s, h) => s + (h.consumption || 0), 0);
-        return sum / weekData.length;
-      } else {
-        // 自定义日期
-        const target = history.find(h => h.date === dateType || h.formattedDate === dateType);
+      // 辅助函数：日期转换为 YYYYMMDD
+      const toCompactDate = (date) => {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}${m}${d}`;
+      };
+
+      // today/yesterday 转换为具体日期
+      if (dateType === 'today' || dateType === 'yesterday') {
+        const now = new Date();
+        if (dateType === 'yesterday') {
+          now.setDate(now.getDate() - 1);
+        }
+        const targetDate = toCompactDate(now);
+        const target = history.find(h => h.date === targetDate);
         return target?.consumption ?? null;
       }
+
+      if (dateType === 'week') {
+        // 计算最近7天的日期范围
+        const today = new Date();
+        const weekDates = new Set();
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(today);
+          d.setDate(d.getDate() - i);
+          weekDates.add(toCompactDate(d));
+        }
+
+        // 筛选该范围内的数据
+        const weekData = history.filter(h => weekDates.has(h.date));
+        if (weekData.length === 0) return null;
+
+        const sum = weekData.reduce((s, h) => s + (h.consumption || 0), 0);
+        return sum / weekData.length;
+      }
+
+      // 自定义日期
+      const target = history.find(h => h.date === dateType || h.formattedDate === dateType);
+      return target?.consumption ?? null;
     }
 
     // ==================== 显示排行榜 ====================
