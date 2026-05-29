@@ -1626,16 +1626,49 @@
       const cacheKey = `${state.campus}/${state.building}/${state.date}`;
       const hasAnimationShown = hasAnimationBeenShown(cacheKey);
 
+      // Reset fallback banner on fresh load
+      if (!sessionStorage.getItem('fallbackBannerDismissed')) {
+        hideFallbackBanner();
+      }
+
+      // Check if we need fallback for today/yesterday
+      let effectiveDate = state.date;
+      let fallbackDate = null;
+      if (state.date === 'today' || state.date === 'yesterday') {
+        const fallback = await DataService.findLatestDateWithData(
+          state.campus,
+          state.building,
+          state.date
+        );
+        if (fallback) {
+          effectiveDate = fallback.date;
+          fallbackDate = fallback;
+          // Show banner (will be hidden if dismissed this session)
+          if (!sessionStorage.getItem('fallbackBannerDismissed')) {
+            showFallbackBanner(fallback);
+          }
+        } else {
+          hideFallbackBanner();
+        }
+      } else {
+        hideFallbackBanner();
+      }
+
+      // Use effective date for cache key if fallback is active
+      const effectiveCacheKey = fallbackDate
+        ? `${state.campus}/${state.building}/${fallbackDate.date}`
+        : cacheKey;
+
       // 1. 先检查内存缓存
-      if (consumptionCache.has(cacheKey)) {
+      if (consumptionCache.has(effectiveCacheKey)) {
         updateCacheStatus('已缓存', false);
-        const cachedData = consumptionCache.get(cacheKey);
+        const cachedData = consumptionCache.get(effectiveCacheKey);
         displayRanking(cachedData.rankings || cachedData, cachedData.noDataRooms || []);
         return;
       }
 
       // 2. 检查 IndexedDB 缓存（使用新的缓存API）
-      const localStorageCache = await DataService.getRankingCache(state.campus, state.building, state.date);
+      const localStorageCache = await DataService.getRankingCache(state.campus, state.building, effectiveDate === 'today' ? null : effectiveDate);
       if (localStorageCache && localStorageCache.data && localStorageCache.data.length > 0) {
         console.log(`[缓存命中] 从 localStorage 读取排序结果, 总消耗: ${localStorageCache.totalConsumption?.toFixed(2) || 'N/A'}度, 已排序: ${localStorageCache.sorted}`);
 
@@ -1691,7 +1724,7 @@
             consumption: item.consumption,
             balance: item.balance
           }));
-          await DataService.saveRankingCache(state.campus, state.building, state.date, sortedCacheData, true, {
+          await DataService.saveRankingCache(state.campus, state.building, effectiveDate === 'today' ? null : effectiveDate, sortedCacheData, true, {
             totalRooms: localStorageCache.totalRooms,
             roomsWithData: localStorageCache.roomsWithData,
             noDataRooms: localStorageCache.noDataRooms
@@ -1702,7 +1735,7 @@
         updateCacheStatus('已缓存', false);
 
         // 同时保存到内存缓存
-        consumptionCache.set(cacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
+        consumptionCache.set(effectiveCacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
 
         // 显示结果
         displayRanking(allRankings, noDataRooms);
@@ -1778,7 +1811,7 @@
             // 如果数据有效，立即计算消耗量并更新排行榜
             if (roomData && roomData.history && roomData.history.length > 0) {
               const roomInfo = roomMap[roomName];
-              const consumption = calculateConsumption(roomData.history, state.date);
+              const consumption = calculateConsumption(roomData.history, effectiveDate);
 
               if (consumption !== null) {
                 const item = {
@@ -1841,7 +1874,7 @@
           const roomData = roomDataMap.get(roomName);
 
           if (roomData && roomData.history && roomData.history.length > 0) {
-            const consumption = calculateConsumption(roomData.history, state.date);
+            const consumption = calculateConsumption(roomData.history, effectiveDate);
 
             if (consumption !== null) {
               const item = {
@@ -1894,7 +1927,7 @@
       allRankings.forEach((r, idx) => r.rank = idx + 1);
 
       // 缓存结果到内存
-      consumptionCache.set(cacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
+      consumptionCache.set(effectiveCacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
 
       // 同时保存到 IndexedDB 缓存（只保存必要字段，标记为已排序）
       const cacheData = allRankings.map(item => ({
@@ -1903,13 +1936,13 @@
         consumption: item.consumption,
         balance: item.balance
       }));
-      await DataService.saveRankingCache(state.campus, state.building, state.date, cacheData, true, {
+      await DataService.saveRankingCache(state.campus, state.building, effectiveDate === 'today' ? null : effectiveDate, cacheData, true, {
         totalRooms: roomNames.length,
         roomsWithData: allRankings.length,
         noDataRooms: noDataRooms.map(r => r.roomName)
       });
 
-      markAnimationShown(cacheKey);
+      markAnimationShown(effectiveCacheKey);
 
       // 隐藏进度条
       if (!hasAnimationShown) {
