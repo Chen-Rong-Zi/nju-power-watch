@@ -781,6 +781,7 @@
 
       const totalConsumption = partial.totalConsumption || 0;
       const roomCount = partial.roomCount || 0;
+      const roomsWithData = partial.roomsWithData || 0;
       const avgConsumption = partial.avgConsumption || 0;
 
       document.getElementById('dash-total').textContent = totalConsumption.toFixed(0) + '度';
@@ -788,13 +789,14 @@
       document.getElementById('dash-rooms').textContent = roomCount.toLocaleString();
       document.getElementById('dash-avg').textContent = avgConsumption.toFixed(1) + '度';
 
-      // 数据覆盖提示（显示加载进度）
+      // 数据覆盖提示（显示加载进度或完整度）
       const coverageHint = document.getElementById('coverage-hint');
-      const coverage = roomCount > 0 ? Math.floor(partial.roomsWithData / roomCount * 100) : 0;
+      const completeness = roomCount > 0 ? Math.floor(roomsWithData / roomCount * 100) : 0;
+
       if (loaded !== undefined && total !== undefined && loaded < total) {
-        coverageHint.textContent = `正在加载 ${loaded}/${total} 栋楼... (${coverage}%)`;
+        coverageHint.textContent = `正在加载 ${loaded}/${total} 栋楼... (${completeness}%)`;
       } else {
-        coverageHint.textContent = `数据覆盖: ${partial.roomsWithData}/${roomCount} 间 (${coverage}%)`;
+        coverageHint.textContent = `数据完整度: ${roomsWithData}/${roomCount} 间 (${completeness}%)`;
       }
 
       // 更新楼栋网格
@@ -813,16 +815,17 @@
       document.getElementById('dash-rooms').textContent = consumption.roomCount.toLocaleString();
       document.getElementById('dash-avg').textContent = consumption.avgConsumption.toFixed(1) + '度';
 
-      // 数据覆盖提示
+      // 数据完整度提示
       const coverageHint = document.getElementById('coverage-hint');
-      const rawCoverage = consumption.roomCount > 0 ? consumption.roomsWithData / consumption.roomCount * 100 : 0;
-      const coverage = Math.floor(rawCoverage);
-      coverageHint.textContent = `数据覆盖: ${consumption.roomsWithData}/${consumption.roomCount} 间 (${coverage}%)`;
+      const roomsWithData = consumption.roomsWithData || 0;
+      const roomCount = consumption.roomCount || 0;
+      const completeness = roomCount > 0 ? Math.floor(roomsWithData / roomCount * 100) : 0;
+      coverageHint.textContent = `数据完整度: ${roomsWithData}/${roomCount} 间 (${completeness}%)`;
 
-      // 变化趋势：显示数据覆盖率
+      // 变化趋势：显示数据完整度
       const changeEl = document.getElementById('dash-change');
-      if (rawCoverage < 100) {
-        changeEl.innerHTML = `<span>数据完整度: </span><span>${coverage}%</span>`;
+      if (completeness < 100) {
+        changeEl.innerHTML = `<span>数据完整度</span><span>${completeness}%</span>`;
         changeEl.className = 'dash-change down';
       } else {
         changeEl.innerHTML = `<span>数据完整</span><span>100%</span>`;
@@ -1115,7 +1118,13 @@
         const bc = buildingsConsumption[b.name];
         const consumption = bc ? bc.consumption.toFixed(0) : '0';
         const avg = bc ? bc.avgConsumption.toFixed(1) : '0.0';
+        const completeness = bc && b.total_rooms > 0 ? Math.floor((bc.roomCount / b.total_rooms) * 100) : 0;
         const url = `building-view.html?campus=${encodeURIComponent(currentCampus)}&building=${encodeURIComponent(b.name)}`;
+
+        // 完整度标签样式
+        let completenessStyle = '';
+        if (completeness < 50) completenessStyle = 'style="color: var(--danger);"';
+        else if (completeness < 90) completenessStyle = 'style="color: var(--warning);"';
 
         return `
           <div class="building-card" style="cursor: pointer;" onclick="window.location.href='${url}'">
@@ -1134,6 +1143,10 @@
                 <span class="building-stat-label">均耗: </span>
                 <span class="building-stat-value">${avg}度</span>
               </div>
+              <div class="building-stat">
+                <span class="building-stat-label">完整度: </span>
+                <span class="building-stat-value" ${completenessStyle}>${completeness}%</span>
+              </div>
             </div>
           </div>
         `;
@@ -1146,7 +1159,13 @@
         const bc = buildingsConsumption[b.name];
         const consumption = bc ? bc.consumption.toFixed(0) : '...';
         const avg = bc ? bc.avgConsumption.toFixed(1) : '...';
+        const completeness = bc && b.total_rooms > 0 ? Math.floor((bc.roomCount / b.total_rooms) * 100) : 0;
         const url = `building-view.html?campus=${encodeURIComponent(currentCampus)}&building=${encodeURIComponent(b.name)}`;
+
+        // 完整度标签样式
+        let completenessStyle = '';
+        if (completeness < 50) completenessStyle = 'style="color: var(--danger);"';
+        else if (completeness < 90) completenessStyle = 'style="color: var(--warning);"';
 
         return `
           <div class="building-card" style="cursor: pointer; ${!bc ? 'opacity: 0.5;' : ''}" onclick="window.location.href='${url}'">
@@ -1164,6 +1183,10 @@
               <div class="building-stat">
                 <span class="building-stat-label">均耗: </span>
                 <span class="building-stat-value">${avg}度</span>
+              </div>
+              <div class="building-stat">
+                <span class="building-stat-label">完整度: </span>
+                <span class="building-stat-value" ${completenessStyle}>${bc ? completeness + '%' : '...'}</span>
               </div>
             </div>
           </div>
