@@ -1508,9 +1508,9 @@
       const pagination = document.getElementById('pagination');
       if (statsRow) statsRow.style.display = 'none';
       if (pagination) pagination.style.display = 'none';
-      // 隐藏分布图表和趋势图表
+      // 隐藏分布图表（分布图表基于特定日期）
       hideDistributionChart();
-      hideBuildingTrend();
+      // 注意：趋势图表显示的是楼栋历史趋势，与当前选择的日期无关，不在此处隐藏
     }
 
     // ==================== 排序切换 ====================
