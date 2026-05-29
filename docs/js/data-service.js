@@ -1782,8 +1782,10 @@ const DataService = {
           allDateSet.add(date);
 
           if (!dailyConsumption[date]) dailyConsumption[date] = {};
-          if (!dailyConsumption[date][roomName]) {
-            dailyConsumption[date][roomName] = cons;
+          // 使用楼栋名+房间名作为唯一key，避免不同楼栋同名房间被覆盖
+          const uniqueKey = `${bd.name}_${roomName}`;
+          if (!dailyConsumption[date][uniqueKey]) {
+            dailyConsumption[date][uniqueKey] = cons;
           }
         }
       }
