@@ -122,6 +122,117 @@ const DataService = {
   },
 
   /**
+   * Find the latest date where majority of rooms have data
+   * @param {string} campusName - Campus name
+   * @param {string|null} buildingName - Building name (null for campus-wide check)
+   * @param {string} originalDate - Original target date ('today', 'yesterday', or YYYYMMDD)
+   * @param {number} maxDaysBack - Maximum days to look back (default 7)
+   * @returns {Promise<Object|null>} { date: 'YYYYMMDD', formattedDate: 'MM-DD', coverage: 0.95 } or null
+   */
+  async findLatestDateWithData(campusName, buildingName = null, originalDate = 'today', maxDaysBack = 7) {
+    // Get the original target date
+    const targetDate = this._formatDateCompact(originalDate);
+
+    // Check if original date has data
+    const originalCoverage = await this._checkDateCoverage(campusName, buildingName, targetDate);
+    if (originalCoverage >= 0.5) {
+      return null; // Original date has sufficient data, no fallback needed
+    }
+
+    // Search backwards from the target date
+    const baseDateObj = this._compactToDate(targetDate);
+
+    for (let i = 1; i <= maxDaysBack; i++) {
+      const checkDateObj = new Date(baseDateObj);
+      checkDateObj.setDate(checkDateObj.getDate() - i);
+      const checkDate = this._dateToCompact(checkDateObj);
+
+      const coverage = await this._checkDateCoverage(campusName, buildingName, checkDate);
+      if (coverage >= 0.5) {
+        const month = checkDate.substring(4, 6);
+        const day = checkDate.substring(6, 8);
+        return {
+          date: checkDate,
+          formattedDate: `${month}-${day}`,
+          coverage: coverage
+        };
+      }
+    }
+
+    return null; // No suitable fallback found
+  },
+
+  /**
+   * Check what percentage of rooms have data for a specific date
+   * @private
+   */
+  async _checkDateCoverage(campusName, buildingName, compactDate) {
+    if (buildingName) {
+      // Check single building
+      const details = await this.getBuildingDetails(campusName, buildingName);
+      if (!details || !details.rooms) return 0;
+
+      let roomsWithData = 0;
+      let totalRooms = 0;
+
+      for (const roomName in details.rooms) {
+        totalRooms++;
+        const bh = details.rooms[roomName].balance_history;
+        if (bh && bh[compactDate] !== undefined) {
+          // Need previous day too for consumption calculation
+          const dates = Object.keys(bh).sort();
+          const idx = dates.indexOf(compactDate);
+          if (idx > 0) {
+            roomsWithData++;
+          }
+        }
+      }
+
+      return totalRooms > 0 ? roomsWithData / totalRooms : 0;
+    } else {
+      // Check campus-wide (sample a few buildings for performance)
+      const campusStats = await this.getCampusStatistics(campusName);
+      if (!campusStats || !campusStats.buildingDetails) return 0;
+
+      let totalRooms = 0;
+      let roomsWithData = 0;
+
+      // Sample up to 5 buildings for quick check
+      const sampleBuildings = campusStats.buildingDetails.slice(0, 5);
+
+      for (const bd of sampleBuildings) {
+        const details = await this.getBuildingDetails(campusName, bd.name);
+        if (!details || !details.rooms) continue;
+
+        for (const roomName in details.rooms) {
+          totalRooms++;
+          const bh = details.rooms[roomName].balance_history;
+          if (bh && bh[compactDate] !== undefined) {
+            const dates = Object.keys(bh).sort();
+            const idx = dates.indexOf(compactDate);
+            if (idx > 0) {
+              roomsWithData++;
+            }
+          }
+        }
+      }
+
+      return totalRooms > 0 ? roomsWithData / totalRooms : 0;
+    }
+  },
+
+  /**
+   * Convert compact date string to Date object
+   * @private
+   */
+  _compactToDate(compactDate) {
+    const year = parseInt(compactDate.substring(0, 4));
+    const month = parseInt(compactDate.substring(4, 6)) - 1;
+    const day = parseInt(compactDate.substring(6, 8));
+    return new Date(year, month, day);
+  },
+
+  /**
    * 格式化日期为 YYYY-MM-DD 格式
    * @param {string} date 日期字符串，如 '20250127' 或 '2025-01-27'
    */
