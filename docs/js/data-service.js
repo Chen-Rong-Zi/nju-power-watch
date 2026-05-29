@@ -122,6 +122,117 @@ const DataService = {
   },
 
   /**
+   * Find the latest date where majority of rooms have data
+   * @param {string} campusName - Campus name
+   * @param {string|null} buildingName - Building name (null for campus-wide check)
+   * @param {string} originalDate - Original target date ('today', 'yesterday', or YYYYMMDD)
+   * @param {number} maxDaysBack - Maximum days to look back (default 7)
+   * @returns {Promise<Object|null>} { date: 'YYYYMMDD', formattedDate: 'MM-DD', coverage: 0.95 } or null
+   */
+  async findLatestDateWithData(campusName, buildingName = null, originalDate = 'today', maxDaysBack = 7) {
+    // Get the original target date
+    const targetDate = this._formatDateCompact(originalDate);
+
+    // Check if original date has data
+    const originalCoverage = await this._checkDateCoverage(campusName, buildingName, targetDate);
+    if (originalCoverage >= 0.5) {
+      return null; // Original date has sufficient data, no fallback needed
+    }
+
+    // Search backwards from the target date
+    const baseDateObj = this._compactToDate(targetDate);
+
+    for (let i = 1; i <= maxDaysBack; i++) {
+      const checkDateObj = new Date(baseDateObj);
+      checkDateObj.setDate(checkDateObj.getDate() - i);
+      const checkDate = this._dateToCompact(checkDateObj);
+
+      const coverage = await this._checkDateCoverage(campusName, buildingName, checkDate);
+      if (coverage >= 0.5) {
+        const month = checkDate.substring(4, 6);
+        const day = checkDate.substring(6, 8);
+        return {
+          date: checkDate,
+          formattedDate: `${month}-${day}`,
+          coverage: coverage
+        };
+      }
+    }
+
+    return null; // No suitable fallback found
+  },
+
+  /**
+   * Check what percentage of rooms have data for a specific date
+   * @private
+   */
+  async _checkDateCoverage(campusName, buildingName, compactDate) {
+    if (buildingName) {
+      // Check single building
+      const details = await this.getBuildingDetails(campusName, buildingName);
+      if (!details || !details.rooms) return 0;
+
+      let roomsWithData = 0;
+      let totalRooms = 0;
+
+      for (const roomName in details.rooms) {
+        totalRooms++;
+        const bh = details.rooms[roomName].balance_history;
+        if (bh && bh[compactDate] !== undefined) {
+          // Need previous day too for consumption calculation
+          const dates = Object.keys(bh).sort();
+          const idx = dates.indexOf(compactDate);
+          if (idx > 0) {
+            roomsWithData++;
+          }
+        }
+      }
+
+      return totalRooms > 0 ? roomsWithData / totalRooms : 0;
+    } else {
+      // Check campus-wide (sample a few buildings for performance)
+      const campusStats = await this.getCampusStatistics(campusName);
+      if (!campusStats || !campusStats.buildingDetails) return 0;
+
+      let totalRooms = 0;
+      let roomsWithData = 0;
+
+      // Sample up to 5 buildings for quick check
+      const sampleBuildings = campusStats.buildingDetails.slice(0, 5);
+
+      for (const bd of sampleBuildings) {
+        const details = await this.getBuildingDetails(campusName, bd.name);
+        if (!details || !details.rooms) continue;
+
+        for (const roomName in details.rooms) {
+          totalRooms++;
+          const bh = details.rooms[roomName].balance_history;
+          if (bh && bh[compactDate] !== undefined) {
+            const dates = Object.keys(bh).sort();
+            const idx = dates.indexOf(compactDate);
+            if (idx > 0) {
+              roomsWithData++;
+            }
+          }
+        }
+      }
+
+      return totalRooms > 0 ? roomsWithData / totalRooms : 0;
+    }
+  },
+
+  /**
+   * Convert compact date string to Date object
+   * @private
+   */
+  _compactToDate(compactDate) {
+    const year = parseInt(compactDate.substring(0, 4));
+    const month = parseInt(compactDate.substring(4, 6)) - 1;
+    const day = parseInt(compactDate.substring(6, 8));
+    return new Date(year, month, day);
+  },
+
+  /**
    * 格式化日期为 YYYY-MM-DD 格式
    * @param {string} date 日期字符串，如 '20250127' 或 '2025-01-27'
    */
@@ -379,11 +490,14 @@ const DataService = {
         }
       }
 
+      // dailyConsumption 改为今日消耗（按日期匹配）
+      const todayCompact = this._formatDateCompact('today');
+      const todayEntry = history.find(h => h.date === todayCompact);
+
       const result = {
         ...data,
         history,
-        dailyConsumption: history.length > 1 ?
-          history[history.length - 1].consumption : 0,
+        dailyConsumption: todayEntry?.consumption ?? null,
         avgConsumption: this.calculateAvgConsumption(history)
       };
 
@@ -405,24 +519,14 @@ const DataService = {
   async getConsumptionByDate(campusName, buildingName, roomName, dateType) {
     const history = await this.getRoomHistory(campusName, buildingName, roomName);
     if (!history || !history.history || history.history.length === 0) {
-      return 0;
+      return null;
     }
 
     const hist = history.history;
+    const compactDate = this._formatDateCompact(dateType);
 
-    if (dateType === 'today') {
-      return hist[hist.length - 1]?.consumption || 0;
-    } else if (dateType === 'yesterday') {
-      return hist[hist.length - 2]?.consumption || 0;
-    } else if (dateType === 'week') {
-      const weekData = hist.slice(-7);
-      return weekData.reduce((sum, h) => sum + (h.consumption || 0), 0) / 7;
-    } else {
-      // 特定日期 (YYYY-MM-DD 或 YYYYMMDD)
-      const targetDate = dateType.includes('-') ? dateType.replace(/-/g, '') : dateType;
-      const found = hist.find(h => h.date === targetDate || h.formattedDate === dateType);
-      return found?.consumption || 0;
-    }
+    // 使用统一的方法计算
+    return this._calculateConsumptionFromHistoryArray(hist, dateType, compactDate);
   },
 
   /**
@@ -677,7 +781,10 @@ const DataService = {
     const targetCompactDate = this._formatDateCompact(targetDate);
 
     // 构建排行数据
+    // 构建排行数据 - 只包含指定日期有数据的房间
     const rankings = [];
+    let roomsWithData = 0;
+
     for (const roomName of roomNames) {
       const roomInfo = roomMap[roomName];
       const roomData = roomDataMap.get(roomName);
@@ -688,28 +795,30 @@ const DataService = {
           h.date === targetCompactDate || h.formattedDate === targetDate
         );
 
-        // 如果找到指定日期则用该日期，否则用最新一天
-        const entry = targetEntry || roomData.history[roomData.history.length - 1];
-
-        rankings.push({
-          roomName,
-          consumption: entry?.consumption || 0,
-          balance: entry?.electricity || roomInfo.current_balance
-          // 注意：不再保存 campus、building、history 等冗余字段
-          // campus/building 可从缓存键推断，history 在点击详情时会重新请求
-        });
+        // 只有找到指定日期的数据才加入排行榜（不使用 fallback）
+        if (targetEntry && targetEntry.consumption !== undefined && targetEntry.consumption !== null) {
+          rankings.push({
+            roomName,
+            consumption: targetEntry.consumption,
+            balance: targetEntry.electricity || roomInfo.current_balance
+          });
+          roomsWithData++;
+        }
       }
     }
 
-    // 保存排序结果到缓存
-    await this.saveRankingCache(campusName, buildingName, targetDate, rankings);
+    // 保存排序结果到缓存，包含完整度信息
+    await this.saveRankingCache(campusName, buildingName, targetDate, rankings, true, {
+      totalRooms: roomNames.length,
+      roomsWithData: roomsWithData
+    });
 
     return rankings;
   },
 
   /**
    * 从房间消耗缓存构建楼栋排名（避免重复请求）
-   * 如果指定日期没有缓存，使用最近的可用日期
+   * 只使用指定日期的数据，不进行 fallback
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
    * @param {string} date 日期
@@ -728,26 +837,12 @@ const DataService = {
     // 尝试从房间缓存读取每个房间的指定日期消耗
     const rankings = [];
     let cachedCount = 0;
-    let usedDate = compactDate;
 
     for (const roomName of roomNames) {
       const roomInfo = roomMap[roomName];
-      let roomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomName, compactDate);
+      const roomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomName, compactDate);
 
-      // 如果指定日期没有缓存，尝试获取该房间最新的可用日期
-      if (!roomCache || roomCache.consumption === undefined) {
-        const allRoomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomName);
-        if (allRoomCache) {
-          // 找到最新的可用日期
-          const dates = Object.keys(allRoomCache).sort().reverse();
-          if (dates.length > 0) {
-            const latestDate = dates[0];
-            roomCache = allRoomCache[latestDate];
-            usedDate = latestDate; // 记录实际使用的日期
-          }
-        }
-      }
-
+      // 只有指定日期有缓存数据才加入（不使用 fallback）
       if (roomCache && roomCache.consumption !== undefined) {
         rankings.push({
           roomName,
@@ -763,16 +858,25 @@ const DataService = {
       return null;
     }
 
-    console.log(`[缓存构建] ${campusName}.${buildingName}: ${cachedCount}/${roomNames.length} 间从缓存读取 (请求:${compactDate}, 实际:${usedDate})`);
+    // 计算无数据房间列表
+    const noDataRooms = roomNames.filter(rn => !rankings.some(r => r.roomName === rn));
 
-    // 保存到排名缓存以便下次更快访问（使用请求的日期作为键）
-    await this.saveRankingCache(campusName, buildingName, date, rankings);
+    console.log(`[缓存构建] ${campusName}.${buildingName}: ${cachedCount}/${roomNames.length} 间从缓存读取 (日期:${compactDate})`);
+
+    // 保存到排名缓存
+    await this.saveRankingCache(campusName, buildingName, date, rankings, false, {
+      totalRooms: roomNames.length,
+      roomsWithData: cachedCount,
+      noDataRooms: noDataRooms
+    });
 
     return {
       data: rankings,
+      noDataRooms: noDataRooms,
       totalConsumption: rankings.reduce((sum, r) => sum + r.consumption, 0),
       roomCount: rankings.length,
-      usedDate: usedDate
+      totalRooms: roomNames.length,
+      roomsWithData: cachedCount
     };
   },
 
@@ -1059,8 +1163,9 @@ const DataService = {
    * @param {string} date 日期
    * @param {Array} rankingData 排序结果数组
    * @param {boolean} sorted 是否已排序（默认 false，校区页面创建的缓存不排序）
+   * @param {Object} metadata 元数据（totalRooms, roomsWithData, noDataRooms）
    */
-  async saveRankingCache(campusName, buildingName, date, rankingData, sorted = false) {
+  async saveRankingCache(campusName, buildingName, date, rankingData, sorted = false, metadata = null) {
     const compactDate = this._formatDateCompact(date);
     const key = this._getCacheKey('ranking', campusName, buildingName);
 
@@ -1070,17 +1175,22 @@ const DataService = {
     // 获取现有缓存或创建新的
     let cache = await IDB.get(key) || {};
 
-    // 保存排序结果，包含总消耗量统计和排序状态
+    // 保存排序结果，包含总消耗量统计、排序状态和元数据
     cache[compactDate] = {
       data: rankingData,
       totalConsumption: totalConsumption,
       roomCount: rankingData.length,
       sorted: sorted,
-      updatedAt: Date.now()
+      updatedAt: Date.now(),
+      // 新增元数据字段
+      totalRooms: metadata?.totalRooms || rankingData.length,
+      roomsWithData: metadata?.roomsWithData || rankingData.length,
+      noDataRooms: metadata?.noDataRooms || []
     };
 
     await IDB.set(key, cache);
-    console.log(`[缓存保存] 排序结果: ${key} -> ${compactDate}, 共${rankingData.length}条, 总消耗: ${totalConsumption.toFixed(2)}度, 已排序: ${sorted}`);
+    const completenessPct = metadata?.totalRooms ? Math.floor((metadata.roomsWithData / metadata.totalRooms) * 100) : 100;
+    console.log(`[缓存保存] 排序结果: ${key} -> ${compactDate}, 共${rankingData.length}条, 总消耗: ${totalConsumption.toFixed(2)}度, 已排序: ${sorted}, 数据完整度: ${completenessPct}%`);
   },
 
   // ==================== 校区耗电量缓存 ====================
@@ -1287,44 +1397,47 @@ const DataService = {
     const dates = this._getBalanceHistoryDates(balanceHistory);
     if (dates.length === 0) return null;
 
-    // 找到目标日期的索引
-    let targetIdx;
-    if (dateType === 'today') {
-      targetIdx = dates.length - 1;
-      // 今天需要至少有两天数据才能计算
-      if (targetIdx <= 0) return null;
-    } else if (dateType === 'yesterday') {
-      targetIdx = dates.length - 2;
-      if (targetIdx < 0) return null;
-    } else if (dateType === 'week') {
-      // 计算最近7天的平均消耗
-      const recentDates = dates.slice(-7);
-      if (recentDates.length < 2) return null;
+    // today/yesterday 转换为具体日期
+    let targetDate = compactDate;
+    if (dateType === 'today' || dateType === 'yesterday') {
+      targetDate = this._formatDateCompact(dateType);
+    }
+
+    if (dateType === 'week') {
+      // 计算最近7天的日期范围
+      const today = new Date();
+      const weekDates = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        weekDates.push(this._dateToCompact(d));
+      }
+
+      // 筛选该范围内的日期
+      const validDates = dates.filter(d => weekDates.includes(d));
+      if (validDates.length < 2) return null;
 
       let totalConsumption = 0;
       let count = 0;
-      for (let i = 1; i < recentDates.length; i++) {
-        const prevBalance = balanceHistory[recentDates[i - 1]];
-        const currBalance = balanceHistory[recentDates[i]];
+      for (let i = 1; i < validDates.length; i++) {
+        const prevBalance = balanceHistory[validDates[i - 1]];
+        const currBalance = balanceHistory[validDates[i]];
         if (prevBalance > currBalance) {
           totalConsumption += prevBalance - currBalance;
           count++;
         }
       }
       return count > 0 ? totalConsumption / count : 0;
-    } else {
-      // 自定义日期
-      targetIdx = dates.indexOf(compactDate);
-      if (targetIdx === -1 || targetIdx === 0) return null;
     }
 
-    if (targetIdx <= 0) return null;
+    // 按日期查找
+    const targetIdx = dates.indexOf(targetDate);
+    if (targetIdx === -1 || targetIdx === 0) return null;
 
     // 计算消耗量：前一天余额 - 当天余额
     const prevBalance = balanceHistory[dates[targetIdx - 1]];
     const currBalance = balanceHistory[dates[targetIdx]];
 
-    // 只有余额减少才算消耗（充值会导致余额增加）
     return prevBalance > currBalance ? prevBalance - currBalance : 0;
   },
 
@@ -1356,17 +1469,20 @@ const DataService = {
    */
   _aggregateCampusResult(campusName, campusStats, buildingsWithData) {
     let totalConsumption = 0;
-    let totalRoomCount = 0;
+    let totalRooms = 0;
+    let totalRoomsWithData = 0;
     const buildings = {};
 
     for (const b of buildingsWithData) {
       totalConsumption += b.consumption || 0;
-      totalRoomCount += b.roomCount || 0;
+      totalRooms += b.total_rooms || 0;
+      totalRoomsWithData += b.roomCount || 0;  // roomCount 是有数据的房间数
       buildings[b.name] = {
         consumption: b.consumption || 0,
-        roomCount: b.roomCount || 0,
-        total_rooms: b.total_rooms || 0,
-        avgConsumption: b.avgConsumption || 0
+        roomCount: b.roomCount || 0,           // 有数据房间数
+        total_rooms: b.total_rooms || 0,       // 总房间数
+        avgConsumption: b.avgConsumption || 0,
+        dataCompleteness: b.total_rooms > 0 ? (b.roomCount / b.total_rooms) : 0
       };
     }
 
@@ -1376,8 +1492,9 @@ const DataService = {
       totalConsumption,
       buildingCount: campusStats.buildings || 0,
       roomCount: campusRoomCount,
-      roomsWithData: totalRoomCount,
-      avgConsumption: campusRoomCount > 0 ? totalConsumption / campusRoomCount : 0,
+      roomsWithData: totalRoomsWithData,
+      dataCompleteness: campusRoomCount > 0 ? totalRoomsWithData / campusRoomCount : 0,
+      avgConsumption: totalRoomsWithData > 0 ? totalConsumption / totalRoomsWithData : 0,
       buildings
     };
   },
@@ -1665,8 +1782,10 @@ const DataService = {
           allDateSet.add(date);
 
           if (!dailyConsumption[date]) dailyConsumption[date] = {};
-          if (!dailyConsumption[date][roomName]) {
-            dailyConsumption[date][roomName] = cons;
+          // 使用楼栋名+房间名作为唯一key，避免不同楼栋同名房间被覆盖
+          const uniqueKey = `${bd.name}_${roomName}`;
+          if (!dailyConsumption[date][uniqueKey]) {
+            dailyConsumption[date][uniqueKey] = cons;
           }
         }
       }
@@ -2156,28 +2275,34 @@ const DataService = {
   _calculateConsumptionFromHistoryArray(history, dateType, compactDate) {
     if (!Array.isArray(history) || history.length === 0) return null;
 
-    if (dateType === 'today') {
-      const latest = history[history.length - 1];
-      return latest?.consumption !== undefined && latest.consumption !== null
-        ? latest.consumption
-        : null;
-    }
+    // today/yesterday 转换为具体日期后匹配
+    let targetDate = compactDate;
 
-    if (dateType === 'yesterday') {
-      const yesterday = history[history.length - 2];
-      return yesterday?.consumption !== undefined && yesterday.consumption !== null
-        ? yesterday.consumption
-        : null;
+    if (dateType === 'today' || dateType === 'yesterday') {
+      targetDate = this._formatDateCompact(dateType);
     }
 
     if (dateType === 'week') {
-      const weekWindow = history.slice(-7);
-      if (weekWindow.length === 0) return null;
-      return weekWindow.reduce((sum, item) => sum + (item.consumption ?? 0), 0) / weekWindow.length;
+      // 计算最近7天的日期范围
+      const today = new Date();
+      const weekDates = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        weekDates.push(this._dateToCompact(d));
+      }
+
+      // 筛选该范围内的数据
+      const weekData = history.filter(item => weekDates.includes(item.date));
+      if (weekData.length === 0) return null;
+
+      const sum = weekData.reduce((total, item) => total + (item.consumption ?? 0), 0);
+      return sum / weekData.length;
     }
 
+    // 按日期匹配
     const targetEntry = history.find(item =>
-      item.date === compactDate || item.formattedDate === dateType
+      item.date === targetDate || item.formattedDate === dateType
     );
     return targetEntry?.consumption !== undefined && targetEntry.consumption !== null
       ? targetEntry.consumption

@@ -487,6 +487,55 @@
       font-size: 15px;
     }
 
+    /* Fallback Banner */
+    .fallback-banner {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.08) 100%);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      animation: slideDown 0.3s ease-out;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fallback-banner-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .fallback-banner-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .fallback-banner-text {
+      font-size: 14px;
+      color: var(--fg);
+    }
+    .fallback-banner-text strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .fallback-banner-dismiss {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px;
+      font-size: 18px;
+      line-height: 1;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .fallback-banner-dismiss:hover {
+      opacity: 1;
+    }
+
     /* 无数据状态 */
     .no-data-state {
       padding: 60px 24px;
@@ -1112,6 +1161,15 @@
       </div>
     </div>
 
+    <!-- Fallback Banner -->
+    <div class="fallback-banner" id="fallback-banner" style="display: none;">
+      <div class="fallback-banner-content">
+        <span class="fallback-banner-icon">⚠️</span>
+        <span class="fallback-banner-text" id="fallback-banner-text"></span>
+      </div>
+      <button class="fallback-banner-dismiss" onclick="dismissFallbackBanner()" title="关闭">×</button>
+    </div>
+
     <!-- 统计摘要 -->
     <div class="stats-row" id="stats-row" style="display: none;">
       <div class="stat-card stat-card-hover">
@@ -1381,6 +1439,29 @@
       }
     }
 
+    // ==================== Fallback Banner ====================
+    let fallbackInfo = null;
+
+    function showFallbackBanner(fallback) {
+      if (!fallback) return;
+      const banner = document.getElementById('fallback-banner');
+      const text = document.getElementById('fallback-banner-text');
+      text.innerHTML = `今日数据暂无，显示 <strong>${fallback.formattedDate}</strong> 的数据`;
+      banner.style.display = 'flex';
+      fallbackInfo = fallback;
+    }
+
+    function hideFallbackBanner() {
+      const banner = document.getElementById('fallback-banner');
+      banner.style.display = 'none';
+      fallbackInfo = null;
+    }
+
+    function dismissFallbackBanner() {
+      hideFallbackBanner();
+      sessionStorage.setItem('fallbackBannerDismissed', 'true');
+    }
+
     // ==================== 事件监听 ====================
     function setupEventListeners() {
       document.getElementById('campus-select').addEventListener('change', onCampusChange);
@@ -1508,9 +1589,9 @@
       const pagination = document.getElementById('pagination');
       if (statsRow) statsRow.style.display = 'none';
       if (pagination) pagination.style.display = 'none';
-      // 隐藏分布图表和趋势图表
+      // 隐藏分布图表（分布图表基于特定日期）
       hideDistributionChart();
-      hideBuildingTrend();
+      // 注意：趋势图表显示的是楼栋历史趋势，与当前选择的日期无关，不在此处隐藏
     }
 
     // ==================== 排序切换 ====================
@@ -1544,16 +1625,49 @@
       const cacheKey = `${state.campus}/${state.building}/${state.date}`;
       const hasAnimationShown = hasAnimationBeenShown(cacheKey);
 
+      // Reset fallback banner on fresh load
+      if (!sessionStorage.getItem('fallbackBannerDismissed')) {
+        hideFallbackBanner();
+      }
+
+      // Check if we need fallback for today/yesterday
+      let effectiveDate = state.date;
+      let fallbackDate = null;
+      if (state.date === 'today' || state.date === 'yesterday') {
+        const fallback = await DataService.findLatestDateWithData(
+          state.campus,
+          state.building,
+          state.date
+        );
+        if (fallback) {
+          effectiveDate = fallback.date;
+          fallbackDate = fallback;
+          // Show banner (will be hidden if dismissed this session)
+          if (!sessionStorage.getItem('fallbackBannerDismissed')) {
+            showFallbackBanner(fallback);
+          }
+        } else {
+          hideFallbackBanner();
+        }
+      } else {
+        hideFallbackBanner();
+      }
+
+      // Use effective date for cache key if fallback is active
+      const effectiveCacheKey = fallbackDate
+        ? `${state.campus}/${state.building}/${fallbackDate.date}`
+        : cacheKey;
+
       // 1. 先检查内存缓存
-      if (consumptionCache.has(cacheKey)) {
+      if (consumptionCache.has(effectiveCacheKey)) {
         updateCacheStatus('已缓存', false);
-        const cachedData = consumptionCache.get(cacheKey);
-        displayRanking(cachedData);
+        const cachedData = consumptionCache.get(effectiveCacheKey);
+        displayRanking(cachedData.rankings || cachedData, cachedData.noDataRooms || []);
         return;
       }
 
       // 2. 检查 IndexedDB 缓存（使用新的缓存API）
-      const localStorageCache = await DataService.getRankingCache(state.campus, state.building, state.date);
+      const localStorageCache = await DataService.getRankingCache(state.campus, state.building, effectiveDate === 'today' ? null : effectiveDate);
       if (localStorageCache && localStorageCache.data && localStorageCache.data.length > 0) {
         console.log(`[缓存命中] 从 localStorage 读取排序结果, 总消耗: ${localStorageCache.totalConsumption?.toFixed(2) || 'N/A'}度, 已排序: ${localStorageCache.sorted}`);
 
@@ -1566,8 +1680,31 @@
           campus: state.campus,
           building: state.building,
           rank: idx + 1
-          // 不再从缓存读取 history，点击详情时会重新请求
         }));
+
+        // 从缓存元数据或重新计算无数据房间
+        let noDataRooms = [];
+        if (localStorageCache.noDataRooms && localStorageCache.noDataRooms.length > 0) {
+          noDataRooms = localStorageCache.noDataRooms.map(name => ({
+            roomName: name,
+            campus: state.campus,
+            building: state.building
+          }));
+        } else {
+          // 如果缓存中没有 noDataRooms，从楼栋信息计算
+          const buildingSummary = await DataService.getBuildingSummary(state.campus, state.building);
+          if (buildingSummary && buildingSummary.rooms) {
+            const allRoomNames = Object.keys(buildingSummary.rooms);
+            const rankingRoomNames = new Set(allRankings.map(r => r.roomName));
+            noDataRooms = allRoomNames
+              .filter(name => !rankingRoomNames.has(name))
+              .map(name => ({
+                roomName: name,
+                campus: state.campus,
+                building: state.building
+              }));
+          }
+        }
 
         // 检查是否需要排序（sorted 字段为 false 或不存在）
         if (!localStorageCache.sorted) {
@@ -1579,24 +1716,28 @@
           // 更新排名
           allRankings.forEach((item, idx) => item.rank = idx + 1);
 
-          // 更新 IndexedDB 缓存，标记为已排序（只保存必要字段）
+          // 更新 IndexedDB 缓存，标记为已排序
           const sortedCacheData = allRankings.map(item => ({
             room: item.roomName,
             roomName: item.roomName,
             consumption: item.consumption,
             balance: item.balance
           }));
-          await DataService.saveRankingCache(state.campus, state.building, state.date, sortedCacheData, true);
+          await DataService.saveRankingCache(state.campus, state.building, effectiveDate === 'today' ? null : effectiveDate, sortedCacheData, true, {
+            totalRooms: localStorageCache.totalRooms,
+            roomsWithData: localStorageCache.roomsWithData,
+            noDataRooms: localStorageCache.noDataRooms
+          });
           console.log('[缓存修正] 排序完成，缓存已更新');
         }
 
         updateCacheStatus('已缓存', false);
 
         // 同时保存到内存缓存
-        consumptionCache.set(cacheKey, allRankings);
+        consumptionCache.set(effectiveCacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
 
         // 显示结果
-        displayRanking(allRankings);
+        displayRanking(allRankings, noDataRooms);
         return;
       }
 
@@ -1639,6 +1780,8 @@
       let currentTop10 = [];
       // 所有有效数据
       const allRankings = [];
+      // 无数据房间列表
+      const noDataRooms = [];
       let processedCount = 0;
 
       // 使用流式获取方法，每获取一个房间数据就立即计算并更新排行榜
@@ -1667,7 +1810,7 @@
             // 如果数据有效，立即计算消耗量并更新排行榜
             if (roomData && roomData.history && roomData.history.length > 0) {
               const roomInfo = roomMap[roomName];
-              const consumption = calculateConsumption(roomData.history, state.date);
+              const consumption = calculateConsumption(roomData.history, effectiveDate);
 
               if (consumption !== null) {
                 const item = {
@@ -1677,7 +1820,6 @@
                   balance: roomInfo.current_balance,
                   campus: state.campus,
                   building: state.building
-                  // history 不保存到内存，点击详情时会重新请求
                 };
                 allRankings.push(item);
 
@@ -1688,7 +1830,21 @@
                   // 立即渲染更新（CSS动画会处理视觉效果）
                   renderTop10Immediate(currentTop10, listEl, inserted ? item.roomName : null, loaded, total);
                 }
+              } else {
+                // 指定日期无数据，记录到无数据房间列表
+                noDataRooms.push({
+                  roomName: roomName,
+                  campus: state.campus,
+                  building: state.building
+                });
               }
+            } else {
+              // 无历史数据，记录到无数据房间列表
+              noDataRooms.push({
+                roomName: roomName,
+                campus: state.campus,
+                building: state.building
+              });
             }
           },
           15 // 并发数
@@ -1717,7 +1873,7 @@
           const roomData = roomDataMap.get(roomName);
 
           if (roomData && roomData.history && roomData.history.length > 0) {
-            const consumption = calculateConsumption(roomData.history, state.date);
+            const consumption = calculateConsumption(roomData.history, effectiveDate);
 
             if (consumption !== null) {
               const item = {
@@ -1735,7 +1891,21 @@
                 const inserted = insertIntoTop10(currentTop10, item);
                 renderTop10Immediate(currentTop10, listEl, inserted ? item.roomName : null, processedCount, roomNames.length);
               }
+            } else {
+              // 指定日期无数据
+              noDataRooms.push({
+                roomName: roomName,
+                campus: state.campus,
+                building: state.building
+              });
             }
+          } else {
+            // 无历史数据
+            noDataRooms.push({
+              roomName: roomName,
+              campus: state.campus,
+              building: state.building
+            });
           }
         }
       }
@@ -1756,7 +1926,7 @@
       allRankings.forEach((r, idx) => r.rank = idx + 1);
 
       // 缓存结果到内存
-      consumptionCache.set(cacheKey, allRankings);
+      consumptionCache.set(effectiveCacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
 
       // 同时保存到 IndexedDB 缓存（只保存必要字段，标记为已排序）
       const cacheData = allRankings.map(item => ({
@@ -1765,9 +1935,13 @@
         consumption: item.consumption,
         balance: item.balance
       }));
-      await DataService.saveRankingCache(state.campus, state.building, state.date, cacheData, true);
+      await DataService.saveRankingCache(state.campus, state.building, effectiveDate === 'today' ? null : effectiveDate, cacheData, true, {
+        totalRooms: roomNames.length,
+        roomsWithData: allRankings.length,
+        noDataRooms: noDataRooms.map(r => r.roomName)
+      });
 
-      markAnimationShown(cacheKey);
+      markAnimationShown(effectiveCacheKey);
 
       // 隐藏进度条
       if (!hasAnimationShown) {
@@ -1782,7 +1956,7 @@
       }
 
       // 显示结果
-      displayRanking(allRankings);
+      displayRanking(allRankings, noDataRooms);
       updateCacheStatus('已缓存', false);
     }
 
@@ -1882,22 +2056,46 @@
     function calculateConsumption(history, dateType) {
       if (!history || history.length === 0) return null;
 
-      if (dateType === 'today') {
-        const today = history[history.length - 1];
-        return today?.consumption ?? null;
-      } else if (dateType === 'yesterday') {
-        const yesterday = history[history.length - 2];
-        return yesterday?.consumption ?? null;
-      } else if (dateType === 'week') {
-        const weekData = history.slice(-7);
-        if (weekData.length === 0) return null;
-        const sum = weekData.reduce((s, h) => s + (h.consumption || 0), 0);
-        return sum / weekData.length;
-      } else {
-        // 自定义日期
-        const target = history.find(h => h.date === dateType || h.formattedDate === dateType);
+      // 辅助函数：日期转换为 YYYYMMDD
+      const toCompactDate = (date) => {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}${m}${d}`;
+      };
+
+      // today/yesterday 转换为具体日期
+      if (dateType === 'today' || dateType === 'yesterday') {
+        const now = new Date();
+        if (dateType === 'yesterday') {
+          now.setDate(now.getDate() - 1);
+        }
+        const targetDate = toCompactDate(now);
+        const target = history.find(h => h.date === targetDate);
         return target?.consumption ?? null;
       }
+
+      if (dateType === 'week') {
+        // 计算最近7天的日期范围
+        const today = new Date();
+        const weekDates = new Set();
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(today);
+          d.setDate(d.getDate() - i);
+          weekDates.add(toCompactDate(d));
+        }
+
+        // 筛选该范围内的数据
+        const weekData = history.filter(h => weekDates.has(h.date));
+        if (weekData.length === 0) return null;
+
+        const sum = weekData.reduce((s, h) => s + (h.consumption || 0), 0);
+        return sum / weekData.length;
+      }
+
+      // 自定义日期
+      const target = history.find(h => h.date === dateType || h.formattedDate === dateType);
+      return target?.consumption ?? null;
     }
 
     // ==================== 显示排行榜 ====================
@@ -2027,7 +2225,7 @@
       });
     }
 
-    async function displayRanking(rankings) {
+    async function displayRanking(rankings, noDataRooms = []) {
       document.getElementById('stats-row').style.display = 'grid';
       document.getElementById('empty-state').style.display = 'none';
       document.getElementById('no-data-state').style.display = 'none';
@@ -2037,7 +2235,7 @@
       const max = Math.max(...rankings.map(r => r.consumption));
 
       document.getElementById('stat-total').textContent = totalConsumption.toFixed(1) + '度';
-      document.getElementById('stat-rooms').textContent = rankings.length;
+      document.getElementById('stat-rooms').textContent = rankings.length + noDataRooms.length;
       document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
       document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
 
@@ -2051,41 +2249,60 @@
       setTip('tip-avg', avg);
       setTip('tip-max', max);
 
+      // 存储到 state 用于分页
+      state.allRankings = rankings;
+      state.noDataRooms = noDataRooms;
+      state.totalPages = Math.ceil((rankings.length + noDataRooms.length) / state.itemsPerPage);
+
       renderCurrentPage();
       renderDistributionChart(rankings);
     }
 
     // ==================== 从缓存显示 ====================
     function displayRankingFromCache(cacheKey) {
-      const rankings = consumptionCache.get(cacheKey);
-      if (rankings) {
-        displayRanking(rankings);
+      const cached = consumptionCache.get(cacheKey);
+      if (cached) {
+        const rankings = cached.rankings || cached;
+        const noDataRooms = cached.noDataRooms || [];
+        displayRanking(rankings, noDataRooms);
       }
     }
 
     // ==================== 渲染当前页 ====================
     function renderCurrentPage() {
-      const cacheKey = `${state.campus}/${state.building}/${state.date}`;
-      const rankings = consumptionCache.get(cacheKey);
-      if (!rankings) return;
+      const allRankings = state.allRankings || [];
+      const noDataRooms = state.noDataRooms || [];
+
+      if (allRankings.length === 0 && noDataRooms.length === 0) return;
 
       const listEl = document.getElementById('ranking-list');
       listEl.innerHTML = '';
 
-      // 根据排序顺序处理
-      const displayRankings = state.sortDesc ? rankings : [...rankings].reverse();
+      // 根据排序顺序处理有数据房间
+      const displayRankings = state.sortDesc ? allRankings : [...allRankings].reverse();
 
-      // 分页计算
-      const totalPages = Math.ceil(displayRankings.length / state.itemsPerPage);
+      // 分页计算（包含无数据房间）
+      const totalItems = displayRankings.length + noDataRooms.length;
+      const totalPages = Math.ceil(totalItems / state.itemsPerPage);
       state.currentPage = Math.max(1, Math.min(state.currentPage, totalPages));
 
       const startIdx = (state.currentPage - 1) * state.itemsPerPage;
       const endIdx = startIdx + state.itemsPerPage;
-      const pageItems = displayRankings.slice(startIdx, endIdx);
 
-      // 渲染项目
-      pageItems.forEach(item => {
-        const displayRank = state.sortDesc ? item.rank : (rankings.length - item.rank + 1);
+      // 分离有数据房间的分页
+      const pageRankings = displayRankings.slice(
+        Math.max(0, startIdx),
+        Math.min(displayRankings.length, endIdx)
+      );
+
+      // 计算无数据房间的分页（排在有数据房间之后）
+      const noDataStartIdx = Math.max(0, startIdx - displayRankings.length);
+      const noDataEndIdx = Math.min(noDataRooms.length, endIdx - displayRankings.length);
+      const pageNoDataRooms = noDataRooms.slice(noDataStartIdx, noDataEndIdx);
+
+      // 渲染有数据房间
+      pageRankings.forEach(item => {
+        const displayRank = state.sortDesc ? item.rank : (allRankings.length - item.rank + 1);
         const rankClass = displayRank <= 3 ? `rank-${displayRank}` : 'rank-other';
         const isUserRoom = state.userConfig &&
           state.userConfig.campus === state.campus &&
@@ -2102,6 +2319,27 @@
             </div>
             <div class="consumption">
               <div class="consumption-value">${item.consumption.toFixed(2)}</div>
+              <div class="consumption-unit">度/日</div>
+            </div>
+          </div>
+        `;
+        listEl.insertAdjacentHTML('beforeend', html);
+      });
+
+      // 渲染无数据房间（排在末尾，样式淡化）
+      pageNoDataRooms.forEach(item => {
+        const html = `
+          <div class="ranking-item no-data"
+               data-room-name="${item.roomName}"
+               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomName}')"
+               style="opacity: 0.5; background: var(--surface);">
+            <div class="rank-badge" style="background: var(--border); color: var(--muted);">-</div>
+            <div class="room-info">
+              <div class="room-name" style="color: var(--muted);">${item.roomName}</div>
+              <div style="font-size: 11px; color: var(--muted);">暂无该日期数据</div>
+            </div>
+            <div class="consumption">
+              <div class="consumption-value" style="color: var(--muted);">--</div>
               <div class="consumption-unit">度/日</div>
             </div>
           </div>
@@ -2137,12 +2375,7 @@
     }
 
     function nextPage() {
-      const cacheKey = `${state.campus}/${state.building}/${state.date}`;
-      const rankings = consumptionCache.get(cacheKey);
-      if (!rankings) return;
-
-      const totalPages = Math.ceil(rankings.length / state.itemsPerPage);
-      if (state.currentPage < totalPages) {
+      if (state.currentPage < state.totalPages) {
         state.currentPage++;
         saveStateToUrl();
         renderCurrentPage();
@@ -2150,13 +2383,8 @@
     }
 
     function goToPage(page) {
-      const cacheKey = `${state.campus}/${state.building}/${state.date}`;
-      const rankings = consumptionCache.get(cacheKey);
-      if (!rankings) return;
-
-      const totalPages = Math.ceil(rankings.length / state.itemsPerPage);
-      if (page === -1) page = totalPages; // 末页
-      state.currentPage = Math.max(1, Math.min(page, totalPages));
+      if (page === -1) page = state.totalPages; // 末页
+      state.currentPage = Math.max(1, Math.min(page, state.totalPages));
       saveStateToUrl();
       renderCurrentPage();
     }

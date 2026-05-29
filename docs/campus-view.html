@@ -324,6 +324,55 @@
       color: var(--muted);
     }
 
+    /* Fallback Banner */
+    .fallback-banner {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.08) 100%);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      animation: slideDown 0.3s ease-out;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fallback-banner-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .fallback-banner-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .fallback-banner-text {
+      font-size: 14px;
+      color: var(--fg);
+    }
+    .fallback-banner-text strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .fallback-banner-dismiss {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px;
+      font-size: 18px;
+      line-height: 1;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .fallback-banner-dismiss:hover {
+      opacity: 1;
+    }
+
     /* 日期选择器 */
     .date-selector {
       display: flex;
@@ -529,6 +578,15 @@
       </div>
     </div>
 
+    <!-- Fallback Banner -->
+    <div class="fallback-banner" id="fallback-banner" style="display: none;">
+      <div class="fallback-banner-content">
+        <span class="fallback-banner-icon">⚠️</span>
+        <span class="fallback-banner-text" id="fallback-banner-text"></span>
+      </div>
+      <button class="fallback-banner-dismiss" onclick="dismissFallbackBanner()" title="关闭">×</button>
+    </div>
+
     <!-- 加载状态 -->
     <div class="loading" id="loading-state" style="display: none;">
       <div class="loading-spinner"></div>
@@ -663,6 +721,29 @@
     let campusConsumption = null;
     let loadAbortController = null;
 
+    // ==================== Fallback Banner ====================
+    let fallbackInfo = null;
+
+    function showFallbackBanner(fallback) {
+      if (!fallback) return;
+      const banner = document.getElementById('fallback-banner');
+      const text = document.getElementById('fallback-banner-text');
+      text.innerHTML = `今日数据暂无，显示 <strong>${fallback.formattedDate}</strong> 的数据`;
+      banner.style.display = 'flex';
+      fallbackInfo = fallback;
+    }
+
+    function hideFallbackBanner() {
+      const banner = document.getElementById('fallback-banner');
+      banner.style.display = 'none';
+      fallbackInfo = null;
+    }
+
+    function dismissFallbackBanner() {
+      hideFallbackBanner();
+      sessionStorage.setItem('fallbackBannerDismissed', 'true');
+    }
+
     // ==================== 初始化 ====================
     document.addEventListener('DOMContentLoaded', async () => {
       await DataService.initDB();
@@ -729,15 +810,43 @@
       // 不显示加载动画，直接更新标签文字
       updateDateLabel();
 
+      // Reset fallback banner on fresh load
+      if (!sessionStorage.getItem('fallbackBannerDismissed')) {
+        hideFallbackBanner();
+      }
+
+      // Check if we need fallback for today/yesterday
+      let effectiveDate = currentDate;
+      if (currentDate === 'today' || currentDate === 'yesterday') {
+        const fallback = await DataService.findLatestDateWithData(
+          campus,
+          null, // campus-wide check
+          currentDate
+        );
+        if (fallback) {
+          effectiveDate = fallback.date;
+          fallbackInfo = fallback;
+          if (!sessionStorage.getItem('fallbackBannerDismissed')) {
+            showFallbackBanner(fallback);
+          }
+        } else {
+          fallbackInfo = null;
+          hideFallbackBanner();
+        }
+      } else {
+        fallbackInfo = null;
+        hideFallbackBanner();
+      }
+
       // 加载基础统计（快速）
       campusData = await DataService.getCampusStatistics(campus);
 
       if (thisLoad.cancelled) return;
 
-      // 加载真实消耗数据（渐进式）
+      // 加载真实消耗数据（渐进式）- use effectiveDate if fallback is active
       campusConsumption = await DataService.getCampusConsumption(
         campus,
-        currentDate,
+        effectiveDate,
         (loaded, total, partial) => {
           if (thisLoad.cancelled) return;
           updateDashboardWithPartialData(partial, loaded, total);
@@ -781,6 +890,7 @@
 
       const totalConsumption = partial.totalConsumption || 0;
       const roomCount = partial.roomCount || 0;
+      const roomsWithData = partial.roomsWithData || 0;
       const avgConsumption = partial.avgConsumption || 0;
 
       document.getElementById('dash-total').textContent = totalConsumption.toFixed(0) + '度';
@@ -788,13 +898,14 @@
       document.getElementById('dash-rooms').textContent = roomCount.toLocaleString();
       document.getElementById('dash-avg').textContent = avgConsumption.toFixed(1) + '度';
 
-      // 数据覆盖提示（显示加载进度）
+      // 数据覆盖提示（显示加载进度或完整度）
       const coverageHint = document.getElementById('coverage-hint');
-      const coverage = roomCount > 0 ? Math.floor(partial.roomsWithData / roomCount * 100) : 0;
+      const completeness = roomCount > 0 ? Math.floor(roomsWithData / roomCount * 100) : 0;
+
       if (loaded !== undefined && total !== undefined && loaded < total) {
-        coverageHint.textContent = `正在加载 ${loaded}/${total} 栋楼... (${coverage}%)`;
+        coverageHint.textContent = `正在加载 ${loaded}/${total} 栋楼... (${completeness}%)`;
       } else {
-        coverageHint.textContent = `数据覆盖: ${partial.roomsWithData}/${roomCount} 间 (${coverage}%)`;
+        coverageHint.textContent = `数据完整度: ${roomsWithData}/${roomCount} 间 (${completeness}%)`;
       }
 
       // 更新楼栋网格
@@ -813,16 +924,17 @@
       document.getElementById('dash-rooms').textContent = consumption.roomCount.toLocaleString();
       document.getElementById('dash-avg').textContent = consumption.avgConsumption.toFixed(1) + '度';
 
-      // 数据覆盖提示
+      // 数据完整度提示
       const coverageHint = document.getElementById('coverage-hint');
-      const rawCoverage = consumption.roomCount > 0 ? consumption.roomsWithData / consumption.roomCount * 100 : 0;
-      const coverage = Math.floor(rawCoverage);
-      coverageHint.textContent = `数据覆盖: ${consumption.roomsWithData}/${consumption.roomCount} 间 (${coverage}%)`;
+      const roomsWithData = consumption.roomsWithData || 0;
+      const roomCount = consumption.roomCount || 0;
+      const completeness = roomCount > 0 ? Math.floor(roomsWithData / roomCount * 100) : 0;
+      coverageHint.textContent = `数据完整度: ${roomsWithData}/${roomCount} 间 (${completeness}%)`;
 
-      // 变化趋势：显示数据覆盖率
+      // 变化趋势：显示数据完整度
       const changeEl = document.getElementById('dash-change');
-      if (rawCoverage < 100) {
-        changeEl.innerHTML = `<span>数据完整度: </span><span>${coverage}%</span>`;
+      if (completeness < 100) {
+        changeEl.innerHTML = `<span>数据完整度</span><span>${completeness}%</span>`;
         changeEl.className = 'dash-change down';
       } else {
         changeEl.innerHTML = `<span>数据完整</span><span>100%</span>`;
@@ -1115,7 +1227,13 @@
         const bc = buildingsConsumption[b.name];
         const consumption = bc ? bc.consumption.toFixed(0) : '0';
         const avg = bc ? bc.avgConsumption.toFixed(1) : '0.0';
+        const completeness = bc && b.total_rooms > 0 ? Math.floor((bc.roomCount / b.total_rooms) * 100) : 0;
         const url = `building-view.html?campus=${encodeURIComponent(currentCampus)}&building=${encodeURIComponent(b.name)}`;
+
+        // 完整度标签样式
+        let completenessStyle = '';
+        if (completeness < 50) completenessStyle = 'style="color: var(--danger);"';
+        else if (completeness < 90) completenessStyle = 'style="color: var(--warning);"';
 
         return `
           <div class="building-card" style="cursor: pointer;" onclick="window.location.href='${url}'">
@@ -1134,6 +1252,10 @@
                 <span class="building-stat-label">均耗: </span>
                 <span class="building-stat-value">${avg}度</span>
               </div>
+              <div class="building-stat">
+                <span class="building-stat-label">完整度: </span>
+                <span class="building-stat-value" ${completenessStyle}>${completeness}%</span>
+              </div>
             </div>
           </div>
         `;
@@ -1146,7 +1268,13 @@
         const bc = buildingsConsumption[b.name];
         const consumption = bc ? bc.consumption.toFixed(0) : '...';
         const avg = bc ? bc.avgConsumption.toFixed(1) : '...';
+        const completeness = bc && b.total_rooms > 0 ? Math.floor((bc.roomCount / b.total_rooms) * 100) : 0;
         const url = `building-view.html?campus=${encodeURIComponent(currentCampus)}&building=${encodeURIComponent(b.name)}`;
+
+        // 完整度标签样式
+        let completenessStyle = '';
+        if (completeness < 50) completenessStyle = 'style="color: var(--danger);"';
+        else if (completeness < 90) completenessStyle = 'style="color: var(--warning);"';
 
         return `
           <div class="building-card" style="cursor: pointer; ${!bc ? 'opacity: 0.5;' : ''}" onclick="window.location.href='${url}'">
@@ -1164,6 +1292,10 @@
               <div class="building-stat">
                 <span class="building-stat-label">均耗: </span>
                 <span class="building-stat-value">${avg}度</span>
+              </div>
+              <div class="building-stat">
+                <span class="building-stat-label">完整度: </span>
+                <span class="building-stat-value" ${completenessStyle}>${bc ? completeness + '%' : '...'}</span>
               </div>
             </div>
           </div>
