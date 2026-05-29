@@ -811,15 +811,43 @@
       // 不显示加载动画，直接更新标签文字
       updateDateLabel();
 
+      // Reset fallback banner on fresh load
+      if (!sessionStorage.getItem('fallbackBannerDismissed')) {
+        hideFallbackBanner();
+      }
+
+      // Check if we need fallback for today/yesterday
+      let effectiveDate = currentDate;
+      if (currentDate === 'today' || currentDate === 'yesterday') {
+        const fallback = await DataService.findLatestDateWithData(
+          campus,
+          null, // campus-wide check
+          currentDate
+        );
+        if (fallback) {
+          effectiveDate = fallback.date;
+          fallbackInfo = fallback;
+          if (!sessionStorage.getItem('fallbackBannerDismissed')) {
+            showFallbackBanner(fallback);
+          }
+        } else {
+          fallbackInfo = null;
+          hideFallbackBanner();
+        }
+      } else {
+        fallbackInfo = null;
+        hideFallbackBanner();
+      }
+
       // 加载基础统计（快速）
       campusData = await DataService.getCampusStatistics(campus);
 
       if (thisLoad.cancelled) return;
 
-      // 加载真实消耗数据（渐进式）
+      // 加载真实消耗数据（渐进式）- use effectiveDate if fallback is active
       campusConsumption = await DataService.getCampusConsumption(
         campus,
-        currentDate,
+        effectiveDate,
         (loaded, total, partial) => {
           if (thisLoad.cancelled) return;
           updateDashboardWithPartialData(partial, loaded, total);
