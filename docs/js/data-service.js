@@ -714,7 +714,7 @@ const DataService = {
 
   /**
    * 从房间消耗缓存构建楼栋排名（避免重复请求）
-   * 如果指定日期没有缓存，使用最近的可用日期
+   * 只使用指定日期的数据，不进行 fallback
    * @param {string} campusName 校区名
    * @param {string} buildingName 楼栋名
    * @param {string} date 日期
@@ -733,26 +733,12 @@ const DataService = {
     // 尝试从房间缓存读取每个房间的指定日期消耗
     const rankings = [];
     let cachedCount = 0;
-    let usedDate = compactDate;
 
     for (const roomName of roomNames) {
       const roomInfo = roomMap[roomName];
-      let roomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomName, compactDate);
+      const roomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomName, compactDate);
 
-      // 如果指定日期没有缓存，尝试获取该房间最新的可用日期
-      if (!roomCache || roomCache.consumption === undefined) {
-        const allRoomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomName);
-        if (allRoomCache) {
-          // 找到最新的可用日期
-          const dates = Object.keys(allRoomCache).sort().reverse();
-          if (dates.length > 0) {
-            const latestDate = dates[0];
-            roomCache = allRoomCache[latestDate];
-            usedDate = latestDate; // 记录实际使用的日期
-          }
-        }
-      }
-
+      // 只有指定日期有缓存数据才加入（不使用 fallback）
       if (roomCache && roomCache.consumption !== undefined) {
         rankings.push({
           roomName,
@@ -768,16 +754,25 @@ const DataService = {
       return null;
     }
 
-    console.log(`[缓存构建] ${campusName}.${buildingName}: ${cachedCount}/${roomNames.length} 间从缓存读取 (请求:${compactDate}, 实际:${usedDate})`);
+    // 计算无数据房间列表
+    const noDataRooms = roomNames.filter(rn => !rankings.some(r => r.roomName === rn));
 
-    // 保存到排名缓存以便下次更快访问（使用请求的日期作为键）
-    await this.saveRankingCache(campusName, buildingName, date, rankings);
+    console.log(`[缓存构建] ${campusName}.${buildingName}: ${cachedCount}/${roomNames.length} 间从缓存读取 (日期:${compactDate})`);
+
+    // 保存到排名缓存
+    await this.saveRankingCache(campusName, buildingName, date, rankings, false, {
+      totalRooms: roomNames.length,
+      roomsWithData: cachedCount,
+      noDataRooms: noDataRooms
+    });
 
     return {
       data: rankings,
+      noDataRooms: noDataRooms,
       totalConsumption: rankings.reduce((sum, r) => sum + r.consumption, 0),
       roomCount: rankings.length,
-      usedDate: usedDate
+      totalRooms: roomNames.length,
+      roomsWithData: cachedCount
     };
   },
 
