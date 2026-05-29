@@ -677,7 +677,10 @@ const DataService = {
     const targetCompactDate = this._formatDateCompact(targetDate);
 
     // 构建排行数据
+    // 构建排行数据 - 只包含指定日期有数据的房间
     const rankings = [];
+    let roomsWithData = 0;
+
     for (const roomName of roomNames) {
       const roomInfo = roomMap[roomName];
       const roomData = roomDataMap.get(roomName);
@@ -688,21 +691,23 @@ const DataService = {
           h.date === targetCompactDate || h.formattedDate === targetDate
         );
 
-        // 如果找到指定日期则用该日期，否则用最新一天
-        const entry = targetEntry || roomData.history[roomData.history.length - 1];
-
-        rankings.push({
-          roomName,
-          consumption: entry?.consumption || 0,
-          balance: entry?.electricity || roomInfo.current_balance
-          // 注意：不再保存 campus、building、history 等冗余字段
-          // campus/building 可从缓存键推断，history 在点击详情时会重新请求
-        });
+        // 只有找到指定日期的数据才加入排行榜（不使用 fallback）
+        if (targetEntry && targetEntry.consumption !== undefined && targetEntry.consumption !== null) {
+          rankings.push({
+            roomName,
+            consumption: targetEntry.consumption,
+            balance: targetEntry.electricity || roomInfo.current_balance
+          });
+          roomsWithData++;
+        }
       }
     }
 
-    // 保存排序结果到缓存
-    await this.saveRankingCache(campusName, buildingName, targetDate, rankings);
+    // 保存排序结果到缓存，包含完整度信息
+    await this.saveRankingCache(campusName, buildingName, targetDate, rankings, true, {
+      totalRooms: roomNames.length,
+      roomsWithData: roomsWithData
+    });
 
     return rankings;
   },
@@ -1059,8 +1064,9 @@ const DataService = {
    * @param {string} date 日期
    * @param {Array} rankingData 排序结果数组
    * @param {boolean} sorted 是否已排序（默认 false，校区页面创建的缓存不排序）
+   * @param {Object} metadata 元数据（totalRooms, roomsWithData, noDataRooms）
    */
-  async saveRankingCache(campusName, buildingName, date, rankingData, sorted = false) {
+  async saveRankingCache(campusName, buildingName, date, rankingData, sorted = false, metadata = null) {
     const compactDate = this._formatDateCompact(date);
     const key = this._getCacheKey('ranking', campusName, buildingName);
 
@@ -1070,17 +1076,22 @@ const DataService = {
     // 获取现有缓存或创建新的
     let cache = await IDB.get(key) || {};
 
-    // 保存排序结果，包含总消耗量统计和排序状态
+    // 保存排序结果，包含总消耗量统计、排序状态和元数据
     cache[compactDate] = {
       data: rankingData,
       totalConsumption: totalConsumption,
       roomCount: rankingData.length,
       sorted: sorted,
-      updatedAt: Date.now()
+      updatedAt: Date.now(),
+      // 新增元数据字段
+      totalRooms: metadata?.totalRooms || rankingData.length,
+      roomsWithData: metadata?.roomsWithData || rankingData.length,
+      noDataRooms: metadata?.noDataRooms || []
     };
 
     await IDB.set(key, cache);
-    console.log(`[缓存保存] 排序结果: ${key} -> ${compactDate}, 共${rankingData.length}条, 总消耗: ${totalConsumption.toFixed(2)}度, 已排序: ${sorted}`);
+    const completenessPct = metadata?.totalRooms ? Math.floor((metadata.roomsWithData / metadata.totalRooms) * 100) : 100;
+    console.log(`[缓存保存] 排序结果: ${key} -> ${compactDate}, 共${rankingData.length}条, 总消耗: ${totalConsumption.toFixed(2)}度, 已排序: ${sorted}, 数据完整度: ${completenessPct}%`);
   },
 
   // ==================== 校区耗电量缓存 ====================
