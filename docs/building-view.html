@@ -1566,8 +1566,31 @@
           campus: state.campus,
           building: state.building,
           rank: idx + 1
-          // 不再从缓存读取 history，点击详情时会重新请求
         }));
+
+        // 从缓存元数据或重新计算无数据房间
+        let noDataRooms = [];
+        if (localStorageCache.noDataRooms && localStorageCache.noDataRooms.length > 0) {
+          noDataRooms = localStorageCache.noDataRooms.map(name => ({
+            roomName: name,
+            campus: state.campus,
+            building: state.building
+          }));
+        } else {
+          // 如果缓存中没有 noDataRooms，从楼栋信息计算
+          const buildingSummary = await DataService.getBuildingSummary(state.campus, state.building);
+          if (buildingSummary && buildingSummary.rooms) {
+            const allRoomNames = Object.keys(buildingSummary.rooms);
+            const rankingRoomNames = new Set(allRankings.map(r => r.roomName));
+            noDataRooms = allRoomNames
+              .filter(name => !rankingRoomNames.has(name))
+              .map(name => ({
+                roomName: name,
+                campus: state.campus,
+                building: state.building
+              }));
+          }
+        }
 
         // 检查是否需要排序（sorted 字段为 false 或不存在）
         if (!localStorageCache.sorted) {
@@ -1579,24 +1602,28 @@
           // 更新排名
           allRankings.forEach((item, idx) => item.rank = idx + 1);
 
-          // 更新 IndexedDB 缓存，标记为已排序（只保存必要字段）
+          // 更新 IndexedDB 缓存，标记为已排序
           const sortedCacheData = allRankings.map(item => ({
             room: item.roomName,
             roomName: item.roomName,
             consumption: item.consumption,
             balance: item.balance
           }));
-          await DataService.saveRankingCache(state.campus, state.building, state.date, sortedCacheData, true);
+          await DataService.saveRankingCache(state.campus, state.building, state.date, sortedCacheData, true, {
+            totalRooms: localStorageCache.totalRooms,
+            roomsWithData: localStorageCache.roomsWithData,
+            noDataRooms: localStorageCache.noDataRooms
+          });
           console.log('[缓存修正] 排序完成，缓存已更新');
         }
 
         updateCacheStatus('已缓存', false);
 
         // 同时保存到内存缓存
-        consumptionCache.set(cacheKey, allRankings);
+        consumptionCache.set(cacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
 
         // 显示结果
-        displayRanking(allRankings);
+        displayRanking(allRankings, noDataRooms);
         return;
       }
 
@@ -1639,6 +1666,8 @@
       let currentTop10 = [];
       // 所有有效数据
       const allRankings = [];
+      // 无数据房间列表
+      const noDataRooms = [];
       let processedCount = 0;
 
       // 使用流式获取方法，每获取一个房间数据就立即计算并更新排行榜
@@ -1677,7 +1706,6 @@
                   balance: roomInfo.current_balance,
                   campus: state.campus,
                   building: state.building
-                  // history 不保存到内存，点击详情时会重新请求
                 };
                 allRankings.push(item);
 
@@ -1688,7 +1716,21 @@
                   // 立即渲染更新（CSS动画会处理视觉效果）
                   renderTop10Immediate(currentTop10, listEl, inserted ? item.roomName : null, loaded, total);
                 }
+              } else {
+                // 指定日期无数据，记录到无数据房间列表
+                noDataRooms.push({
+                  roomName: roomName,
+                  campus: state.campus,
+                  building: state.building
+                });
               }
+            } else {
+              // 无历史数据，记录到无数据房间列表
+              noDataRooms.push({
+                roomName: roomName,
+                campus: state.campus,
+                building: state.building
+              });
             }
           },
           15 // 并发数
@@ -1735,7 +1777,21 @@
                 const inserted = insertIntoTop10(currentTop10, item);
                 renderTop10Immediate(currentTop10, listEl, inserted ? item.roomName : null, processedCount, roomNames.length);
               }
+            } else {
+              // 指定日期无数据
+              noDataRooms.push({
+                roomName: roomName,
+                campus: state.campus,
+                building: state.building
+              });
             }
+          } else {
+            // 无历史数据
+            noDataRooms.push({
+              roomName: roomName,
+              campus: state.campus,
+              building: state.building
+            });
           }
         }
       }
@@ -1756,7 +1812,7 @@
       allRankings.forEach((r, idx) => r.rank = idx + 1);
 
       // 缓存结果到内存
-      consumptionCache.set(cacheKey, allRankings);
+      consumptionCache.set(cacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
 
       // 同时保存到 IndexedDB 缓存（只保存必要字段，标记为已排序）
       const cacheData = allRankings.map(item => ({
@@ -1765,7 +1821,11 @@
         consumption: item.consumption,
         balance: item.balance
       }));
-      await DataService.saveRankingCache(state.campus, state.building, state.date, cacheData, true);
+      await DataService.saveRankingCache(state.campus, state.building, state.date, cacheData, true, {
+        totalRooms: roomNames.length,
+        roomsWithData: allRankings.length,
+        noDataRooms: noDataRooms.map(r => r.roomName)
+      });
 
       markAnimationShown(cacheKey);
 
@@ -1782,7 +1842,7 @@
       }
 
       // 显示结果
-      displayRanking(allRankings);
+      displayRanking(allRankings, noDataRooms);
       updateCacheStatus('已缓存', false);
     }
 
@@ -2027,7 +2087,7 @@
       });
     }
 
-    async function displayRanking(rankings) {
+    async function displayRanking(rankings, noDataRooms = []) {
       document.getElementById('stats-row').style.display = 'grid';
       document.getElementById('empty-state').style.display = 'none';
       document.getElementById('no-data-state').style.display = 'none';
@@ -2037,7 +2097,7 @@
       const max = Math.max(...rankings.map(r => r.consumption));
 
       document.getElementById('stat-total').textContent = totalConsumption.toFixed(1) + '度';
-      document.getElementById('stat-rooms').textContent = rankings.length;
+      document.getElementById('stat-rooms').textContent = rankings.length + (noDataRooms.length > 0 ? `(+${noDataRooms.length}无数据)` : '');
       document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
       document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
 
@@ -2051,32 +2111,107 @@
       setTip('tip-avg', avg);
       setTip('tip-max', max);
 
+      // 存储到 state 用于分页
+      state.allRankings = rankings;
+      state.noDataRooms = noDataRooms;
+      state.totalPages = Math.ceil((rankings.length + noDataRooms.length) / state.itemsPerPage);
+
       renderCurrentPage();
       renderDistributionChart(rankings);
     }
 
     // ==================== 从缓存显示 ====================
     function displayRankingFromCache(cacheKey) {
-      const rankings = consumptionCache.get(cacheKey);
-      if (rankings) {
-        displayRanking(rankings);
+      const cached = consumptionCache.get(cacheKey);
+      if (cached) {
+        const rankings = cached.rankings || cached;
+        const noDataRooms = cached.noDataRooms || [];
+        displayRanking(rankings, noDataRooms);
       }
     }
 
     // ==================== 渲染当前页 ====================
     function renderCurrentPage() {
-      const cacheKey = `${state.campus}/${state.building}/${state.date}`;
-      const rankings = consumptionCache.get(cacheKey);
-      if (!rankings) return;
+      const allRankings = state.allRankings || [];
+      const noDataRooms = state.noDataRooms || [];
+
+      if (allRankings.length === 0 && noDataRooms.length === 0) return;
 
       const listEl = document.getElementById('ranking-list');
       listEl.innerHTML = '';
 
-      // 根据排序顺序处理
-      const displayRankings = state.sortDesc ? rankings : [...rankings].reverse();
+      // 根据排序顺序处理有数据房间
+      const displayRankings = state.sortDesc ? allRankings : [...allRankings].reverse();
 
-      // 分页计算
-      const totalPages = Math.ceil(displayRankings.length / state.itemsPerPage);
+      // 分页计算（包含无数据房间）
+      const totalItems = displayRankings.length + noDataRooms.length;
+      const totalPages = Math.ceil(totalItems / state.itemsPerPage);
+      state.currentPage = Math.max(1, Math.min(state.currentPage, totalPages));
+
+      const startIdx = (state.currentPage - 1) * state.itemsPerPage;
+      const endIdx = startIdx + state.itemsPerPage;
+
+      // 分离有数据房间的分页
+      const pageRankings = displayRankings.slice(
+        Math.max(0, startIdx),
+        Math.min(displayRankings.length, endIdx)
+      );
+
+      // 计算无数据房间的分页（排在有数据房间之后）
+      const noDataStartIdx = Math.max(0, startIdx - displayRankings.length);
+      const noDataEndIdx = Math.min(noDataRooms.length, endIdx - displayRankings.length);
+      const pageNoDataRooms = noDataRooms.slice(noDataStartIdx, noDataEndIdx);
+
+      // 渲染有数据房间
+      pageRankings.forEach(item => {
+        const displayRank = state.sortDesc ? item.rank : (allRankings.length - item.rank + 1);
+        const rankClass = displayRank <= 3 ? `rank-${displayRank}` : 'rank-other';
+        const isUserRoom = state.userConfig &&
+          state.userConfig.campus === state.campus &&
+          state.userConfig.building === state.building &&
+          (item.roomName) === state.userConfig.roomName;
+
+        const html = `
+          <div class="ranking-item ${isUserRoom ? 'user-room' : ''}"
+               data-room-name="${item.roomName}"
+               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomName}')">
+            <div class="rank-badge ${rankClass}">${displayRank}</div>
+            <div class="room-info">
+              <div class="room-name">${item.room}${isUserRoom ? ' (我的房间)' : ''}</div>
+            </div>
+            <div class="consumption">
+              <div class="consumption-value">${item.consumption.toFixed(2)}</div>
+              <div class="consumption-unit">度/日</div>
+            </div>
+          </div>
+        `;
+        listEl.insertAdjacentHTML('beforeend', html);
+      });
+
+      // 渲染无数据房间（排在末尾，样式淡化）
+      pageNoDataRooms.forEach(item => {
+        const html = `
+          <div class="ranking-item no-data"
+               data-room-name="${item.roomName}"
+               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomName}')"
+               style="opacity: 0.5; background: var(--surface);">
+            <div class="rank-badge" style="background: var(--border); color: var(--muted);">-</div>
+            <div class="room-info">
+              <div class="room-name" style="color: var(--muted);">${item.roomName}</div>
+              <div style="font-size: 11px; color: var(--muted);">暂无该日期数据</div>
+            </div>
+            <div class="consumption">
+              <div class="consumption-value" style="color: var(--muted);">--</div>
+              <div class="consumption-unit">度/日</div>
+            </div>
+          </div>
+        `;
+        listEl.insertAdjacentHTML('beforeend', html);
+      });
+
+      // 更新分页控件
+      updatePagination(totalPages);
+    }
       state.currentPage = Math.max(1, Math.min(state.currentPage, totalPages));
 
       const startIdx = (state.currentPage - 1) * state.itemsPerPage;
@@ -2102,6 +2237,27 @@
             </div>
             <div class="consumption">
               <div class="consumption-value">${item.consumption.toFixed(2)}</div>
+              <div class="consumption-unit">度/日</div>
+            </div>
+          </div>
+        `;
+        listEl.insertAdjacentHTML('beforeend', html);
+      });
+
+      // 渲染无数据房间（排在末尾，样式淡化）
+      pageNoDataRooms.forEach(item => {
+        const html = `
+          <div class="ranking-item no-data"
+               data-room-name="${item.roomName}"
+               onclick="viewRoomDetail('${item.campus}', '${item.building}', '${item.roomName}')"
+               style="opacity: 0.5; background: var(--surface);">
+            <div class="rank-badge" style="background: var(--border); color: var(--muted);">-</div>
+            <div class="room-info">
+              <div class="room-name" style="color: var(--muted);">${item.roomName}</div>
+              <div style="font-size: 11px; color: var(--muted);">暂无该日期数据</div>
+            </div>
+            <div class="consumption">
+              <div class="consumption-value" style="color: var(--muted);">--</div>
               <div class="consumption-unit">度/日</div>
             </div>
           </div>
@@ -2137,12 +2293,7 @@
     }
 
     function nextPage() {
-      const cacheKey = `${state.campus}/${state.building}/${state.date}`;
-      const rankings = consumptionCache.get(cacheKey);
-      if (!rankings) return;
-
-      const totalPages = Math.ceil(rankings.length / state.itemsPerPage);
-      if (state.currentPage < totalPages) {
+      if (state.currentPage < state.totalPages) {
         state.currentPage++;
         saveStateToUrl();
         renderCurrentPage();
@@ -2150,13 +2301,8 @@
     }
 
     function goToPage(page) {
-      const cacheKey = `${state.campus}/${state.building}/${state.date}`;
-      const rankings = consumptionCache.get(cacheKey);
-      if (!rankings) return;
-
-      const totalPages = Math.ceil(rankings.length / state.itemsPerPage);
-      if (page === -1) page = totalPages; // 末页
-      state.currentPage = Math.max(1, Math.min(page, totalPages));
+      if (page === -1) page = state.totalPages; // 末页
+      state.currentPage = Math.max(1, Math.min(page, state.totalPages));
       saveStateToUrl();
       renderCurrentPage();
     }
