@@ -2235,7 +2235,7 @@
       const max = Math.max(...rankings.map(r => r.consumption));
 
       document.getElementById('stat-total').textContent = totalConsumption.toFixed(1) + '度';
-      document.getElementById('stat-rooms').textContent = rankings.length + (noDataRooms.length > 0 ? `(+${noDataRooms.length}无数据)` : '');
+      document.getElementById('stat-rooms').textContent = rankings.length + noDataRooms.length;
       document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
       document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
 
