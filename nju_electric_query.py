@@ -322,6 +322,36 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
     }
 
 
+def load_existing_ids(file_path: str) -> set:
+    """从文件加载已有ID，跳过注释和空行
+
+    Args:
+        file_path: room_ids.txt 文件路径
+
+    Returns:
+        已存在的ID集合
+    """
+    existing = set()
+    output_path = Path(file_path)
+    if not output_path.exists():
+        return existing
+
+    with open(output_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            # 跳过空行
+            if not line:
+                continue
+            # 跳过注释行
+            if line.startswith('#'):
+                continue
+            # 验证是有效数字ID
+            if line.isdigit():
+                existing.add(line)
+
+    return existing
+
+
 async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: str, max_concurrent: int = DEFAULT_CONCURRENCY, show_progress: bool = True):
     """扫描ID区间，发现存在的房间
 
@@ -333,9 +363,15 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         max_concurrent: 最大并发数
         show_progress: 是否显示进度
     """
+    # 加载已有ID
+    existing_ids = load_existing_ids(output_file)
+    if existing_ids and show_progress:
+        print(f"从 {output_file} 加载了 {len(existing_ids)} 个已有ID")
+
     total = end_id - start_id + 1
     processed = 0
     found = 0
+    skipped = 0  # 跳过的已有ID计数
 
     # 去重: 记录已发现的房间 (校区, 楼栋, 房间名) -> room_id
     seen_rooms = {}
@@ -482,11 +518,23 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         # 只在函数退出时更新进度
         processed += 1
         if show_progress:
-            print(f"\r[{processed}/{total}] 已发现: {len(seen_rooms)}", end="", flush=True)
+            print(f"\r[{processed}/{scan_count}] 已发现: {len(seen_rooms)}", end="", flush=True)
+
+    # 生成待扫描的ID列表，跳过已有ID
+    ids_to_scan = []
+    for room_id in range(start_id, end_id + 1):
+        if str(room_id) in existing_ids:
+            skipped += 1
+        else:
+            ids_to_scan.append(room_id)
+
+    scan_count = len(ids_to_scan)
+    if show_progress:
+        print(f"跳过 {skipped} 个已有ID，待扫描 {scan_count} 个ID")
 
     connector = aiohttp.TCPConnector(limit=max_concurrent)
     async with aiohttp.ClientSession(connector=connector) as session:
-        tasks = [scan_single(session, room_id) for room_id in range(start_id, end_id + 1)]
+        tasks = [scan_single(session, room_id) for room_id in ids_to_scan]
         await asyncio.gather(*tasks)
 
     found = len(seen_rooms)
@@ -495,18 +543,31 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
     if show_progress:
         print()
 
+    # 合并已有ID和新发现的ID到输出
+    # 将已有ID也加入room_info（用空值占位，表示没有楼栋信息）
+    for existing_id in existing_ids:
+        if existing_id not in room_info:
+            room_info[int(existing_id)] = (None, None)
+
     # 按楼栋分组
     buildings = {}
+    no_building_ids = []  # 没有楼栋信息的ID
     for room_id, (campus, building) in room_info.items():
-        key = f"{campus}/{building}"
-        if key not in buildings:
-            buildings[key] = []
-        buildings[key].append(room_id)
+        if campus is None or building is None:
+            no_building_ids.append(room_id)
+        else:
+            key = f"{campus}/{building}"
+            if key not in buildings:
+                buildings[key] = []
+            buildings[key].append(room_id)
 
     # 按校区+楼栋排序，每个楼栋内的ID也排序
     sorted_buildings = sorted(buildings.keys())
     for key in sorted_buildings:
         buildings[key].sort(key=int)
+
+    # 排序没有楼栋信息的ID
+    no_building_ids.sort(key=int)
 
     # 确保输出目录存在
     output_path = Path(output_file)
@@ -514,14 +575,20 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
 
     # 写入文件，格式: # 校区/楼栋 注释行，后跟该楼栋的所有ID
     async with aiofiles.open(output_path, "w", encoding="utf-8") as f:
+        # 先写入有楼栋信息的ID
         for key in sorted_buildings:
             await f.write(f"# {key}\n")
             for room_id in buildings[key]:
                 await f.write(f"{room_id}\n")
+        # 再写入没有楼栋信息的已有ID（放在最后，标记为未知）
+        if no_building_ids:
+            await f.write("# 未知/未知\n")
+            for room_id in no_building_ids:
+                await f.write(f"{room_id}\n")
 
     if show_progress:
-        print(f"扫描完成: 共扫描 {total} 个ID, 发现 {found} 个有效房间")
-        print(f"结果已保存到: {output_file}")
+        print(f"扫描完成: 扫描 {scan_count} 个ID, 发现 {found} 个新房间, 跳过 {skipped} 个已有ID")
+        print(f"结果已保存到: {output_file} (共 {len(seen_rooms) + len(no_building_ids)} 个ID)")
 
         if total_errors > 0:
             print("\n--- 错误统计 ---")
@@ -539,7 +606,9 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
 
     return {
         "total": total,
+        "scanned": scan_count,
         "found": found,
+        "skipped": skipped,
         "errors": error_counts,
         "total_errors": total_errors,
         "output_file": str(output_path)
@@ -650,8 +719,9 @@ async def async_main():
         if show_progress:
             print("-" * 50)
             print(f"扫描完成!")
-            print(f"  总数: {result['total']}")
+            print(f"  扫描: {result['scanned']}")
             print(f"  发现: {result['found']}")
+            print(f"  跳过: {result['skipped']}")
             print(f"  错误: {result['total_errors']}")
             print(f"  耗时: {elapsed:.2f}秒")
             print(f"  输出: {result['output_file']}")
