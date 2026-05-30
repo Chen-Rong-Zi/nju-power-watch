@@ -175,7 +175,7 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
                         # 检查是否解析成功
                         if not result.get("剩余电量"):
                             last_error = {"id": room_id, "error": QueryError.PARSE_ERROR, "error_type": "parse_error", "success": False}
-                            raise aiohttp.ClientConnectorError
+                            break
 
                         result["success"] = True
                         result["id"] = room_id  # 用于内部追踪，save_result 会过滤掉
