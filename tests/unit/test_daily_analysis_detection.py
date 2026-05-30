@@ -72,7 +72,7 @@ def test_generate_hierarchical_summaries_persists_daily_analysis(tmp_path):
         / "buildings"
         / "西苑留学生楼"
         / "rooms"
-        / "28053.json"
+        / "1002房间-28053.json"
     )
     with open(room_summary_path, "r", encoding="utf-8") as fh:
         room_summary = json.load(fh)

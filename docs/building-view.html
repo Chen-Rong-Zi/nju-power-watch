@@ -2475,8 +2475,10 @@
       const consumption = latest?.consumption ?? 0;
 
       // 计算日均消耗（最近7天）
-      const recentData = data.slice(-7);
-      const avgConsumption = recentData.reduce((sum, d) => sum + (d.consumption || 0), 0) / recentData.length;
+      const recentData = data.slice(-7).filter(d => !d.excludeFromAggregation && d.consumption !== null && d.consumption !== undefined);
+      const avgConsumption = recentData.length > 0
+        ? recentData.reduce((sum, d) => sum + d.consumption, 0) / recentData.length
+        : 0;
 
       // 预测可用天数
       const daysRemaining = avgConsumption > 0 ? Math.floor(balance / avgConsumption) : 999;

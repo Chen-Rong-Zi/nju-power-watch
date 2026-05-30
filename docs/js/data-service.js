@@ -543,7 +543,7 @@ const DataService = {
       .slice(1)
       .filter(entry => this._isHistoryEntryIncluded(entry))
       .map(entry => this._getHistoryConsumptionValue(entry))
-      .filter(c => c > 0);
+      .filter(c => c !== null && c !== undefined);
     if (consumptions.length === 0) return 0;
 
     return consumptions.reduce((a, b) => a + b, 0) / consumptions.length;
