@@ -132,6 +132,7 @@ class QueryError:
     HTTP_ERROR = "HTTP错误"
     PARSE_ERROR = "解析失败"
     NOT_FOUND = "资源不存在"
+    ROOM_NOT_FOUND = "房间不存在"
     RETRY_EXHAUSTED = "重试次数耗尽"
     UNKNOWN = "未知错误"
 
@@ -157,6 +158,11 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
                         last_error = {"id": room_id, "error": f"{QueryError.HTTP_ERROR}({response.status})", "error_type": "http_error", "success": False}
                     else:
                         html = await response.text()
+
+                        # 检查是否是错误页面（房间ID不存在）
+                        if "房间查询失败" in html or "错误" in html and "房间查询失败" in html:
+                            last_error = {"id": room_id, "error": QueryError.ROOM_NOT_FOUND, "error_type": "room_not_found", "success": False}
+                            break
 
                         # 检查是否需要登录
                         if "login" in html.lower() or "登录" in html:
@@ -196,7 +202,7 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
             await asyncio.sleep(delay)
 
     # 重试次数耗尽
-    if last_error and last_error.get("error_type") not in ("auth_failed", "not_found", "parse_error"):
+    if last_error and last_error.get("error_type") not in ("auth_failed", "not_found", "room_not_found", "parse_error"):
         last_error["error"] = f"{QueryError.RETRY_EXHAUSTED}({last_error.get('error', '')})"
         last_error["error_type"] = "retry_exhausted"
 
@@ -443,6 +449,7 @@ async def async_main():
                 "timeout": "请求超时: 服务器响应过慢",
                 "auth_failed": "认证失败: Cookie已过期，请更新认证信息",
                 "not_found": "资源不存在: 宿舍ID无效或已下架",
+                "room_not_found": "房间不存在: 该房间ID在系统中不存在",
                 "http_error": "HTTP错误: 服务器内部错误",
                 "parse_error": "解析失败: 页面格式已更新",
                 "retry_exhausted": "重试次数耗尽",
