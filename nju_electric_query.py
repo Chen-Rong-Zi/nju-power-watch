@@ -353,8 +353,15 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
     }
 
     # 保存结果的辅助函数
+    saving_in_progress = False  # 防止重入
+
     def save_results():
         """保存已发现的房间ID到文件"""
+        nonlocal saving_in_progress
+        if saving_in_progress:
+            return
+        saving_in_progress = True
+
         if not seen_rooms:
             return
 
@@ -384,13 +391,11 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         print(f"\n已保存 {len(seen_rooms)} 个房间ID到 {output_file}")
 
     # 信号处理器
-    shutdown_event = asyncio.Event()
-
     def signal_handler(signum, frame):
         """处理终止信号，保存已发现的结果"""
         print(f"\n\n收到终止信号 ({signal.Signals(signum).name})，正在保存已发现的结果...")
         save_results()
-        sys.exit(0)
+        os._exit(0)  # 立即退出，防止重入
 
     # 注册信号处理器
     original_sigint = signal.signal(signal.SIGINT, signal_handler)
@@ -407,7 +412,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
             try:
                 async with (
                         semaphore,
-                        session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=30)) as response
+                        session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=3)) as response
                     ):
                     if response.status != 200:
                         # 可重试错误，继续循环
