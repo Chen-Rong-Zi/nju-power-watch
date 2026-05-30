@@ -1422,10 +1422,10 @@
         ? previousWeekData.reduce((sum, d) => sum + d.consumption, 0) / previousWeekData.length
         : 0;
       const change = lastWeekAvg > 0
-        ? ((avgConsumption - lastWeekAvg) / lastWeekAvg * 100).toFixed(0)
-        : '0';
+        ? (avgConsumption - lastWeekAvg) / lastWeekAvg * 100
+        : 0;
       document.getElementById('predict-avg').textContent = avgConsumption.toFixed(1);
-      document.getElementById('predict-change').textContent = (change > 0 ? '+' : '') + change + '%';
+      document.getElementById('predict-change').textContent = (change > 0 ? '+' : '') + Math.round(change) + '%';
 
       // 耗电量类比（单一分层显示）
       updateMainAnalogy(latest.consumption || 0);

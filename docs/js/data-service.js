@@ -2400,10 +2400,10 @@ const DataService = {
       }
 
       const weekData = history.filter(item => weekDates.includes(item.date) && this._isHistoryEntryIncluded(item));
-      if (weekData.length === 0) return null;
+      const valid = weekData.map(item => this._getHistoryConsumptionValue(item)).filter(v => v != null);
+      if (valid.length === 0) return null;
 
-      const sum = weekData.reduce((total, item) => total + (this._getHistoryConsumptionValue(item) ?? 0), 0);
-      return sum / weekData.length;
+      return valid.reduce((total, v) => total + v, 0) / valid.length;
     }
 
     // 按日期匹配
