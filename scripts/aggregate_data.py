@@ -8,7 +8,7 @@ import sys
 import logging
 from pathlib import Path
 from datetime import datetime, timedelta
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from collections import defaultdict
 import asyncio
 import aiofiles
@@ -19,6 +19,56 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)s %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+LOW_CONFIDENCE = "low"
+HIGH_CONFIDENCE = "high"
+ANOMALY_CREDIT_OR_ADJUSTMENT = "credit_or_adjustment"
+ANOMALY_INSUFFICIENT_HISTORY = "insufficient_history"
+
+
+def build_daily_analysis(balance_history: Dict[str, float]) -> Dict[str, Dict[str, Any]]:
+    """Infer daily consumption and confidence from balance history."""
+    if not balance_history:
+        return {}
+
+    analysis = {}
+    dates = sorted(balance_history.keys())
+
+    for index, date in enumerate(dates):
+        curr_balance = balance_history[date]
+        prev_balance: Optional[float] = balance_history[dates[index - 1]] if index > 0 else None
+
+        entry = {
+            "prev_balance": prev_balance,
+            "curr_balance": curr_balance,
+            "balance_delta": None if prev_balance is None else round(curr_balance - prev_balance, 2),
+            "inferred_consumption": None,
+            "confidence": HIGH_CONFIDENCE,
+            "anomaly_type": None,
+            "exclude_from_aggregation": False,
+            "reason_codes": []
+        }
+
+        if prev_balance is None:
+            entry["confidence"] = LOW_CONFIDENCE
+            entry["anomaly_type"] = ANOMALY_INSUFFICIENT_HISTORY
+            entry["exclude_from_aggregation"] = True
+            entry["reason_codes"].append("missing_previous_balance")
+        elif curr_balance > prev_balance:
+            entry["confidence"] = LOW_CONFIDENCE
+            entry["anomaly_type"] = ANOMALY_CREDIT_OR_ADJUSTMENT
+            entry["exclude_from_aggregation"] = True
+            entry["reason_codes"].append("balance_increase")
+        else:
+            entry["inferred_consumption"] = round(prev_balance - curr_balance, 2)
+            if curr_balance == prev_balance:
+                entry["reason_codes"].append("balance_unchanged")
+            else:
+                entry["reason_codes"].append("balance_decrease")
+
+        analysis[date] = entry
+
+    return analysis
 
 # Configuration
 # Keep ALL historical data (no limit)
@@ -137,8 +187,19 @@ async def process_room(room_dir: Path, read_semaphore: asyncio.Semaphore) -> Dic
         'building': building,
         'current_balance': current_balance,
         'balance_history': balance_history,
+        'daily_analysis': build_daily_analysis(balance_history),
         'last_updated': latest_date
     }
+
+
+def ensure_room_analysis(room_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Backfill derived analysis fields for older summary records."""
+    if not room_data:
+        return room_data
+
+    normalized = room_data.copy()
+    normalized['daily_analysis'] = build_daily_analysis(normalized.get('balance_history', {}))
+    return normalized
 
 
 async def process_all_rooms(database_dir: Path) -> List[Dict[str, Any]]:
@@ -203,6 +264,7 @@ def merge_room_data(existing: Dict[str, Any], new: Dict[str, Any]) -> Dict[str, 
         'building': new.get('building', existing.get('building', 'Unknown')),
         'current_balance': current_balance,
         'balance_history': merged_history,
+        'daily_analysis': build_daily_analysis(merged_history),
         'last_updated': latest_date
     }
 
@@ -252,8 +314,7 @@ async def generate_hierarchical_summaries(
 
     # Start with existing data
     for key, room_data in existing_summaries.items():
-        all_rooms_data[key] = room_data
-
+        all_rooms_data[key] = ensure_room_analysis(room_data)
     # Merge new data
     for new_data in new_rooms_data:
         room_name = new_data['room_name']
@@ -263,7 +324,7 @@ async def generate_hierarchical_summaries(
         if key in all_rooms_data:
             all_rooms_data[key] = merge_room_data(all_rooms_data[key], new_data)
         else:
-            all_rooms_data[key] = new_data
+            all_rooms_data[key] = ensure_room_analysis(new_data)
     
     logger.info(f"Total rooms after merge: {len(all_rooms_data)}")
     

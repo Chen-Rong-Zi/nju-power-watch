@@ -473,10 +473,16 @@ const DataService = {
       const history = [];
       if (data.balance_history) {
         for (const [date, balance] of Object.entries(data.balance_history)) {
+          const analysis = data.daily_analysis?.[date] || null;
           history.push({
             date,
             electricity: balance,
-            formattedDate: this.formatDate(date)
+            formattedDate: this.formatDate(date),
+            consumption: this._getAnalysisConsumption(analysis),
+            confidence: analysis?.confidence || null,
+            anomalyType: analysis?.anomaly_type || null,
+            excludeFromAggregation: analysis?.exclude_from_aggregation || false,
+            reasonCodes: Array.isArray(analysis?.reason_codes) ? analysis.reason_codes : []
           });
         }
         // 按日期排序
@@ -484,20 +490,19 @@ const DataService = {
 
         // 计算每日消耗
         for (let i = 1; i < history.length; i++) {
-          const prev = history[i - 1];
           const curr = history[i];
-          curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+          if (curr.consumption === undefined) {
+            const prev = history[i - 1];
+            curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+          }
         }
       }
-
-      // dailyConsumption 改为今日消耗（按日期匹配）
-      const todayCompact = this._formatDateCompact('today');
-      const todayEntry = history.find(h => h.date === todayCompact);
 
       const result = {
         ...data,
         history,
-        dailyConsumption: todayEntry?.consumption ?? null,
+        dailyConsumption: history.length > 1 ?
+          (this._getHistoryConsumptionValue(history[history.length - 1]) ?? 0) : 0,
         avgConsumption: this.calculateAvgConsumption(history)
       };
 
@@ -525,7 +530,6 @@ const DataService = {
     const hist = history.history;
     const compactDate = this._formatDateCompact(dateType);
 
-    // 使用统一的方法计算
     return this._calculateConsumptionFromHistoryArray(hist, dateType, compactDate);
   },
 
@@ -535,10 +539,44 @@ const DataService = {
   calculateAvgConsumption(history) {
     if (history.length < 2) return 0;
 
-    const consumptions = history.slice(1).map(h => h.consumption).filter(c => c > 0);
+    const consumptions = history
+      .slice(1)
+      .filter(entry => this._isHistoryEntryIncluded(entry))
+      .map(entry => this._getHistoryConsumptionValue(entry))
+      .filter(c => c > 0);
     if (consumptions.length === 0) return 0;
 
     return consumptions.reduce((a, b) => a + b, 0) / consumptions.length;
+  },
+
+  /**
+   * 从 daily_analysis 条目中提取消耗量。
+   * 低置信度且被排除的记录返回 null，避免进入排行/聚合。
+   * @private
+   */
+  _getAnalysisConsumption(analysis) {
+    if (!analysis) return undefined;
+    if (analysis.exclude_from_aggregation) return null;
+    if (analysis.inferred_consumption === undefined || analysis.inferred_consumption === null) {
+      return null;
+    }
+    return Number(analysis.inferred_consumption);
+  },
+
+  /**
+   * @private
+   */
+  _getHistoryConsumptionValue(entry) {
+    if (!entry || entry.consumption === undefined || entry.consumption === null) return null;
+    const value = Number(entry.consumption);
+    return Number.isFinite(value) ? value : null;
+  },
+
+  /**
+   * @private
+   */
+  _isHistoryEntryIncluded(entry) {
+    return Boolean(entry) && !entry.excludeFromAggregation;
   },
 
   /**
@@ -586,26 +624,36 @@ const DataService = {
         const history = [];
         if (rawData.balance_history) {
           for (const [date, balance] of Object.entries(rawData.balance_history)) {
+            const analysis = rawData.daily_analysis?.[date] || null;
             history.push({
               date,
               electricity: balance,
-              formattedDate: this.formatDate(date)
+              formattedDate: this.formatDate(date),
+              consumption: this._getAnalysisConsumption(analysis),
+              confidence: analysis?.confidence || null,
+              anomalyType: analysis?.anomaly_type || null,
+              excludeFromAggregation: analysis?.exclude_from_aggregation || false,
+              reasonCodes: Array.isArray(analysis?.reason_codes) ? analysis.reason_codes : []
             });
           }
           history.sort((a, b) => a.date.localeCompare(b.date));
 
           // 计算每日消耗
           for (let j = 1; j < history.length; j++) {
-            const prev = history[j - 1];
             const curr = history[j];
-            curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+            if (curr.consumption === undefined) {
+              const prev = history[j - 1];
+              curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+            }
           }
         }
 
         const data = {
           ...rawData,
           history,
-          dailyConsumption: history.length > 1 ? history[history.length - 1].consumption : 0,
+          dailyConsumption: history.length > 1
+            ? (this._getHistoryConsumptionValue(history[history.length - 1]) ?? 0)
+            : 0,
           avgConsumption: this.calculateAvgConsumption(history)
         };
 
@@ -795,15 +843,19 @@ const DataService = {
           h.date === targetCompactDate || h.formattedDate === targetDate
         );
 
-        // 只有找到指定日期的数据才加入排行榜（不使用 fallback）
-        if (targetEntry && targetEntry.consumption !== undefined && targetEntry.consumption !== null) {
-          rankings.push({
-            roomName,
-            consumption: targetEntry.consumption,
-            balance: targetEntry.electricity || roomInfo.current_balance
-          });
-          roomsWithData++;
-        }
+        const entry = targetEntry || roomData.history[roomData.history.length - 1];
+        const consumption = this._isHistoryEntryIncluded(entry)
+          ? this._getHistoryConsumptionValue(entry)
+          : null;
+
+        if (consumption === null) continue;
+
+        rankings.push({
+          roomName,
+          consumption,
+          balance: entry?.electricity || roomInfo.current_balance
+        });
+        roomsWithData++;
       }
     }
 
@@ -842,8 +894,7 @@ const DataService = {
       const roomInfo = roomMap[roomName];
       const roomCache = await this.getRoomConsumptionCache(campusName, buildingName, roomName, compactDate);
 
-      // 只有指定日期有缓存数据才加入（不使用 fallback）
-      if (roomCache && roomCache.consumption !== undefined) {
+      if (roomCache && roomCache.consumption !== undefined && roomCache.consumption !== null && !roomCache.excludeFromAggregation) {
         rankings.push({
           roomName,
           consumption: roomCache.consumption,
@@ -896,9 +947,13 @@ const DataService = {
       if (history && history.history) {
         // 找到最近一天的消耗
         const lastEntry = history.history[history.history.length - 1];
+        const consumption = this._isHistoryEntryIncluded(lastEntry)
+          ? this._getHistoryConsumptionValue(lastEntry)
+          : null;
+        if (consumption === null) continue;
         rankings.push({
           roomName: room.name,
-          consumption: lastEntry?.consumption || 0,
+          consumption,
           balance: room.currentBalance,
           avgConsumption: history.avgConsumption
         });
@@ -1312,7 +1367,8 @@ const DataService = {
               const consumption = this._calculateConsumptionFromHistory(
                 roomData.balance_history,
                 targetDate,
-                compactDate
+                compactDate,
+                roomData.daily_analysis
               );
               if (consumption !== null) {
                 totalConsumption += consumption;
@@ -1391,7 +1447,7 @@ const DataService = {
    * @returns {number|null} 消耗量（度）或 null
    * @private
    */
-  _calculateConsumptionFromHistory(balanceHistory, dateType, compactDate) {
+  _calculateConsumptionFromHistory(balanceHistory, dateType, compactDate, dailyAnalysis = null) {
     if (!balanceHistory) return null;
 
     const dates = this._getBalanceHistoryDates(balanceHistory);
@@ -1420,25 +1476,49 @@ const DataService = {
       let totalConsumption = 0;
       let count = 0;
       for (let i = 1; i < validDates.length; i++) {
+        const entryConsumption = this._getConsumptionFromDailyAnalysis(dailyAnalysis, validDates[i]);
+        if (entryConsumption !== undefined) {
+          if (entryConsumption !== null) {
+            totalConsumption += entryConsumption;
+            count++;
+          }
+          continue;
+        }
+
         const prevBalance = balanceHistory[validDates[i - 1]];
         const currBalance = balanceHistory[validDates[i]];
         if (prevBalance > currBalance) {
           totalConsumption += prevBalance - currBalance;
           count++;
+        } else if (prevBalance === currBalance) {
+          count++;
         }
       }
-      return count > 0 ? totalConsumption / count : 0;
+      return count > 0 ? totalConsumption / count : null;
     }
 
     // 按日期查找
     const targetIdx = dates.indexOf(targetDate);
     if (targetIdx === -1 || targetIdx === 0) return null;
 
+    const analysisConsumption = this._getConsumptionFromDailyAnalysis(dailyAnalysis, targetDate);
+    if (analysisConsumption !== undefined) return analysisConsumption;
+
     // 计算消耗量：前一天余额 - 当天余额
     const prevBalance = balanceHistory[dates[targetIdx - 1]];
     const currBalance = balanceHistory[dates[targetIdx]];
 
     return prevBalance > currBalance ? prevBalance - currBalance : 0;
+  },
+
+  /**
+   * @private
+   */
+  _getConsumptionFromDailyAnalysis(dailyAnalysis, date) {
+    if (!dailyAnalysis || !date) return undefined;
+    const analysis = dailyAnalysis[date];
+    if (!analysis) return undefined;
+    return this._getAnalysisConsumption(analysis);
   },
 
   /**
@@ -1546,6 +1626,9 @@ const DataService = {
     cache[compactDate] = {
       electricity: data.electricity,
       consumption: data.consumption,
+      excludeFromAggregation: data.excludeFromAggregation || false,
+      confidence: data.confidence || null,
+      anomalyType: data.anomalyType || null,
       updatedAt: Date.now()
     };
 
@@ -1575,7 +1658,10 @@ const DataService = {
         const compactDate = this._formatDateCompact(date);
         cache[compactDate] = {
           electricity: entry.electricity,
-          consumption: entry.consumption || 0,
+          consumption: entry.consumption ?? null,
+          excludeFromAggregation: entry.excludeFromAggregation || false,
+          confidence: entry.confidence || null,
+          anomalyType: entry.anomalyType || null,
           updatedAt: now
         };
       }
@@ -1767,7 +1853,8 @@ const DataService = {
       if (!details || !details.rooms) continue;
 
       for (const roomName in details.rooms) {
-        const bh = details.rooms[roomName].balance_history;
+        const roomData = details.rooms[roomName];
+        const bh = roomData.balance_history;
         if (!bh) continue;
 
         const dates = Object.keys(bh).sort();
@@ -1775,10 +1862,13 @@ const DataService = {
 
         for (let i = 1; i < dates.length; i++) {
           const date = dates[i];
-          const prev = bh[dates[i - 1]];
-          const curr = bh[date];
-          // 消耗 = max(0, 前日余额 - 当日余额)，充值或不变记为0
-          const cons = prev > curr ? prev - curr : 0;
+          const cons = this._calculateConsumptionFromHistory(
+            bh,
+            date,
+            date,
+            roomData.daily_analysis
+          );
+          if (cons === null) continue;
           allDateSet.add(date);
 
           if (!dailyConsumption[date]) dailyConsumption[date] = {};
@@ -1840,7 +1930,8 @@ const DataService = {
     const allDateSet = new Set();
 
     for (const roomName in details.rooms) {
-      const bh = details.rooms[roomName].balance_history;
+      const roomData = details.rooms[roomName];
+      const bh = roomData.balance_history;
       if (!bh) continue;
 
       const dates = Object.keys(bh).sort();
@@ -1848,9 +1939,13 @@ const DataService = {
 
       for (let i = 1; i < dates.length; i++) {
         const date = dates[i];
-        const prev = bh[dates[i - 1]];
-        const curr = bh[date];
-        const cons = prev > curr ? prev - curr : 0;
+        const cons = this._calculateConsumptionFromHistory(
+          bh,
+          date,
+          date,
+          roomData.daily_analysis
+        );
+        if (cons === null) continue;
         allDateSet.add(date);
 
         if (!dailyConsumption[date]) dailyConsumption[date] = {};
@@ -1930,7 +2025,8 @@ const DataService = {
               const consumption = this._calculateConsumptionFromHistory(
                 roomData.balance_history,
                 targetDate,
-                compactDate
+                compactDate,
+                roomData.daily_analysis
               );
               if (consumption !== null) {
                 this._insertIntoTopRooms(topRooms, {
@@ -2129,7 +2225,8 @@ const DataService = {
       const consumption = this._calculateConsumptionFromHistory(
         roomData?.balance_history,
         date,
-        compactDate
+        compactDate,
+        roomData?.daily_analysis
       );
       if (consumption !== null) return consumption;
     }
@@ -2189,7 +2286,12 @@ const DataService = {
           addConsumption(
             roomName,
             roomData,
-            this._calculateConsumptionFromHistory(roomData.balance_history, date, compactDate)
+            this._calculateConsumptionFromHistory(
+              roomData.balance_history,
+              date,
+              compactDate,
+              roomData.daily_analysis
+            )
           );
         }
       } else {
@@ -2275,7 +2377,6 @@ const DataService = {
   _calculateConsumptionFromHistoryArray(history, dateType, compactDate) {
     if (!Array.isArray(history) || history.length === 0) return null;
 
-    // today/yesterday 转换为具体日期后匹配
     let targetDate = compactDate;
 
     if (dateType === 'today' || dateType === 'yesterday') {
@@ -2283,7 +2384,6 @@ const DataService = {
     }
 
     if (dateType === 'week') {
-      // 计算最近7天的日期范围
       const today = new Date();
       const weekDates = [];
       for (let i = 0; i < 7; i++) {
@@ -2292,11 +2392,10 @@ const DataService = {
         weekDates.push(this._dateToCompact(d));
       }
 
-      // 筛选该范围内的数据
-      const weekData = history.filter(item => weekDates.includes(item.date));
+      const weekData = history.filter(item => weekDates.includes(item.date) && this._isHistoryEntryIncluded(item));
       if (weekData.length === 0) return null;
 
-      const sum = weekData.reduce((total, item) => total + (item.consumption ?? 0), 0);
+      const sum = weekData.reduce((total, item) => total + (this._getHistoryConsumptionValue(item) ?? 0), 0);
       return sum / weekData.length;
     }
 
@@ -2304,8 +2403,8 @@ const DataService = {
     const targetEntry = history.find(item =>
       item.date === targetDate || item.formattedDate === dateType
     );
-    return targetEntry?.consumption !== undefined && targetEntry.consumption !== null
-      ? targetEntry.consumption
+    return this._isHistoryEntryIncluded(targetEntry)
+      ? this._getHistoryConsumptionValue(targetEntry)
       : null;
   },
 

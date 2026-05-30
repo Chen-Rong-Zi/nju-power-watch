@@ -1245,7 +1245,8 @@
         mockData = roomData.history.map(h => ({
           date: h.formattedDate,
           balance: h.electricity,
-          consumption: h.consumption || 0
+          consumption: h.consumption,
+          excludeFromAggregation: h.excludeFromAggregation
         }));
       } else {
         // 回退到模拟数据
@@ -1386,14 +1387,17 @@
     function updateUI() {
       const latest = mockData[mockData.length - 1];
       const weekData = mockData.slice(-7);
+      const validWeekData = weekData.filter(d => !d.excludeFromAggregation && d.consumption !== null && d.consumption !== undefined);
 
       // 当前余额
       document.getElementById('current-balance').textContent = latest.balance.toFixed(1) + '度';
 
       // 统计数据
-      const avgConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0) / 7;
-      const weekConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0);
-      const estimatedDays = Math.floor(latest.balance / avgConsumption);
+      const avgConsumption = validWeekData.length > 0
+        ? validWeekData.reduce((sum, d) => sum + d.consumption, 0) / validWeekData.length
+        : 0;
+      const weekConsumption = validWeekData.reduce((sum, d) => sum + d.consumption, 0);
+      const estimatedDays = avgConsumption > 0 ? Math.floor(latest.balance / avgConsumption) : 0;
 
       document.getElementById('stat-avg').textContent = avgConsumption.toFixed(1) + '度';
       document.getElementById('stat-week').textContent = weekConsumption.toFixed(1) + '度';
@@ -1411,13 +1415,20 @@
       document.getElementById('predict-days').textContent = estimatedDays;
       document.getElementById('predict-date').textContent = predictDate.toLocaleDateString('zh-CN');
 
-      const lastWeekAvg = mockData.slice(-14, -7).reduce((sum, d) => sum + d.consumption, 0) / 7;
-      const change = ((avgConsumption - lastWeekAvg) / lastWeekAvg * 100).toFixed(0);
+      const previousWeekData = mockData
+        .slice(-14, -7)
+        .filter(d => !d.excludeFromAggregation && d.consumption !== null && d.consumption !== undefined);
+      const lastWeekAvg = previousWeekData.length > 0
+        ? previousWeekData.reduce((sum, d) => sum + d.consumption, 0) / previousWeekData.length
+        : 0;
+      const change = lastWeekAvg > 0
+        ? ((avgConsumption - lastWeekAvg) / lastWeekAvg * 100).toFixed(0)
+        : '0';
       document.getElementById('predict-avg').textContent = avgConsumption.toFixed(1);
       document.getElementById('predict-change').textContent = (change > 0 ? '+' : '') + change + '%';
 
       // 耗电量类比（单一分层显示）
-      updateMainAnalogy(latest.consumption);
+      updateMainAnalogy(latest.consumption || 0);
 
       // 充值建议
       updateRechargeOptions(avgConsumption);

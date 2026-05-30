@@ -2056,7 +2056,6 @@
     function calculateConsumption(history, dateType) {
       if (!history || history.length === 0) return null;
 
-      // 辅助函数：日期转换为 YYYYMMDD
       const toCompactDate = (date) => {
         const y = date.getFullYear();
         const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -2064,7 +2063,6 @@
         return `${y}${m}${d}`;
       };
 
-      // today/yesterday 转换为具体日期
       if (dateType === 'today' || dateType === 'yesterday') {
         const now = new Date();
         if (dateType === 'yesterday') {
@@ -2072,11 +2070,11 @@
         }
         const targetDate = toCompactDate(now);
         const target = history.find(h => h.date === targetDate);
+        if (!target || target.excludeFromAggregation) return null;
         return target?.consumption ?? null;
       }
 
       if (dateType === 'week') {
-        // 计算最近7天的日期范围
         const today = new Date();
         const weekDates = new Set();
         for (let i = 0; i < 7; i++) {
@@ -2085,16 +2083,15 @@
           weekDates.add(toCompactDate(d));
         }
 
-        // 筛选该范围内的数据
-        const weekData = history.filter(h => weekDates.has(h.date));
+        const weekData = history.filter(h => weekDates.has(h.date) && !h.excludeFromAggregation && h.consumption !== null && h.consumption !== undefined);
         if (weekData.length === 0) return null;
 
-        const sum = weekData.reduce((s, h) => s + (h.consumption || 0), 0);
+        const sum = weekData.reduce((s, h) => s + h.consumption, 0);
         return sum / weekData.length;
       }
 
-      // 自定义日期
       const target = history.find(h => h.date === dateType || h.formattedDate === dateType);
+      if (!target || target.excludeFromAggregation) return null;
       return target?.consumption ?? null;
     }
 

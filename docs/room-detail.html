@@ -461,7 +461,8 @@
           roomData = history.history.map(h => ({
             date: h.formattedDate,
             balance: h.electricity,
-            consumption: h.consumption || 0
+            consumption: h.consumption,
+            excludeFromAggregation: h.excludeFromAggregation
           }));
           updateUI();
         } else {
@@ -481,7 +482,7 @@
       document.getElementById('main-analogy-card').style.display = 'block';
 
       const latest = roomData[roomData.length - 1];
-      const weekData = roomData.slice(-7);
+      const weekData = roomData.slice(-7).filter(d => !d.excludeFromAggregation && d.consumption !== null && d.consumption !== undefined);
 
       // 填充房间信息
       document.getElementById('room-name').textContent = params.room;
@@ -490,9 +491,12 @@
       document.getElementById('current-balance').textContent = latest.balance.toFixed(1) + '度';
 
       // 统计数据
-      const avgConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0) / 7;
+      const avgConsumption = weekData.length > 0 ? weekData.reduce((sum, d) => sum + d.consumption, 0) / weekData.length : 0;
       const weekConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0);
-      const maxConsumption = Math.max(...roomData.map(d => d.consumption));
+      const validConsumptions = roomData
+        .filter(d => !d.excludeFromAggregation && d.consumption !== null && d.consumption !== undefined)
+        .map(d => d.consumption);
+      const maxConsumption = validConsumptions.length > 0 ? Math.max(...validConsumptions) : 0;
 
       document.getElementById('stat-avg').textContent = avgConsumption.toFixed(1) + '度';
       document.getElementById('stat-week').textContent = weekConsumption.toFixed(1) + '度';
@@ -500,7 +504,7 @@
       document.getElementById('stat-days').textContent = roomData.length + '天';
 
       // 直观描述
-      updateMainAnalogy(latest.consumption);
+      updateMainAnalogy(latest.consumption || 0);
 
       // 更新图表
       updateChart(7);
