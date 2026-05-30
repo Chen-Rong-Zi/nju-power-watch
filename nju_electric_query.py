@@ -12,6 +12,7 @@ import aiofiles
 import argparse
 import json
 import os
+import signal
 import sys
 import time
 import re
@@ -351,6 +352,50 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         "parse_error": 0,     # 解析失败
     }
 
+    # 保存结果的辅助函数
+    def save_results():
+        """保存已发现的房间ID到文件"""
+        if not seen_rooms:
+            return
+
+        # 按楼栋分组
+        buildings = {}
+        for room_id, (campus, building) in room_info.items():
+            key = f"{campus}/{building}"
+            if key not in buildings:
+                buildings[key] = []
+            buildings[key].append(room_id)
+
+        # 排序
+        sorted_buildings = sorted(buildings.keys())
+        for key in sorted_buildings:
+            buildings[key].sort(key=int)
+
+        # 写入文件
+        output_path = Path(output_file)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(output_path, "w", encoding="utf-8") as f:
+            for key in sorted_buildings:
+                f.write(f"# {key}\n")
+                for room_id in buildings[key]:
+                    f.write(f"{room_id}\n")
+
+        print(f"\n已保存 {len(seen_rooms)} 个房间ID到 {output_file}")
+
+    # 信号处理器
+    shutdown_event = asyncio.Event()
+
+    def signal_handler(signum, frame):
+        """处理终止信号，保存已发现的结果"""
+        print(f"\n\n收到终止信号 ({signal.Signals(signum).name})，正在保存已发现的结果...")
+        save_results()
+        sys.exit(0)
+
+    # 注册信号处理器
+    original_sigint = signal.signal(signal.SIGINT, signal_handler)
+    original_sigterm = signal.signal(signal.SIGTERM, signal_handler)
+
     semaphore = asyncio.Semaphore(max_concurrent)
 
     async def scan_single(session, room_id):
@@ -467,6 +512,10 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
             await f.write(f"# {key}\n")
             for room_id in buildings[key]:
                 await f.write(f"{room_id}\n")
+
+    # 恢复原始信号处理器
+    signal.signal(signal.SIGINT, original_sigint)
+    signal.signal(signal.SIGTERM, original_sigterm)
 
     if show_progress:
         print(f"扫描完成: 共扫描 {total} 个ID, 发现 {found} 个有效房间")
