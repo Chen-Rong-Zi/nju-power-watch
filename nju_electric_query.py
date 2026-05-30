@@ -386,7 +386,9 @@ async def async_main():
     parser.add_argument("-c", "--concurrency", type=int, help=f"最大并发数 (默认{DEFAULT_CONCURRENCY})", default=DEFAULT_CONCURRENCY)
     parser.add_argument("--cookie-file", type=str, help="Cookie JSON文件路径", default=DEFAULT_COOKIE_FILE)
     parser.add_argument("-q", "--quiet", action="store_true", help="安静模式，减少输出")
-    parser.add_argument("room_ids", nargs="+", help="宿舍ID列表")
+    parser.add_argument("--scan", type=int, nargs=2, metavar=('START', 'END'), help="扫描ID区间模式: 扫描指定范围内的所有ID")
+    parser.add_argument("--scan-output", type=str, default="config/room_ids.txt", help="扫描结果输出文件 (默认: config/room_ids.txt)")
+    parser.add_argument("room_ids", nargs="*", help="宿舍ID列表 (扫描模式下不需要)")
     args = parser.parse_args()
 
     room_ids = args.room_ids
