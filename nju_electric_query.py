@@ -355,70 +355,83 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
 
     async def scan_single(session, room_id):
         nonlocal processed
-        async with semaphore:
-            url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
+        url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
+        attempt = 0  # 重试次数
 
-            while True:
-                try:
-                    async with session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=30)) as response:
-                        if response.status != 200:
-                            # 可重试错误，继续循环
-                            error_counts["http_error"] += 1
-                            await asyncio.sleep(1)  # 短暂等待后重试
-                            continue
+        while True:
+            try:
+                async with (
+                        semaphore,
+                        session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=30)) as response
+                    ):
+                    if response.status != 200:
+                        # 可重试错误，继续循环
+                        error_counts["http_error"] += 1
+                        delay = RETRY_DELAY * (RETRY_BACKOFF ** attempt)
+                        await asyncio.sleep(delay)
+                        attempt += 1
+                        continue
 
-                        html = await response.text()
+                    html = await response.text()
 
-                        # 检查是否是错误页面（房间不存在）- 永久错误
-                        if "房间查询失败" in html or ("查询房间信息失败" in html):
-                            error_counts["room_not_found"] += 1
-                            break
-
-                        # 检查是否需要登录 - 可重试错误
-                        if "login" in html.lower() or "登录" in html:
-                            error_counts["auth_failed"] += 1
-                            await asyncio.sleep(1)
-                            continue
-
-                        # 解析房间信息
-                        result = parse_html(html)
-                        if not result.get("校区") or not result.get("楼栋") or not result.get("房间"):
-                            # 解析失败 - 永久错误
-                            error_counts["parse_error"] += 1
-                            print(f"=" * 100)
-                            print(f"{html}")
-                            print(f"{room_id = }")
-                            break
-
-                        # 成功：实时去重并记录
-                        room_key = (result.get("校区", ""), result.get("楼栋", ""), result.get("房间", ""))
-                        if room_key not in seen_rooms:
-                            seen_rooms[room_key] = room_id
-                            room_info[room_id] = room_key[:2]  # (校区, 楼栋)
-
+                    # 检查是否是错误页面（房间不存在）- 永久错误
+                    if "房间查询失败" in html or ("查询房间信息失败" in html):
+                        error_counts["room_not_found"] += 1
                         break
 
-                except asyncio.TimeoutError:
-                    # 可重试错误
-                    error_counts["timeout"] += 1
-                    await asyncio.sleep(1)
-                    continue
-                except aiohttp.ClientConnectorError as e:
-                    # 可重试错误
-                    error_counts["network_error"] += 1
-                    print(f"{e}")
-                    await asyncio.sleep(1)
-                    continue
-                except Exception:
-                    # 可重试错误
-                    error_counts["network_error"] += 1
-                    await asyncio.sleep(1)
-                    continue
+                    # 检查是否需要登录 - 可重试错误
+                    if "login" in html.lower() or "登录" in html:
+                        error_counts["auth_failed"] += 1
+                        delay = RETRY_DELAY * (RETRY_BACKOFF ** attempt)
+                        await asyncio.sleep(delay)
+                        attempt += 1
+                        continue
 
-            # 只在函数退出时更新进度
-            processed += 1
-            if show_progress and processed % 100 == 0:
-                print(f"\r[{processed}/{total}] 已发现: {len(seen_rooms)}", end="", flush=True)
+                    # 解析房间信息
+                    result = parse_html(html)
+                    if not result.get("校区") or not result.get("楼栋") or not result.get("房间"):
+                        # 解析失败 - 永久错误
+                        error_counts["parse_error"] += 1
+                        print(f"=" * 100)
+                        print(f"{html}")
+                        print(f"{room_id = }")
+                        break
+
+                    # 成功：实时去重并记录
+                    room_key = (result.get("校区", ""), result.get("楼栋", ""), result.get("房间", ""))
+                    if room_key not in seen_rooms:
+                        seen_rooms[room_key] = room_id
+                        room_info[room_id] = room_key[:2]  # (校区, 楼栋)
+
+                    break
+
+            except asyncio.TimeoutError:
+                # 可重试错误
+                error_counts["timeout"] += 1
+                delay = RETRY_DELAY * (RETRY_BACKOFF ** attempt)
+                await asyncio.sleep(delay)
+                attempt += 1
+                continue
+            except aiohttp.ClientConnectorError as e:
+                # 可重试错误
+                error_counts["network_error"] += 1
+                # print(f"NetworkError Client Error: {e}")
+                delay = RETRY_DELAY * (RETRY_BACKOFF ** attempt)
+                await asyncio.sleep(delay)
+                attempt += 1
+                continue
+            except Exception:
+                # 可重试错误
+                error_counts["network_error"] += 1
+                delay = RETRY_DELAY * (RETRY_BACKOFF ** attempt)
+                await asyncio.sleep(delay)
+                attempt += 1
+                continue
+
+        # 只在函数退出时更新进度
+        processed += 1
+        if show_progress and processed % 100 == 0:
+            print(f"\r[{processed}/{total}] 已发现: {len(seen_rooms)}", end="", flush=True)
 
     connector = aiohttp.TCPConnector(limit=max_concurrent)
     async with aiohttp.ClientSession(connector=connector) as session:
