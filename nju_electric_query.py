@@ -505,6 +505,38 @@ async def async_main():
     if show_progress:
         print(f"✓ 已加载 Cookie 文件: {cookie_file}")
 
+    # 扫描模式
+    if args.scan:
+        start_id, end_id = args.scan
+        if start_id > end_id:
+            print(f"错误: 起始ID ({start_id}) 不能大于结束ID ({end_id})")
+            sys.exit(1)
+
+        if show_progress:
+            print(f"开始扫描ID区间: {start_id} - {end_id} (共 {end_id - start_id + 1} 个ID)")
+            print(f"并发数: {max_concurrent}")
+            print("-" * 50)
+
+        start_time = time.time()
+        result = await scan_room_ids(start_id, end_id, cookies, args.scan_output, max_concurrent, show_progress)
+        elapsed = time.time() - start_time
+
+        if show_progress:
+            print("-" * 50)
+            print(f"扫描完成!")
+            print(f"  总数: {result['total']}")
+            print(f"  发现: {result['found']}")
+            print(f"  耗时: {elapsed:.2f}秒")
+            print(f"  输出: {result['output_file']}")
+            print("-" * 50)
+
+        return
+
+    # 正常查询模式
+    if not room_ids:
+        print("错误: 请提供宿舍ID列表或使用 --scan 模式")
+        sys.exit(1)
+
     if output_dir and output_dir.exists():
         if not output_dir.is_dir():
             print(f"错误: {output_dir} 不是一个目录")
