@@ -175,7 +175,6 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
                         # 检查是否解析成功
                         if not result.get("剩余电量"):
                             last_error = {"id": room_id, "error": QueryError.PARSE_ERROR, "error_type": "parse_error", "success": False}
-                            print({"id": room_id, "error": QueryError.PARSE_ERROR, "error_type": "parse_error", "success": False})
                             break
 
                         result["success"] = True
@@ -342,6 +341,16 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
     # 记录 room_id -> (校区, 楼栋) 用于分组输出
     room_info = {}
 
+    # 错误统计
+    error_counts = {
+        "room_not_found": 0,  # 房间不存在
+        "auth_failed": 0,     # 需要登录
+        "http_error": 0,      # HTTP错误
+        "timeout": 0,         # 请求超时
+        "network_error": 0,   # 网络错误
+        "parse_error": 0,     # 解析失败
+    }
+
     semaphore = asyncio.Semaphore(max_concurrent)
 
     async def scan_single(session, room_id):
@@ -351,21 +360,25 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
             try:
                 async with session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=30)) as response:
                     if response.status != 200:
+                        error_counts["http_error"] += 1
                         return None
 
                     html = await response.text()
 
-                    # 检查是否是错误页面
+                    # 检查是否是错误页面（房间不存在）
                     if "房间查询失败" in html or ("错误" in html and "房间查询失败" in html):
+                        error_counts["room_not_found"] += 1
                         return None
 
                     # 检查是否需要登录
                     if "login" in html.lower() or "登录" in html:
+                        error_counts["auth_failed"] += 1
                         return None
 
                     # 解析房间信息
                     result = parse_html(html)
                     if not result.get("校区") or not result.get("楼栋") or not result.get("房间"):
+                        error_counts["parse_error"] += 1
                         return None
 
                     # 实时去重并记录
@@ -375,7 +388,14 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
                         room_info[room_id] = room_key[:2]  # (校区, 楼栋)
 
                     return room_id
+            except asyncio.TimeoutError:
+                error_counts["timeout"] += 1
+                return None
+            except aiohttp.ClientConnectorError:
+                error_counts["network_error"] += 1
+                return None
             except Exception:
+                error_counts["network_error"] += 1
                 return None
             finally:
                 processed += 1
@@ -388,6 +408,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         await asyncio.gather(*tasks)
 
     found = len(seen_rooms)
+    total_errors = sum(error_counts.values())
 
     if show_progress:
         print()
@@ -420,9 +441,25 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         print(f"扫描完成: 共扫描 {total} 个ID, 发现 {found} 个有效房间")
         print(f"结果已保存到: {output_file}")
 
+        if total_errors > 0:
+            print("\n--- 错误统计 ---")
+            error_messages = {
+                "room_not_found": "房间不存在",
+                "auth_failed": "认证失败",
+                "http_error": "HTTP错误",
+                "timeout": "请求超时",
+                "network_error": "网络错误",
+                "parse_error": "解析失败",
+            }
+            for error_type, count in error_counts.items():
+                if count > 0:
+                    print(f"  {error_messages[error_type]}: {count}")
+
     return {
         "total": total,
         "found": found,
+        "errors": error_counts,
+        "total_errors": total_errors,
         "output_file": str(output_path)
     }
 
@@ -533,6 +570,7 @@ async def async_main():
             print(f"扫描完成!")
             print(f"  总数: {result['total']}")
             print(f"  发现: {result['found']}")
+            print(f"  错误: {result['total_errors']}")
             print(f"  耗时: {elapsed:.2f}秒")
             print(f"  输出: {result['output_file']}")
             print("-" * 50)
