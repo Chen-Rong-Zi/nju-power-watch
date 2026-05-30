@@ -321,6 +321,105 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
     }
 
 
+async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: str, max_concurrent: int = DEFAULT_CONCURRENCY, show_progress: bool = True):
+    """扫描ID区间，发现存在的房间
+
+    Args:
+        start_id: 起始ID (包含)
+        end_id: 结束ID (包含)
+        cookies: Cookie字典
+        output_file: 输出文件路径
+        max_concurrent: 最大并发数
+        show_progress: 是否显示进度
+    """
+    total = end_id - start_id + 1
+    processed = 0
+    found = 0
+
+    # 去重: 记录已发现的房间 (校区, 楼栋, 房间名) -> room_id
+    seen_rooms = {}
+    valid_ids = []
+
+    semaphore = asyncio.Semaphore(max_concurrent)
+
+    async def scan_single(session, room_id):
+        nonlocal processed, found
+        async with semaphore:
+            url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
+            try:
+                async with session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=30)) as response:
+                    if response.status != 200:
+                        return None
+
+                    html = await response.text()
+
+                    # 检查是否是错误页面
+                    if "房间查询失败" in html or ("错误" in html and "房间查询失败" in html):
+                        return None
+
+                    # 检查是否需要登录
+                    if "login" in html.lower() or "登录" in html:
+                        return None
+
+                    # 解析房间信息
+                    result = parse_html(html)
+                    if not result.get("校区") or not result.get("楼栋") or not result.get("房间"):
+                        return None
+
+                    return {
+                        "id": room_id,
+                        "campus": result.get("校区", ""),
+                        "building": result.get("楼栋", ""),
+                        "room": result.get("房间", "")
+                    }
+            except Exception:
+                return None
+            finally:
+                processed += 1
+                if show_progress and processed % 100 == 0:
+                    print(f"\r[{processed}/{total}] 已发现: {found}", end="", flush=True)
+
+    connector = aiohttp.TCPConnector(limit=max_concurrent)
+    async with aiohttp.ClientSession(connector=connector) as session:
+        tasks = [scan_single(session, room_id) for room_id in range(start_id, end_id + 1)]
+        results = await asyncio.gather(*tasks)
+
+    if show_progress:
+        print()
+
+    # 去重处理
+    for result in results:
+        if result is None:
+            continue
+
+        room_key = (result["campus"], result["building"], result["room"])
+        if room_key not in seen_rooms:
+            seen_rooms[room_key] = result["id"]
+            valid_ids.append(result["id"])
+            found += 1
+
+    # 排序并写入文件
+    valid_ids.sort(key=int)
+
+    # 确保输出目录存在
+    output_path = Path(output_file)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    async with aiofiles.open(output_path, "w", encoding="utf-8") as f:
+        for room_id in valid_ids:
+            await f.write(f"{room_id}\n")
+
+    if show_progress:
+        print(f"扫描完成: 共扫描 {total} 个ID, 发现 {found} 个有效房间")
+        print(f"结果已保存到: {output_file}")
+
+    return {
+        "total": total,
+        "found": found,
+        "output_file": str(output_path)
+    }
+
+
 async def save_result(result: dict, output_dir: Path, quiet: bool = False):
     """保存结果到文件，格式: {校区}/{楼栋}/{房间}/{日期}.json"""
     try:
