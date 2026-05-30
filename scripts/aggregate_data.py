@@ -101,7 +101,7 @@ async def write_json_file(file_path: Path, data: Dict[str, Any]) -> None:
 async def load_existing_summaries(summaries_dir: Path) -> Dict[str, Dict[str, Any]]:
     """
     Load existing room summaries from database/summaries/.
-    Returns: {room_name: room_data}
+    Returns: {room_id: room_data}
     """
     existing_data = {}
 
@@ -127,11 +127,8 @@ async def load_existing_summaries(summaries_dir: Path) -> Dict[str, Dict[str, An
     results = await asyncio.gather(*tasks)
 
     for room_file, result in zip(room_files, results):
-        if result and 'room_name' in result:
-            # Use campus/building/room_name as unique key to avoid collisions
-            # across buildings (e.g., "101" exists in multiple buildings)
-            key = f"{result['campus']}/{result['building']}/{result['room_name']}"
-            existing_data[key] = result
+        if result and 'room_id' in result:
+            existing_data[result['room_id']] = result
 
     logger.info(f"Loaded {len(existing_data)} existing room summaries")
     return existing_data
@@ -140,9 +137,15 @@ async def load_existing_summaries(summaries_dir: Path) -> Dict[str, Dict[str, An
 async def process_room(room_dir: Path, read_semaphore: asyncio.Semaphore) -> Dict[str, Any]:
     """
     Process a single room directory asynchronously.
-    Directory name is now just the room name (no ID suffix).
+    Returns simplified data: date → balance mapping.
     """
-    room_name = room_dir.name
+    dir_name = room_dir.name
+    parts = dir_name.rsplit('-', 1)
+    if len(parts) != 2 or not parts[1].isdigit():
+        return None
+
+    room_id = parts[1]
+    room_name = parts[0]
 
     json_files = sorted(room_dir.glob("*.json"), key=lambda f: f.stem)
 
@@ -182,6 +185,7 @@ async def process_room(room_dir: Path, read_semaphore: asyncio.Semaphore) -> Dic
     current_balance = balance_history[latest_date]
 
     return {
+        'room_id': room_id,
         'room_name': room_name,
         'campus': campus,
         'building': building,
@@ -216,7 +220,7 @@ async def process_all_rooms(database_dir: Path) -> List[Dict[str, Any]]:
                 continue
             
             for room_dir in building_dir.iterdir():
-                if room_dir.is_dir() and room_dir.name not in ('archives', 'summaries'):
+                if room_dir.is_dir() and '-' in room_dir.name:
                     room_dirs.append(room_dir)
     
     logger.info(f"Found {len(room_dirs)} room directories with new data")
@@ -259,6 +263,7 @@ def merge_room_data(existing: Dict[str, Any], new: Dict[str, Any]) -> Dict[str, 
         latest_date = new.get('last_updated', datetime.now().strftime("%Y%m%d"))
 
     return {
+        'room_id': new['room_id'],
         'room_name': new.get('room_name', existing.get('room_name', 'Unknown')),
         'campus': new.get('campus', existing.get('campus', 'Unknown')),
         'building': new.get('building', existing.get('building', 'Unknown')),
@@ -272,16 +277,16 @@ def merge_room_data(existing: Dict[str, Any], new: Dict[str, Any]) -> Dict[str, 
 def organize_by_hierarchy(rooms_data: List[Dict[str, Any]]) -> Dict[str, Dict[str, Dict[str, Dict]]]:
     """
     Organize processed room data by hierarchy.
-    Returns: {campus: {building: {room_name: room_data}}}
+    Returns: {campus: {building: {room_id: room_data}}}
     """
     hierarchy = defaultdict(lambda: defaultdict(dict))
 
     for room_data in rooms_data:
         campus = room_data['campus']
         building = room_data['building']
-        room_name = room_data['room_name']
+        room_id = room_data['room_id']
 
-        hierarchy[campus][building][room_name] = room_data
+        hierarchy[campus][building][room_id] = room_data
 
     return hierarchy
 
@@ -313,18 +318,15 @@ async def generate_hierarchical_summaries(
     all_rooms_data = {}
 
     # Start with existing data
-    for key, room_data in existing_summaries.items():
-        all_rooms_data[key] = ensure_room_analysis(room_data)
+    for room_id, room_data in existing_summaries.items():
+        all_rooms_data[room_id] = ensure_room_analysis(room_data)
     # Merge new data
     for new_data in new_rooms_data:
-        room_name = new_data['room_name']
-        campus = new_data.get('campus', 'Unknown')
-        building = new_data.get('building', 'Unknown')
-        key = f"{campus}/{building}/{room_name}"
-        if key in all_rooms_data:
-            all_rooms_data[key] = merge_room_data(all_rooms_data[key], new_data)
+        room_id = new_data['room_id']
+        if room_id in all_rooms_data:
+            all_rooms_data[room_id] = merge_room_data(all_rooms_data[room_id], new_data)
         else:
-            all_rooms_data[key] = ensure_room_analysis(new_data)
+            all_rooms_data[room_id] = ensure_room_analysis(new_data)
     
     logger.info(f"Total rooms after merge: {len(all_rooms_data)}")
     
@@ -359,28 +361,29 @@ async def generate_hierarchical_summaries(
             building_dir = campus_dir / "buildings" / building
             building_dir.mkdir(parents=True, exist_ok=True)
             
-            # Building summary: room_name → {current_balance, last_updated}
+            # Building summary: room_id → {room_name, current_balance, last_updated}
             building_rooms = {}
-            for room_name, room_data in rooms.items():
-                building_rooms[room_name] = {
+            for room_id, room_data in rooms.items():
+                building_rooms[room_id] = {
+                    'room_name': room_data['room_name'],
                     'current_balance': room_data['current_balance'],
                     'last_updated': room_data['last_updated']
                 }
-            
+
             building_summary = {
                 'building': building,
                 'campus': campus,
                 'total_rooms': len(rooms),
                 'rooms': building_rooms
             }
-            
+
             # Write building summary
             building_file = building_dir / "summary.json"
             write_tasks.append(write_with_limit(building_file, building_summary))
-            
+
             # Write individual room files
-            for room_name, room_data in rooms.items():
-                room_file = building_dir / "rooms" / f"{room_name}.json"
+            for room_id, room_data in rooms.items():
+                room_file = building_dir / "rooms" / f"{room_id}.json"
                 write_tasks.append(write_with_limit(room_file, room_data))
             
             buildings_stats[building] = {

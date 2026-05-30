@@ -498,11 +498,15 @@ const DataService = {
         }
       }
 
+      const todayCompact = this._formatDateCompact('today');
+      const todayEntry = history.find(h => h.date === todayCompact);
+
       const result = {
         ...data,
         history,
-        dailyConsumption: history.length > 1 ?
-          (this._getHistoryConsumptionValue(history[history.length - 1]) ?? 0) : 0,
+        dailyConsumption: todayEntry
+          ? (this._getHistoryConsumptionValue(todayEntry) ?? null)
+          : null,
         avgConsumption: this.calculateAvgConsumption(history)
       };
 
@@ -648,12 +652,15 @@ const DataService = {
           }
         }
 
+        const todayCompact = this._formatDateCompact('today');
+        const todayEntry = history.find(h => h.date === todayCompact);
+
         const data = {
           ...rawData,
           history,
-          dailyConsumption: history.length > 1
-            ? (this._getHistoryConsumptionValue(history[history.length - 1]) ?? 0)
-            : 0,
+          dailyConsumption: todayEntry
+            ? (this._getHistoryConsumptionValue(todayEntry) ?? null)
+            : null,
           avgConsumption: this.calculateAvgConsumption(history)
         };
 
@@ -838,14 +845,14 @@ const DataService = {
       const roomData = roomDataMap.get(roomName);
 
       if (roomData && roomData.history && roomData.history.length > 0) {
-        // 尝试从历史中找到指定日期的消耗
         const targetEntry = roomData.history.find(h =>
           h.date === targetCompactDate || h.formattedDate === targetDate
         );
 
-        const entry = targetEntry || roomData.history[roomData.history.length - 1];
-        const consumption = this._isHistoryEntryIncluded(entry)
-          ? this._getHistoryConsumptionValue(entry)
+        if (!targetEntry) continue;
+
+        const consumption = this._isHistoryEntryIncluded(targetEntry)
+          ? this._getHistoryConsumptionValue(targetEntry)
           : null;
 
         if (consumption === null) continue;
@@ -853,7 +860,7 @@ const DataService = {
         rankings.push({
           roomName,
           consumption,
-          balance: entry?.electricity || roomInfo.current_balance
+          balance: targetEntry?.electricity || roomInfo.current_balance
         });
         roomsWithData++;
       }
