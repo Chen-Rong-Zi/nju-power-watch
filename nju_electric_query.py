@@ -322,19 +322,22 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
     }
 
 
-def load_existing_ids(file_path: str) -> set:
-    """从文件加载已有ID，跳过注释和空行
+def load_existing_ids(file_path: str) -> dict:
+    """从文件加载已有ID及其楼栋信息
 
     Args:
         file_path: room_ids.txt 文件路径
 
     Returns:
-        已存在的ID集合
+        字典 {id: (campus, building)}，campus/building 可能为 None
     """
-    existing = set()
+    existing = {}
     output_path = Path(file_path)
     if not output_path.exists():
         return existing
+
+    current_campus = None
+    current_building = None
 
     with open(output_path, 'r', encoding='utf-8') as f:
         for line in f:
@@ -342,12 +345,20 @@ def load_existing_ids(file_path: str) -> set:
             # 跳过空行
             if not line:
                 continue
-            # 跳过注释行
+            # 解析注释行，格式: # 校区/楼栋
             if line.startswith('#'):
+                comment = line[1:].strip()
+                if '/' in comment:
+                    parts = comment.split('/', 1)
+                    current_campus = parts[0].strip()
+                    current_building = parts[1].strip()
+                else:
+                    current_campus = comment
+                    current_building = None
                 continue
             # 验证是有效数字ID
             if line.isdigit():
-                existing.add(line)
+                existing[line] = (current_campus, current_building)
 
     return existing
 
@@ -528,6 +539,10 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         else:
             ids_to_scan.append(room_id)
 
+    # 将已有ID的楼栋信息预先加入room_info
+    for existing_id, (campus, building) in existing_ids.items():
+        room_info[int(existing_id)] = (campus, building)
+
     scan_count = len(ids_to_scan)
     if show_progress:
         print(f"跳过 {skipped} 个已有ID，待扫描 {scan_count} 个ID")
@@ -542,12 +557,6 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
 
     if show_progress:
         print()
-
-    # 合并已有ID和新发现的ID到输出
-    # 将已有ID也加入room_info（用空值占位，表示没有楼栋信息）
-    for existing_id in existing_ids:
-        if existing_id not in room_info:
-            room_info[int(existing_id)] = (None, None)
 
     # 按楼栋分组
     buildings = {}
