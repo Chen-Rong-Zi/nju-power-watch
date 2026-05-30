@@ -391,15 +391,16 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         print(f"\n已保存 {len(seen_rooms)} 个房间ID到 {output_file}")
 
     # 信号处理器
-    def signal_handler(signum, frame):
+    def signal_handler():
         """处理终止信号，保存已发现的结果"""
-        print(f"\n\n收到终止信号 ({signal.Signals(signum).name})，正在保存已发现的结果...")
+        print(f"\n\n收到终止信号，正在保存已发现的结果...")
         save_results()
         os._exit(0)  # 立即退出，防止重入
 
-    # 注册信号处理器
-    original_sigint = signal.signal(signal.SIGINT, signal_handler)
-    original_sigterm = signal.signal(signal.SIGTERM, signal_handler)
+    # 注册 asyncio 信号处理器
+    loop = asyncio.get_running_loop()
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        loop.add_signal_handler(sig, signal_handler)
 
     semaphore = asyncio.Semaphore(max_concurrent)
 
@@ -412,7 +413,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
             try:
                 async with (
                         semaphore,
-                        session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=3)) as response
+                        session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=10)) as response
                     ):
                     if response.status != 200:
                         # 可重试错误，继续循环
@@ -480,7 +481,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
 
         # 只在函数退出时更新进度
         processed += 1
-        if show_progress and processed % 100 == 0:
+        if show_progress:
             print(f"\r[{processed}/{total}] 已发现: {len(seen_rooms)}", end="", flush=True)
 
     connector = aiohttp.TCPConnector(limit=max_concurrent)
@@ -517,10 +518,6 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
             await f.write(f"# {key}\n")
             for room_id in buildings[key]:
                 await f.write(f"{room_id}\n")
-
-    # 恢复原始信号处理器
-    signal.signal(signal.SIGINT, original_sigint)
-    signal.signal(signal.SIGTERM, original_sigterm)
 
     if show_progress:
         print(f"扫描完成: 共扫描 {total} 个ID, 发现 {found} 个有效房间")
