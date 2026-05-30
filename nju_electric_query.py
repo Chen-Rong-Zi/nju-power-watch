@@ -175,6 +175,7 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
                         # 检查是否解析成功
                         if not result.get("剩余电量"):
                             last_error = {"id": room_id, "error": QueryError.PARSE_ERROR, "error_type": "parse_error", "success": False}
+                            print({"id": room_id, "error": QueryError.PARSE_ERROR, "error_type": "parse_error", "success": False})
                             break
 
                         result["success"] = True
@@ -344,7 +345,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
     semaphore = asyncio.Semaphore(max_concurrent)
 
     async def scan_single(session, room_id):
-        nonlocal processed, found
+        nonlocal processed
         async with semaphore:
             url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
             try:
@@ -367,37 +368,29 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
                     if not result.get("校区") or not result.get("楼栋") or not result.get("房间"):
                         return None
 
-                    return {
-                        "id": room_id,
-                        "campus": result.get("校区", ""),
-                        "building": result.get("楼栋", ""),
-                        "room": result.get("房间", "")
-                    }
+                    # 实时去重并记录
+                    room_key = (result.get("校区", ""), result.get("楼栋", ""), result.get("房间", ""))
+                    if room_key not in seen_rooms:
+                        seen_rooms[room_key] = room_id
+                        room_info[room_id] = room_key[:2]  # (校区, 楼栋)
+
+                    return room_id
             except Exception:
                 return None
             finally:
                 processed += 1
                 if show_progress and processed % 100 == 0:
-                    print(f"\r[{processed}/{total}] 已发现: {found}", end="", flush=True)
+                    print(f"\r[{processed}/{total}] 已发现: {len(seen_rooms)}", end="", flush=True)
 
     connector = aiohttp.TCPConnector(limit=max_concurrent)
     async with aiohttp.ClientSession(connector=connector) as session:
         tasks = [scan_single(session, room_id) for room_id in range(start_id, end_id + 1)]
-        results = await asyncio.gather(*tasks)
+        await asyncio.gather(*tasks)
+
+    found = len(seen_rooms)
 
     if show_progress:
         print()
-
-    # 去重处理
-    for result in results:
-        if result is None:
-            continue
-
-        room_key = (result["campus"], result["building"], result["room"])
-        if room_key not in seen_rooms:
-            seen_rooms[room_key] = result["id"]
-            room_info[result["id"]] = (result["campus"], result["building"])
-            found += 1
 
     # 按楼栋分组
     buildings = {}
