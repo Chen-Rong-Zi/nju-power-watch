@@ -338,7 +338,8 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
 
     # 去重: 记录已发现的房间 (校区, 楼栋, 房间名) -> room_id
     seen_rooms = {}
-    valid_ids = []
+    # 记录 room_id -> (校区, 楼栋) 用于分组输出
+    room_info = {}
 
     semaphore = asyncio.Semaphore(max_concurrent)
 
@@ -395,19 +396,32 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         room_key = (result["campus"], result["building"], result["room"])
         if room_key not in seen_rooms:
             seen_rooms[room_key] = result["id"]
-            valid_ids.append(result["id"])
+            room_info[result["id"]] = (result["campus"], result["building"])
             found += 1
 
-    # 排序并写入文件
-    valid_ids.sort(key=int)
+    # 按楼栋分组
+    buildings = {}
+    for room_id, (campus, building) in room_info.items():
+        key = f"{campus}/{building}"
+        if key not in buildings:
+            buildings[key] = []
+        buildings[key].append(room_id)
+
+    # 按校区+楼栋排序，每个楼栋内的ID也排序
+    sorted_buildings = sorted(buildings.keys())
+    for key in sorted_buildings:
+        buildings[key].sort(key=int)
 
     # 确保输出目录存在
     output_path = Path(output_file)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
+    # 写入文件，格式: # 校区/楼栋 注释行，后跟该楼栋的所有ID
     async with aiofiles.open(output_path, "w", encoding="utf-8") as f:
-        for room_id in valid_ids:
-            await f.write(f"{room_id}\n")
+        for key in sorted_buildings:
+            await f.write(f"# {key}\n")
+            for room_id in buildings[key]:
+                await f.write(f"{room_id}\n")
 
     if show_progress:
         print(f"扫描完成: 共扫描 {total} 个ID, 发现 {found} 个有效房间")
