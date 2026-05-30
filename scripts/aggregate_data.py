@@ -120,6 +120,7 @@ async def load_existing_summaries(summaries_dir: Path) -> Dict[str, Dict[str, An
     semaphore = asyncio.Semaphore(100)
 
     async def read_with_limit(file_path: Path):
+        """Read JSON with semaphore-limited concurrency."""
         async with semaphore:
             return await read_json_file(file_path)
 
@@ -153,6 +154,7 @@ async def process_room(room_dir: Path, read_semaphore: asyncio.Semaphore) -> Dic
         return None
 
     async def read_with_limit(f: Path):
+        """Read JSON with semaphore-limited concurrency."""
         async with read_semaphore:
             return await read_json_file(f)
 
@@ -232,6 +234,7 @@ async def process_all_rooms(database_dir: Path) -> List[Dict[str, Any]]:
     process_semaphore = asyncio.Semaphore(100)
     
     async def process_with_limit(room_dir):
+        """Process a room with semaphore-limited concurrency."""
         async with process_semaphore:
             return await process_room(room_dir, read_semaphore)
     
@@ -342,6 +345,7 @@ async def generate_hierarchical_summaries(
     write_semaphore = asyncio.Semaphore(50)  # Limit concurrent writes
     
     async def write_with_limit(file_path: Path, data: Dict[str, Any]):
+        """Write JSON with semaphore-limited concurrency."""
         async with write_semaphore:
             await write_json_file(file_path, data)
     
