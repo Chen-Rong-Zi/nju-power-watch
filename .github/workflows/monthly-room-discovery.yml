@@ -7,12 +7,12 @@ on:
     inputs:
       start_id:
         description: 'Starting room ID'
-        required: false
+        required: true
         default: '1'
       end_id:
         description: 'Ending room ID'
-        required: false
-        default: '100000'
+        required: true
+        default: '110000'
 
 permissions:
   contents: write
