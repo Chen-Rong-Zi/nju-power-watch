@@ -12,6 +12,7 @@ import aiofiles
 import argparse
 import json
 import os
+import signal
 import sys
 import time
 import re
@@ -132,6 +133,7 @@ class QueryError:
     HTTP_ERROR = "HTTP错误"
     PARSE_ERROR = "解析失败"
     NOT_FOUND = "资源不存在"
+    ROOM_NOT_FOUND = "房间不存在"
     RETRY_EXHAUSTED = "重试次数耗尽"
     UNKNOWN = "未知错误"
 
@@ -158,6 +160,11 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
                     else:
                         html = await response.text()
 
+                        # 检查是否是错误页面（房间ID不存在）
+                        if "房间查询失败" in html or "查询房间信息失败" in html:
+                            last_error = {"id": room_id, "error": QueryError.ROOM_NOT_FOUND, "error_type": "room_not_found", "success": False}
+                            break
+
                         # 检查是否需要登录
                         if "login" in html.lower() or "登录" in html:
                             last_error = {"id": room_id, "error": QueryError.AUTH_FAILED, "error_type": "auth_failed", "success": False}
@@ -169,7 +176,7 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
                         # 检查是否解析成功
                         if not result.get("剩余电量"):
                             last_error = {"id": room_id, "error": QueryError.PARSE_ERROR, "error_type": "parse_error", "success": False}
-                            raise aiohttp.ClientConnectorError
+                            break
 
                         result["success"] = True
                         result["id"] = room_id  # 用于内部追踪，save_result 会过滤掉
@@ -196,7 +203,7 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
             await asyncio.sleep(delay)
 
     # 重试次数耗尽
-    if last_error and last_error.get("error_type") not in ("auth_failed", "not_found", "parse_error"):
+    if last_error and last_error.get("error_type") not in ("auth_failed", "not_found", "room_not_found", "parse_error"):
         last_error["error"] = f"{QueryError.RETRY_EXHAUSTED}({last_error.get('error', '')})"
         last_error["error_type"] = "retry_exhausted"
 
@@ -315,6 +322,308 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
     }
 
 
+def load_existing_ids(file_path: str) -> dict:
+    """从文件加载已有ID及其楼栋信息
+
+    Args:
+        file_path: room_ids.txt 文件路径
+
+    Returns:
+        字典 {id: (campus, building)}，campus/building 可能为 None
+    """
+    existing = {}
+    output_path = Path(file_path)
+    if not output_path.exists():
+        return existing
+
+    current_campus = None
+    current_building = None
+
+    with open(output_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            line = line.strip()
+            # 跳过空行
+            if not line:
+                continue
+            # 解析注释行，格式: # 校区/楼栋
+            if line.startswith('#'):
+                comment = line[1:].strip()
+                if '/' in comment:
+                    parts = comment.split('/', 1)
+                    current_campus = parts[0].strip()
+                    current_building = parts[1].strip()
+                else:
+                    current_campus = comment
+                    current_building = None
+                continue
+            # 验证是有效数字ID
+            if line.isdigit():
+                existing[line] = (current_campus, current_building)
+
+    return existing
+
+
+async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: str, max_concurrent: int = DEFAULT_CONCURRENCY, show_progress: bool = True):
+    """扫描ID区间，发现存在的房间
+
+    Args:
+        start_id: 起始ID (包含)
+        end_id: 结束ID (包含)
+        cookies: Cookie字典
+        output_file: 输出文件路径
+        max_concurrent: 最大并发数
+        show_progress: 是否显示进度
+    """
+    # 加载已有ID
+    existing_ids = load_existing_ids(output_file)
+    if existing_ids and show_progress:
+        print(f"从 {output_file} 加载了 {len(existing_ids)} 个已有ID")
+
+    total = end_id - start_id + 1
+    processed = 0
+    found = 0
+    skipped = 0  # 跳过的已有ID计数
+
+    # 去重: 记录已发现的房间 (校区, 楼栋, 房间名) -> room_id
+    seen_rooms = {}
+    # 记录 room_id -> (校区, 楼栋) 用于分组输出
+    room_info = {}
+
+    # 错误统计
+    error_counts = {
+        "room_not_found": 0,  # 房间不存在
+        "auth_failed": 0,     # 需要登录
+        "http_error": 0,      # HTTP错误
+        "timeout": 0,         # 请求超时
+        "network_error": 0,   # 网络错误
+        "parse_error": 0,     # 解析失败
+    }
+
+    # 保存结果的辅助函数
+    saving_in_progress = False  # 防止重入
+
+    def save_results():
+        """保存已发现的房间ID到文件"""
+        nonlocal saving_in_progress
+        if saving_in_progress:
+            return
+        saving_in_progress = True
+
+        if not seen_rooms:
+            return
+
+        # 按楼栋分组
+        buildings = {}
+        for room_id, (campus, building) in room_info.items():
+            key = f"{campus}/{building}"
+            if key not in buildings:
+                buildings[key] = []
+            buildings[key].append(room_id)
+
+        # 排序
+        sorted_buildings = sorted(buildings.keys())
+        for key in sorted_buildings:
+            buildings[key].sort(key=int)
+
+        # 写入文件
+        output_path = Path(output_file)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(output_path, "w", encoding="utf-8") as f:
+            for key in sorted_buildings:
+                f.write(f"# {key}\n")
+                for room_id in buildings[key]:
+                    f.write(f"{room_id}\n")
+
+        print(f"\n已保存 {len(seen_rooms)} 个房间ID到 {output_file}")
+
+    # 信号处理器
+    def signal_handler():
+        """处理终止信号，保存已发现的结果"""
+        print(f"\n\n收到终止信号，正在保存已发现的结果...")
+        save_results()
+        os._exit(0)  # 立即退出，防止重入
+
+    # 注册 asyncio 信号处理器
+    loop = asyncio.get_running_loop()
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        loop.add_signal_handler(sig, signal_handler)
+
+    semaphore = asyncio.Semaphore(max_concurrent)
+
+    async def scan_single(session, room_id):
+        nonlocal processed
+        url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
+        attempt = 0  # 重试次数
+
+        while True:
+            try:
+                async with (
+                        semaphore,
+                        session.get(url, cookies=cookies, headers=HEADERS, timeout=aiohttp.ClientTimeout(total=10)) as response
+                    ):
+                    if response.status != 200:
+                        # 可重试错误，继续循环
+                        error_counts["http_error"] += 1
+                        delay = RETRY_DELAY * (RETRY_BACKOFF ** attempt)
+                        await asyncio.sleep(delay)
+                        attempt += 1
+                        continue
+
+                    html = await response.text()
+
+                    # 检查是否是错误页面（房间不存在）- 永久错误
+                    if "房间查询失败" in html or ("查询房间信息失败" in html):
+                        error_counts["room_not_found"] += 1
+                        break
+
+                    # 检查是否需要登录 - 可重试错误
+                    if "login" in html.lower() or "登录" in html:
+                        error_counts["auth_failed"] += 1
+                        delay = RETRY_DELAY * (RETRY_BACKOFF ** attempt)
+                        await asyncio.sleep(delay)
+                        attempt += 1
+                        continue
+
+                    # 解析房间信息
+                    result = parse_html(html)
+                    if not result.get("校区") or not result.get("楼栋") or not result.get("房间"):
+                        # 解析失败 - 永久错误
+                        error_counts["parse_error"] += 1
+                        print(f"=" * 100)
+                        print(f"{html}")
+                        print(f"{room_id = }")
+                        break
+
+                    # 成功：实时去重并记录
+                    room_key = (result.get("校区", ""), result.get("楼栋", ""), result.get("房间", ""))
+                    if room_key not in seen_rooms:
+                        seen_rooms[room_key] = room_id
+                        room_info[room_id] = room_key[:2]  # (校区, 楼栋)
+
+                    break
+
+            except asyncio.TimeoutError:
+                # 可重试错误
+                error_counts["timeout"] += 1
+                delay = RETRY_DELAY * (RETRY_BACKOFF ** attempt)
+                await asyncio.sleep(delay)
+                attempt += 1
+                continue
+            except aiohttp.ClientConnectorError as e:
+                # 可重试错误
+                error_counts["network_error"] += 1
+                # print(f"NetworkError Client Error: {e}")
+                delay = RETRY_DELAY * (RETRY_BACKOFF ** attempt)
+                await asyncio.sleep(delay)
+                attempt += 1
+                continue
+            except Exception:
+                # 可重试错误
+                error_counts["network_error"] += 1
+                delay = RETRY_DELAY * (RETRY_BACKOFF ** attempt)
+                await asyncio.sleep(delay)
+                attempt += 1
+                continue
+
+        # 只在函数退出时更新进度
+        processed += 1
+        if show_progress:
+            print(f"\r[{processed}/{scan_count}] 已发现: {len(seen_rooms)}", end="", flush=True)
+
+    # 生成待扫描的ID列表，跳过已有ID
+    ids_to_scan = []
+    for room_id in range(start_id, end_id + 1):
+        if str(room_id) in existing_ids:
+            skipped += 1
+        else:
+            ids_to_scan.append(room_id)
+
+    # 将已有ID的楼栋信息预先加入room_info
+    for existing_id, (campus, building) in existing_ids.items():
+        room_info[int(existing_id)] = (campus, building)
+
+    scan_count = len(ids_to_scan)
+    if show_progress:
+        print(f"跳过 {skipped} 个已有ID，待扫描 {scan_count} 个ID")
+
+    connector = aiohttp.TCPConnector(limit=max_concurrent)
+    async with aiohttp.ClientSession(connector=connector) as session:
+        tasks = [scan_single(session, room_id) for room_id in ids_to_scan]
+        await asyncio.gather(*tasks)
+
+    found = len(seen_rooms)
+    total_errors = sum(error_counts.values())
+
+    if show_progress:
+        print()
+
+    # 按楼栋分组
+    buildings = {}
+    no_building_ids = []  # 没有楼栋信息的ID
+    for room_id, (campus, building) in room_info.items():
+        if campus is None or building is None:
+            no_building_ids.append(room_id)
+        else:
+            key = f"{campus}/{building}"
+            if key not in buildings:
+                buildings[key] = []
+            buildings[key].append(room_id)
+
+    # 按校区+楼栋排序，每个楼栋内的ID也排序
+    sorted_buildings = sorted(buildings.keys())
+    for key in sorted_buildings:
+        buildings[key].sort(key=int)
+
+    # 排序没有楼栋信息的ID
+    no_building_ids.sort(key=int)
+
+    # 确保输出目录存在
+    output_path = Path(output_file)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # 写入文件，格式: # 校区/楼栋 注释行，后跟该楼栋的所有ID
+    async with aiofiles.open(output_path, "w", encoding="utf-8") as f:
+        # 先写入有楼栋信息的ID
+        for key in sorted_buildings:
+            await f.write(f"# {key}\n")
+            for room_id in buildings[key]:
+                await f.write(f"{room_id}\n")
+        # 再写入没有楼栋信息的已有ID（放在最后，标记为未知）
+        if no_building_ids:
+            await f.write("# 未知/未知\n")
+            for room_id in no_building_ids:
+                await f.write(f"{room_id}\n")
+
+    if show_progress:
+        print(f"扫描完成: 扫描 {scan_count} 个ID, 发现 {found} 个新房间, 跳过 {skipped} 个已有ID")
+        print(f"结果已保存到: {output_file} (共 {len(seen_rooms) + len(no_building_ids)} 个ID)")
+
+        if total_errors > 0:
+            print("\n--- 错误统计 ---")
+            error_messages = {
+                "room_not_found": "房间不存在",
+                "auth_failed": "认证失败",
+                "http_error": "HTTP错误",
+                "timeout": "请求超时",
+                "network_error": "网络错误",
+                "parse_error": "解析失败",
+            }
+            for error_type, count in error_counts.items():
+                if count > 0:
+                    print(f"  {error_messages[error_type]}: {count}")
+
+    return {
+        "total": total,
+        "scanned": scan_count,
+        "found": found,
+        "skipped": skipped,
+        "errors": error_counts,
+        "total_errors": total_errors,
+        "output_file": str(output_path)
+    }
+
+
 async def save_result(result: dict, output_dir: Path, quiet: bool = False):
     """保存结果到文件，格式: {校区}/{楼栋}/{房间}/{日期}.json"""
     try:
@@ -380,7 +689,9 @@ async def async_main():
     parser.add_argument("-c", "--concurrency", type=int, help=f"最大并发数 (默认{DEFAULT_CONCURRENCY})", default=DEFAULT_CONCURRENCY)
     parser.add_argument("--cookie-file", type=str, help="Cookie JSON文件路径", default=DEFAULT_COOKIE_FILE)
     parser.add_argument("-q", "--quiet", action="store_true", help="安静模式，减少输出")
-    parser.add_argument("room_ids", nargs="+", help="宿舍ID列表")
+    parser.add_argument("--scan", type=int, nargs=2, metavar=('START', 'END'), help="扫描ID区间模式: 扫描指定范围内的所有ID")
+    parser.add_argument("--scan-output", type=str, default="config/room_ids.txt", help="扫描结果输出文件 (默认: config/room_ids.txt)")
+    parser.add_argument("room_ids", nargs="*", help="宿舍ID列表 (扫描模式下不需要)")
     args = parser.parse_args()
 
     room_ids = args.room_ids
@@ -397,6 +708,40 @@ async def async_main():
     cookies = await load_cookies_from_file(cookie_file)
     if show_progress:
         print(f"✓ 已加载 Cookie 文件: {cookie_file}")
+
+    # 扫描模式
+    if args.scan:
+        start_id, end_id = args.scan
+        if start_id > end_id:
+            print(f"错误: 起始ID ({start_id}) 不能大于结束ID ({end_id})")
+            sys.exit(1)
+
+        if show_progress:
+            print(f"开始扫描ID区间: {start_id} - {end_id} (共 {end_id - start_id + 1} 个ID)")
+            print(f"并发数: {max_concurrent}")
+            print("-" * 50)
+
+        start_time = time.time()
+        result = await scan_room_ids(start_id, end_id, cookies, args.scan_output, max_concurrent, show_progress)
+        elapsed = time.time() - start_time
+
+        if show_progress:
+            print("-" * 50)
+            print(f"扫描完成!")
+            print(f"  扫描: {result['scanned']}")
+            print(f"  发现: {result['found']}")
+            print(f"  跳过: {result['skipped']}")
+            print(f"  错误: {result['total_errors']}")
+            print(f"  耗时: {elapsed:.2f}秒")
+            print(f"  输出: {result['output_file']}")
+            print("-" * 50)
+
+        return
+
+    # 正常查询模式
+    if not room_ids:
+        print("错误: 请提供宿舍ID列表或使用 --scan 模式")
+        sys.exit(1)
 
     if output_dir and output_dir.exists():
         if not output_dir.is_dir():
@@ -443,6 +788,7 @@ async def async_main():
                 "timeout": "请求超时: 服务器响应过慢",
                 "auth_failed": "认证失败: Cookie已过期，请更新认证信息",
                 "not_found": "资源不存在: 宿舍ID无效或已下架",
+                "room_not_found": "房间不存在: 该房间ID在系统中不存在",
                 "http_error": "HTTP错误: 服务器内部错误",
                 "parse_error": "解析失败: 页面格式已更新",
                 "retry_exhausted": "重试次数耗尽",
