@@ -1,319 +1,323 @@
 {
   "building": "26栋宿舍",
   "campus": "浦口校区",
-  "total_rooms": 78,
+  "total_rooms": 79,
   "rooms": {
     "3034": {
-      "current_balance": 39.9,
-      "last_updated": "20260530"
+      "current_balance": 34.0,
+      "last_updated": "20260531"
     },
     "3042": {
       "current_balance": 30.9,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "3012": {
-      "current_balance": 30.0,
-      "last_updated": "20260530"
+      "current_balance": 29.9,
+      "last_updated": "20260531"
     },
     "3033": {
       "current_balance": 0.6,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "3052": {
-      "current_balance": 6.0,
-      "last_updated": "20260530"
+      "current_balance": 2.8,
+      "last_updated": "20260531"
     },
     "5044": {
-      "current_balance": 123.7,
-      "last_updated": "20260530"
+      "current_balance": 115.2,
+      "last_updated": "20260531"
     },
     "4043": {
       "current_balance": 0.0,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "4032": {
-      "current_balance": 17.6,
-      "last_updated": "20260530"
+      "current_balance": 17.3,
+      "last_updated": "20260531"
     },
     "6041": {
       "current_balance": 51.7,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "5031": {
-      "current_balance": 25.7,
-      "last_updated": "20260530"
+      "current_balance": 21.3,
+      "last_updated": "20260531"
     },
     "6043": {
-      "current_balance": 131.2,
-      "last_updated": "20260530"
+      "current_balance": 130.3,
+      "last_updated": "20260531"
     },
     "3022": {
-      "current_balance": 18.0,
-      "last_updated": "20260530"
+      "current_balance": 15.0,
+      "last_updated": "20260531"
     },
     "1041": {
-      "current_balance": 14.6,
-      "last_updated": "20260530"
+      "current_balance": 5.9,
+      "last_updated": "20260531"
     },
     "6031": {
       "current_balance": 54.7,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "3031": {
-      "current_balance": 3.5,
-      "last_updated": "20260530"
+      "current_balance": 0.5,
+      "last_updated": "20260531"
     },
     "3051": {
-      "current_balance": 21.2,
-      "last_updated": "20260530"
+      "current_balance": 20.6,
+      "last_updated": "20260531"
     },
     "6034": {
-      "current_balance": 25.6,
-      "last_updated": "20260530"
+      "current_balance": 24.2,
+      "last_updated": "20260531"
     },
     "4044": {
-      "current_balance": 17.1,
-      "last_updated": "20260530"
+      "current_balance": 13.2,
+      "last_updated": "20260531"
     },
     "2031": {
-      "current_balance": 71.8,
-      "last_updated": "20260530"
+      "current_balance": 71.2,
+      "last_updated": "20260531"
     },
     "2022": {
       "current_balance": 119.5,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "3021": {
       "current_balance": 165.5,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "4065校园部": {
       "current_balance": 0.0,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "3054": {
-      "current_balance": 36.5,
-      "last_updated": "20260530"
+      "current_balance": 33.8,
+      "last_updated": "20260531"
     },
     "4014": {
       "current_balance": 28.1,
       "last_updated": "20260521"
     },
     "3024": {
-      "current_balance": 20.6,
-      "last_updated": "20260530"
+      "current_balance": 19.5,
+      "last_updated": "20260531"
     },
     "1042": {
-      "current_balance": 35.3,
-      "last_updated": "20260530"
+      "current_balance": 34.5,
+      "last_updated": "20260531"
     },
     "3044": {
-      "current_balance": 3.9,
-      "last_updated": "20260530"
+      "current_balance": 53.8,
+      "last_updated": "20260531"
     },
     "3014": {
-      "current_balance": 0.3,
-      "last_updated": "20260530"
+      "current_balance": 0.0,
+      "last_updated": "20260531"
     },
     "5011": {
-      "current_balance": 29.6,
-      "last_updated": "20260530"
+      "current_balance": 27.3,
+      "last_updated": "20260531"
     },
     "3032": {
-      "current_balance": 149.1,
-      "last_updated": "20260530"
+      "current_balance": 148.0,
+      "last_updated": "20260531"
     },
     "2012": {
-      "current_balance": 108.1,
-      "last_updated": "20260530"
+      "current_balance": 100.8,
+      "last_updated": "20260531"
     },
     "2021": {
-      "current_balance": 144.6,
-      "last_updated": "20260530"
+      "current_balance": 134.4,
+      "last_updated": "20260531"
     },
     "5034": {
-      "current_balance": 14.5,
-      "last_updated": "20260530"
+      "current_balance": 13.1,
+      "last_updated": "20260531"
     },
     "4031": {
-      "current_balance": 10.4,
-      "last_updated": "20260530"
+      "current_balance": 6.9,
+      "last_updated": "20260531"
     },
     "1014": {
-      "current_balance": 76.5,
-      "last_updated": "20260530"
+      "current_balance": 74.1,
+      "last_updated": "20260531"
     },
     "2044": {
-      "current_balance": 47.9,
-      "last_updated": "20260530"
+      "current_balance": 46.3,
+      "last_updated": "20260531"
     },
     "5032": {
-      "current_balance": 112.9,
-      "last_updated": "20260530"
+      "current_balance": 111.6,
+      "last_updated": "20260531"
     },
     "4034": {
-      "current_balance": 39.7,
-      "last_updated": "20260530"
+      "current_balance": 35.4,
+      "last_updated": "20260531"
     },
     "5042": {
-      "current_balance": 33.1,
-      "last_updated": "20260530"
+      "current_balance": 32.0,
+      "last_updated": "20260531"
     },
     "2034": {
-      "current_balance": 74.5,
-      "last_updated": "20260530"
+      "current_balance": 72.5,
+      "last_updated": "20260531"
     },
     "3065校园部": {
       "current_balance": 54.0,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "2032": {
-      "current_balance": 19.4,
-      "last_updated": "20260530"
+      "current_balance": 10.4,
+      "last_updated": "20260531"
     },
     "4021": {
-      "current_balance": 9.1,
-      "last_updated": "20260530"
+      "current_balance": 3.9,
+      "last_updated": "20260531"
     },
     "3061校园部": {
-      "current_balance": 18.3,
-      "last_updated": "20260530"
+      "current_balance": 6.8,
+      "last_updated": "20260531"
     },
     "4012": {
-      "current_balance": 38.9,
-      "last_updated": "20260530"
+      "current_balance": 35.8,
+      "last_updated": "20260531"
     },
     "4011": {
-      "current_balance": 18.3,
-      "last_updated": "20260530"
+      "current_balance": 8.7,
+      "last_updated": "20260531"
     },
     "3011": {
-      "current_balance": 11.9,
-      "last_updated": "20260530"
+      "current_balance": 11.8,
+      "last_updated": "20260531"
     },
     "4054": {
-      "current_balance": 10.3,
-      "last_updated": "20260530"
+      "current_balance": 8.3,
+      "last_updated": "20260531"
     },
     "6014": {
-      "current_balance": 139.97,
-      "last_updated": "20260530"
+      "current_balance": 139.17,
+      "last_updated": "20260531"
     },
     "3041": {
-      "current_balance": 46.3,
-      "last_updated": "20260530"
+      "current_balance": 42.4,
+      "last_updated": "20260531"
     },
     "5022": {
-      "current_balance": 22.7,
-      "last_updated": "20260530"
+      "current_balance": 14.6,
+      "last_updated": "20260531"
     },
     "5043": {
       "current_balance": 0.0,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "2041": {
-      "current_balance": 135.3,
-      "last_updated": "20260530"
+      "current_balance": 133.0,
+      "last_updated": "20260531"
     },
     "5021": {
-      "current_balance": 88.6,
-      "last_updated": "20260530"
+      "current_balance": 88.3,
+      "last_updated": "20260531"
     },
     "6044": {
-      "current_balance": 29.6,
-      "last_updated": "20260530"
+      "current_balance": 28.0,
+      "last_updated": "20260531"
     },
     "5024": {
-      "current_balance": 5.7,
-      "last_updated": "20260530"
+      "current_balance": 3.3,
+      "last_updated": "20260531"
     },
     "1012": {
-      "current_balance": 134.3,
-      "last_updated": "20260530"
+      "current_balance": 130.1,
+      "last_updated": "20260531"
     },
     "4042": {
-      "current_balance": 37.7,
-      "last_updated": "20260530"
+      "current_balance": 36.6,
+      "last_updated": "20260531"
     },
     "6011": {
       "current_balance": 31.6,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "5014": {
-      "current_balance": 22.9,
-      "last_updated": "20260530"
+      "current_balance": 21.9,
+      "last_updated": "20260531"
     },
     "3023": {
       "current_balance": 0.0,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "2011": {
-      "current_balance": 75.3,
-      "last_updated": "20260530"
+      "current_balance": 68.0,
+      "last_updated": "20260531"
     },
     "1011": {
-      "current_balance": 76.2,
-      "last_updated": "20260530"
+      "current_balance": 73.4,
+      "last_updated": "20260531"
     },
     "2013": {
       "current_balance": 18.1,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "4041": {
-      "current_balance": 25.1,
-      "last_updated": "20260530"
+      "current_balance": 20.9,
+      "last_updated": "20260531"
     },
     "4024": {
-      "current_balance": 1.6,
-      "last_updated": "20260530"
+      "current_balance": 0.0,
+      "last_updated": "20260531"
     },
     "4051": {
-      "current_balance": 10.9,
-      "last_updated": "20260530"
+      "current_balance": 8.7,
+      "last_updated": "20260531"
     },
     "5012": {
-      "current_balance": 148.6,
-      "last_updated": "20260530"
+      "current_balance": 148.5,
+      "last_updated": "20260531"
     },
     "5013": {
       "current_balance": 17.4,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "3063校园部": {
-      "current_balance": 11.7,
-      "last_updated": "20260530"
+      "current_balance": 81.1,
+      "last_updated": "20260531"
     },
     "2042": {
-      "current_balance": 58.1,
-      "last_updated": "20260530"
+      "current_balance": 53.5,
+      "last_updated": "20260531"
     },
     "5041": {
-      "current_balance": 23.7,
-      "last_updated": "20260530"
+      "current_balance": 17.5,
+      "last_updated": "20260531"
     },
     "2024": {
-      "current_balance": 9.6,
-      "last_updated": "20260530"
+      "current_balance": 5.2,
+      "last_updated": "20260531"
     },
     "6032": {
-      "current_balance": 17.4,
-      "last_updated": "20260530"
+      "current_balance": 9.1,
+      "last_updated": "20260531"
     },
     "4052": {
       "current_balance": 29.7,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "3043": {
-      "current_balance": 65.6,
-      "last_updated": "20260530"
+      "current_balance": 65.5,
+      "last_updated": "20260531"
     },
     "3013": {
       "current_balance": 0.0,
-      "last_updated": "20260530"
+      "last_updated": "20260531"
     },
     "2014": {
-      "current_balance": 37.6,
-      "last_updated": "20260530"
+      "current_balance": 35.4,
+      "last_updated": "20260531"
+    },
+    "6042": {
+      "current_balance": 25.1,
+      "last_updated": "20260531"
     }
   }
 }
