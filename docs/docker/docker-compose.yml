@@ -1,0 +1,40 @@
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: docs/docker/Dockerfile
+      target: production
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  dev:
+    build:
+      context: ..
+      dockerfile: docs/docker/Dockerfile
+      target: dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../..:/app
+    profiles:
+      - dev
+
+  pipeline:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes:
+      - ../..:/app
+    entrypoint: ["python"]
+    profiles:
+      - pipeline
+    environment:
+      - NJU_USERNAME=${NJU_USERNAME:-}
+      - NJU_PASSWORD=${NJU_PASSWORD:-}
+      - YUNMA_TOKEN=${YUNMA_TOKEN:-}
