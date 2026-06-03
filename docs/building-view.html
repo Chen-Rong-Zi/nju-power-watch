@@ -1335,29 +1335,6 @@
 
     let trendChart = null;
 
-    // 动画展示记录（持久化到 localStorage）
-    const ANIMATION_SHOWN_KEY = 'electricity_animation_shown';
-    function getAnimationShownSet() {
-      try {
-        const stored = localStorage.getItem(ANIMATION_SHOWN_KEY);
-        return stored ? new Set(JSON.parse(stored)) : new Set();
-      } catch {
-        return new Set();
-      }
-    }
-    function saveAnimationShownSet(set) {
-      try {
-        localStorage.setItem(ANIMATION_SHOWN_KEY, JSON.stringify([...set]));
-      } catch {}
-    }
-    function markAnimationShown(cacheKey) {
-      const set = getAnimationShownSet();
-      set.add(cacheKey);
-      saveAnimationShownSet(set);
-    }
-    function hasAnimationBeenShown(cacheKey) {
-      return getAnimationShownSet().has(cacheKey);
-    }
 
     // ==================== 初始化 ====================
     document.addEventListener('DOMContentLoaded', async () => {
@@ -1623,7 +1600,6 @@
       // 增加loadId，用于取消旧请求
       const thisLoadId = ++state.currentLoadId;
       const cacheKey = `${state.campus}/${state.building}/${state.date}`;
-      const hasAnimationShown = hasAnimationBeenShown(cacheKey);
 
       // Reset fallback banner on fresh load
       if (!sessionStorage.getItem('fallbackBannerDismissed')) {
@@ -1740,6 +1716,9 @@
         displayRanking(allRankings, noDataRooms);
         return;
       }
+
+      // 未命中缓存，需要重新加载（播放动画）
+      const hasAnimationShown = false;
 
       // 显示加载状态
       document.getElementById('empty-state').style.display = 'none';
@@ -1941,7 +1920,6 @@
         noDataRooms: noDataRooms.map(r => r.roomName)
       });
 
-      markAnimationShown(effectiveCacheKey);
 
       // 隐藏进度条
       if (!hasAnimationShown) {
