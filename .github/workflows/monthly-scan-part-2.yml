@@ -1,18 +1,18 @@
-name: Monthly Room Discovery
+name: Monthly Scan Part 2 (50001-100000)
 
 on:
   schedule:
-    - cron: '0 3 1 * *'  # Every 1st of month at 3 AM UTC
+    - cron: '0 3 8 * *'  # Every 8th of month at 3 AM UTC
   workflow_dispatch:
     inputs:
       start_id:
         description: 'Starting room ID'
         required: true
-        default: '1'
+        default: '50001'
       end_id:
         description: 'Ending room ID'
         required: true
-        default: '110000'
+        default: '100000'
 
 permissions:
   contents: write
@@ -69,11 +69,11 @@ jobs:
             exit 1
           fi
 
-      - name: Scan for room IDs
+      - name: Scan for room IDs (50001-100000)
         id: scan
         run: |
-          START_ID="${{ github.event.inputs.start_id || '1' }}"
-          END_ID="${{ github.event.inputs.end_id || '99999' }}"
+          START_ID="${{ github.event.inputs.start_id || '50001' }}"
+          END_ID="${{ github.event.inputs.end_id || '100000' }}"
 
           echo "扫描范围: $START_ID - $END_ID"
 
@@ -83,7 +83,7 @@ jobs:
             --scan-output config/room_ids.txt \
             -c 200
 
-          COUNT=$(wc -l < config/room_ids.txt)
+          COUNT=$(grep -c '^[0-9]' config/room_ids.txt || echo "0")
           echo "found_count=$COUNT" >> $GITHUB_OUTPUT
           echo "发现 $COUNT 个有效房间ID"
 
@@ -98,7 +98,7 @@ jobs:
           if [ -z "$STAGED_FILES" ]; then
             echo "No changes to commit"
           else
-            git commit -m "chore: update room_ids.txt - ${{ steps.scan.outputs.found_count }} rooms found"
+            git commit -m "chore: update room_ids.txt - scan part 2 (50001-100000) - ${{ steps.scan.outputs.found_count }} rooms"
             git push
             echo "✓ room_ids.txt 已更新"
           fi
@@ -106,10 +106,11 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "## 🔍 Room Discovery Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## 🔍 Room Discovery Part 2 (50001-100000)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Scan Range | 50001-100000 |" >> $GITHUB_STEP_SUMMARY
           echo "| Found Rooms | ${{ steps.scan.outputs.found_count }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,116 @@
+name: Monthly Scan Part 1 (1-50000)
+
+on:
+  schedule:
+    - cron: '0 3 1 * *'  # Every 1st of month at 3 AM UTC
+  workflow_dispatch:
+    inputs:
+      start_id:
+        description: 'Starting room ID'
+        required: true
+        default: '1'
+      end_id:
+        description: 'Ending room ID'
+        required: true
+        default: '50000'
+
+permissions:
+  contents: write
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  discover-rooms:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    concurrency:
+      group: room-discovery
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Auto login to get cookie
+        id: login
+        env:
+          NJU_USERNAME: ${{ secrets.NJU_USERNAME }}
+          NJU_PASSWORD: ${{ secrets.NJU_PASSWORD }}
+          YUNMA_TOKEN: ${{ secrets.YUNMA_TOKEN }}
+        run: |
+          echo "=== 开始自动登录流程 ==="
+
+          echo "$NJU_USERNAME" > /tmp/username
+          echo "$NJU_PASSWORD" > /tmp/password
+          echo "$YUNMA_TOKEN" > /tmp/token
+
+          python scripts/nju_auto_login.py
+
+          if [ -f "/tmp/cookie.json" ]; then
+            echo "✓ Cookie文件已生成: /tmp/cookie.json"
+            echo "cookie_file=/tmp/cookie.json" >> $GITHUB_OUTPUT
+          else
+            echo "✗ Cookie文件生成失败"
+            exit 1
+          fi
+
+      - name: Scan for room IDs (1-50000)
+        id: scan
+        run: |
+          START_ID="${{ github.event.inputs.start_id || '1' }}"
+          END_ID="${{ github.event.inputs.end_id || '50000' }}"
+
+          echo "扫描范围: $START_ID - $END_ID"
+
+          python nju_electric_query.py \
+            --cookie-file /tmp/cookie.json \
+            --scan $START_ID $END_ID \
+            --scan-output config/room_ids.txt \
+            -c 200
+
+          COUNT=$(grep -c '^[0-9]' config/room_ids.txt || echo "0")
+          echo "found_count=$COUNT" >> $GITHUB_OUTPUT
+          echo "发现 $COUNT 个有效房间ID"
+
+      - name: Commit and push updated room_ids.txt
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          git add config/room_ids.txt
+
+          STAGED_FILES=$(git diff --staged --name-only)
+          if [ -z "$STAGED_FILES" ]; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update room_ids.txt - scan part 1 (1-50000) - ${{ steps.scan.outputs.found_count }} rooms"
+            git push
+            echo "✓ room_ids.txt 已更新"
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## 🔍 Room Discovery Part 1 (1-50000)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Scan Range | 1-50000 |" >> $GITHUB_STEP_SUMMARY
+          echo "| Found Rooms | ${{ steps.scan.outputs.found_count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
