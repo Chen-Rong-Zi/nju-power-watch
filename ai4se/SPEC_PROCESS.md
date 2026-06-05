@@ -307,41 +307,63 @@ USER: ✅ 采纳
 
 按照课程要求（§4.5），在 SPEC.md + PLAN.md 产出后，使用 **第二个不同的 AI agent**、在新 session 中仅凭这两份文档尝试实现 1-2 个 task，以客观评估规约质量。
 
-- **主开发 agent**: Claude Code（OpenCode）
-- **冷启动 agent**: Claude CLI（本机 Claude Code，全新 session，不导入 history/memory）
+- **主开发 agent**: Claude Code（本机，Superpowers 技能栈）
+- **冷启动 agent**: Claude Code subagent（全新独立 session，不导入 history/memory，不使用 Superpowers 技能）
 - **提供给 agent 的材料**: `SPEC.md` + `PLAN.md`，无额外口头解释
 - **指定 task**: PLAN Chunk 0.1（重写 aggregate_data 单元测试）— 此 task 不涉及前端页面兼容或部署环境，适合验证规约的清晰度
+- **执行环境**: 独立 git worktree（`/tmp/cold-start-verify`），与主工作区完全隔离
 
 ### 6.2 冷启动发现的问题
 
-| # | 冷启动 agent 的疑问 | 暴露的 spec 缺陷 | 修订 |
-|---|-------------------|-----------------|------|
-| 1 | "aggregate_data.py 的 `process_room()` 签名是什么？" | SPEC.md 3.2 节只描述了行为但没有给出函数签名 | PLAN 中补充了 `process_room(room_dir, semaphore)` 签名和返回类型 |
-| 2 | "测试夹具 temp_database 的目录结构是什么?" | SPEC.md 没有明确列出室温文件目录树用于测试隔离 | PLAN 中增加了目录树描述和 fixture 用法 |
-| 3 | "哪些文件是跳过标记应该删除的？" | SPEC.md 没有直接列出跳过测试的文件路径 | PLAN 中标记了具体文件的行号（第 12 行的 `pytestmark`） |
-| 4 | "输出验证的断言应该以什么精度检查？" | SPEC.md 6.1 的数据模型定义了字段名但未定义数值范围约束 | PLAN 补充了断言示例（`assert abs(result["current_balance"] - 125.50) < 0.01`） |
+| # | 冷启动 agent 的疑问/发现 | 暴露的 spec/plan 缺陷 | 修订 |
+|---|------------------------|---------------------|------|
+| 1 | PLAN 中 `assert result["room_name"] == "1613"` 但实际代码 `process_room` 返回 `room_dir.name`，即目录名 `"19栋第16层1613"` | PLAN 中的断言示例与实际 API 行为不一致——写 spec 时假设 `room_name` 是短名，但代码返回的是完整目录名 | PLAN 中补充 `room_name` 的取值来源说明：`room_name = room_dir.name`（即 Path 最后一级目录名） |
+| 2 | PLAN 要求验证 `overview.json` 中的 `total_buildings` 字段，但实际代码不生成该顶层字段——楼栋数嵌套在 `campuses[name]["buildings_count"]` | PLAN 中的数据模型与实际 `generate_hierarchical_summaries` 输出结构不一致 | PLAN 中修正 overview.json 结构描述，补充完整的嵌套字段路径 |
+| 3 | PLAN 提到"验证 `balance_history` 键按时间排序"，但 `process_room` 返回普通 dict，排序依赖 Python 3.7+ 插入顺序 | PLAN 对 `balance_history` 的"排序"语义未明确定义——是返回时已排序，还是需要消费者自己排序 | PLAN 中明确：`balance_history` 是 dict，键为 YYYYMMDD 字符串，插入顺序与 glob 排序一致，但不保证严格时间序 |
+| 4 | `merge_room_data()` 是 `aggregate_data.py` 的公共函数，但 PLAN 的 Task 0.1 步骤中没有为其设计测试 | PLAN 的 step-by-step 指令只覆盖了 3 个测试类，遗漏了 `merge_room_data` | PLAN 中增加 `TestMergeRoomData` 测试类的具体步骤 |
+| 5 | "验证文件大小 < 500KB"——但 `generate_hierarchical_summaries` 写多个文件，测试哪个？ | PLAN 的验证标准不够精确——"文件大小"指哪个文件不明确 | PLAN 中明确：验证 `overview.json` 文件大小 < 500KB |
 
-### 6.3 修订对照
+### 6.3 冷启动 agent 与原意不一致的解读
 
-冷启动暴露的最大问题：**SPEC.md 对函数签名的描述不足**。修订前后对比：
+| # | agent 的解读 | 原意 | 原因 |
+|---|-------------|------|------|
+| 1 | `room_name` 断言值取 `"19栋第16层1613"` | 应为 `"1613"` | PLAN 写断言时假设 fixture 目录名是 `"1613"`，但 `temp_database` fixture 实际创建的是 `"19栋第16层1613"`（模拟真实路径） |
+| 2 | 用 `balance_history` 的 key 集合验证代替排序验证 | 应验证排序 | agent 发现无法可靠验证 dict 键的排序（Python 3.7+ 的插入序是 implementation detail），改为验证所有期望日期都存在 |
+| 3 | 自行增加 `TestMergeRoomData` 类 | PLAN 未提及 | agent 发现 `merge_room_data` 是公共函数但没有测试覆盖，自主补全。这是合理的——plan 遗漏了该函数的测试 |
+
+### 6.4 冷启动产出质量评估
+
+冷启动 agent 最终产出了 **4 个测试类、12 个测试用例**，全部通过。与 PLAN 预期的"3 个测试类、~9 个测试"相比，多出 3 个测试（`TestMergeRoomData`），且修正了 PLAN 中 2 处与实际代码不一致的断言。
+
+**差距来源**：PLAN 的断言示例基于"假设的 API 行为"而非"实际代码验证"。写 PLAN 时未运行实际代码确认 `process_room()` 的返回值格式，导致 `room_name` 和 `overview.json` 结构描述与实现不符。
+
+### 6.5 修订对照
+
+冷启动暴露的最大问题：**PLAN 中的代码示例（断言、API 调用）未与实际代码交叉验证**。修订前后对比：
 
 ```diff
-- 3.2 数据聚合模块: "读取所有房间的历史数据，计算当前余额..."
-+ 3.2 数据聚合模块: "读取所有房间的历史数据，计算当前余额...
-+   核心函数:
-+     process_room(room_dir: Path, semaphore: asyncio.Semaphore) → dict | None
-+       - room_dir: 房间数据目录，含 YYYYMMDD.json 文件
-+       - 返回: {room_name, campus, building, current_balance, balance_history, last_updated}
-+     generate_hierarchical_summaries(database_dir, output_dir) → void"
+  Task 0.1 Step 2:
+- assert result["room_name"] == "1613"
++ # room_name = room_dir.name，值为目录名如 "19栋第16层1613"
++ assert "1613" in result["room_name"]
+
+  Task 0.1 Step 5:
+- 验证 overview.json 的 total_rooms, total_buildings, campuses 字段
++ 验证 overview.json 的 total_rooms, campuses 字段
++ 注意：楼栋数在 campuses[name]["buildings_count"]，不在顶层
+
++ Task 0.1 Step 5.5（新增）:
++ TestMergeRoomData: 测试 merge_room_data() 合并历史、更新余额、处理空已有数据
 ```
 
-此外，`PLAN.md` 中每个 task 都补充了"预期验证步骤"小节，明确写出冷启动 agent 应当运行的命令和预期输出。
+### 6.6 反思
 
-### 6.4 反思
+冷启动验证证明：
+1. **spec 对架构的描述（数据流、组件职责）是充分的**——agent 正确理解了模块边界和函数职责
+2. **spec/plan 中的代码示例是最大的风险点**——未与实际代码交叉验证的断言比缺失描述更危险，因为 agent 会信任错误的示例而非正确理解意图
+3. **plan 的步骤覆盖度有盲区**——遗漏了 `merge_room_data` 的测试，但 agent 自主补全了
 
-冷启动验证证明：**spec 对架构的描述（数据流、组件职责）是充分的，但对 API 签名的描述是不足的**。AI 模型无法从"读取所有房间的历史数据"这种自然语言描述推断出函数签名。这与课程作业提醒一致——隐性上下文（"你们一直在讨论 process_room，所以 spec 不需要写签名"）会严重高估 spec 的清晰度。
-
-> 后续修订策略：所有核心函数（Python 和 JavaScript）在 SPEC.md 中加入签名 + 返回类型 + 示例调用，不再依赖读者从代码中逆向推断。
+> 后续修订策略：PLAN 中所有断言示例必须先运行实际代码验证后再写入，不再凭记忆编写代码片段。
 
 ---
 
