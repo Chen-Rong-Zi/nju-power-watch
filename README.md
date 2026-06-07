@@ -87,6 +87,17 @@
 
 ---
 
+## 📖 AI4SE 开发记录
+
+本项目的开发过程同时也是 AI4SE（AI-Supported Software Engineering）工具链的实践记录，详见 `ai4se/` 目录：
+
+- **[ai4se/REFLECTION.md](ai4se/REFLECTION.md)** — 完整开发历程反思（6 个阶段），涵盖 Speckit 批量实现、Open Design 前端增强、Brainstorming vs Spec 质量对比、Agent 系统性盲区总结等
+- **[ai4se/AGENT_LOG.md](ai4se/AGENT_LOG.md)** — AI 协作过程日志，记录关键决策节点与 human-in-the-loop 干预
+- **[ai4se/SPEC_PROCESS.md](ai4se/SPEC_PROCESS.md)** — Spec 编写与冷启动验证记录，包括 5 个 brainstorming 节点的追问链和采纳/推翻记录
+- **[ai4se/docker/](ai4se/docker/)** — Docker 部署配置（多阶段 Nginx 构建 + 开发模式 Python 服务器）
+
+> 该项目作为南京大学 AI4SE 课程的实践案例，所有开发均使用 Claude Code + Superpowers 技能栈完成。
+
 ## 📂 项目结构
 
 ```
