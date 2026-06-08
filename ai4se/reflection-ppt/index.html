@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>从零搭建南大电费监控系统 — AI4SE 工具链实践反思</title>
+<link rel="stylesheet" href="./assets/fonts.css">
+<link rel="stylesheet" href="./assets/base.css?v=2">
+<link rel="stylesheet" id="theme-link" href="./assets/themes/tokyo-night.css">
+<link rel="stylesheet" href="./assets/animations/animations.css">
+<style>
+:root {
+  --keyword-bg: color-mix(in srgb, var(--accent) 14%, transparent);
+  --keyword-color: var(--accent);
+  --insight-bg: color-mix(in srgb, var(--good) 10%, var(--surface));
+  --insight-border: var(--good);
+  --skill-tag-bg: color-mix(in srgb, #e2b714 15%, var(--surface));
+}
+* { box-sizing: border-box; }
+body { font-size: 16px; }
+.phase-slide { padding-top: 4px; }
+.phase-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
+.phase-header .pn { font-size: 42px; font-weight: 800; color: var(--accent); opacity: 0.3; line-height: 1; }
+.phase-header h2 { font-size: 26px; font-weight: 700; margin: 0; }
+.phase-header .pd { font-size: 16px; color: var(--text-3); margin-left: auto; white-space: nowrap; }
+.keywords { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.keyword { font-size: 13px; padding: 3px 10px; border-radius: 999px; background: var(--keyword-bg); color: var(--keyword-color); font-weight: 600; }
+
+/* ===== Three-column: target | skill | apply ===== */
+.cols-3 { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 14px; margin-top: 6px; }
+
+/* ===== Two-column: pipeline | model ===== */
+.cols-2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; margin-top: 6px; }
+
+/* ===== Three-column wide: config | pipeline | model ===== */
+.cols-3-wide { display: grid; grid-template-columns: 1.0fr 1.1fr 1.0fr; gap: 14px; margin-top: 6px; align-items: stretch; }
+.cols-3-wide .col { min-width: 0; display: flex; flex-direction: column; gap: 10px; height: 100%; justify-content: center; }
+.cols-3-wide .col > .code-card-yaml { flex-grow: 0; flex-shrink: 0; }
+.cols-3-wide .col > .code-card-yaml pre { margin: 0; padding: 10px 14px; font-size: 12px; line-height: 1.3; flex-grow: 0; flex-shrink: 0; }
+.cols-3-wide .col > .pipeline-v { flex-grow: 0; flex-shrink: 0; }
+.cols-3-wide .col .dir-tree { flex-grow: 0; flex-shrink: 0; }
+.cols-3-wide .col .dir-tree .tree-pre { font-size: 14px; line-height: 1.65; flex-grow: 0; flex-shrink: 0; }
+.tc { text-align: center; }
+
+/* YAML syntax highlighting */
+.code-card-yaml pre .yk { color: var(--accent); font-weight: 600; }  /* keys */
+.code-card-yaml pre .yv { color: var(--good); }                       /* values */
+.code-card-yaml pre .yc { color: var(--text-3); font-style: italic; } /* comments */
+.code-card-yaml pre .ys { color: #e2b714; font-weight: 600; }         /* step names */
+
+/* ===== Two-column: 60/40 ===== */
+.cols-2-3 { display: grid; grid-template-columns: 1fr 1.2fr; gap: 16px; margin-top: 6px; }
+
+/* === Column shared === */
+.col { display: flex; flex-direction: column; gap: 10px; }
+.col-label { font-size: 15px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 2px 0; }
+
+/* Target column */
+.screenshot-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+.screenshot-card img { width: 100%; height: auto; display: block; }
+.screenshot-card .cap { padding: 6px 10px; font-size: 12px; color: var(--text-3); text-align: center; background: var(--surface-2); border-top: 1px solid var(--border); }
+.pipeline-svg { padding: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); text-align: center; }
+
+/* Skill column */
+.skill-repo-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.skill-repo-card img { width: 100%; height: auto; display: block; }
+.skill-repo-card .repo-header { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text-2); }
+.skill-repo-card .repo-header .gh-icon { font-size: 18px; }
+.skill-repo-card .repo-header .repo-name { font-weight: 600; color: var(--accent); }
+.skill-stats { display: flex; gap: 8px; padding: 6px 12px; background: var(--surface-2); border-top: 1px solid var(--border); justify-content: center; }
+.skill-stats .stat { font-size: 13px; color: var(--text-3); display: flex; align-items: center; gap: 4px; }
+
+/* Pipeline phases */
+.phase-pipeline { display: flex; flex-direction: column; gap: 5px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.phase-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.phase-step { padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; background: var(--accent); color: #fff; white-space: nowrap; }
+.phase-step.dim { background: var(--surface-2); color: var(--text-3); border: 1px solid var(--border); }
+.phase-step.highlight { background: #e2b714; color: #000; }
+.phase-arrow { font-size: 13px; color: var(--text-3); }
+
+/* Apply column */
+.step-cards { display: flex; flex-direction: column; gap: 6px; }
+.step-card { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.step-card .sn { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+.step-card .sc { flex: 1; }
+.step-card .sc h4 { font-size: 15px; margin: 0; color: var(--text-1); }
+.step-card .sc p { font-size: 12px; margin: 2px 0 0; color: var(--text-2); line-height: 1.5; }
+.step-card .sc code { font-size: 12px; }
+.step-card .sc .skill-tag { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 3px; background: var(--skill-tag-bg); color: #e2b714; font-weight: 600; margin-top: 3px; }
+
+/* Code card */
+.code-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.code-card .cl { padding: 5px 12px; font-size: 12px; color: var(--text-3); background: var(--surface-2); border-bottom: 1px solid var(--border); font-weight: 600; }
+.code-card pre { margin: 0; padding: 10px 12px; background: var(--surface); font-size: 11px; line-height: 1.5; }
+
+/* Insight box */
+.insight-box { margin-top: 8px; padding: 10px 18px; background: var(--insight-bg); border-left: 3px solid var(--insight-border); border-radius: 0 var(--radius) var(--radius) 0; }
+.insight-box .il { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--good); margin-bottom: 3px; }
+.insight-box p { font-size: 14px; line-height: 1.6; color: var(--text-2); margin: 0; }
+
+/* Cover */
+.cover-tagline { font-size: 22px; color: var(--text-3); margin-top: 10px; }
+.cover-meta { margin-top: 36px; display: flex; gap: 32px; justify-content: center; font-size: 16px; color: var(--text-3); }
+.cover-meta span { display: flex; align-items: center; gap: 6px; }
+
+/* Background */
+.card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 14px; }
+
+/* Pipeline vertical flow — compact for Phase 2 */
+.pipeline-v { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 8px; }
+.pipeline-v .pv-step { padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; text-align: center; background: var(--accent); color: #fff; width: 100%; line-height: 1.25; }
+.pipeline-v .pv-step.dim { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); font-size: 12px; }
+.pipeline-v .pv-step.two-line { padding: 8px 16px; }
+.pipeline-v .pv-step.two-line small { display: block; font-weight: 400; font-size: 11px; opacity: 0.85; margin-top: 2px; }
+.pipeline-v .pv-arrow { font-size: 16px; color: var(--text-3); padding: 1px 0; }
+
+/* Directory tree — using <pre> for accurate structure */
+.dir-tree { padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; }
+.dir-tree .tree-header { font-size: 14px; font-weight: 700; color: var(--text-2); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.dir-tree .tree-header .badge.mini { font-size: 9px; padding: 1px 5px; border-radius: 3px; font-weight: 600; display: inline-block; }
+.dir-tree .tree-header .badge.mini.raw { background: color-mix(in srgb, #e2b714 20%, transparent); color: #e2b714; }
+.dir-tree .tree-header .badge.mini.summary { background: color-mix(in srgb, var(--good) 20%, transparent); color: var(--good); }
+.dir-tree .tree-pre { font-family: 'SF Mono', 'Menlo', 'Courier New', monospace; font-size: 13px; line-height: 1.65; margin: 0; color: var(--text-2); white-space: pre; }
+.dir-tree .tree-pre .hl { color: var(--accent); font-weight: 600; }
+.dir-tree .tree-pre .dim { color: var(--text-3); }
+
+/* Schema cards */
+.schema-cards { display: flex; flex-direction: column; gap: 6px; }
+.schema-card { padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.schema-card .sc-title { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+.schema-card .sc-title .badge { display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 3px; font-weight: 600; }
+.schema-card .sc-title .badge.raw { background: color-mix(in srgb, #e2b714 20%, transparent); color: #e2b714; }
+.schema-card .sc-title .badge.summary { background: color-mix(in srgb, var(--good) 20%, transparent); color: var(--good); }
+.schema-card .sc-desc { font-size: 11px; color: var(--text-2); line-height: 1.4; margin: 0; }
+
+/* YAML code card */
+.code-card-yaml { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.code-card-yaml .cl { padding: 8px 16px; font-size: 13px; color: var(--text-3); background: var(--surface-2); border-bottom: 1px solid var(--border); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.code-card-yaml pre { margin: 0; padding: 14px 16px; background: var(--surface); font-size: 12px; line-height: 1.5; }
+.code-card-yaml .cl .gh-badge { font-size: 10px; padding: 1px 6px; border-radius: 3px; background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--accent); font-weight: 600; }
+
+/* Design cards */
+/* Perspective cards — Phase 3 */
+.persp-cards { display: flex; flex-direction: column; gap: 6px; }
+.persp-card { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.persp-icon { font-size: 24px; flex-shrink: 0; width: 36px; text-align: center; }
+.persp-body { flex: 1; }
+.persp-title { font-size: 14px; font-weight: 700; color: var(--text-1); }
+.persp-desc { font-size: 11px; color: var(--text-2); line-height: 1.4; margin-top: 1px; }
+
+/* Stat row */
+.stat-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px; padding: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.stat-box { text-align: center; }
+.stat-num { font-size: 28px; font-weight: 800; color: var(--accent); display: block; line-height: 1; }
+.stat-label { font-size: 11px; color: var(--text-3); display: block; margin-top: 2px; }
+.stat-plus { font-size: 20px; color: var(--text-3); font-weight: 300; }
+
+/* Horizontal flow */
+.flow-h { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 8px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); flex-wrap: wrap; }
+.flow-step { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; background: color-mix(in srgb, var(--accent) 18%, transparent); color: var(--accent); white-space: nowrap; }
+.flow-arrow { font-size: 14px; color: var(--text-3); }
+
+/* Views grid */
+.view-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.view-item { padding: 6px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; color: var(--text-2); display: flex; align-items: center; gap: 6px; }
+.vi-icon { font-size: 14px; flex-shrink: 0; }
+
+/* Issue cards */
+.issue-cards { margin-top: 6px; }
+.issue-card { padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.issue-card .issue-title { font-size: 12px; font-weight: 700; color: var(--bad); margin-bottom: 4px; }
+.issue-card ul { margin: 0; padding-left: 16px; font-size: 11px; color: var(--text-2); line-height: 1.6; }
+
+/* Callout box */
+.callout { padding: 8px 12px; border-radius: var(--radius); font-size: 12px; line-height: 1.5; margin-top: 6px; }
+.callout.warn { background: color-mix(in srgb, #e2b714 12%, var(--surface)); border: 1px solid color-mix(in srgb, #e2b714 30%, transparent); }
+.callout .callout-title { font-weight: 700; font-size: 13px; margin-bottom: 3px; color: #e2b714; }
+.callout p { margin: 0; color: var(--text-2); }
+
+.design-cards { display: flex; flex-direction: column; gap: 6px; }
+.design-card { padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.design-card .dc-title { font-size: 12px; font-weight: 700; color: var(--text-1); margin-bottom: 2px; }
+.design-card .dc-desc { font-size: 11px; color: var(--text-2); line-height: 1.4; margin: 0; }
+.design-card .dc-desc code { font-size: 10px; }
+
+/* Diff row — Phase 4 */
+.diff-row { display: flex; align-items: center; gap: 6px; justify-content: center; padding: 8px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.diff-box { text-align: center; padding: 4px 14px; border-radius: 6px; }
+.diff-box.minus { background: color-mix(in srgb, var(--bad) 15%, transparent); }
+.diff-box.plus { background: color-mix(in srgb, var(--good) 15%, transparent); }
+.diff-box.neutral { background: var(--surface-2); border: 1px solid var(--border); padding: 4px 10px; }
+.diff-num { font-size: 18px; font-weight: 800; display: block; line-height: 1.2; }
+.diff-box.minus .diff-num { color: var(--bad); }
+.diff-box.plus .diff-num { color: var(--good); }
+.diff-box.neutral .diff-num { font-size: 13px; color: var(--text-2); }
+.diff-label { font-size: 10px; color: var(--text-3); }
+.diff-arrow { font-size: 16px; color: var(--text-3); }
+
+/* Change cards */
+.change-cards { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; }
+.change-card { display: flex; gap: 10px; padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); align-items: flex-start; }
+.change-num { font-size: 14px; font-weight: 800; color: var(--accent); opacity: 0.5; flex-shrink: 0; width: 24px; }
+.change-body { flex: 1; }
+.change-title { font-size: 13px; font-weight: 700; color: var(--text-1); }
+.change-desc { font-size: 11px; color: var(--text-2); line-height: 1.4; margin-top: 1px; }
+.change-desc code { font-size: 10px; }
+
+/* OD section */
+.od-section { padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.od-section + .od-section { margin-top: 5px; }
+.od-section-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+.od-section-title.warn-title { color: #e2b714; }
+.od-section ul { margin: 0; padding-left: 16px; font-size: 11px; color: var(--text-2); line-height: 1.6; }
+
+/* Feature cards — Phase 5 */
+.feat-cards { display: flex; flex-direction: column; gap: 4px; }
+.feat-card { display: flex; gap: 8px; padding: 6px 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; align-items: flex-start; }
+.feat-card.accent { border-color: color-mix(in srgb, var(--info) 30%, transparent); background: color-mix(in srgb, var(--info) 6%, var(--surface)); }
+.feat-icon { font-size: 18px; flex-shrink: 0; width: 28px; text-align: center; margin-top: 1px; }
+.feat-body { flex: 1; }
+.feat-title { font-size: 12px; font-weight: 700; color: var(--text-1); }
+.feat-desc { font-size: 10px; color: var(--text-2); line-height: 1.4; margin-top: 1px; }
+.feat-desc code { font-size: 9px; }
+
+/* Brainstorming vs Speckit grid */
+.bs-grid { display: grid; grid-template-columns: 100px 1fr 1fr; gap: 2px; font-size: 11px; }
+.bs-header { padding: 5px 8px; background: var(--accent); color: #fff; font-weight: 700; text-align: center; border-radius: 4px; font-size: 10px; }
+.bs-label { padding: 4px 8px; background: var(--surface-2); font-weight: 600; color: var(--text-2); display: flex; align-items: center; border-radius: 4px; }
+.bs-cell { padding: 4px 8px; background: var(--surface); display: flex; align-items: center; border-radius: 4px; }
+.bs-cell.good { color: var(--good); }
+.bs-cell.bad { color: var(--bad); }
+.card-item { padding: 18px 22px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.card-item h4 { font-size: 18px; margin: 0 0 10px; color: var(--accent); }
+.card-item ul { padding-left: 20px; margin: 0; }
+.card-item li { font-size: 15px; line-height: 1.7; color: var(--text-2); }
+.card-item p { font-size: 15px; line-height: 1.7; color: var(--text-2); margin: 0; }
+.timeline-bar { display: flex; align-items: center; gap: 6px; justify-content: center; margin-top: 22px; flex-wrap: wrap; }
+.timeline-bar .tp { padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; background: var(--accent); color: #fff; }
+.timeline-bar .ta { font-size: 18px; color: var(--text-3); }
+.divider-accent { width: 80px; height: 3px; background: var(--accent); margin: 14px auto; border-radius: 2px; }
+/* Phase 3: font scaling */
+.phase-3-slide .keyword { font-size: 14px; padding: 2px 8px; }
+.phase-3-slide .col-label { font-size: 14px; }
+.phase-3-slide .persp-card { padding: 6px 8px; }
+.phase-3-slide .persp-icon { font-size: 24px; width: 30px; }
+.phase-3-slide .persp-title { font-size: 16px; }
+.phase-3-slide .persp-desc { font-size: 14px; }
+.phase-3-slide .stat-row { padding: 6px 8px; }
+.phase-3-slide .stat-num { font-size: 24px; }
+.phase-3-slide .stat-label { font-size: 14px; }
+.phase-3-slide .stat-plus { font-size: 18px; }
+.phase-3-slide .callout { padding: 6px 10px; font-size: 14px; }
+.phase-3-slide .callout .callout-title { font-size: 16px; }
+.phase-3-slide .callout p { font-size: 14px; }
+.phase-3-slide .bs-grid { font-size: 13px; }
+.phase-3-slide .bs-header { font-size: 13px; padding: 3px 6px; }
+.phase-3-slide .bs-label { font-size: 13px; padding: 3px 6px; }
+.phase-3-slide .bs-cell { font-size: 13px; padding: 3px 6px; }
+.phase-3-slide .insight-box .il { font-size: 16px; }
+.phase-3-slide .insight-box p { font-size: 14px; }
+.phase-3-slide .spec-card-grid { gap: 4px; padding: 6px 8px; margin-bottom: 4px; }
+.phase-3-slide .spec-badge { font-size: 14px; }
+.phase-3-slide .spec-code { font-size: 14px; }
+.phase-3-slide .spec-result { font-size: 14px; }
+.phase3-cols { overflow-y: auto; max-height: calc(100vh - 170px); gap: 8px; }
+.phase3-cols::-webkit-scrollbar { width: 3px; }
+.phase3-cols::-webkit-scrollbar-track { background: transparent; }
+.phase3-cols::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* Speckit decomposition branding */
+.phase-3-slide .speckit-decomp { margin-top: 6px; padding: 6px 8px; }
+.phase-3-slide .speckit-brand { gap: 4px; margin-bottom: 4px; }
+.phase-3-slide .speckit-arrow { font-size: 12px; }
+.phase-3-slide .speckit-result { font-size: 14px; }
+.phase-3-slide .stat-footnote { font-size: 12px; }
+
+/* ===== Phase 1 & 2: font scaling ===== */
+.phase-1-slide .keyword,
+.phase-2-slide .keyword { font-size: 14px; padding: 2px 8px; }
+.phase-1-slide .col-label,
+.phase-2-slide .col-label { font-size: 14px; }
+.phase-1-slide .screenshot-card .cap,
+.phase-1-slide .step-card .sc h4,
+.phase-1-slide .step-card .sc p,
+.phase-1-slide .step-card .sc code,
+.phase-1-slide .code-card .cl,
+.phase-1-slide .code-card pre,
+.phase-1-slide .skill-tag,
+.phase-1-slide .repo-header,
+.phase-1-slide .skill-stats .stat,
+.phase-1-slide .phase-step,
+.phase-1-slide .phase-arrow,
+.phase-1-slide .pipeline-svg .cap,
+.phase-1-slide .card-item li,
+.phase-1-slide .card-item p,
+.phase-2-slide .code-card-yaml .cl,
+.phase-2-slide .code-card-yaml pre,
+.phase-2-slide .pv-step,
+.phase-2-slide .pv-step.dim,
+.phase-2-slide .pv-step.two-line small,
+.phase-2-slide .pv-arrow,
+.phase-2-slide .dir-tree .tree-pre,
+.phase-2-slide .dir-tree .tree-header,
+.phase-2-slide .card-item li,
+.phase-2-slide .card-item p { font-size: 14px; }
+.phase-1-slide .step-card .sn { font-size: 12px; width: 20px; height: 20px; }
+.phase-1-slide .skill-tag { font-size: 11px; padding: 1px 5px; }
+.phase-1-slide .insight-box .il { font-size: 16px; }
+.phase-1-slide .insight-box p { font-size: 14px; }
+.phase-2-slide .insight-box .il { font-size: 16px; }
+.phase-2-slide .insight-box p { font-size: 14px; }
+.phase-1-slide .phase-desc { font-size: 14px; padding: 1px 3px; }
+.phase-1-slide .cols-3,
+.phase-2-slide .cols-3-wide { overflow-y: auto; max-height: calc(100vh - 170px); gap: 8px; }
+.phase-1-slide .cols-3::-webkit-scrollbar,
+.phase-2-slide .cols-3-wide::-webkit-scrollbar { width: 3px; }
+.phase-1-slide .cols-3::-webkit-scrollbar-track,
+.phase-2-slide .cols-3-wide::-webkit-scrollbar-track { background: transparent; }
+.phase-1-slide .cols-3::-webkit-scrollbar-thumb,
+.phase-2-slide .cols-3-wide::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* Background slide font scaling */
+.bg-slide .card-item li { font-size: 14px; }
+.bg-slide .card-item p { font-size: 14px; }
+.bg-slide .card-item h4 { font-size: 18px; }
+.bg-slide .tp { font-size: 14px; padding: 6px 12px; }
+.bg-slide .ta { font-size: 14px; }
+
+/* ===== Phase 4: font scaling ===== */
+.phase-4-slide .keyword { font-size: 14px; padding: 2px 8px; }
+.phase-4-slide .col-label { font-size: 14px; }
+.phase-4-slide .screenshot-card .cap { font-size: 14px; padding: 4px 8px; }
+.phase-4-slide .insight-box .il { font-size: 16px; }
+.phase-4-slide .insight-box p { font-size: 14px; }
+.phase-4-slide .od-grid { font-size: 14px; }
+.phase-4-slide .code-card .cl { font-size: 14px; padding: 4px 10px; }
+.phase-4-slide .code-card pre { font-size: 14px; padding: 8px 10px; }
+.phase-4-slide .code-card pre code { font-size: 14px; }
+.phase-4-slide .stat-num { font-size: 24px; }
+.phase-4-slide .stat-label { font-size: 14px; }
+.phase-4-slide .cols-3 { overflow-y: auto; max-height: calc(100vh - 165px); gap: 8px; grid-template-columns: 1fr 2fr 1fr; }
+.phase-4-slide .cols-3::-webkit-scrollbar { width: 3px; }
+.phase-4-slide .cols-3::-webkit-scrollbar-track { background: transparent; }
+.phase-4-slide .cols-3::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.phase-4-slide .stat-bar { margin-top: auto; display: flex; justify-content: center; gap: 10px; padding: 6px; }
+
+/* ===== Phase 5: font scaling ===== */
+.phase-5-slide .keyword { font-size: 14px; padding: 2px 8px; }
+.phase-5-slide .col-label { font-size: 14px; }
+.phase-5-slide .feat-title { font-size: 14px; }
+.phase-5-slide .feat-desc { font-size: 14px; line-height: 1.3; }
+.phase-5-slide .feat-desc code { font-size: 12px; }
+.phase-5-slide .insight-box .il { font-size: 16px; }
+.phase-5-slide .insight-box p { font-size: 14px; }
+.phase-5-slide .cols-3 { overflow-y: auto; max-height: calc(100vh - 165px); gap: 8px; }
+.phase-5-slide .cols-3::-webkit-scrollbar { width: 3px; }
+.phase-5-slide .cols-3::-webkit-scrollbar-track { background: transparent; }
+.phase-5-slide .cols-3::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.phase-5-slide .feat-card { padding: 6px 8px; gap: 6px; }
+.phase-5-slide .feat-icon { font-size: 18px; width: 24px; }
+.phase-5-slide .vc-badge { font-size: 11px; padding: 1px 5px; }
+.phase-5-slide .vc-step { padding: 5px 7px; margin-bottom: 2px; }
+.phase-5-slide .vc-step .vs-title { font-size: 14px; }
+.phase-5-slide .vc-step .vs-desc { font-size: 14px; }
+.phase-5-slide .vc-step svg { width: 50px; height: 30px; }
+.phase-5-slide .col-intro { font-size: 14px; margin-bottom: 3px; }
+.phase-5-slide .vc-detail { font-size: 14px; }
+.phase-5-slide .vc-detail code { font-size: 12px; }
+
+
+/* ===== Phase 6: compact layout (no screenshots, scrollable) ===== */
+.phase-6-slide .keyword { font-size: 18px; padding: 4px 12px; }
+.phase-6-slide .col-label { font-size: 18px; margin: 0 0 4px; }
+.phase-6-slide .insight-box .il { font-size: 18px; }
+.phase-6-slide .insight-box p { font-size: 16px; line-height: 1.4; }
+.phase-6-slide .sp-card { padding: 6px 8px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); }
+.phase-6-slide .sp-card .sp-title { font-size: 17px; font-weight: 700; color: var(--accent); margin-bottom: 1px; }
+.phase-6-slide .sp-card .sp-desc { font-size: 16px; color: var(--text-2); line-height: 1.4; }
+.phase-6-slide .sp-card .sp-skills { font-size: 14px; color: var(--text-3); margin-top: 1px; }
+.phase-6-slide .skill-pill { display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: 13px; font-weight: 600; background: var(--keyword-bg); color: var(--keyword-color); margin: 1px 1px; }
+
+/* Banner: compact 6-column stat row */
+.phase-6-slide .p6-banner { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-bottom: 3px; }
+.phase-6-slide .p6-stat { padding: 4px 4px; border-radius: var(--radius-sm); text-align: center; border: 1.5px solid; }
+.phase-6-slide .p6-stat[data-color="good"] { border-color: color-mix(in srgb,var(--good) 50%,transparent); background: linear-gradient(135deg,color-mix(in srgb,var(--good) 12%,var(--surface)),color-mix(in srgb,var(--good) 4%,var(--surface))); }
+.phase-6-slide .p6-stat[data-color="bad"] { border-color: color-mix(in srgb,var(--bad) 50%,transparent); background: linear-gradient(135deg,color-mix(in srgb,var(--bad) 12%,var(--surface)),color-mix(in srgb,var(--bad) 4%,var(--surface))); }
+.phase-6-slide .p6-stat[data-color="accent"] { border-color: color-mix(in srgb,var(--accent) 50%,transparent); background: linear-gradient(135deg,color-mix(in srgb,var(--accent) 12%,var(--surface)),color-mix(in srgb,var(--accent) 4%,var(--surface))); }
+.phase-6-slide .p6-stat[data-color="warn"] { border-color: color-mix(in srgb,var(--warn) 50%,transparent); background: linear-gradient(135deg,color-mix(in srgb,var(--warn) 12%,var(--surface)),color-mix(in srgb,var(--warn) 4%,var(--surface))); }
+.phase-6-slide .p6-stat .p6-n { font-size: 20px; font-weight: 800; display: block; line-height: 1.1; }
+.phase-6-slide .p6-stat[data-color="good"] .p6-n { color: var(--good); }
+.phase-6-slide .p6-stat[data-color="bad"] .p6-n { color: var(--bad); }
+.phase-6-slide .p6-stat[data-color="accent"] .p6-n { color: var(--accent); }
+.phase-6-slide .p6-stat[data-color="warn"] .p6-n { color: var(--warn); }
+.phase-6-slide .p6-stat .p6-l { font-size: 11px; color: var(--text-2); font-weight: 500; }
+
+/* Repo screenshot centered */
+.phase-6-slide .p6-repo-shot { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); margin-bottom: 4px; max-height: 120px; }
+.phase-6-slide .p6-repo-shot img { width: 100%; display: block; object-fit: cover; object-position: top; }
+
+/* Two columns */
+.phase-6-slide .p6-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; overflow: hidden; }
+.phase-6-slide .p6-col { display: flex; flex-direction: column; gap: 3px; overflow-y: auto; }
+
+/* Feature grid in right column */
+.phase-6-slide .p6-feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+
+/* ===== Summary slide ===== */
+.summary-slide .keyword { font-size: 14px; padding: 2px 8px; }
+.summary-slide .col-label { font-size: 14px; }
+.summary-slide .cols-2 { overflow-y: auto; max-height: calc(100vh - 165px); gap: 12px; display: grid; grid-template-columns: 1fr 1fr; }
+.summary-slide .cols-2::-webkit-scrollbar { width: 3px; }
+.summary-slide .cols-2::-webkit-scrollbar-track { background: transparent; }
+.summary-slide .cols-2::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.summary-slide .stat-card { padding: 8px 10px; border-radius: var(--radius-sm); }
+.summary-slide .stat-card .sc-num { font-size: 26px; }
+.summary-slide .stat-card .sc-label { font-size: 12px; margin-top: 2px; }
+.summary-slide .insight-box .il { font-size: 16px; }
+.summary-slide .insight-box p { font-size: 14px; line-height: 1.4; }</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- SLIDE 1: Cover -->
+<section class="slide is-active tc center" data-title="封面">
+  <div style="max-width: 920px">
+    <h1 class="h1 anim-rise-in" style="font-size: 52px; line-height: 1.25">从零搭建南大电费监控系统</h1>
+    <p class="cover-tagline anim-fade-up" data-anim="fade-up" style="font-size: 20px">一段 AI4SE 工具链的实践记录与反思</p>
+    <div class="divider-accent"></div>
+    <div class="cover-meta anim-fade-up" data-anim="fade-up">
+      <span>📅 2026.05.14 — 06.03</span>
+      <span>⚙️ Claude · OpenCode · Superpowers</span>
+      <span>🎯 3 周 · 6 个阶段</span>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 2: Background -->
+<section class="slide bg-slide" data-title="背景">
+  <p class="kicker">Background · 项目简介</p>
+  <h2 class="h2">南京大学宿舍电费查询与监控系统</h2>
+  <div class="card-grid-2">
+    <div class="card-item">
+      <h4>项目概况</h4>
+      <ul>
+        <li><strong>数据源</strong>: epay.nju.edu.cn 缴费系统</li>
+        <li><strong>部署</strong>: GitHub Pages（纯静态）</li>
+        <li><strong>技术栈</strong>: Python 采集 + Vanilla JS 前端</li>
+      </ul>
+    </div>
+    <div class="card-item">
+      <h4>本文价值</h4>
+      <p>记录 AI 工具在真实项目中如何在不同阶段扮演不同角色——从 API 逆向、数据建模、前端架构到自动化部署，每个阶段暴露了 AI 不同的能力上限与盲区。</p>
+    </div>
+  </div>
+  <div class="timeline-bar">
+    <span class="tp">API 逆向</span><span class="ta">→</span>
+    <span class="tp">数据建模</span><span class="ta">→</span>
+    <span class="tp">前端架构</span><span class="ta">→</span>
+    <span class="tp">Open Design</span><span class="ta">→</span>
+    <span class="tp">功能深化</span><span class="ta">→</span>
+    <span class="tp">Bug 修复</span>
+  </div>
+</section>
+
+<!-- ==================== SLIDE 3: Phase 1 ==================== -->
+<section class="slide phase-slide phase-1-slide" data-title="阶段一 · 项目探索期">
+  <div class="phase-header">
+    <span class="pn">01</span>
+    <h2>项目探索期：用 js-reverse-automation 逆向登录全流程</h2>
+    <span class="pd">May 14-15</span>
+  </div>
+  <div class="keywords">
+    <span class="keyword">Playwright MCP</span>
+    <span class="keyword">JS 逆向</span>
+    <span class="keyword">AES-CBC</span>
+    <span class="keyword">Cookie 认证</span>
+    <span class="keyword">JSRPC</span>
+    <span class="keyword">OpenCode + Speckit</span>
+  </div>
+
+  <!-- Three-column: Target | Skill | Applied -->
+  <div class="cols-3">
+    <!-- ===== COLUMN 1: Target ===== -->
+    <div class="col">
+      <p class="col-label">Target · 逆向目标</p>
+      <div class="screenshot-card">
+        <img src="./authserver-login.png" alt="authserver.nju.edu.cn 登录页面">
+        <div class="cap">authserver.nju.edu.cn — 统一身份认证登录页</div>
+      </div>
+      <div class="pipeline-svg">
+        <svg viewBox="0 0 300 44" style="width:100%;max-width:300px">
+          <rect x="0" y="8" width="64" height="28" rx="6" fill="var(--accent)" opacity=".85"/>
+          <text x="32" y="27" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">登录页</text>
+          <text x="71" y="26" fill="var(--text-3)" font-size="14">→</text>
+          <rect x="79" y="8" width="64" height="28" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1"/>
+          <text x="111" y="27" text-anchor="middle" fill="var(--text-2)" font-size="11" font-weight="600">Cookie</text>
+          <text x="150" y="26" fill="var(--text-3)" font-size="14">→</text>
+          <rect x="158" y="8" width="64" height="28" rx="6" fill="var(--accent)" opacity=".85"/>
+          <text x="190" y="27" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">电费查询</text>
+          <text x="229" y="26" fill="var(--text-3)" font-size="14">→</text>
+          <rect x="237" y="8" width="64" height="28" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1"/>
+          <text x="269" y="27" text-anchor="middle" fill="var(--text-2)" font-size="11" font-weight="600">HTML解析</text>
+        </svg>
+        <div class="cap" style="font-size:11px;border:none;padding:3px 0 0;background:transparent">完整数据管道：登录 → Cookie → 查询 → 解析</div>
+      </div>
+    </div>
+
+    <!-- ===== COLUMN 2: Skill ===== -->
+    <div class="col">
+      <p class="col-label">Skill · js-reverse-automation</p>
+
+      <!-- GitHub repo header + screenshot -->
+      <div class="skill-repo-card">
+        <div class="repo-header">
+          <span class="gh-icon">⌘</span>
+          <span class="repo-name">Fausto-404 / js-reverse-automation--skill</span>
+          <span style="margin-left:auto;font-size:10px;color:var(--text-3)">v2.0</span>
+        </div>
+        <img src="./jsr-skill-repo-mid.png" alt="js-reverse-automation skill README" style="width:100%;height:auto;display:block">
+        <div class="skill-stats">
+          <span class="stat">⭐ 446 Stars</span>
+          <span class="stat">⑂ 65 Forks</span>
+          <span class="stat">⬇ 6 Releases</span>
+          <span class="stat">📦 Apache-2.0</span>
+        </div>
+      </div>
+
+      <!-- Skill Phase Pipeline -->
+      <div class="phase-pipeline">
+        <div class="phase-row">
+          <span class="phase-step dim">P0</span><span class="phase-arrow">→</span>
+          <span class="phase-step dim">P1</span><span class="phase-arrow">→</span>
+          <span class="phase-step">P2</span><span class="phase-arrow">→</span>
+          <span class="phase-step">P3</span><span class="phase-arrow">→</span>
+          <span class="phase-step">P4</span><span class="phase-arrow">→</span>
+          <span class="phase-step">P5</span><span class="phase-arrow">→</span>
+          <span class="phase-step">P6</span><span class="phase-arrow">→</span>
+          <span class="phase-step">P7</span><span class="phase-arrow">→</span>
+          <span class="phase-step highlight">P8</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:3px">
+          <span class="phase-desc">设置MCP</span>
+          <span class="phase-desc">→</span>
+          <span class="phase-desc">Hook探针</span>
+          <span class="phase-desc">→</span>
+          <span class="phase-desc">分析加密</span>
+          <span class="phase-desc">→</span>
+          <span class="phase-desc">Webpack分析</span>
+          <span class="phase-desc">→</span>
+          <span class="phase-desc">评分验证</span>
+          <span class="phase-desc">→</span>
+          <span class="phase-desc">JSRPC注入</span>
+          <span class="phase-desc">→</span>
+          <span class="phase-desc">Flask代理</span>
+          <span class="phase-desc">→</span>
+          <span class="phase-desc">Burp对接</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== COLUMN 3: Applied ===== -->
+    <div class="col">
+      <p class="col-label">Applied · NJU 实战映射</p>
+
+      <!-- Skill → NJU mapping -->
+      <div class="step-cards">
+        <div class="step-card">
+          <div class="sn">1</div>
+          <div class="sc">
+            <h4>定位登录入口</h4>
+            <p>识别 <code>lt</code>、<code>execution</code>、<code>_eventId</code> 等表单参数</p>
+            <span class="skill-tag">chromedevtools MC</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="sn">2</div>
+          <div class="sc">
+            <h4>Hook 密码加密</h4>
+            <p>捕获 <code>pwdEncryptSalt</code> → <strong>AES-CBC</strong> 加密</p>
+            <span class="skill-tag">runtime Hook 探针</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="sn">3</div>
+          <div class="sc">
+            <h4>验证码识别</h4>
+            <p><code>getCaptcha.htl</code> 接口 → 云码 API 自动识别</p>
+            <span class="skill-tag">JSRPC 注入</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="sn">4</div>
+          <div class="sc">
+            <h4>还原完整流程</h4>
+            <p>登录页 → AES 加密 → 提交 → Cookie → 跳转电费系统</p>
+            <span class="skill-tag">Flask 代理</span>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="sn">5</div>
+          <div class="sc">
+            <h4>批量查询脚本</h4>
+            <p><code>nju_electric_query.py</code> — aiohttp + asyncio 并发</p>
+            <span class="skill-tag">生产级交付</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code snippet -->
+      <div class="code-card">
+        <div class="cl">AES-CBC 加密核心代码</div>
+<pre><code>def encrypt_password(pwd, salt):
+    raw = random_hex(64) + pwd
+    cipher = AES.new(salt.encode(),
+      AES.MODE_CBC, iv=salt[:16].encode())
+    return b64encode(
+      cipher.encrypt(pad(raw))).decode()</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <div class="il">💡 关于 AI 的思考：从分析思路 → 可运行的工程交付</div>
+    <p>传统 AI 逆向只输出"分析思路"，而 <strong>js-reverse-automation skill</strong> 通过 <strong>Chrome DevTools MCP</strong> 连接真实浏览器、<strong>Runtime Hook 探针</strong> 捕获加密调用栈、<strong>7 维度评分系统</strong> 验证候选函数，最终交付可运行的 <strong>JSRPC + Flask 代理 + autoDecoder</strong>。Agent 完成了从"不知道有什么 API"到"可运行的查询脚本"的全链路交付——<strong>需人类指导方向，Agent 执行细节</strong>。</p>
+  </div>
+
+  <!-- Speaker Notes -->
+  <aside class="notes">
+    <h3>阶段一讲稿：项目探索期</h3>
+
+    <p><strong>南京大学的统一认证体系</strong></p>
+    <p>南京大学几乎所有的门户网站都挂在 authserver.nju.edu.cn 这个统一身份认证平台上。无论是教务系统、财务系统、还是我们今天要攻克的电费查询系统，全部走同一套认证流程。</p>
+    <p>你在页面上看到的这张截图，就是 authserver 的登录页面。它长得很普通——用户名、密码、验证码——但背后的加密机制并不简单。</p>
+
+    <p><strong>电费查询系统的认证壁垒</strong></p>
+    <p>我们的目标是 epay.nju.edu.cn 这个电费查询网站。但它不对外开放，你必须先通过 authserver 的统一认证，拿到 Cookie，然后带着这个凭证才能访问电费数据。</p>
+    <p>这就带来了第一个问题：我们不知道认证流程的具体细节。密码是怎么加密的？验证码是怎么生成的？登录成功后的 Cookie 长什么样？这些信息全部隐藏在浏览器的网络请求和 JavaScript 代码中，必须动手逆向。</p>
+
+    <p><strong>逆向过程</strong></p>
+    <p>为了解决这些问题，Agent 借助了 js-reverse-automation skill——这是一个专门做前端 JS 逆向的自动化工具集，GitHub 上 446 Stars，v2.0 版本。它的工作流程分 9 个 Phase（P0-P8），从设置 MCP 连接、注入 Hook 探针，到分析加密算法、评分验证，再到 JSRPC 注入和 Burp 对接，最终交付可运行的工程代码。</p>
+
+    <p>映射到 NJU 实战中：第一步，定位登录入口——识别 lt、execution、_eventId 等隐藏参数。第二步，Hook 密码加密——捕获 pwdEncryptSalt，发现 AES-CBC 加密链路，密码先拼接 64 位随机前缀，再用 salt 加密后 Base64 编码。第三步，验证码识别——接入云码 API 实现自动识别。第四步，还原完整流程——从登录页到 Cookie 持久化再到电费系统，一气呵成。</p>
+
+    <p><strong>最终产出</strong></p>
+    <p>有了登录凭证之后，Agent 将同步脚本改造成了异步批量版本——aiohttp 并发、Semaphore 限流、指数退避重试，产出了 nju_electric_query.py 的第一个可用版本。</p>
+
+    <p><strong>关于 AI 的思考</strong></p>
+    <p>这个阶段展示了 AI 一个非常突出的能力：在人类指导方向的前提下，Agent 可以独立执行细节层面的逆向工程。传统做法需要开发者手动分析每个请求和每行 JS 代码，而 Agent 借助 skill 在几个小时内完成了从"不知道有什么 API"到"可运行脚本"的全链路交付。但有一个前提不可忽视：需要人类来判断"下一步该做什么"。Agent 擅长执行，不擅长决策方向。</p>
+  </aside>
+</section>
+
+<!-- ==================== SLIDE 4: Phase 2 ==================== -->
+<section class="slide phase-slide phase-2-slide" data-title="阶段二 · 数据模型与自动化管道">
+  <div class="phase-header">
+    <span class="pn">02</span>
+    <h2>数据模型与自动化管道：从脚本到系统</h2>
+    <span class="pd">May 16</span>
+  </div>
+  <div class="keywords">
+    <span class="keyword">数据建模</span>
+    <span class="keyword">GitHub Actions</span>
+    <span class="keyword">CI/CD</span>
+    <span class="keyword">Cookie 持久化</span>
+    <span class="keyword">OpenCode + Speckit</span>
+  </div>
+
+  <!-- Three-column: Config | Pipeline | Model -->
+  <div class="cols-3-wide">
+    <!-- ===== COLUMN 1: Config (YAML) ===== -->
+    <div class="col">
+      <p class="col-label">Config · 工作流配置</p>
+      <div class="code-card-yaml">
+        <div class="cl"><span>⚙️ daily-query.yml</span></div>
+<pre><code><span class="yk">name</span>: <span class="yv">Daily Electricity Query</span>
+<span class="yk">on</span>:
+  <span class="yk">schedule</span>:
+    - <span class="yk">cron</span>: <span class="yv">'0 2 * * *'</span>   <span class="yc"># 每日 UTC 2:00</span>
+  <span class="yk">workflow_dispatch</span>:
+<span class="yk">jobs</span>:
+  <span class="yk">query-electricity</span>:
+    <span class="yk">runs-on</span>: <span class="yv">ubuntu-latest</span>
+    <span class="yk">timeout-minutes</span>: <span class="yv">35</span>
+    <span class="yk">steps</span>:
+      - <span class="yk">run</span>: <span class="yv">python scripts/nju_auto_login.py</span>
+      - <span class="yk">run</span>: <span class="yv">python nju_electric_query.py \
+          -d ./database -c 200 \
+          ${{ steps.rooms.outputs.room_ids }}</span>
+      - <span class="yk">run</span>: <span class="yv">python scripts/aggregate_data.py \
+          --database ./database \
+          --output ./database/summaries</span>
+      - <span class="yk">run</span>: <span class="yv">git add -f database/summaries/ \
+          && git commit -m "update $(date +%F)" \
+          && git push</span></code></pre>
+      </div>
+    </div>
+
+    <!-- ===== COLUMN 2: Pipeline (centered) ===== -->
+    <div class="col">
+      <p class="col-label tc">Pipeline · 数据采集流水线</p>
+      <div class="pipeline-v">
+        <div class="pv-step">GitHub Actions 定时触发</div>
+        <span class="pv-arrow">⬇</span>
+        <div class="pv-step two-line"><small>AES-CBC 自动登录</small>nju_auto_login.py</div>
+        <span class="pv-arrow">⬇</span>
+        <div class="pv-step dim two-line">Cookie 文件<small>保存到 /tmp/cookie.json</small></div>
+        <span class="pv-arrow">⬇</span>
+        <div class="pv-step two-line"><small>异步并发查询</small>nju_electric_query.py</div>
+        <span class="pv-arrow">⬇</span>
+        <div class="pv-step dim two-line">原始 JSON<small>写入 database/{campus}/{building}/{room}/{date}.json</small></div>
+        <span class="pv-arrow">⬇</span>
+        <div class="pv-step two-line"><small>聚合 & 分层摘要</small>aggregate_data.py</div>
+        <span class="pv-arrow">⬇</span>
+        <div class="pv-step dim">git commit + push → GitHub Pages 更新</div>
+      </div>
+    </div>
+
+    <!-- ===== COLUMN 3: Model (directory trees) ===== -->
+    <div class="col">
+      <p class="col-label">Model · 两层数据存储结构</p>
+
+      <!-- RAW layer tree -->
+      <div class="dir-tree">
+        <div class="tree-header">📁 <span class="badge mini raw">RAW</span> 原始数据层</div>
+        <pre class="tree-pre">├── <span class="hl">仙林校区</span>/
+│   ├── <span class="hl">19幢</span>/ → 19栋第16层1613/ → <span class="dim">20260515.json</span>
+│   └── <span class="hl">4幢</span>/ → 4A505/ → <span class="dim">20260515.json</span>
+├── <span class="hl">苏州校区</span>/ → 仁园-戊/ → 戊504/ → <span class="dim">20260515.json</span>
+├── <span class="hl">鼓楼校区</span>/ → <span class="dim">...</span>
+└── <span class="hl">浦口校区</span>/ → <span class="dim">...</span></pre>
+      </div>
+
+      <!-- SUMMARY layer tree -->
+      <div class="dir-tree">
+        <div class="tree-header">📁 <span class="badge mini summary">SUMMARY</span> 聚合摘要层</div>
+        <pre class="tree-pre">├── <span class="hl">overview.json</span>         ← <span class="dim">全局统计</span>
+├── <span class="hl">campuses/</span>
+│   └── <span class="hl">仙林校区</span>/
+│       ├── <span class="hl">summary.json</span>    ← <span class="dim">楼栋汇总</span>
+│       └── <span class="hl">19幢</span>/
+│           └── <span class="hl">summary.json</span> ← <span class="dim">balance_history</span>
+└── <span class="dim">...</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <div class="il">💡 关于 AI 的思考：数据模型的设计定型</div>
+    <p>这套两层数据模型的层级结构和获取链路从 May 16 设计定型后贯穿了项目始终，即使后续经历了 room_id → room_name 的大规模重构，基本形态也没有改变。Agent 在数据建模阶段展现了良好的架构直觉——<strong>先定义数据契约，再实现功能</strong>，这在 AI 协作中是一个值得保留的好习惯。</p>
+  </div>
+
+  <!-- Speaker Notes -->
+  <aside class="notes">
+    <h3>阶段二讲稿：数据模型与自动化管道</h3>
+
+    <p><strong>从脚本到系统</strong></p>
+    <p>有了可运行的查询脚本之后，下一步不是急着写前端，而是先把数据模型和自动化管道搭好。让数据采集从"手动跑脚本"变成"可持续运行的系统"。</p>
+
+    <p><strong>数据管道</strong></p>
+    <p>整个数据采集由 GitHub Actions 定时触发——每天 UTC 2:00 自动运行。流程是这样的：首先 nju_auto_login.py 用凭据登录 authserver.nju.edu.cn，经过 AES-CBC 加密认证拿到 Cookie 文件。然后 nju_electric_query.py 用这个 Cookie 并发查询所有房间，控制并发数防止触发服务端限流。查询完成后，aggregate_data.py 聚合生成分层摘要，最后自动 commit 并 push 到 GitHub Pages，前端就能读到最新数据了。</p>
+
+    <p><strong>两层数据模型</strong></p>
+    <p>这里最核心的设计是两层存储结构。原始数据层按校区→楼栋→房间→日期的路径组织，每个 JSON 文件就是一次查询的结果，append-only 写入。聚合摘要层按相同的层级组织，但在每一层上都预先算好了统计信息——overview.json 有全局统计，校区摘要含各楼栋汇总，楼栋摘要含各房间的 balance_history。这样前端加载时不需要遍历几千个原始文件，直接从摘要层读就行。</p>
+
+    <p><strong>为什么这个设计能贯穿始终</strong></p>
+    <p>这套模型从 5 月 16 日定型后，经历了 room_id 到 room_name 的大规模重构、前端三次重写、新增十几个功能模块——但数据模型的基本形态一次都没改过。原因在于：它把"数据怎么存"和"数据怎么用"清晰地分开了。原始层只管记录，摘要层只管查询，各自独立演化。</p>
+
+    <p>这个阶段的教训是：在 AI 协作中，先让 Agent 定义数据契约再实现功能，比先写代码再补数据结构要高效得多。Agent 在数据建模上展现的架构直觉，其实比在写具体功能代码时更可靠。</p>
+  </aside>
+</section>
+
+<!-- ===== SLIDE 5: Phase 3 ===== -->
+<section class="slide phase-slide phase-3-slide" data-title="阶段三 · 前端需求探索阶段">
+  <div class="phase-header">
+    <span class="pn">03</span>
+    <h2>前端需求探索阶段：Spec 清晰度决定了实现的天花板</h2>
+    <span class="pd">May 17 · Speckit</span>
+  </div>
+  <div class="keywords">
+    <span class="keyword" style="font-size:18px;">前端架构</span>
+    <span class="keyword" style="font-size:18px;">需求梳理</span>
+    <span class="keyword" style="font-size:18px;">SPA + ECharts</span>
+    <span class="keyword" style="font-size:18px;">Speckit 框架</span>
+    <span class="keyword" style="font-size:18px;">10 specs</span>
+    <span class="keyword" style="font-size:18px;">3 perspectives</span>
+  </div>
+  <div class="cols-3 phase3-cols">
+
+    <!-- COL 1: motivation -->
+    <div class="col">
+      <p class="col-label">设计动机 · 三个视角</p>
+      <p style="font-size:18px;color:var(--text-2);margin:0 0 2px;line-height:1.4;">系统围绕两个核心概念展开——<strong>电量余额</strong>还剩多少钱、<strong>耗电量</strong>用了多少度</p>
+      <div class="persp-cards" style="gap:8px;">
+        <div class="persp-card">
+          <span class="persp-icon">🏠</span>
+          <div class="persp-body">
+            <div class="persp-title">房间视角</div>
+            <div class="persp-desc">"我"的宿舍 — 余额还剩多少？消耗趋势？需要充值吗？</div>
+          </div>
+        </div>
+        <div class="persp-card">
+          <span class="persp-icon">🏢</span>
+          <div class="persp-body">
+            <div class="persp-title">楼栋视角</div>
+            <div class="persp-desc">整栋楼用电分布 — 哪些房间异常？我在楼里排第几？</div>
+          </div>
+        </div>
+        <div class="persp-card">
+          <span class="persp-icon">🏫</span>
+          <div class="persp-body">
+            <div class="persp-title">校区视角</div>
+            <div class="persp-desc">全局概览 — 总量对比？各楼栋排名？全校预警扫描？</div>
+          </div>
+        </div>
+      </div>
+      <div class="speckit-decomp">
+        <div class="speckit-brand">
+          <svg class="speckit-svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="4" fill="var(--accent)" opacity=".2"/>
+            <text x="12" y="16" text-anchor="middle" fill="var(--accent)" font-size="13" font-weight="700">S</text>
+          </svg>
+          <span style="font-size:18px;font-weight:700;color:var(--accent);letter-spacing:.03em;">Speckit</span>
+          <span class="speckit-arrow">→</span>
+          <span class="speckit-result">10 specs (User Stories) · 13 phases</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+          <div class="stat-box"><span class="stat-num">7</span><span class="stat-label">房间视角</span><span style="font-size:14px;color:var(--text-3);display:block;">US1 US4-6 US8-10</span></div>
+          <div class="stat-box"><span class="stat-num">2</span><span class="stat-label">楼栋视角</span><span style="font-size:14px;color:var(--text-3);display:block;">US2 US3</span></div>
+          <div class="stat-box"><span class="stat-num">1</span><span class="stat-label">校区视角</span><span style="font-size:14px;color:var(--text-3);display:block;">US7</span></div>
+        </div>
+        <div class="stat-footnote">+ 3 shared phases (setup · foundation · polish)</div>
+      </div>
+    </div>
+
+    <!-- COL 2: spec & story examples -->
+    <div class="col">
+      <p class="col-label">Speckit 拆解的 Spec 与 Story 示例</p>
+
+      <div class="spec-card-grid" style="grid-template-columns:1fr;">
+        <div>
+          <div class="spec-badge good" style="color:var(--good);">🏠 房间视角 · 7 specs</div>
+          <span class="spec-code" style="display:block;margin-top:4px;">US1 智能预警 · US4 多房间对比<br>US5 充值建议 · US6 模式识别<br>US8 费用预测 · US9 预警订阅<br>US10 成就系统</span>
+        </div>
+      </div>
+
+      <div class="spec-card-grid" style="grid-template-columns:1fr;">
+        <div>
+          <div class="spec-badge good" style="color:var(--good);">🏢 楼栋视角 · 2 specs</div>
+          <span class="spec-code" style="display:block;margin-top:4px;">US2 楼栋排名 — 高消耗/节能/低余额排行<br>US3 楼层热力图 — 颜色编码·展开房间列表</span>
+        </div>
+      </div>
+
+      <div class="spec-card-grid" style="grid-template-columns:1fr;">
+        <div>
+          <div class="spec-badge good" style="color:var(--good);">🏫 校区视角 · 1 spec</div>
+          <span class="spec-code" style="display:block;margin-top:4px;">US7 校区仪表盘 — 校区对比·楼栋排名<br>全校预警扫描·多级下钻</span>
+        </div>
+      </div>
+
+      <div class="insight-box" style="margin-top:8px;">
+        <div class="il" style="font-size:18px;">📋 10 User Stories · 13 phases</div>
+        <p style="font-size:18px;">Speckit 将三个视角的系统性需求拆解为 10 份独立可测的 spec，覆盖从房间个体到全校宏观的完整链路。</p>
+      </div>
+    </div>
+
+    <!-- COL 3: spec → bug (moved from col 2) -->
+    <div class="col">
+      <p class="col-label">没有 Brainstorming → Spec 只是"最低限度"</p>
+
+      <div class="spec-card-grid">
+        <div>
+          <div class="spec-badge bad">SPEC</div>
+          <span class="spec-code">T028 "建筑节能排名"</span>
+        </div>
+        <div class="spec-result">Agent 默认降序排列<br><span style="color:var(--bad);font-weight:600;">榜首是最费电房间</span></div>
+        <div>
+          <div class="spec-badge good">BRAIN</div>
+          <span class="spec-code">"明确排序规则" → 按耗电量升序排列</span>
+        </div>
+      </div>
+
+      <div class="spec-card-grid">
+        <div>
+          <div class="spec-badge bad">SPEC</div>
+          <span class="spec-code">T113 "加载&错误处理"</span>
+        </div>
+        <div class="spec-result">"未采集"+"API报错"<br><span style="color:var(--bad);font-weight:600;">合并为"暂无数据"</span></div>
+        <div>
+          <div class="spec-badge good">BRAIN</div>
+          <span class="spec-code">"区分空数据与错误状态" → 空数据标注'暂无数据'，错误状态红色警示</span>
+        </div>
+      </div>
+
+      <div class="spec-card-grid">
+        <div>
+          <div class="spec-badge bad">SPEC</div>
+          <span class="spec-code">"全校预警扫描"</span>
+        </div>
+        <div class="spec-result">串行 90+ HTTP 请求<br><span style="color:var(--bad);font-weight:600;">耗时 10+ 秒</span></div>
+        <div>
+          <div class="spec-badge good">BRAIN</div>
+          <span class="spec-code">"设定性能目标" → 请求池并发控制，3 秒内完成全楼栋预警扫描</span>
+        </div>
+      </div>
+
+      <div class="spec-card-grid">
+        <div>
+          <div class="spec-badge bad">SPEC</div>
+          <span class="spec-code">T070 "校区级统计计算"</span>
+        </div>
+        <div class="spec-result">完整度标准不明确<br><span style="color:var(--bad);font-weight:600;">实现与预期偏离</span></div>
+        <div>
+          <div class="spec-badge good">BRAIN</div>
+          <span class="spec-code">"定义完整度指标" → 以房间数覆盖率为基数计算采集完成度</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="insight-box" style="margin-top:10px;padding:12px 16px;">
+    <div class="il" style="font-size:20px;">💡 关于 Speckit 的思考</div>
+    <p style="font-size:18px;margin:4px 0 0;line-height:1.5;">Speckit 用 <strong>Story</strong> 描述"用户要什么"，用 <strong>Spec</strong> 描述"系统做什么"。Speckit 尝试将用户需求细化为专业的 Spec，但由于缺乏 Brainstorming 追问环节，没有真实的用户反馈来校准 Spec 的完整性，往往效果不尽人意：Agent 忠实执行了 Spec，但 Spec 本身可能已经偏离了用户的真实意图。</p>
+  </div>
+
+  <aside class="notes">
+    <h3>阶段三讲稿：前端需求探索阶段</h3>
+    <p><strong>三个视角的设计动机</strong></p>
+    <p>整个前端系统的核心围绕两个概念展开——电费余额还剩多少钱和耗电量用了多少度。围绕这两个核心指标，系统需要在三个视角上提供数据分析。</p>
+    <p>房间视角是最直接的——"我"的宿舍还有多少余额？消耗趋势如何？需要充值吗？这是每个学生最关心的问题。楼栋视角则把视野拉高到整栋楼——这栋楼的整体用电分布如何？哪些房间耗电异常？其他同学的平均用电水平是多少？我在楼里排第几？校区视角是对全校的整体把控——不同校区的用电总量对比如何？各楼栋的消耗排名怎样？有没有需要预警的低余额楼栋？</p>
+    <p>这三个视角构成了前端需求的骨架。Agent 通过 Speckit 框架，从这三个视角出发，系统性地产出了完整的用户故事和功能需求。</p>
+    <p><strong>Speckit 框架的高效与代价</strong></p>
+    <p>Speckit 将需求拆解为 122 个任务，分布在 13 个 Phase 中，覆盖从数据加载、视图渲染到交互和图表可视化的完整链路。最终汇集为 5 个核心视图页面——首页仪表盘、预警中心、楼栋排行榜、楼层热力图、多房间对比。</p>
+    <p>好处是覆盖率很高，122 个任务一步到位，没有遗漏。但代价是一次性交付大量代码带来了不少问题——ECharts 文件截断导致白屏、排行榜排序方向反了、预警中心串行加载 10 秒以上。</p>
+    <p><strong>Spec 不清晰的四个典型案例</strong></p>
+    <p>看这几个例子。"Top10 节能"——Spec 只写了这四个字，Agent 按照对"排行榜"的默认理解实现了耗电从高到低，结果节能模范的榜首显示的是最费电的房间。如果 spec 明确写了"按耗电量升序排列"，就不会有这个偏差。</p>
+    <p>"显示房间耗电量"——Spec 没有定义边界状态。"这个房间今天还没采集到数据"和"API 返回了错误"在 UI 上应该怎么区分？Agent 合并处理为"暂无数据"，直到验收才发现两种状态需要不同的视觉提示。</p>
+    <p>"全校预警扫描"——Spec 定义了做什么，但没有定义多快。Agent 用三重嵌套循环串行请求，预警中心需要 90 多次 HTTP 请求、耗时 10 秒以上。如果 spec 明确了"3 秒内完成"，Agent 会设计完全不同的架构。</p>
+    <p>最隐蔽的是——有的需求甚至没有 spec。数据完整度的标准完全没有定义，Agent 只能用自己的假设填补。</p>
+    <p><strong>Brainstorming 的价值</strong></p>
+    <p>这些问题的共性是：问题在写 spec 时不可见，只有在尝试回答时才会浮现。Brainstorming 通过追问链让不可见的问题在实现前变得可见——"按升序还是降序？""空状态和错误状态怎么区分？""性能指标是多少？"——这些追问在 Speckit 阶段从未被提出，所以问题直到验收才被发现。</p>
+    <p>修正成本是最直接的证据：122 个任务的代码生成用了几个小时，但修复 spec 不清晰导致的问题花了超过 2 天。核心教训是——如果你不确定 spec 的质量，就不要用 Speckit。手动逐个实现、逐个验收，反而能更早发现问题。</p>
+  </aside>
+</section>
+
+<!-- ===== SLIDE 6: Phase 4 ===== -->
+<section class="slide phase-slide phase-4-slide" data-title="阶段四 · 功能深化与数据完善期">
+  <div class="phase-header">
+    <span class="pn">04</span>
+    <h2>功能深化与数据完善期：Open Design 前端增强</h2>
+    <span class="pd">May 19</span>
+  </div>
+  <div class="keywords">
+    <span class="keyword" style="font-size:18px;">Open Design</span>
+    <span class="keyword" style="font-size:18px;">CSS 变量体系</span>
+    <span class="keyword" style="font-size:18px;">页面重构</span>
+    <span class="keyword" style="font-size:18px;">data-service.js</span>
+    <span class="keyword" style="font-size:18px;">+6041 / -13574</span>
+  </div>
+
+  <div class="cols-3">
+    <!-- COL 1: Before 截图 + 简要特征 -->
+    <div class="col">
+      <p class="col-label">🚫 Before · Speckit</p>
+      <div class="screenshot-card">
+        <img src="./before-od.png" alt="Before Open Design — Speckit 生成的前端">
+        <div class="cap">localhost:10000 · 4A211 · Speckit 生成</div>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;font-size:15px;">
+          <div style="padding:4px 8px;font-weight:700;color:var(--bad);background:var(--surface);">CSS 变量</div>
+          <div style="padding:4px 8px;color:var(--bad);background:var(--surface);border-left:1px solid var(--border);">:root { } /* 空 */</div>
+          <div style="padding:4px 8px;font-weight:700;color:var(--bad);">字体</div>
+          <div style="padding:4px 8px;color:var(--bad);border-left:1px solid var(--border);">无统一字体栈</div>
+          <div style="padding:4px 8px;font-weight:700;color:var(--bad);background:var(--surface);">数据层</div>
+          <div style="padding:4px 8px;color:var(--bad);background:var(--surface);border-left:1px solid var(--border);">20+ 散落模块</div>
+          <div style="padding:4px 8px;font-weight:700;color:var(--bad);">设计自检</div>
+          <div style="padding:4px 8px;color:var(--bad);border-left:1px solid var(--border);">无</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 2: 设计系统深度对比 (核心) -->
+    <div class="col">
+      <p class="col-label">设计系统对比 · 从 0 到 1 构建</p>
+
+      <!-- Design Token 体系 -->
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
+        <div style="padding:3px 10px;font-size:16px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎨 Design Token 体系</div>
+        <div style="display:grid;grid-template-columns:85px 1fr 1fr;gap:0;font-size:15px;">
+          <div style="padding:3px 8px;font-weight:700;color:var(--text-3);background:var(--surface);border-bottom:1px solid var(--border);">Token</div>
+          <div style="padding:3px 8px;font-weight:700;color:var(--bad);background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">Before</div>
+          <div style="padding:3px 8px;font-weight:700;color:var(--good);background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">After · Open Design</div>
+
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);">色值</div>
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);color:var(--bad);">硬编码 hex</div>
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);color:var(--good);">oklch() 色域 · --accent / --bg / --surface</div>
+
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);">强调色</div>
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);color:var(--bad);">无统一强调色</div>
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);color:var(--good);">--accent (green/cyan · 能源监控)</div>
+
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);">字体</div>
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);color:var(--bad);">系统默认</div>
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);color:var(--good);">--font-display (SF Pro) · --font-mono</div>
+
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);">圆角</div>
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);color:var(--bad);">无统一控制</div>
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);color:var(--good);">--radius 变量统一控制</div>
+
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);">间距</div>
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);color:var(--bad);">内联 style</div>
+          <div style="padding:3px 8px;border-bottom:1px solid var(--border);border-left:1px solid var(--border);color:var(--good);">CSS 变量 + 设计自检</div>
+
+          <div style="padding:3px 8px;">品牌</div>
+          <div style="padding:3px 8px;border-left:1px solid var(--border);color:var(--bad);">"NJU Electricity Data Viewer"</div>
+          <div style="padding:3px 8px;border-left:1px solid var(--border);color:var(--good);">"电费监控系统 · 南京大学"</div>
+        </div>
+      </div>
+
+      <!-- 架构 + 动画双栏 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+        <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+          <div style="padding:3px 8px;font-size:15px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎨 视觉组件体系</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;font-size:14px;">
+            <div style="padding:3px 6px;font-weight:700;color:var(--bad);background:var(--surface);border-bottom:1px solid var(--border);">Before</div>
+            <div style="padding:3px 6px;font-weight:700;color:var(--good);background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">After</div>
+            <div style="padding:3px 6px;color:var(--bad);background:var(--surface);">无统一卡片风格</div>
+            <div style="padding:3px 6px;color:var(--good);background:var(--surface);border-left:1px solid var(--border);">卡片 · 阴影 · 圆角统一</div>
+            <div style="padding:3px 6px;color:var(--bad);">按钮无设计规范</div>
+            <div style="padding:3px 6px;color:var(--good);border-left:1px solid var(--border);">主按钮/次按钮/危险按钮</div>
+            <div style="padding:3px 6px;color:var(--bad);background:var(--surface);">内联样式分散</div>
+            <div style="padding:3px 6px;color:var(--good);background:var(--surface);border-left:1px solid var(--border);">语义色统一 · 品牌色贯穿</div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+          <div style="padding:3px 8px;font-size:15px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🔄 设计系统设计过程</div>
+          <div style="padding:4px 8px;font-size:14px;line-height:1.7;color:var(--text-2);">
+            <span style="color:var(--good);font-weight:600;">Tech / utility</span> 方向选择<br>
+            · 浅色中性背景 + 能源绿强调色<br>
+            · 系统字体 + monospace 数据字体<br>
+            · 数据密集型布局 · 信息层级<br>
+            · <span style="color:var(--accent);">oklch</span> 色域 · 语义色统一<br>
+            · 设计自检清单闭环
+          </div>
+        </div>
+      </div>
+
+      <!-- P0 设计自检 + 智能路由 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+          <div style="padding:3px 8px;font-size:15px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">✅ P0 设计自检清单</div>
+          <div style="padding:4px 8px;font-size:14px;line-height:1.7;color:var(--good);">
+            • 无 raw hex 在 :root 外<br>
+            • 所有颜色用 oklch() 或变量<br>
+            • 标题使用 --font-display
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+          <div style="padding:3px 8px;font-size:15px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🌈 色彩语义体系</div>
+          <div style="padding:4px 8px;font-size:14px;line-height:1.7;color:var(--text-2);">
+            <span style="color:var(--accent);">--accent</span> 能源绿 · 主品牌色<br>
+            <span style="color:var(--warning);">--warning</span> 琥珀 · 预警提醒<br>
+            <span style="color:var(--danger);">--danger</span> 赤红 · 余额不足<br>
+            <span style="color:var(--success);">--success</span> 翠绿 · 状态正常<br>
+            <span style="color:var(--text-3);font-size:12px;">oklch 色域 · 全局语义一致</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-bar" style="margin-top:6px;">
+        <div style="text-align:center"><span style="font-size:24px;font-weight:800;color:var(--bad);">-13,574</span><span style="font-size:16px;color:var(--text-3);display:block;">删除行</span></div>
+        <div style="text-align:center"><span style="font-size:24px;font-weight:800;color:var(--good);">+6,041</span><span style="font-size:16px;color:var(--text-3);display:block;">新增行</span></div>
+        <div style="text-align:center"><span style="font-size:24px;font-weight:800;color:var(--accent);">5</span><span style="font-size:16px;color:var(--text-3);display:block;">核心文件</span></div>
+      </div>
+    </div>
+
+    <!-- COL 3: After 截图 + 简要特征 -->
+    <div class="col">
+      <p class="col-label">✅ After · Open Design</p>
+      <div class="screenshot-card">
+        <img src="./after-od.png" alt="After Open Design — 重构后的前端">
+        <div class="cap">njupower.top · 4A211 · Open Design</div>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;font-size:15px;">
+          <div style="padding:4px 8px;font-weight:700;color:var(--good);background:var(--surface);">CSS Token</div>
+          <div style="padding:4px 8px;color:var(--good);background:var(--surface);border-left:1px solid var(--border);">oklch 完整体系</div>
+          <div style="padding:4px 8px;font-weight:700;color:var(--good);">字体</div>
+          <div style="padding:4px 8px;color:var(--good);border-left:1px solid var(--border);">SF Pro + Mono</div>
+          <div style="padding:4px 8px;font-weight:700;color:var(--good);background:var(--surface);">数据层</div>
+          <div style="padding:4px 8px;color:var(--good);background:var(--surface);border-left:1px solid var(--border);">data-service.js 收敛</div>
+          <div style="padding:4px 8px;font-weight:700;color:var(--good);">设计自检</div>
+          <div style="padding:4px 8px;color:var(--good);border-left:1px solid var(--border);">P0 清单通过 ✅</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <div class="il">💡 关于 AI 的思考：Open Design 擅长设计，不擅长业务</div>
+    <p>Open Design 在处理视觉层面需求时效果很好——CSS 变量体系让全局风格统一、data-service.js 收敛数据访问层、页面拆分让路由清晰。但遇到业务需求时就力不从心了：kWh 直观类比需要作者对科技产品有了解、对受众认知语境有判断；IndexedDB 迁移暴露了 Agent 对同步/异步 API 差异的盲区。Open Design 的定位是<strong>设计工具</strong>，不是业务逻辑引擎——理解这个边界才能正确地使用它。</p>
+  </div>
+
+  <aside class="notes">
+    <h3>阶段四讲稿：功能深化与数据完善期</h3>
+    <p><strong>为什么需要 Open Design</strong></p>
+    <p>阶段三的 Speckit 122 tasks 交付了完整的前端功能，但视觉风格停留在"能用"的层面——页面布局和 UI 细节由 Speckit 生成的代码直接决定，CSS 变量体系不存在，内联样式和全局 CSS 混用，缺乏统一的设计语言。</p>
+    <p><strong>Open Design 做了什么</strong></p>
+    <p>第一，从零构建了完整的 CSS 变量体系。用 oklch 色域定义了 --accent、--surface、--radius、--shadow、--font-display 等设计 Token，全局风格从此统一。第二，数据服务层重构——将 20+ 散落模块合并为 data-service.js，统一数据获取和缓存。第三，页面拆分——独立的 building-view、campus-view、room-view、electricity-monitor-index，替代单页 SPA 结构。</p>
+    <p>净变化：+6041 / -13574 行。这是主动的设计增强，不是被动修复。</p>
+    <p><strong>Open Design 的边界</strong></p>
+    <p>但 Open Design 遇到业务需求时就力不从心了。最典型的例子是耗电量直观类比——把抽象的 kWh 转化为"小米 SU7 跑 X 公里""够 ChatGPT 回答 Y 个问题"这类有感知的场景。这需要作者对科技产品有了解、对受众的认知语境有判断、对类比精度有取舍。Open Design 的 DESIGN.md 可以定义颜色和间距，但定义不了"什么样的类比能让大学生觉得有趣且准确"。</p>
+    <p>同样，排行榜请求池并发控制、IndexedDB 缓存迁移、校区真实消耗数据计算——这些不涉及"好不好看"，只涉及"对不对"。Open Design 的定位是设计工具，不是业务逻辑引擎。理解这个边界才能正确地使用它。</p>
+  </aside>
+</section>
+
+<!-- ===== SLIDE 7: Phase 5 ===== -->
+<section class="slide phase-slide phase-5-slide" data-title="阶段五 · 新需求密集开发期">
+  <div class="phase-header">
+    <span class="pn">05</span>
+    <h2>新需求密集开发期：业务功能与 Visual Companion</h2>
+    <span class="pd">May 21-30</span>
+  </div>
+  <div class="keywords">
+    <span class="keyword" style="font-size:18px;">耗电量类比</span>
+    <span class="keyword" style="font-size:18px;">Visual Companion</span>
+    <span class="keyword" style="font-size:18px;">分布图表</span>
+    <span class="keyword" style="font-size:18px;">IndexedDB</span>
+    <span class="keyword" style="font-size:18px;">日期回退</span>
+  </div>
+
+  <div class="cols-3">
+
+    <!-- COL 1: 业务增强 -->
+    <div class="col">
+      <p class="col-label" style="font-size:18px;">业务增强 · May 21-27</p>
+      <div class="col-intro">
+        Open Design 确立了视觉语言，但业务逻辑仍需逐个实现——<br>
+        这些需求不涉及"好不好看"，只涉及"对不对"。
+      </div>
+
+      <div class="feat-cards" style="gap:5px;">
+        <div class="feat-card">
+          <span class="feat-icon">⚡</span>
+          <div class="feat-body">
+            <div class="feat-title">耗电量直观类比</div>
+            <div class="feat-desc">kWh → "够 iPhone 16 充满 X 次" "≈ 小米 SU7 跑 X 公里" "够训练 DeepSeek-R1 回答 X 道数学题"。纯业务逻辑，与设计系统无关。</div>
+            <div style="margin-top:3px;font-size:16px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
+          </div>
+        </div>
+        <div class="feat-card">
+          <span class="feat-icon">📊</span>
+          <div class="feat-body">
+            <div class="feat-title">全校区排名百分位</div>
+            <div class="feat-desc">显示房间在全校区的排名百分位，让用户知道自己的用电水平处于什么位置。数据来自跨页面缓存共享。</div>
+            <div style="margin-top:3px;font-size:16px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--bad);font-weight:600;">0</span><span style="color:var(--text-3);">（纯 Claude 交互 + Mentaturan 协作）</span></div>
+          </div>
+        </div>
+        <div class="feat-card">
+          <span class="feat-icon">🔄</span>
+          <div class="feat-body">
+            <div class="feat-title">排行榜请求池</div>
+            <div class="feat-desc">批量请求时的并发控制，防止短时间内大量 HTTP 请求触发浏览器限制或服务端限流。</div>
+            <div style="margin-top:3px;font-size:16px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
+          </div>
+        </div>
+        <div class="feat-card">
+          <span class="feat-icon">💾</span>
+          <div class="feat-body">
+            <div class="feat-title">IndexedDB 缓存迁移</div>
+            <div class="feat-desc">localStorage → IndexedDB，支持更大的缓存容量。迁移暴露了 Agent 对同步/异步 API 差异的盲区——多处遗漏 <code>await</code> 导致返回 Promise 而非数据。</div>
+            <div style="margin-top:3px;font-size:16px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
+          </div>
+        </div>
+        <div class="feat-card">
+          <span class="feat-icon">🧠</span>
+          <div class="feat-body">
+            <div class="feat-title">智慧排序</div>
+            <div class="feat-desc">选择框根据校区、楼栋、房间的常用程度智能排序，优先显示最可能被选中的选项。</div>
+            <div style="margin-top:3px;font-size:16px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 2: Visual Companion -->
+    <div class="col">
+      <p class="col-label" style="font-size:18px;">Visual Companion · May 28-30</p>
+      <div class="col-intro">
+        Agent 首次在浏览器中展示实时 mockup 供用户选择——<br>
+        将设计决策从"你想象一下"变为"你看一下"。
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
+        <div style="padding:6px 10px;font-size:16px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📈 分布图表系统</div>
+        <div style="padding:6px 10px;">
+          <div style="font-size:18px;color:var(--text-3);margin-bottom:4px;">Agent 展示 3 种布局实时 mockup，用户根据需求直观选择：</div>
+
+          <div class="vc-step" style="display:flex;gap:8px;align-items:center;">
+            <svg width="70" height="42" viewBox="0 0 70 42" style="flex-shrink:0;">
+              <rect x="2" y="30" width="8" height="10" fill="#888" opacity=".4" rx="1"/>
+              <rect x="12" y="24" width="8" height="16" fill="#888" opacity=".4" rx="1"/>
+              <rect x="22" y="18" width="8" height="22" fill="#888" opacity=".4" rx="1"/>
+              <rect x="32" y="12" width="8" height="28" fill="#888" opacity=".4" rx="1"/>
+              <rect x="42" y="8" width="8" height="32" fill="#888" opacity=".6" rx="1"/>
+              <rect x="52" y="14" width="8" height="26" fill="#888" opacity=".4" rx="1"/>
+              <rect x="62" y="22" width="8" height="18" fill="#888" opacity=".4" rx="1"/>
+              <path d="M0,38 Q15,32 35,14 Q55,6 70,22" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
+            </svg>
+            <div style="flex:1;">
+              <div class="vs-title">方案 A · 直方图 + 拟合曲线</div>
+              <div class="vs-desc">经典分布可视化，展示数据直方分布与拟合曲线叠加</div>
+            </div>
+          </div>
+
+          <div class="vc-step" style="display:flex;gap:8px;align-items:center;">
+            <svg width="70" height="42" viewBox="0 0 70 42" style="flex-shrink:0;">
+              <path d="M0,40 L5,40 L10,39 L15,38 L20,35 L25,30 L30,22 L35,14 L40,9 L45,6 L50,4 L55,3 L60,2 L65,1.5 L70,1" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
+              <circle cx="20" cy="35" r="1.5" fill="var(--accent)"/>
+              <circle cx="25" cy="30" r="1.5" fill="var(--accent)"/>
+              <circle cx="30" cy="22" r="1.5" fill="var(--accent)"/>
+              <circle cx="35" cy="14" r="1.5" fill="var(--accent)"/>
+              <circle cx="40" cy="9" r="1.5" fill="var(--accent)"/>
+              <circle cx="45" cy="6" r="1.5" fill="var(--accent)"/>
+              <line x1="10" y1="40" x2="10" y2="38" stroke="var(--text-3)" stroke-width=".5" stroke-dasharray="2,2"/>
+              <text x="12" y="42" fill="var(--text-3)" font-size="5">50%</text>
+              <line x1="35" y1="14" x2="35" y2="42" stroke="var(--bad)" stroke-width=".5" stroke-dasharray="2,2"/>
+              <text x="37" y="42" fill="var(--bad)" font-size="5">均值</text>
+            </svg>
+            <div style="flex:1;">
+              <div class="vs-title">方案 B · ECDF 累积分布</div>
+              <div class="vs-desc">经验累积分布函数，展示百分位和分位数</div>
+            </div>
+          </div>
+
+          <div class="vc-step" style="display:flex;gap:8px;align-items:center;border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent);">
+            <svg width="70" height="42" viewBox="0 0 70 42" style="flex-shrink:0;">
+              <rect x="2" y="30" width="8" height="10" fill="var(--accent)" opacity=".5" rx="1"/>
+              <rect x="12" y="24" width="8" height="16" fill="var(--accent)" opacity=".5" rx="1"/>
+              <rect x="22" y="18" width="8" height="22" fill="var(--accent)" opacity=".5" rx="1"/>
+              <rect x="32" y="12" width="8" height="28" fill="var(--accent)" opacity=".7" rx="1"/>
+              <rect x="42" y="8" width="8" height="32" fill="var(--accent)" opacity=".5" rx="1"/>
+              <rect x="52" y="14" width="8" height="26" fill="var(--accent)" opacity=".5" rx="1"/>
+              <rect x="62" y="22" width="8" height="18" fill="var(--accent)" opacity=".5" rx="1"/>
+              <path d="M0,38 Q15,32 35,14 Q55,6 70,22" stroke="var(--accent)" stroke-width="1.2" fill="none"/>
+              <line x1="25" y1="8" x2="25" y2="42" stroke="var(--accent)" stroke-width=".5" stroke-dasharray="2,2"/>
+              <line x1="35" y1="8" x2="35" y2="42" stroke="var(--accent)" stroke-width=".5" stroke-dasharray="2,2"/>
+              <line x1="45" y1="8" x2="45" y2="42" stroke="var(--accent)" stroke-width=".5" stroke-dasharray="2,2"/>
+              <rect x="3" y="1" width="10" height="5" rx="1" fill="none" stroke="var(--accent)" stroke-width=".8"/>
+              <line x1="8" y1="1" x2="8" y2="6" stroke="var(--accent)" stroke-width=".8"/>
+              <rect x="3" y="1" width="10" height="5" rx="1" fill="none" stroke="var(--accent)" stroke-width=".8"/>
+            </svg>
+            <div style="flex:1;">
+              <div class="vs-title">方案 C · 组合布局 <span style="color:var(--good);font-weight:700;">← 用户选中</span></div>
+              <div class="vs-desc">直方图 + 箱线图 + 统计摘要一体化</div>
+            </div>
+          </div>
+
+          <div class="vc-detail" style="margin-top:4px;padding:6px 8px;background:var(--surface);border-radius:4px;">
+            <span style="color:var(--good);font-weight:600;">用户选择驱动 →</span> 4 种分布自动拟合（正态/对数正态/Gamma/双峰 EM），BIC 选择最优模型
+          </div>
+          <div class="vc-detail" style="margin-top:4px;padding:6px 8px;background:color-mix(in srgb,var(--warning) 10%,transparent);border-radius:4px;border:1px solid color-mix(in srgb,var(--warning) 20%,transparent);">
+            <span style="font-weight:700;">图标选择逻辑：</span>Agent 不预设偏好，而是提供 3 种视觉方案由用户按实际需求选择——<br>用户希望同时看到"数据分布 + 统计指标"，因此选择了组合布局方案 C。
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
+        <div style="padding:6px 10px;font-size:16px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📅 日期自动回退</div>
+        <div class="vc-detail" style="padding:6px 10px;line-height:1.5;">
+          Agent 初提：<span style="color:var(--bad);">"严格日期匹配，无数据就显示 --"</span><br>
+          用户推翻 → 补提 <span style="color:var(--good);">"自动回退 + banner 通知"</span><br><br>
+          <span style="color:var(--text-3);font-size:16px;">今日覆盖度不足时自动搜索最近 7 天第一个可用日期，用可关闭的 banner 保持数据诚实。</span>
+        </div>
+      </div>
+
+      <div class="insight-box" style="margin-top:6px;">
+        <div class="il" style="font-size:18px;">💡 Visual Companion 的价值</div>
+        <p style="font-size:18px;line-height:1.5;">用户选择"方案 C 组合布局"只用了 3 秒——如果让用户用文字描述需求，来回沟通至少需要 3 轮。Visual Companion 将设计选择从"你想象一下"变为"你看一下"，极大降低了沟通成本。同样，日期回退展示了 Agent 被用户推翻后的设计迭代能力——从"无数据就不显示"到"自动回退 + 诚实通知"。</p>
+      </div>
+    </div>
+
+    <!-- COL 3: Insight & summary -->
+    <div class="col">
+      <p class="col-label" style="font-size:18px;">阶段五的启示</p>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
+        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🧩 业务 vs 设计：本质差异</div>
+        <div class="vc-detail" style="padding:8px 12px;line-height:1.6;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div style="padding:8px;background:color-mix(in srgb,var(--bad) 8%,transparent);border-radius:4px;">
+              <div style="font-weight:700;color:var(--bad);margin-bottom:2px;">Open Design 擅长的</div>
+              <div style="font-size:16px;">CSS 变量 · 视觉统一<br>布局重构 · 设计系统</div>
+            </div>
+            <div style="padding:8px;background:color-mix(in srgb,var(--accent) 8%,transparent);border-radius:4px;">
+              <div style="font-weight:700;color:var(--accent);margin-bottom:2px;">需要手动实现的</div>
+              <div style="font-size:16px;">请求池 · IndexedDB<br>排序逻辑 · 数据计算</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
+        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎯 图标选择的原则</div>
+        <div class="vc-detail" style="padding:8px 12px;line-height:1.6;">
+          Agent 提出的图表方案必须配合用户需求，而非自行决定：<br><br>
+          <span style="color:var(--good);">✓</span> 提供多种方案让用户选择<br>
+          <span style="color:var(--good);">✓</span> 用户的需求描述驱动方案设计<br>
+          <span style="color:var(--bad);">✗</span> Agent 不应预设"最优"方案<br>
+          <span style="color:var(--bad);">✗</span> 避免"你想象一下"的文字沟通<br><br>
+          <span style="color:var(--text-3);font-size:16px;">Visual Companion 的核心价值：让用户看到再选，而非想了再说。
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📐 Agent 被推翻后的迭代</div>
+        <div class="vc-detail" style="padding:8px 12px;line-height:1.6;">
+          日期回退功能展示了 Agent 被用户推翻后<br>的<span style="color:var(--good);">设计迭代能力</span>：<br><br>
+          初提方案 → 用户拒绝 → 补提改进 → 验收通过<br><br>
+          <span style="color:var(--text-3);font-size:16px;">关键在于：Agent 不坚持初始方案，<br>而是快速理解用户意图并迭代。</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <aside class="notes">
+    <h3>阶段五讲稿：新需求密集开发期</h3>
+    <p><strong>业务增强功能</strong></p>
+    <p>Open Design 确立了代码结构和视觉语言，但业务功能仍需逐个实现。耗电量直观类比把抽象的 kWh 转化为有感知的场景——够 iPhone 16 充满 X 次、小米 SU7 跑 X 公里。全校区排行榜百分比让用户知道自己的用电水平处于什么位置。排行榜请求池做批量请求的并发控制，IndexedDB 缓存迁移支持更大的缓存容量。</p>
+    <p><strong>Visual Companion</strong></p>
+    <p>分布图表系统是 Agent 首次使用 Visual Companion 模式——在浏览器中展示 3 种布局方案的实时 mockup，用户直观选择而非想象描述。选中后实现对 4 种分布类型的自动拟合。日期自动回退展示了 Agent 被用户推翻后的设计迭代能力——从严格日期匹配到自动回退加 banner 通知。</p>
+    <p><strong>Visual Companion 的意义</strong></p>
+    <p>用户选择方案 C 只用了 3 秒，如果用文字描述来回沟通至少需要 3 轮。Visual Companion 将设计选择从"你想象一下"变为"你看一下"，极大降低了沟通成本。</p>
+  </aside>
+</section>
+
+<!-- ===== SLIDE 8: Phase 6 ===== -->
+<section class="slide phase-slide phase-6-slide" data-title="阶段六 · 开源开发模式转型">
+  <div class="phase-header">
+    <span class="pn">06</span>
+    <h2>开源开发模式转型：从本地脚本到 GitHub 协作</h2>
+    <span class="pd">May 26 - Jun 3 · 真实用户 + 外部贡献者</span>
+  </div>
+
+  <!-- Banner: 开源成果统计（紧凑版） -->
+  <div class="p6-banner">
+    <div class="p6-stat" data-color="good"><span class="p6-n">6</span><span class="p6-l">PR 已合并</span></div>
+    <div class="p6-stat" data-color="bad"><span class="p6-n">1</span><span class="p6-l">Bug 修复</span></div>
+    <div class="p6-stat" data-color="accent"><span class="p6-n">5</span><span class="p6-l">功能增加</span></div>
+    <div class="p6-stat" data-color="good"><span class="p6-n">3</span><span class="p6-l">Issue 已关闭</span></div>
+    <div class="p6-stat" data-color="warn"><span class="p6-n">1</span><span class="p6-l">Issue 讨论中</span></div>
+    <div class="p6-stat" data-color="good"><span class="p6-n">1</span><span class="p6-l">外部贡献者</span></div>
+  </div>
+
+  <div class="keywords">
+    <span class="keyword" style="font-size:18px;">本地→GitHub</span>
+    <span class="keyword" style="font-size:18px;">真实用户反馈</span>
+    <span class="keyword" style="font-size:18px;">外部贡献者</span>
+    <span class="keyword" style="font-size:18px;">CodeRabbit</span>
+    <span class="keyword" style="font-size:18px;">GitHub Actions</span>
+  </div>
+
+  <!-- GitHub repo screenshot (center, intro) -->
+  <div class="p6-repo-shot">
+    <img src="../screenshot/phase6-github-repo.png" alt="nju-power-watch GitHub 仓库" onerror="this.style.display='none'">
+  </div>
+
+  <!-- Two columns: Bug left / Feature right -->
+  <div class="p6-cols-2">
+
+    <!-- LEFT: Bug -->
+    <div class="p6-col">
+      <p class="col-label">🐛 Bug 类别（1 已修复 · 1 讨论中 · 2 已澄清非 Bug）</p>
+      <div class="sp-card" style="border-color:color-mix(in srgb,var(--bad) 40%,transparent);">
+        <div class="sp-title" style="color:var(--bad);">✅ #1 · 苏州校区电费显示</div>
+        <div class="sp-desc">不同校区 HTML 结构不同，正则匹配到错误字段。按校区区分解析后修复。</div>
+        <div class="sp-skills"><span class="skill-pill">数据解析</span> <span class="skill-pill">PR #3</span></div>
+      </div>
+      <div class="sp-card" style="border-color:color-mix(in srgb,var(--warn) 40%,transparent);">
+        <div class="sp-title" style="color:var(--warn);">🔄 #5 · 异常耗电误判</div>
+        <div class="sp-desc">余额骤降 517.89→52.88。@Mentaturan 提出"数据质量 vs 行为异常"框架。</div>
+        <div class="sp-skills"><span class="skill-pill">数据置信度</span> <span class="skill-pill">讨论中</span></div>
+      </div>
+      <div style="display:flex;gap:4px;">
+        <div class="sp-card" style="flex:1;">
+          <div class="sp-title" style="font-size:16px;">#10 · 数据重复</div>
+          <div class="sp-desc" style="font-size:15px;">学校系统同名 ID，非 Bug</div>
+          <div class="sp-skills"><span class="skill-pill">源数据问题</span></div>
+        </div>
+        <div class="sp-card" style="flex:1;">
+          <div class="sp-title" style="font-size:16px;">#11 · 用电量为 0</div>
+          <div class="sp-desc" style="font-size:15px;">14:00 快照公式差值未产生</div>
+          <div class="sp-skills"><span class="skill-pill">计算逻辑</span></div>
+        </div>
+      </div>
+      <div class="insight-box" style="flex:1;margin-top:2px;">
+        <div class="il">💡 转变的本质</div>
+        <p>质量来源：AI 一次性生成 → 社区反馈 + 自动化工具<br>需求来源：自我想象 → 真实用户的 bug report</p>
+      </div>
+    </div>
+
+    <!-- RIGHT: Feature -->
+    <div class="p6-col">
+      <p class="col-label">✨ Feature 类别（5 个 PR 已合并）</p>
+      <div class="p6-feat-grid">
+        <div class="sp-card" style="border-color:color-mix(in srgb,var(--accent) 30%,transparent);">
+          <div class="sp-title" style="color:var(--accent);font-size:16px;">#2 · 全校排行榜</div>
+          <div class="sp-desc" style="font-size:15px;">Top 100 + 排名百分比</div>
+          <div class="sp-skills"><span class="skill-pill">排名系统</span></div>
+        </div>
+        <div class="sp-card" style="border-color:color-mix(in srgb,var(--accent) 30%,transparent);">
+          <div class="sp-title" style="color:var(--accent);font-size:16px;">#4 · 排名百分比卡</div>
+          <div class="sp-desc" style="font-size:15px;">房间详情页击败率恢复</div>
+          <div class="sp-skills"><span class="skill-pill">UX 增强</span></div>
+        </div>
+        <div class="sp-card" style="border-color:color-mix(in srgb,var(--accent) 30%,transparent);">
+          <div class="sp-title" style="color:var(--accent);font-size:16px;">#6 · 分布图表</div>
+          <div class="sp-desc" style="font-size:15px;">直方图 + 4 种拟合 + BIC</div>
+          <div class="sp-skills"><span class="skill-pill">可视化</span></div>
+        </div>
+        <div class="sp-card" style="border-color:color-mix(in srgb,var(--accent) 30%,transparent);">
+          <div class="sp-title" style="color:var(--accent);font-size:16px;">#7 · 日期自动回退</div>
+          <div class="sp-desc" style="font-size:15px;">自动搜索 7 天 + banner</div>
+          <div class="sp-skills"><span class="skill-pill">数据完整性</span></div>
+        </div>
+        <div class="sp-card" style="border-color:color-mix(in srgb,var(--accent) 30%,transparent);grid-column:span 2;">
+          <div class="sp-title" style="color:var(--accent);font-size:16px;">#9 · 房间 ID 扫描模式</div>
+          <div class="sp-desc" style="font-size:15px;">CLI 扫描 + 指数退避 + 错误分类 + 信号安全终止</div>
+          <div class="sp-skills"><span class="skill-pill">基础设施</span></div>
+        </div>
+      </div>
+      <div class="insight-box" style="flex:1;margin-top:2px;">
+        <div class="il">📌 开源开发的启示</div>
+        <p><strong>AI + 开源 = 质量飞轮</strong>：AI 原型 → 社区反馈 → 自动化审查 → AI 迭代</p>
+      </div>
+    </div>
+
+  </div>
+
+  <aside class="notes">
+    <h3>阶段六讲稿：开源开发模式转型</h3>
+    <p><strong>统计数据</strong></p>
+    <p>项目公开后共合并 6 个 PR（1 个 Bug 修复 + 5 个功能增加），关闭 3 个 Issue，1 个 Issue 讨论中，吸引了 1 位外部贡献者参与。</p>
+    <p><strong>Bug 类别</strong></p>
+    <p>#1 苏州校区电费显示是最典型的数据解析 bug——不同校区 HTML 结构不同导致正则匹配错误。#5 异常耗电误判是更有深度的 bug——余额骤降导致公式算出不合理结果，外部贡献者 @Mentaturan 提出分类框架。</p>
+    <p><strong>Feature 类别</strong></p>
+    <p>5 个功能覆盖了排名系统、可视化、数据完整性、基础设施四个维度。</p>
+  </aside>
+</section>
+<!-- ===== SLIDE 9: Summary ===== -->
+<section class="slide phase-slide summary-slide" data-title="总结 · AI4SE 工具链反思">
+  <div class="phase-header">
+    <span class="pn" style="opacity:0.5;">∑</span>
+    <h2>总结：AI4SE 工具链的实践反思</h2>
+    <span class="pd">Jun 8</span>
+  </div>
+  <div class="keywords">
+    <span class="keyword" style="font-size:18px;">+19,032 / -23,014</span>
+    <span class="keyword" style="font-size:18px;">6 个阶段</span>
+    <span class="keyword" style="font-size:18px;">3 种范式</span>
+    <span class="keyword" style="font-size:18px;">16 轮 Superpowers</span>
+  </div>
+
+  <div class="cols-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;overflow-y:auto;max-height:calc(100vh - 195px);">
+
+    <!-- COL 1: Project Stats + Paradigm Evolution -->
+    <div class="col">
+      <p class="col-label">📊 项目概况</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
+        <div class="stat-card"><span class="sc-num">6</span><span class="sc-label">开发阶段</span></div>
+        <div class="stat-card"><span class="sc-num">3</span><span class="sc-label">协作范式</span></div>
+        <div class="stat-card"><span class="sc-num">~3</span><span class="sc-label">开发周数</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
+        <div class="stat-card"><span class="sc-num" style="color:var(--good);">+19,032</span><span class="sc-label">新增行</span></div>
+        <div class="stat-card"><span class="sc-num" style="color:var(--bad);">-23,014</span><span class="sc-label">删除行</span></div>
+        <div class="stat-card"><span class="sc-num">16</span><span class="sc-label">Superpowers 轮</span></div>
+      </div>
+
+      <p class="col-label" style="margin-top:8px;">🔄 三种协作范式的演进</p>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:60px 1fr;font-size:18px;gap:0;">
+          <div style="padding:6px 8px;font-weight:700;background:var(--surface);border-bottom:1px solid var(--border);text-align:center;color:var(--text-3);">P1</div>
+          <div style="padding:6px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">纯 Claude 交互 · 无结构化流程</div>
+          <div style="padding:6px 8px;font-weight:700;background:var(--surface);border-bottom:1px solid var(--border);text-align:center;color:var(--text-3);">P2</div>
+          <div style="padding:6px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">OpenCode /speckit · spec→plan→implement</div>
+          <div style="padding:6px 8px;font-weight:700;background:var(--surface);text-align:center;color:var(--text-3);">P3</div>
+          <div style="padding:6px 8px;background:var(--surface);border-left:1px solid var(--border);">Superpowers · brainstorming→plan→implement→verify</div>
+        </div>
+      </div>
+
+      <p class="col-label" style="margin-top:8px;">🎯 各阶段 Superpowers 轮数</p>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:80px 1fr 50px;font-size:18px;gap:0;">
+          <div style="padding:4px 8px;font-weight:700;background:var(--surface);border-bottom:1px solid var(--border);">阶段</div>
+          <div style="padding:4px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">内容</div>
+          <div style="padding:4px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);text-align:right;">轮</div>
+          <div style="padding:4px 8px;">P1 项目探索</div>
+          <div style="padding:4px 8px;border-left:1px solid var(--border);">curl 探索 · 数据管道</div>
+          <div style="padding:4px 8px;border-left:1px solid var(--border);text-align:right;color:var(--text-3);">0</div>
+          <div style="padding:4px 8px;background:var(--surface);">P2 数据管道</div>
+          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);">GitHub Actions 自动化</div>
+          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);text-align:right;color:var(--text-3);">0</div>
+          <div style="padding:4px 8px;">P3 前端需求</div>
+          <div style="padding:4px 8px;border-left:1px solid var(--border);">Speckit 122 tasks</div>
+          <div style="padding:4px 8px;border-left:1px solid var(--border);text-align:right;color:var(--text-3);">0</div>
+          <div style="padding:4px 8px;background:var(--surface);">P4 Open Design</div>
+          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);">CSS 变量 · 设计系统</div>
+          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);text-align:right;color:var(--accent);font-weight:600;">1</div>
+          <div style="padding:4px 8px;">P5 业务功能</div>
+          <div style="padding:4px 8px;border-left:1px solid var(--border);">业务增强 + Visual Companion</div>
+          <div style="padding:4px 8px;border-left:1px solid var(--border);text-align:right;color:var(--accent);font-weight:600;">7</div>
+          <div style="padding:4px 8px;background:var(--surface);">P6 Bug 修复</div>
+          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);">系统性盲区排查</div>
+          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);text-align:right;color:var(--accent);font-weight:600;">8</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 2: Key Insights -->
+    <div class="col">
+      <p class="col-label">💡 核心洞察</p>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
+        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎯 Spec 质量决定实现的天花板</div>
+        <div style="padding:8px 12px;font-size:18px;color:var(--text-2);line-height:1.6;">
+          Speckit 的任务分解效率很高，但 spec 的清晰度直接决定了产出的质量。模糊的规约迫使 Agent 依赖隐含假设填补空白——排序方向、错误状态区分、性能目标，这些在 spec 中没有明确写明的细节最终都成为了 bug。核心教训：<strong style="color:var(--accent);">如果你不确定 spec 的质量，就不要用 Speckit</strong>。
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
+        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🔄 Brainstorming 让不可见的问题变得可见</div>
+        <div style="padding:8px 12px;font-size:18px;color:var(--text-2);line-height:1.6;">
+          122 个任务的代码生成用了几个小时，但修复 spec 不清晰导致的问题花了超过 2 天。Brainstorming 通过追问链让不可见的问题在实现前变得可见——"按升序还是降序？""空状态和错误状态怎么区分？""性能指标是多少？"——这些追问在 Speckit 阶段从未被提出。
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
+        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">👁️ Visual Companion 降低沟通成本</div>
+        <div style="padding:8px 12px;font-size:18px;color:var(--text-2);line-height:1.6;">
+          用户选择方案 C 只用了 3 秒——如果用文字描述来回沟通至少需要 3 轮。Visual Companion 将设计选择从<strong>"你想象一下"</strong>变为<strong>"你看一下"</strong>，极大降低了沟通成本。
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
+        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🧩 AI 的盲区需要结构性补偿</div>
+        <div style="padding:8px 12px;font-size:18px;color:var(--text-2);line-height:1.6;">
+          <span style="color:var(--bad);">运行时语义盲区</span>：Chart.js Proxy 死循环、坐标类型不匹配<br>
+          <span style="color:var(--bad);">边界情况盲区</span>：负余额、最后 bin、同名房间去重<br>
+          <span style="color:var(--bad);">并发环境盲区</span>：workflow 竞态条件、数据一致性<br><br>
+          <span style="color:var(--accent);">systematic-debugging</span> 和 <span style="color:var(--accent);">code review</span> 是当前最有效的补偿手段。
+        </div>
+      </div>
+
+      <div class="insight-box">
+        <div class="il" style="font-size:20px;">📌 核心结论</div>
+        <p style="font-size:18px;line-height:1.6;">
+          <strong>Spec 决定"做对的事"，Plan 决定"把事做对"。</strong>两者中的任何缺位都会使 Agent 的执行质量退化到纯模型先验的水平。<br><br>
+          Open Design 擅长设计，不擅长业务——理解这个边界才能正确地使用它。<br><br>
+          <strong style="color:var(--accent);">AI4SE 不是取代开发者，而是改变开发者需要关注的事情。</strong>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <aside class="notes">
+    <h3>总结讲稿：AI4SE 工具链的实践反思</h3>
+    <p><strong>项目概况</strong></p>
+    <p>整个项目历时约三周，经历了三种协作范式：纯 Claude 交互、OpenCode /speckit、Superpowers。净增 +19,032 行，删除 -23,014 行，共 16 轮 Superpowers 流程。</p>
+    <p><strong>三种协作范式的演进</strong></p>
+    <p>第一阶段是纯 Claude 交互，无结构化流程。第二阶段引入 OpenCode /speckit，实现了 spec→plan→implement 的流程化。第三阶段使用 Superpowers，增加了 brainstorming→verify 环节，形成了完整的闭环。</p>
+    <p><strong>核心洞察</strong></p>
+    <p>第一，Spec 质量决定实现的天花板——模糊的规约迫使 Agent 依赖隐含假设。第二，Brainstorming 让不可见的问题变得可见——追问链能在实现前发现问题。第三，Visual Companion 将设计选择从"你想象一下"变为"你看一下"，极大降低了沟通成本。第四，AI 的盲区需要结构性补偿——systematic-debugging 和 code review 是最有效的手段。</p>
+  </aside>
+</section><script src="./assets/runtime.js"></script>
+</body>
+</html>
