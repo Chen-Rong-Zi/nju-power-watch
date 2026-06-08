@@ -28,6 +28,7 @@ DEFAULT_COOKIE_FILE = "/tmp/cookie.json"
 MAX_RETRIES = 5
 RETRY_DELAY = 2  # 失败后等待秒数
 RETRY_BACKOFF = 1.5  # 指数退避倍数
+MAX_SCAN_RETRIES = 5  # 扫描模式下单个ID最大重试次数
 
 # 并发配置
 DEFAULT_CONCURRENCY = 24  # 默认并发数
@@ -456,7 +457,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
         attempt = 0  # 重试次数
 
-        while True:
+        while attempt < MAX_SCAN_RETRIES:
             try:
                 async with (
                         semaphore,
