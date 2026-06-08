@@ -17,23 +17,23 @@
 }
 * { box-sizing: border-box; }
 body { font-size: 16px; }
-.phase-slide { padding-top: 4px; }
-.phase-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 2px; }
-.phase-header .pn { font-size: 42px; font-weight: 800; color: var(--accent); opacity: 0.3; line-height: 1; }
-.phase-header h2 { font-size: 26px; font-weight: 700; margin: 0; }
-.phase-header .pd { font-size: 16px; color: var(--text-3); margin-left: auto; white-space: nowrap; }
-.keywords { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
-.keyword { font-size: 13px; padding: 3px 10px; border-radius: 999px; background: var(--keyword-bg); color: var(--keyword-color); font-weight: 600; }
+.phase-slide { padding-top: 4px; padding-bottom: 12px; justify-content: flex-start; }
+.phase-header { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; }
+.phase-header .pn { font-size: 32px; font-weight: 800; color: var(--accent); opacity: 0.3; line-height: 1; }
+.phase-header h2 { font-size: 22px; font-weight: 700; margin: 0; }
+.phase-header .pd { font-size: 14px; color: var(--text-3); margin-left: auto; white-space: nowrap; }
+.keywords { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 6px; }
+.keyword { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--keyword-bg); color: var(--keyword-color); font-weight: 600; }
 
 /* ===== Three-column: target | skill | apply ===== */
-.cols-3 { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 14px; margin-top: 6px; }
+.cols-3 { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 8px; margin-top: 4px; }
 
 /* ===== Two-column: pipeline | model ===== */
-.cols-2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; margin-top: 6px; }
+.cols-2 { display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; margin-top: 4px; }
 
 /* ===== Three-column wide: config | pipeline | model ===== */
-.cols-3-wide { display: grid; grid-template-columns: 1.0fr 1.1fr 1.0fr; gap: 14px; margin-top: 6px; align-items: stretch; }
-.cols-3-wide .col { min-width: 0; display: flex; flex-direction: column; gap: 10px; height: 100%; justify-content: center; }
+.cols-3-wide { display: grid; grid-template-columns: 1.0fr 1.1fr 1.0fr; gap: 8px; margin-top: 4px; align-items: stretch; }
+.cols-3-wide .col { min-width: 0; display: flex; flex-direction: column; gap: 6px; height: 100%; justify-content: flex-start; }
 .cols-3-wide .col > .code-card-yaml { flex-grow: 0; flex-shrink: 0; }
 .cols-3-wide .col > .code-card-yaml pre { margin: 0; padding: 10px 14px; font-size: 12px; line-height: 1.3; flex-grow: 0; flex-shrink: 0; }
 .cols-3-wide .col > .pipeline-v { flex-grow: 0; flex-shrink: 0; }
@@ -48,11 +48,11 @@ body { font-size: 16px; }
 .code-card-yaml pre .ys { color: #e2b714; font-weight: 600; }         /* step names */
 
 /* ===== Two-column: 60/40 ===== */
-.cols-2-3 { display: grid; grid-template-columns: 1fr 1.2fr; gap: 16px; margin-top: 6px; }
+.cols-2-3 { display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px; margin-top: 4px; }
 
 /* === Column shared === */
-.col { display: flex; flex-direction: column; gap: 10px; }
-.col-label { font-size: 15px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 2px 0; }
+.col { display: flex; flex-direction: column; gap: 6px; }
+.col-label { font-size: 13px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 2px 0; }
 
 /* Target column */
 .screenshot-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
@@ -221,6 +221,14 @@ body { font-size: 16px; }
 .feat-desc { font-size: 10px; color: var(--text-2); line-height: 1.4; margin-top: 1px; }
 .feat-desc code { font-size: 9px; }
 
+/* Spec cards — Phase 3 Speckit */
+.spec-card-grid { display: flex; flex-direction: column; gap: 4px; padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 4px; }
+.spec-badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+.spec-badge.bad { background: color-mix(in srgb, var(--bad) 15%, transparent); color: var(--bad); }
+.spec-badge.good { background: color-mix(in srgb, var(--good) 15%, transparent); color: var(--good); }
+.spec-code { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+.spec-result { font-size: 12px; color: var(--text-2); line-height: 1.5; padding: 4px 8px; background: color-mix(in srgb, var(--bad) 6%, var(--surface)); border-radius: 4px; margin: 2px 0; }
+
 /* Brainstorming vs Speckit grid */
 .bs-grid { display: grid; grid-template-columns: 100px 1fr 1fr; gap: 2px; font-size: 11px; }
 .bs-header { padding: 5px 8px; background: var(--accent); color: #fff; font-weight: 700; text-align: center; border-radius: 4px; font-size: 10px; }
@@ -238,46 +246,46 @@ body { font-size: 16px; }
 .timeline-bar .ta { font-size: 18px; color: var(--text-3); }
 .divider-accent { width: 80px; height: 3px; background: var(--accent); margin: 14px auto; border-radius: 2px; }
 /* Phase 3: font scaling */
-.phase-3-slide .keyword { font-size: 14px; padding: 2px 8px; }
-.phase-3-slide .col-label { font-size: 14px; }
-.phase-3-slide .persp-card { padding: 6px 8px; }
-.phase-3-slide .persp-icon { font-size: 24px; width: 30px; }
-.phase-3-slide .persp-title { font-size: 16px; }
-.phase-3-slide .persp-desc { font-size: 14px; }
-.phase-3-slide .stat-row { padding: 6px 8px; }
-.phase-3-slide .stat-num { font-size: 24px; }
-.phase-3-slide .stat-label { font-size: 14px; }
-.phase-3-slide .stat-plus { font-size: 18px; }
-.phase-3-slide .callout { padding: 6px 10px; font-size: 14px; }
-.phase-3-slide .callout .callout-title { font-size: 16px; }
-.phase-3-slide .callout p { font-size: 14px; }
-.phase-3-slide .bs-grid { font-size: 13px; }
-.phase-3-slide .bs-header { font-size: 13px; padding: 3px 6px; }
-.phase-3-slide .bs-label { font-size: 13px; padding: 3px 6px; }
-.phase-3-slide .bs-cell { font-size: 13px; padding: 3px 6px; }
-.phase-3-slide .insight-box .il { font-size: 16px; }
-.phase-3-slide .insight-box p { font-size: 14px; }
-.phase-3-slide .spec-card-grid { gap: 4px; padding: 6px 8px; margin-bottom: 4px; }
-.phase-3-slide .spec-badge { font-size: 14px; }
-.phase-3-slide .spec-code { font-size: 14px; }
-.phase-3-slide .spec-result { font-size: 14px; }
-.phase3-cols { overflow-y: auto; max-height: calc(100vh - 170px); gap: 8px; }
+.phase-3-slide .keyword { font-size: 12px; padding: 1px 6px; }
+.phase-3-slide .col-label { font-size: 12px; }
+.phase-3-slide .persp-card { padding: 4px 6px; }
+.phase-3-slide .persp-icon { font-size: 20px; width: 26px; }
+.phase-3-slide .persp-title { font-size: 14px; }
+.phase-3-slide .persp-desc { font-size: 12px; }
+.phase-3-slide .stat-row { padding: 4px 6px; }
+.phase-3-slide .stat-num { font-size: 20px; }
+.phase-3-slide .stat-label { font-size: 12px; }
+.phase-3-slide .stat-plus { font-size: 15px; }
+.phase-3-slide .callout { padding: 4px 8px; font-size: 12px; }
+.phase-3-slide .callout .callout-title { font-size: 14px; }
+.phase-3-slide .callout p { font-size: 12px; }
+.phase-3-slide .bs-grid { font-size: 11px; }
+.phase-3-slide .bs-header { font-size: 11px; padding: 2px 5px; }
+.phase-3-slide .bs-label { font-size: 11px; padding: 2px 5px; }
+.phase-3-slide .bs-cell { font-size: 11px; padding: 2px 5px; }
+.phase-3-slide .insight-box .il { font-size: 13px; }
+.phase-3-slide .insight-box p { font-size: 12px; }
+.phase-3-slide .spec-card-grid { gap: 2px; padding: 6px 8px; margin-bottom: 2px; }
+.phase-3-slide .spec-badge { font-size: 11px; }
+.phase-3-slide .spec-code { font-size: 11px; }
+.phase-3-slide .spec-result { font-size: 11px; }
+.phase3-cols { overflow-y: auto; flex: 1; min-height: 0; gap: 4px; }
 .phase3-cols::-webkit-scrollbar { width: 3px; }
 .phase3-cols::-webkit-scrollbar-track { background: transparent; }
 .phase3-cols::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 /* Speckit decomposition branding */
-.phase-3-slide .speckit-decomp { margin-top: 6px; padding: 6px 8px; }
-.phase-3-slide .speckit-brand { gap: 4px; margin-bottom: 4px; }
-.phase-3-slide .speckit-arrow { font-size: 12px; }
-.phase-3-slide .speckit-result { font-size: 14px; }
-.phase-3-slide .stat-footnote { font-size: 12px; }
+.phase-3-slide .speckit-decomp { margin-top: 2px; padding: 3px 5px; }
+.phase-3-slide .speckit-brand { gap: 2px; margin-bottom: 1px; }
+.phase-3-slide .speckit-arrow { font-size: 9px; }
+.phase-3-slide .speckit-result { font-size: 11px; }
+.phase-3-slide .stat-footnote { font-size: 9px; }
 
 /* ===== Phase 1 & 2: font scaling ===== */
 .phase-1-slide .keyword,
-.phase-2-slide .keyword { font-size: 14px; padding: 2px 8px; }
+.phase-2-slide .keyword { font-size: 11px; padding: 1px 5px; }
 .phase-1-slide .col-label,
-.phase-2-slide .col-label { font-size: 14px; }
+.phase-2-slide .col-label { font-size: 11px; margin-bottom: 1px; }
 .phase-1-slide .screenshot-card .cap,
 .phase-1-slide .step-card .sc h4,
 .phase-1-slide .step-card .sc p,
@@ -301,16 +309,21 @@ body { font-size: 16px; }
 .phase-2-slide .dir-tree .tree-pre,
 .phase-2-slide .dir-tree .tree-header,
 .phase-2-slide .card-item li,
-.phase-2-slide .card-item p { font-size: 14px; }
-.phase-1-slide .step-card .sn { font-size: 12px; width: 20px; height: 20px; }
-.phase-1-slide .skill-tag { font-size: 11px; padding: 1px 5px; }
-.phase-1-slide .insight-box .il { font-size: 16px; }
-.phase-1-slide .insight-box p { font-size: 14px; }
-.phase-2-slide .insight-box .il { font-size: 16px; }
-.phase-2-slide .insight-box p { font-size: 14px; }
-.phase-1-slide .phase-desc { font-size: 14px; padding: 1px 3px; }
+.phase-2-slide .card-item p { font-size: 11px; }
+.phase-1-slide .step-card .sn { font-size: 11px; width: 18px; height: 18px; }
+.phase-1-slide .skill-repo-card img { max-height: 80px; object-fit: cover; object-position: top; }
+.phase-1-slide .pipeline-svg { padding: 4px; }
+.phase-1-slide .step-card { padding: 3px 5px; gap: 4px; }
+.phase-1-slide .step-cards { gap: 3px; }
+.phase-1-slide .code-card pre { padding: 4px 8px; font-size: 10px; }
+.phase-1-slide .insight-box { padding: 6px 8px; }
+.phase-1-slide .insight-box .il { font-size: 14px; }
+.phase-1-slide .insight-box p { font-size: 12px; }
+.phase-2-slide .insight-box .il { font-size: 14px; }
+.phase-2-slide .insight-box p { font-size: 12px; }
+.phase-1-slide .phase-desc { font-size: 12px; padding: 1px 2px; }
 .phase-1-slide .cols-3,
-.phase-2-slide .cols-3-wide { overflow-y: auto; max-height: calc(100vh - 170px); gap: 8px; }
+.phase-2-slide .cols-3-wide { overflow-y: auto; flex: 1; min-height: 0; gap: 6px; }
 .phase-1-slide .cols-3::-webkit-scrollbar,
 .phase-2-slide .cols-3-wide::-webkit-scrollbar { width: 3px; }
 .phase-1-slide .cols-3::-webkit-scrollbar-track,
@@ -326,46 +339,53 @@ body { font-size: 16px; }
 .bg-slide .ta { font-size: 14px; }
 
 /* ===== Phase 4: font scaling ===== */
-.phase-4-slide .keyword { font-size: 14px; padding: 2px 8px; }
-.phase-4-slide .col-label { font-size: 14px; }
-.phase-4-slide .screenshot-card .cap { font-size: 14px; padding: 4px 8px; }
-.phase-4-slide .insight-box .il { font-size: 16px; }
-.phase-4-slide .insight-box p { font-size: 14px; }
-.phase-4-slide .od-grid { font-size: 14px; }
-.phase-4-slide .code-card .cl { font-size: 14px; padding: 4px 10px; }
-.phase-4-slide .code-card pre { font-size: 14px; padding: 8px 10px; }
-.phase-4-slide .code-card pre code { font-size: 14px; }
-.phase-4-slide .stat-num { font-size: 24px; }
-.phase-4-slide .stat-label { font-size: 14px; }
-.phase-4-slide .cols-3 { overflow-y: auto; max-height: calc(100vh - 165px); gap: 8px; grid-template-columns: 1fr 2fr 1fr; }
+.phase-4-slide .keyword { font-size: 11px; padding: 1px 5px; }
+.phase-4-slide .col-label { font-size: 11px; }
+.phase-4-slide .screenshot-card img { max-height: 140px; object-fit: cover; object-position: top; }
+.phase-4-slide .cols-3 { overflow-y: auto; flex: 1; min-height: 0; gap: 4px; grid-template-columns: 1fr 2fr 1fr; }
+.phase-4-slide .cols-3 .col { gap: 3px; }
+.phase-4-slide .code-card pre { padding: 4px 8px; font-size: 10px; }
+.phase-4-slide .insight-box { padding: 5px 8px; }
+.phase-4-slide .insight-box .il { font-size: 12px; }
+.phase-4-slide .insight-box p { font-size: 11px; }
+.phase-4-slide .od-grid { font-size: 11px; }
+.phase-4-slide .code-card .cl { font-size: 11px; padding: 2px 6px; }
+.phase-4-slide .code-card pre { font-size: 11px; padding: 4px 8px; }
+.phase-4-slide .code-card pre code { font-size: 11px; }
+.phase-4-slide .stat-num { font-size: 16px; }
+.phase-4-slide .stat-label { font-size: 11px; }
+.phase-4-slide .cols-3 { overflow-y: auto; flex: 1; min-height: 0; gap: 4px; grid-template-columns: 1fr 2fr 1fr; }
 .phase-4-slide .cols-3::-webkit-scrollbar { width: 3px; }
 .phase-4-slide .cols-3::-webkit-scrollbar-track { background: transparent; }
 .phase-4-slide .cols-3::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.phase-4-slide .stat-bar { margin-top: auto; display: flex; justify-content: center; gap: 10px; padding: 6px; }
+.phase-4-slide .stat-bar { margin-top: auto; display: flex; justify-content: center; gap: 6px; padding: 4px; }
 
 /* ===== Phase 5: font scaling ===== */
-.phase-5-slide .keyword { font-size: 14px; padding: 2px 8px; }
-.phase-5-slide .col-label { font-size: 14px; }
-.phase-5-slide .feat-title { font-size: 14px; }
-.phase-5-slide .feat-desc { font-size: 14px; line-height: 1.3; }
-.phase-5-slide .feat-desc code { font-size: 12px; }
-.phase-5-slide .insight-box .il { font-size: 16px; }
-.phase-5-slide .insight-box p { font-size: 14px; }
-.phase-5-slide .cols-3 { overflow-y: auto; max-height: calc(100vh - 165px); gap: 8px; }
-.phase-5-slide .cols-3::-webkit-scrollbar { width: 3px; }
-.phase-5-slide .cols-3::-webkit-scrollbar-track { background: transparent; }
-.phase-5-slide .cols-3::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.phase-5-slide .feat-card { padding: 6px 8px; gap: 6px; }
-.phase-5-slide .feat-icon { font-size: 18px; width: 24px; }
-.phase-5-slide .vc-badge { font-size: 11px; padding: 1px 5px; }
-.phase-5-slide .vc-step { padding: 5px 7px; margin-bottom: 2px; }
-.phase-5-slide .vc-step .vs-title { font-size: 14px; }
-.phase-5-slide .vc-step .vs-desc { font-size: 14px; }
-.phase-5-slide .vc-step svg { width: 50px; height: 30px; }
-.phase-5-slide .col-intro { font-size: 14px; margin-bottom: 3px; }
-.phase-5-slide .vc-detail { font-size: 14px; }
-.phase-5-slide .vc-detail code { font-size: 12px; }
-
+.phase-5-slide .keyword { font-size: 11px; padding: 1px 5px; }
+.phase-5-slide .col-label { font-size: 11px; }
+.phase-5-slide .feat-title { font-size: 11px; }
+.phase-5-slide .feat-desc { font-size: 11px; line-height: 1.2; }
+.phase-5-slide .feat-desc code { font-size: 10px; }
+.phase-5-slide .insight-box .il { font-size: 12px; }
+.phase-5-slide .insight-box p { font-size: 11px; }
+.phase-5-slide .feat-card { padding: 5px 8px; gap: 5px; }
+.phase-5-slide .feat-icon { font-size: 14px; width: 20px; }
+.phase-5-slide .feat-card .feat-title { font-size: 12px; }
+.phase-5-slide .feat-card .feat-desc { font-size: 10px; }
+.phase-5-slide .vc-badge { font-size: 9px; padding: 1px 3px; }
+.phase-5-slide .vc-step { padding: 2px 4px; margin-bottom: 1px; }
+.phase-5-slide .vc-step .vs-title { font-size: 11px; }
+.phase-5-slide .vc-step .vs-desc { font-size: 11px; }
+.phase-5-slide .vc-step svg { width: 35px; height: 20px; }
+.phase-5-slide .col-intro { font-size: 11px; margin-bottom: 1px; }
+.phase-5-slide .vc-detail { font-size: 11px; }
+.phase-5-slide .vc-detail code { font-size: 10px; }
+.phase-5-slide .cols-3 { gap: 4px; }
+.phase-5-slide .cols-3 .col { gap: 2px; }
+.phase-5-slide .feat-cards { gap: 3px !important; }
+.phase-5-slide .insight-box { margin-top: 3px !important; padding: 5px 8px !important; }
+.phase-5-slide .vc-step { gap: 4px !important; }
+.phase-5-slide .vc-step svg { width: 28px !important; height: 16px !important; }
 
 /* ===== Phase 6: compact layout (no screenshots, scrollable) ===== */
 .phase-6-slide .keyword { font-size: 18px; padding: 4px 12px; }
@@ -404,17 +424,52 @@ body { font-size: 16px; }
 .phase-6-slide .p6-feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
 
 /* ===== Summary slide ===== */
-.summary-slide .keyword { font-size: 14px; padding: 2px 8px; }
-.summary-slide .col-label { font-size: 14px; }
-.summary-slide .cols-2 { overflow-y: auto; max-height: calc(100vh - 165px); gap: 12px; display: grid; grid-template-columns: 1fr 1fr; }
+.summary-slide .keyword { font-size: 11px; padding: 1px 5px; }
+.summary-slide .col-label { font-size: 11px; }
+.summary-slide .cols-2 { overflow-y: auto; flex: 1; min-height: 0; gap: 6px; display: grid; grid-template-columns: 1fr 1fr; }
+.summary-slide .cols-2 .col { gap: 4px; }
 .summary-slide .cols-2::-webkit-scrollbar { width: 3px; }
 .summary-slide .cols-2::-webkit-scrollbar-track { background: transparent; }
 .summary-slide .cols-2::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.summary-slide .stat-card { padding: 8px 10px; border-radius: var(--radius-sm); }
-.summary-slide .stat-card .sc-num { font-size: 26px; }
-.summary-slide .stat-card .sc-label { font-size: 12px; margin-top: 2px; }
-.summary-slide .insight-box .il { font-size: 16px; }
-.summary-slide .insight-box p { font-size: 14px; line-height: 1.4; }</style>
+.summary-slide .stat-card { padding: 4px 6px; border-radius: var(--radius-sm); }
+.summary-slide .stat-card .sc-num { font-size: 18px; }
+.summary-slide .stat-card .sc-label { font-size: 10px; margin-top: 1px; }
+.summary-slide .insight-box .il { font-size: 12px; }
+.summary-slide .insight-box p { font-size: 11px; line-height: 1.3; }
+
+/* ===== Global inline font-size overrides for overflow fix ===== */
+.phase-3-slide .keyword[style*="font-size:18px"],
+.phase-4-slide .keyword[style*="font-size:18px"],
+.phase-5-slide .keyword[style*="font-size:18px"],
+.phase-6-slide .keyword[style*="font-size:18px"] { font-size: 12px !important; }
+
+.phase-3-slide [style*="font-size:18px"],
+.phase-5-slide [style*="font-size:18px"] { font-size: 14px !important; }
+.phase-3-slide [style*="font-size:15px"] { font-size: 13px !important; }
+.phase-4-slide [style*="font-size:15px"] { font-size: 12px !important; }
+.phase-4-slide [style*="font-size:14px"][style*="line-height:1.7"] { font-size: 11px !important; }
+.phase-4-slide [style*="font-size:14px"][style*="line-height:1.4"] { font-size: 11px !important; line-height: 1.3 !important; }
+
+/* Override card-item for phase 3 */
+.phase-3-slide .card-item { padding: 10px 14px; }
+.phase-3-slide .card-item h4 { font-size: 15px; margin-bottom: 6px; }
+.phase-3-slide .card-item li,
+.phase-3-slide .card-item p { font-size: 12px; line-height: 1.4; }
+
+/* Override summary insight boxes */
+.summary-slide [style*="padding:8px 12px;font-size:18px;font-weight:700"] { padding: 5px 8px !important; font-size: 13px !important; }
+.summary-slide [style*="padding:8px 12px;font-size:18px;color:var(--text-2)"] { padding: 5px 8px !important; font-size: 12px !important; line-height: 1.3 !important; }
+
+/* Override phase 3 insight box */
+.phase-3-slide .insight-box { padding: 6px 8px; }
+
+/* Reduce token table padding in phase 4 */
+.phase-4-slide [style*="padding:3px 8px;border-bottom"] { padding: 2px 6px !important; }
+.phase-4-slide [style*="padding:3px 8px;font-weight:700;color:var(--text-3)"] { padding: 2px 6px !important; }
+
+/* Summary table */
+.summary-slide [style*="font-size:18px;display:grid;grid-template-columns:80px 1fr 50px"] { font-size: 13px !important; }
+.summary-slide [style*="padding:4px 8px;"] { padding: 2px 6px !important; }</style>
 </head>
 <body>
 <div class="deck">
@@ -775,20 +830,20 @@ body { font-size: 16px; }
     <span class="pd">May 17 · Speckit</span>
   </div>
   <div class="keywords">
-    <span class="keyword" style="font-size:18px;">前端架构</span>
-    <span class="keyword" style="font-size:18px;">需求梳理</span>
-    <span class="keyword" style="font-size:18px;">SPA + ECharts</span>
-    <span class="keyword" style="font-size:18px;">Speckit 框架</span>
-    <span class="keyword" style="font-size:18px;">10 specs</span>
-    <span class="keyword" style="font-size:18px;">3 perspectives</span>
+    <span class="keyword" style="font-size:14px;">前端架构</span>
+    <span class="keyword" style="font-size:14px;">需求梳理</span>
+    <span class="keyword" style="font-size:14px;">SPA + ECharts</span>
+    <span class="keyword" style="font-size:14px;">Speckit 框架</span>
+    <span class="keyword" style="font-size:14px;">10 specs</span>
+    <span class="keyword" style="font-size:14px;">3 perspectives</span>
   </div>
   <div class="cols-3 phase3-cols">
 
     <!-- COL 1: motivation -->
     <div class="col">
       <p class="col-label">设计动机 · 三个视角</p>
-      <p style="font-size:18px;color:var(--text-2);margin:0 0 2px;line-height:1.4;">系统围绕两个核心概念展开——<strong>电量余额</strong>还剩多少钱、<strong>耗电量</strong>用了多少度</p>
-      <div class="persp-cards" style="gap:8px;">
+      <p style="font-size:15px;color:var(--text-2);margin:0 0 2px;line-height:1.3;">系统围绕两个核心概念展开——<strong>电量余额</strong>还剩多少钱、<strong>耗电量</strong>用了多少度</p>
+      <div class="persp-cards" style="gap:4px;">
         <div class="persp-card">
           <span class="persp-icon">🏠</span>
           <div class="persp-body">
@@ -817,7 +872,7 @@ body { font-size: 16px; }
             <rect x="2" y="2" width="20" height="20" rx="4" fill="var(--accent)" opacity=".2"/>
             <text x="12" y="16" text-anchor="middle" fill="var(--accent)" font-size="13" font-weight="700">S</text>
           </svg>
-          <span style="font-size:18px;font-weight:700;color:var(--accent);letter-spacing:.03em;">Speckit</span>
+          <span style="font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.03em;">Speckit</span>
           <span class="speckit-arrow">→</span>
           <span class="speckit-result">10 specs (User Stories) · 13 phases</span>
         </div>
@@ -856,8 +911,8 @@ body { font-size: 16px; }
       </div>
 
       <div class="insight-box" style="margin-top:8px;">
-        <div class="il" style="font-size:18px;">📋 10 User Stories · 13 phases</div>
-        <p style="font-size:18px;">Speckit 将三个视角的系统性需求拆解为 10 份独立可测的 spec，覆盖从房间个体到全校宏观的完整链路。</p>
+        <div class="il" style="font-size:14px;">📋 10 User Stories · 13 phases</div>
+        <p style="font-size:14px;">Speckit 将三个视角的系统性需求拆解为 10 份独立可测的 spec，覆盖从房间个体到全校宏观的完整链路。</p>
       </div>
     </div>
 
@@ -918,7 +973,7 @@ body { font-size: 16px; }
 
   <div class="insight-box" style="margin-top:10px;padding:12px 16px;">
     <div class="il" style="font-size:20px;">💡 关于 Speckit 的思考</div>
-    <p style="font-size:18px;margin:4px 0 0;line-height:1.5;">Speckit 用 <strong>Story</strong> 描述"用户要什么"，用 <strong>Spec</strong> 描述"系统做什么"。Speckit 尝试将用户需求细化为专业的 Spec，但由于缺乏 Brainstorming 追问环节，没有真实的用户反馈来校准 Spec 的完整性，往往效果不尽人意：Agent 忠实执行了 Spec，但 Spec 本身可能已经偏离了用户的真实意图。</p>
+    <p style="font-size:15px;margin:4px 0 0;line-height:1.4;">Speckit 用 <strong>Story</strong> 描述"用户要什么"，用 <strong>Spec</strong> 描述"系统做什么"。Speckit 尝试将用户需求细化为专业的 Spec，但由于缺乏 Brainstorming 追问环节，没有真实的用户反馈来校准 Spec 的完整性，往往效果不尽人意：Agent 忠实执行了 Spec，但 Spec 本身可能已经偏离了用户的真实意图。</p>
   </div>
 
   <aside class="notes">
@@ -949,11 +1004,11 @@ body { font-size: 16px; }
     <span class="pd">May 19</span>
   </div>
   <div class="keywords">
-    <span class="keyword" style="font-size:18px;">Open Design</span>
-    <span class="keyword" style="font-size:18px;">CSS 变量体系</span>
-    <span class="keyword" style="font-size:18px;">页面重构</span>
-    <span class="keyword" style="font-size:18px;">data-service.js</span>
-    <span class="keyword" style="font-size:18px;">+6041 / -13574</span>
+    <span class="keyword" style="font-size:14px;">Open Design</span>
+    <span class="keyword" style="font-size:14px;">CSS 变量体系</span>
+    <span class="keyword" style="font-size:14px;">页面重构</span>
+    <span class="keyword" style="font-size:14px;">data-service.js</span>
+    <span class="keyword" style="font-size:14px;">+6041 / -13574</span>
   </div>
 
   <div class="cols-3">
@@ -984,7 +1039,7 @@ body { font-size: 16px; }
 
       <!-- Design Token 体系 -->
       <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:3px 10px;font-size:16px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎨 Design Token 体系</div>
+        <div style="padding:3px 10px;font-size:13px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎨 Design Token 体系</div>
         <div style="display:grid;grid-template-columns:85px 1fr 1fr;gap:0;font-size:15px;">
           <div style="padding:3px 8px;font-weight:700;color:var(--text-3);background:var(--surface);border-bottom:1px solid var(--border);">Token</div>
           <div style="padding:3px 8px;font-weight:700;color:var(--bad);background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">Before</div>
@@ -1019,7 +1074,7 @@ body { font-size: 16px; }
       <!-- 架构 + 动画双栏 -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
         <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
-          <div style="padding:3px 8px;font-size:15px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎨 视觉组件体系</div>
+          <div style="padding:3px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎨 视觉组件体系</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;font-size:14px;">
             <div style="padding:3px 6px;font-weight:700;color:var(--bad);background:var(--surface);border-bottom:1px solid var(--border);">Before</div>
             <div style="padding:3px 6px;font-weight:700;color:var(--good);background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">After</div>
@@ -1032,8 +1087,8 @@ body { font-size: 16px; }
           </div>
         </div>
         <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
-          <div style="padding:3px 8px;font-size:15px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🔄 设计系统设计过程</div>
-          <div style="padding:4px 8px;font-size:14px;line-height:1.7;color:var(--text-2);">
+          <div style="padding:3px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🔄 设计系统设计过程</div>
+          <div style="padding:4px 8px;font-size:11px;line-height:1.4;color:var(--text-2);">
             <span style="color:var(--good);font-weight:600;">Tech / utility</span> 方向选择<br>
             · 浅色中性背景 + 能源绿强调色<br>
             · 系统字体 + monospace 数据字体<br>
@@ -1047,7 +1102,7 @@ body { font-size: 16px; }
       <!-- P0 设计自检 + 智能路由 -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
         <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
-          <div style="padding:3px 8px;font-size:15px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">✅ P0 设计自检清单</div>
+          <div style="padding:3px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">✅ P0 设计自检清单</div>
           <div style="padding:4px 8px;font-size:14px;line-height:1.7;color:var(--good);">
             • 无 raw hex 在 :root 外<br>
             • 所有颜色用 oklch() 或变量<br>
@@ -1055,8 +1110,8 @@ body { font-size: 16px; }
           </div>
         </div>
         <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
-          <div style="padding:3px 8px;font-size:15px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🌈 色彩语义体系</div>
-          <div style="padding:4px 8px;font-size:14px;line-height:1.7;color:var(--text-2);">
+          <div style="padding:3px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🌈 色彩语义体系</div>
+          <div style="padding:4px 8px;font-size:11px;line-height:1.4;color:var(--text-2);">
             <span style="color:var(--accent);">--accent</span> 能源绿 · 主品牌色<br>
             <span style="color:var(--warning);">--warning</span> 琥珀 · 预警提醒<br>
             <span style="color:var(--danger);">--danger</span> 赤红 · 余额不足<br>
@@ -1067,9 +1122,9 @@ body { font-size: 16px; }
       </div>
 
       <div class="stat-bar" style="margin-top:6px;">
-        <div style="text-align:center"><span style="font-size:24px;font-weight:800;color:var(--bad);">-13,574</span><span style="font-size:16px;color:var(--text-3);display:block;">删除行</span></div>
-        <div style="text-align:center"><span style="font-size:24px;font-weight:800;color:var(--good);">+6,041</span><span style="font-size:16px;color:var(--text-3);display:block;">新增行</span></div>
-        <div style="text-align:center"><span style="font-size:24px;font-weight:800;color:var(--accent);">5</span><span style="font-size:16px;color:var(--text-3);display:block;">核心文件</span></div>
+        <div style="text-align:center"><span style="font-size:20px;font-weight:800;color:var(--bad);">-13,574</span><span style="font-size:13px;color:var(--text-3);display:block;">删除行</span></div>
+        <div style="text-align:center"><span style="font-size:20px;font-weight:800;color:var(--good);">+6,041</span><span style="font-size:13px;color:var(--text-3);display:block;">新增行</span></div>
+        <div style="text-align:center"><span style="font-size:20px;font-weight:800;color:var(--accent);">5</span><span style="font-size:13px;color:var(--text-3);display:block;">核心文件</span></div>
       </div>
     </div>
 
@@ -1121,18 +1176,18 @@ body { font-size: 16px; }
     <span class="pd">May 21-30</span>
   </div>
   <div class="keywords">
-    <span class="keyword" style="font-size:18px;">耗电量类比</span>
-    <span class="keyword" style="font-size:18px;">Visual Companion</span>
-    <span class="keyword" style="font-size:18px;">分布图表</span>
-    <span class="keyword" style="font-size:18px;">IndexedDB</span>
-    <span class="keyword" style="font-size:18px;">日期回退</span>
+    <span class="keyword" style="font-size:14px;">耗电量类比</span>
+    <span class="keyword" style="font-size:14px;">Visual Companion</span>
+    <span class="keyword" style="font-size:14px;">分布图表</span>
+    <span class="keyword" style="font-size:14px;">IndexedDB</span>
+    <span class="keyword" style="font-size:14px;">日期回退</span>
   </div>
 
   <div class="cols-3">
 
     <!-- COL 1: 业务增强 -->
     <div class="col">
-      <p class="col-label" style="font-size:18px;">业务增强 · May 21-27</p>
+      <p class="col-label" style="font-size:12px;">业务增强 · May 21-27</p>
       <div class="col-intro">
         Open Design 确立了视觉语言，但业务逻辑仍需逐个实现——<br>
         这些需求不涉及"好不好看"，只涉及"对不对"。
@@ -1144,7 +1199,7 @@ body { font-size: 16px; }
           <div class="feat-body">
             <div class="feat-title">耗电量直观类比</div>
             <div class="feat-desc">kWh → "够 iPhone 16 充满 X 次" "≈ 小米 SU7 跑 X 公里" "够训练 DeepSeek-R1 回答 X 道数学题"。纯业务逻辑，与设计系统无关。</div>
-            <div style="margin-top:3px;font-size:16px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
+            <div style="margin-top:2px;font-size:13px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
           </div>
         </div>
         <div class="feat-card">
@@ -1152,7 +1207,7 @@ body { font-size: 16px; }
           <div class="feat-body">
             <div class="feat-title">全校区排名百分位</div>
             <div class="feat-desc">显示房间在全校区的排名百分位，让用户知道自己的用电水平处于什么位置。数据来自跨页面缓存共享。</div>
-            <div style="margin-top:3px;font-size:16px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--bad);font-weight:600;">0</span><span style="color:var(--text-3);">（纯 Claude 交互 + Mentaturan 协作）</span></div>
+            <div style="margin-top:2px;font-size:13px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--bad);font-weight:600;">0</span><span style="color:var(--text-3);">（纯 Claude 交互 + Mentaturan 协作）</span></div>
           </div>
         </div>
         <div class="feat-card">
@@ -1160,7 +1215,7 @@ body { font-size: 16px; }
           <div class="feat-body">
             <div class="feat-title">排行榜请求池</div>
             <div class="feat-desc">批量请求时的并发控制，防止短时间内大量 HTTP 请求触发浏览器限制或服务端限流。</div>
-            <div style="margin-top:3px;font-size:16px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
+            <div style="margin-top:2px;font-size:13px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
           </div>
         </div>
         <div class="feat-card">
@@ -1168,7 +1223,7 @@ body { font-size: 16px; }
           <div class="feat-body">
             <div class="feat-title">IndexedDB 缓存迁移</div>
             <div class="feat-desc">localStorage → IndexedDB，支持更大的缓存容量。迁移暴露了 Agent 对同步/异步 API 差异的盲区——多处遗漏 <code>await</code> 导致返回 Promise 而非数据。</div>
-            <div style="margin-top:3px;font-size:16px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
+            <div style="margin-top:2px;font-size:13px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
           </div>
         </div>
         <div class="feat-card">
@@ -1176,7 +1231,7 @@ body { font-size: 16px; }
           <div class="feat-body">
             <div class="feat-title">智慧排序</div>
             <div class="feat-desc">选择框根据校区、楼栋、房间的常用程度智能排序，优先显示最可能被选中的选项。</div>
-            <div style="margin-top:3px;font-size:16px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
+            <div style="margin-top:2px;font-size:13px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
           </div>
         </div>
       </div>
@@ -1184,16 +1239,16 @@ body { font-size: 16px; }
 
     <!-- COL 2: Visual Companion -->
     <div class="col">
-      <p class="col-label" style="font-size:18px;">Visual Companion · May 28-30</p>
+      <p class="col-label" style="font-size:12px;">Visual Companion · May 28-30</p>
       <div class="col-intro">
         Agent 首次在浏览器中展示实时 mockup 供用户选择——<br>
         将设计决策从"你想象一下"变为"你看一下"。
       </div>
 
       <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:6px 10px;font-size:16px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📈 分布图表系统</div>
+        <div style="padding:6px 10px;font-size:13px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📈 分布图表系统</div>
         <div style="padding:6px 10px;">
-          <div style="font-size:18px;color:var(--text-3);margin-bottom:4px;">Agent 展示 3 种布局实时 mockup，用户根据需求直观选择：</div>
+          <div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">Agent 展示 3 种布局实时 mockup，用户根据需求直观选择：</div>
 
           <div class="vc-step" style="display:flex;gap:8px;align-items:center;">
             <svg width="70" height="42" viewBox="0 0 70 42" style="flex-shrink:0;">
@@ -1258,65 +1313,65 @@ body { font-size: 16px; }
           <div class="vc-detail" style="margin-top:4px;padding:6px 8px;background:var(--surface);border-radius:4px;">
             <span style="color:var(--good);font-weight:600;">用户选择驱动 →</span> 4 种分布自动拟合（正态/对数正态/Gamma/双峰 EM），BIC 选择最优模型
           </div>
-          <div class="vc-detail" style="margin-top:4px;padding:6px 8px;background:color-mix(in srgb,var(--warning) 10%,transparent);border-radius:4px;border:1px solid color-mix(in srgb,var(--warning) 20%,transparent);">
+          <div class="vc-detail" style="margin-top:4px;padding:6px 8px;background:color-mix(in srgb,var(--warn) 10%,transparent);border-radius:4px;border:1px solid color-mix(in srgb,var(--warn) 20%,transparent);">
             <span style="font-weight:700;">图标选择逻辑：</span>Agent 不预设偏好，而是提供 3 种视觉方案由用户按实际需求选择——<br>用户希望同时看到"数据分布 + 统计指标"，因此选择了组合布局方案 C。
           </div>
         </div>
       </div>
 
       <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:6px 10px;font-size:16px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📅 日期自动回退</div>
+        <div style="padding:6px 10px;font-size:13px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📅 日期自动回退</div>
         <div class="vc-detail" style="padding:6px 10px;line-height:1.5;">
           Agent 初提：<span style="color:var(--bad);">"严格日期匹配，无数据就显示 --"</span><br>
-          用户推翻 → 补提 <span style="color:var(--good);">"自动回退 + banner 通知"</span><br><br>
-          <span style="color:var(--text-3);font-size:16px;">今日覆盖度不足时自动搜索最近 7 天第一个可用日期，用可关闭的 banner 保持数据诚实。</span>
+          用户推翻 → 补提 <span style="color:var(--good);">"自动回退 + banner 通知"</span><br>
+          <span style="color:var(--text-3);font-size:13px;">今日覆盖度不足时自动搜索最近 7 天第一个可用日期，用可关闭的 banner 保持数据诚实。</span>
         </div>
       </div>
 
       <div class="insight-box" style="margin-top:6px;">
-        <div class="il" style="font-size:18px;">💡 Visual Companion 的价值</div>
-        <p style="font-size:18px;line-height:1.5;">用户选择"方案 C 组合布局"只用了 3 秒——如果让用户用文字描述需求，来回沟通至少需要 3 轮。Visual Companion 将设计选择从"你想象一下"变为"你看一下"，极大降低了沟通成本。同样，日期回退展示了 Agent 被用户推翻后的设计迭代能力——从"无数据就不显示"到"自动回退 + 诚实通知"。</p>
+        <div class="il" style="font-size:12px;">💡 Visual Companion 的价值</div>
+        <p style="font-size:11px;line-height:1.3;">用户选择"方案 C 组合布局"只用了 3 秒——如果让用户用文字描述需求，来回沟通至少需要 3 轮。Visual Companion 将设计选择从"你想象一下"变为"你看一下"，极大降低了沟通成本。同样，日期回退展示了 Agent 被用户推翻后的设计迭代能力——从"无数据就不显示"到"自动回退 + 诚实通知"。</p>
       </div>
     </div>
 
     <!-- COL 3: Insight & summary -->
     <div class="col">
-      <p class="col-label" style="font-size:18px;">阶段五的启示</p>
+      <p class="col-label" style="font-size:12px;">阶段五的启示</p>
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🧩 业务 vs 设计：本质差异</div>
-        <div class="vc-detail" style="padding:8px 12px;line-height:1.6;">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-            <div style="padding:8px;background:color-mix(in srgb,var(--bad) 8%,transparent);border-radius:4px;">
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:4px;">
+        <div style="padding:5px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🧩 业务 vs 设计：本质差异</div>
+        <div class="vc-detail" style="padding:5px 8px;line-height:1.4;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div style="padding:5px;background:color-mix(in srgb,var(--bad) 8%,transparent);border-radius:4px;">
               <div style="font-weight:700;color:var(--bad);margin-bottom:2px;">Open Design 擅长的</div>
-              <div style="font-size:16px;">CSS 变量 · 视觉统一<br>布局重构 · 设计系统</div>
+              <div style="font-size:14px;">CSS 变量 · 视觉统一<br>布局重构 · 设计系统</div>
             </div>
-            <div style="padding:8px;background:color-mix(in srgb,var(--accent) 8%,transparent);border-radius:4px;">
+            <div style="padding:5px;background:color-mix(in srgb,var(--accent) 8%,transparent);border-radius:4px;">
               <div style="font-weight:700;color:var(--accent);margin-bottom:2px;">需要手动实现的</div>
-              <div style="font-size:16px;">请求池 · IndexedDB<br>排序逻辑 · 数据计算</div>
+              <div style="font-size:14px;">请求池 · IndexedDB<br>排序逻辑 · 数据计算</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎯 图标选择的原则</div>
-        <div class="vc-detail" style="padding:8px 12px;line-height:1.6;">
-          Agent 提出的图表方案必须配合用户需求，而非自行决定：<br><br>
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:4px;">
+        <div style="padding:5px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎯 图标选择的原则</div>
+        <div class="vc-detail" style="padding:5px 8px;line-height:1.4;">
+          Agent 提出的图表方案必须配合用户需求，而非自行决定：<br>
           <span style="color:var(--good);">✓</span> 提供多种方案让用户选择<br>
           <span style="color:var(--good);">✓</span> 用户的需求描述驱动方案设计<br>
           <span style="color:var(--bad);">✗</span> Agent 不应预设"最优"方案<br>
-          <span style="color:var(--bad);">✗</span> 避免"你想象一下"的文字沟通<br><br>
-          <span style="color:var(--text-3);font-size:16px;">Visual Companion 的核心价值：让用户看到再选，而非想了再说。
+          <span style="color:var(--bad);">✗</span> 避免"你想象一下"的文字沟通<br>
+          <span style="color:var(--text-3);font-size:13px;">Visual Companion 的核心价值：让用户看到再选，而非想了再说。
         </div>
       </div>
 
       <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
-        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📐 Agent 被推翻后的迭代</div>
-        <div class="vc-detail" style="padding:8px 12px;line-height:1.6;">
-          日期回退功能展示了 Agent 被用户推翻后<br>的<span style="color:var(--good);">设计迭代能力</span>：<br><br>
-          初提方案 → 用户拒绝 → 补提改进 → 验收通过<br><br>
-          <span style="color:var(--text-3);font-size:16px;">关键在于：Agent 不坚持初始方案，<br>而是快速理解用户意图并迭代。</span>
+        <div style="padding:5px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📐 Agent 被推翻后的迭代</div>
+        <div class="vc-detail" style="padding:5px 8px;line-height:1.4;">
+          日期回退功能展示了 Agent 被用户推翻后<br>的<span style="color:var(--good);">设计迭代能力</span>：<br>
+          初提方案 → 用户拒绝 → 补提改进 → 验收通过<br>
+          <span style="color:var(--text-3);font-size:13px;">关键在于：Agent 不坚持初始方案，<br>而是快速理解用户意图并迭代。</span>
         </div>
       </div>
     </div>
@@ -1353,11 +1408,11 @@ body { font-size: 16px; }
   </div>
 
   <div class="keywords">
-    <span class="keyword" style="font-size:18px;">本地→GitHub</span>
-    <span class="keyword" style="font-size:18px;">真实用户反馈</span>
-    <span class="keyword" style="font-size:18px;">外部贡献者</span>
-    <span class="keyword" style="font-size:18px;">CodeRabbit</span>
-    <span class="keyword" style="font-size:18px;">GitHub Actions</span>
+    <span class="keyword" style="font-size:14px;">本地→GitHub</span>
+    <span class="keyword" style="font-size:14px;">真实用户反馈</span>
+    <span class="keyword" style="font-size:14px;">外部贡献者</span>
+    <span class="keyword" style="font-size:14px;">CodeRabbit</span>
+    <span class="keyword" style="font-size:14px;">GitHub Actions</span>
   </div>
 
   <!-- GitHub repo screenshot (center, intro) -->
@@ -1455,13 +1510,13 @@ body { font-size: 16px; }
     <span class="pd">Jun 8</span>
   </div>
   <div class="keywords">
-    <span class="keyword" style="font-size:18px;">+19,032 / -23,014</span>
-    <span class="keyword" style="font-size:18px;">6 个阶段</span>
-    <span class="keyword" style="font-size:18px;">3 种范式</span>
-    <span class="keyword" style="font-size:18px;">16 轮 Superpowers</span>
+    <span class="keyword" style="font-size:14px;">+19,032 / -23,014</span>
+    <span class="keyword" style="font-size:14px;">6 个阶段</span>
+    <span class="keyword" style="font-size:14px;">3 种范式</span>
+    <span class="keyword" style="font-size:14px;">16 轮 Superpowers</span>
   </div>
 
-  <div class="cols-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;overflow-y:auto;max-height:calc(100vh - 195px);">
+  <div class="cols-2" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;overflow-y:auto;flex:1;min-height:0;">
 
     <!-- COL 1: Project Stats + Paradigm Evolution -->
     <div class="col">
@@ -1481,7 +1536,7 @@ body { font-size: 16px; }
       <p class="col-label" style="margin-top:8px;">🔄 三种协作范式的演进</p>
 
       <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
-        <div style="display:grid;grid-template-columns:60px 1fr;font-size:18px;gap:0;">
+        <div style="display:grid;grid-template-columns:60px 1fr;font-size:15px;gap:0;">
           <div style="padding:6px 8px;font-weight:700;background:var(--surface);border-bottom:1px solid var(--border);text-align:center;color:var(--text-3);">P1</div>
           <div style="padding:6px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">纯 Claude 交互 · 无结构化流程</div>
           <div style="padding:6px 8px;font-weight:700;background:var(--surface);border-bottom:1px solid var(--border);text-align:center;color:var(--text-3);">P2</div>
@@ -1494,7 +1549,7 @@ body { font-size: 16px; }
       <p class="col-label" style="margin-top:8px;">🎯 各阶段 Superpowers 轮数</p>
 
       <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
-        <div style="display:grid;grid-template-columns:80px 1fr 50px;font-size:18px;gap:0;">
+        <div style="display:grid;grid-template-columns:80px 1fr 50px;font-size:15px;gap:0;">
           <div style="padding:4px 8px;font-weight:700;background:var(--surface);border-bottom:1px solid var(--border);">阶段</div>
           <div style="padding:4px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">内容</div>
           <div style="padding:4px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);text-align:right;">轮</div>
@@ -1525,29 +1580,29 @@ body { font-size: 16px; }
       <p class="col-label">💡 核心洞察</p>
 
       <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎯 Spec 质量决定实现的天花板</div>
-        <div style="padding:8px 12px;font-size:18px;color:var(--text-2);line-height:1.6;">
+        <div style="padding:8px 12px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎯 Spec 质量决定实现的天花板</div>
+        <div style="padding:8px 12px;font-size:15px;color:var(--text-2);line-height:1.4;">
           Speckit 的任务分解效率很高，但 spec 的清晰度直接决定了产出的质量。模糊的规约迫使 Agent 依赖隐含假设填补空白——排序方向、错误状态区分、性能目标，这些在 spec 中没有明确写明的细节最终都成为了 bug。核心教训：<strong style="color:var(--accent);">如果你不确定 spec 的质量，就不要用 Speckit</strong>。
         </div>
       </div>
 
       <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🔄 Brainstorming 让不可见的问题变得可见</div>
-        <div style="padding:8px 12px;font-size:18px;color:var(--text-2);line-height:1.6;">
+        <div style="padding:8px 12px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🔄 Brainstorming 让不可见的问题变得可见</div>
+        <div style="padding:8px 12px;font-size:15px;color:var(--text-2);line-height:1.4;">
           122 个任务的代码生成用了几个小时，但修复 spec 不清晰导致的问题花了超过 2 天。Brainstorming 通过追问链让不可见的问题在实现前变得可见——"按升序还是降序？""空状态和错误状态怎么区分？""性能指标是多少？"——这些追问在 Speckit 阶段从未被提出。
         </div>
       </div>
 
       <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">👁️ Visual Companion 降低沟通成本</div>
-        <div style="padding:8px 12px;font-size:18px;color:var(--text-2);line-height:1.6;">
+        <div style="padding:8px 12px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">👁️ Visual Companion 降低沟通成本</div>
+        <div style="padding:8px 12px;font-size:15px;color:var(--text-2);line-height:1.4;">
           用户选择方案 C 只用了 3 秒——如果用文字描述来回沟通至少需要 3 轮。Visual Companion 将设计选择从<strong>"你想象一下"</strong>变为<strong>"你看一下"</strong>，极大降低了沟通成本。
         </div>
       </div>
 
       <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:8px 12px;font-size:18px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🧩 AI 的盲区需要结构性补偿</div>
-        <div style="padding:8px 12px;font-size:18px;color:var(--text-2);line-height:1.6;">
+        <div style="padding:8px 12px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🧩 AI 的盲区需要结构性补偿</div>
+        <div style="padding:8px 12px;font-size:15px;color:var(--text-2);line-height:1.4;">
           <span style="color:var(--bad);">运行时语义盲区</span>：Chart.js Proxy 死循环、坐标类型不匹配<br>
           <span style="color:var(--bad);">边界情况盲区</span>：负余额、最后 bin、同名房间去重<br>
           <span style="color:var(--bad);">并发环境盲区</span>：workflow 竞态条件、数据一致性<br><br>
@@ -1557,7 +1612,7 @@ body { font-size: 16px; }
 
       <div class="insight-box">
         <div class="il" style="font-size:20px;">📌 核心结论</div>
-        <p style="font-size:18px;line-height:1.6;">
+        <p style="font-size:15px;line-height:1.4;">
           <strong>Spec 决定"做对的事"，Plan 决定"把事做对"。</strong>两者中的任何缺位都会使 Agent 的执行质量退化到纯模型先验的水平。<br><br>
           Open Design 擅长设计，不擅长业务——理解这个边界才能正确地使用它。<br><br>
           <strong style="color:var(--accent);">AI4SE 不是取代开发者，而是改变开发者需要关注的事情。</strong>
