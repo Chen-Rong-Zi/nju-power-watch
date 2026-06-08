@@ -246,29 +246,29 @@ body { font-size: 16px; }
 .timeline-bar .ta { font-size: 18px; color: var(--text-3); }
 .divider-accent { width: 80px; height: 3px; background: var(--accent); margin: 14px auto; border-radius: 2px; }
 /* Phase 3: font scaling */
-.phase-3-slide .keyword { font-size: 12px; padding: 1px 6px; }
-.phase-3-slide .col-label { font-size: 12px; }
+.phase-3-slide .keyword { font-size: 14px; padding: 2px 8px; }
+.phase-3-slide .col-label { font-size: 14px; }
 .phase-3-slide .persp-card { padding: 4px 6px; }
 .phase-3-slide .persp-icon { font-size: 20px; width: 26px; }
-.phase-3-slide .persp-title { font-size: 14px; }
-.phase-3-slide .persp-desc { font-size: 12px; }
+.phase-3-slide .persp-title { font-size: 15px; }
+.phase-3-slide .persp-desc { font-size: 13px; }
 .phase-3-slide .stat-row { padding: 4px 6px; }
-.phase-3-slide .stat-num { font-size: 20px; }
-.phase-3-slide .stat-label { font-size: 12px; }
+.phase-3-slide .stat-num { font-size: 22px; }
+.phase-3-slide .stat-label { font-size: 13px; }
 .phase-3-slide .stat-plus { font-size: 15px; }
-.phase-3-slide .callout { padding: 4px 8px; font-size: 12px; }
-.phase-3-slide .callout .callout-title { font-size: 14px; }
-.phase-3-slide .callout p { font-size: 12px; }
-.phase-3-slide .bs-grid { font-size: 11px; }
-.phase-3-slide .bs-header { font-size: 11px; padding: 2px 5px; }
-.phase-3-slide .bs-label { font-size: 11px; padding: 2px 5px; }
-.phase-3-slide .bs-cell { font-size: 11px; padding: 2px 5px; }
-.phase-3-slide .insight-box .il { font-size: 13px; }
-.phase-3-slide .insight-box p { font-size: 12px; }
+.phase-3-slide .callout { padding: 4px 8px; font-size: 13px; }
+.phase-3-slide .callout .callout-title { font-size: 15px; }
+.phase-3-slide .callout p { font-size: 13px; }
+.phase-3-slide .bs-grid { font-size: 13px; }
+.phase-3-slide .bs-header { font-size: 13px; padding: 3px 6px; }
+.phase-3-slide .bs-label { font-size: 13px; padding: 3px 6px; }
+.phase-3-slide .bs-cell { font-size: 13px; padding: 3px 6px; }
+.phase-3-slide .insight-box .il { font-size: 15px; }
+.phase-3-slide .insight-box p { font-size: 13px; }
 .phase-3-slide .spec-card-grid { gap: 2px; padding: 6px 8px; margin-bottom: 2px; }
-.phase-3-slide .spec-badge { font-size: 11px; }
-.phase-3-slide .spec-code { font-size: 11px; }
-.phase-3-slide .spec-result { font-size: 11px; }
+.phase-3-slide .spec-badge { font-size: 13px; }
+.phase-3-slide .spec-code { font-size: 13px; }
+.phase-3-slide .spec-result { font-size: 13px; }
 .phase3-cols { overflow-y: auto; flex: 1; min-height: 0; gap: 4px; }
 .phase3-cols::-webkit-scrollbar { width: 3px; }
 .phase3-cols::-webkit-scrollbar-track { background: transparent; }
@@ -283,9 +283,9 @@ body { font-size: 16px; }
 
 /* ===== Phase 1 & 2: font scaling ===== */
 .phase-1-slide .keyword,
-.phase-2-slide .keyword { font-size: 11px; padding: 1px 5px; }
+.phase-2-slide .keyword { font-size: 14px; padding: 2px 8px; }
 .phase-1-slide .col-label,
-.phase-2-slide .col-label { font-size: 11px; margin-bottom: 1px; }
+.phase-2-slide .col-label { font-size: 14px; margin-bottom: 1px; }
 .phase-1-slide .screenshot-card .cap,
 .phase-1-slide .step-card .sc h4,
 .phase-1-slide .step-card .sc p,
@@ -309,19 +309,20 @@ body { font-size: 16px; }
 .phase-2-slide .dir-tree .tree-pre,
 .phase-2-slide .dir-tree .tree-header,
 .phase-2-slide .card-item li,
-.phase-2-slide .card-item p { font-size: 11px; }
+.phase-2-slide .card-item p { font-size: 13px; }
 .phase-1-slide .step-card .sn { font-size: 11px; width: 18px; height: 18px; }
-.phase-1-slide .skill-repo-card img { max-height: 80px; object-fit: cover; object-position: top; }
+.phase-1-slide .skill-repo-card { max-height:110px, flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.phase-1-slide .skill-repo-card img { max-height: none; object-fit: cover; object-position: top; flex: 1; min-height: 0; }
 .phase-1-slide .pipeline-svg { padding: 4px; }
-.phase-1-slide .step-card { padding: 3px 5px; gap: 4px; }
+.phase-1-slide .step-card { padding: 5px 8px; gap: 4px; }
 .phase-1-slide .step-cards { gap: 3px; }
 .phase-1-slide .code-card pre { padding: 4px 8px; font-size: 10px; }
 .phase-1-slide .insight-box { padding: 6px 8px; }
-.phase-1-slide .insight-box .il { font-size: 14px; }
-.phase-1-slide .insight-box p { font-size: 12px; }
-.phase-2-slide .insight-box .il { font-size: 14px; }
-.phase-2-slide .insight-box p { font-size: 12px; }
-.phase-1-slide .phase-desc { font-size: 12px; padding: 1px 2px; }
+.phase-1-slide .insight-box .il { font-size: 15px; }
+.phase-1-slide .insight-box p { font-size: 13px; }
+.phase-2-slide .insight-box .il { font-size: 15px; }
+.phase-2-slide .insight-box p { font-size: 13px; }
+.phase-1-slide .phase-desc { font-size: 13px; padding: 2px 4px; }
 .phase-1-slide .cols-3,
 .phase-2-slide .cols-3-wide { overflow-y: auto; flex: 1; min-height: 0; gap: 6px; }
 .phase-1-slide .cols-3::-webkit-scrollbar,
@@ -332,28 +333,29 @@ body { font-size: 16px; }
 .phase-2-slide .cols-3-wide::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 /* Background slide font scaling */
-.bg-slide .card-item li { font-size: 14px; }
-.bg-slide .card-item p { font-size: 14px; }
-.bg-slide .card-item h4 { font-size: 18px; }
-.bg-slide .tp { font-size: 14px; padding: 6px 12px; }
-.bg-slide .ta { font-size: 14px; }
+.bg-slide .card-item li { font-size: 15px; }
+.bg-slide .card-item p { font-size: 15px; }
+.bg-slide .card-item h4 { font-size: 20px; }
+.bg-slide .tp { font-size: 15px; padding: 6px 12px; }
+.bg-slide .ta { font-size: 15px; }
 
 /* ===== Phase 4: font scaling ===== */
-.phase-4-slide .keyword { font-size: 11px; padding: 1px 5px; }
-.phase-4-slide .col-label { font-size: 11px; }
-.phase-4-slide .screenshot-card img { max-height: 140px; object-fit: cover; object-position: top; }
+.phase-4-slide .keyword { font-size: 14px; padding: 2px 8px; }
+.phase-4-slide .col-label { font-size: 14px; }
+.phase-4-slide .screenshot-card { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.phase-4-slide .screenshot-card img { max-height: none; object-fit: cover; object-position: top; flex: 1; min-height: 0; }
 .phase-4-slide .cols-3 { overflow-y: auto; flex: 1; min-height: 0; gap: 4px; grid-template-columns: 1fr 2fr 1fr; }
 .phase-4-slide .cols-3 .col { gap: 3px; }
 .phase-4-slide .code-card pre { padding: 4px 8px; font-size: 10px; }
 .phase-4-slide .insight-box { padding: 5px 8px; }
-.phase-4-slide .insight-box .il { font-size: 12px; }
-.phase-4-slide .insight-box p { font-size: 11px; }
+.phase-4-slide .insight-box .il { font-size: 15px; }
+.phase-4-slide .insight-box p { font-size: 13px; }
 .phase-4-slide .od-grid { font-size: 11px; }
 .phase-4-slide .code-card .cl { font-size: 11px; padding: 2px 6px; }
 .phase-4-slide .code-card pre { font-size: 11px; padding: 4px 8px; }
 .phase-4-slide .code-card pre code { font-size: 11px; }
-.phase-4-slide .stat-num { font-size: 16px; }
-.phase-4-slide .stat-label { font-size: 11px; }
+.phase-4-slide .stat-num { font-size: 20px; }
+.phase-4-slide .stat-label { font-size: 13px; }
 .phase-4-slide .cols-3 { overflow-y: auto; flex: 1; min-height: 0; gap: 4px; grid-template-columns: 1fr 2fr 1fr; }
 .phase-4-slide .cols-3::-webkit-scrollbar { width: 3px; }
 .phase-4-slide .cols-3::-webkit-scrollbar-track { background: transparent; }
@@ -361,31 +363,31 @@ body { font-size: 16px; }
 .phase-4-slide .stat-bar { margin-top: auto; display: flex; justify-content: center; gap: 6px; padding: 4px; }
 
 /* ===== Phase 5: font scaling ===== */
-.phase-5-slide .keyword { font-size: 11px; padding: 1px 5px; }
-.phase-5-slide .col-label { font-size: 11px; }
-.phase-5-slide .feat-title { font-size: 11px; }
-.phase-5-slide .feat-desc { font-size: 11px; line-height: 1.2; }
+.phase-5-slide .keyword { font-size: 14px; padding: 2px 8px; }
+.phase-5-slide .col-label { font-size: 14px; }
+.phase-5-slide .feat-title { font-size: 13px; }
+.phase-5-slide .feat-desc { font-size: 13px; line-height: 1.3; }
 .phase-5-slide .feat-desc code { font-size: 10px; }
-.phase-5-slide .insight-box .il { font-size: 12px; }
-.phase-5-slide .insight-box p { font-size: 11px; }
+.phase-5-slide .insight-box .il { font-size: 15px; }
+.phase-5-slide .insight-box p { font-size: 13px; }
 .phase-5-slide .feat-card { padding: 5px 8px; gap: 5px; }
 .phase-5-slide .feat-icon { font-size: 14px; width: 20px; }
-.phase-5-slide .feat-card .feat-title { font-size: 12px; }
-.phase-5-slide .feat-card .feat-desc { font-size: 10px; }
+.phase-5-slide .feat-card .feat-title { font-size: 13px; }
+.phase-5-slide .feat-card .feat-desc { font-size: 12px; }
 .phase-5-slide .vc-badge { font-size: 9px; padding: 1px 3px; }
 .phase-5-slide .vc-step { padding: 2px 4px; margin-bottom: 1px; }
-.phase-5-slide .vc-step .vs-title { font-size: 11px; }
-.phase-5-slide .vc-step .vs-desc { font-size: 11px; }
+.phase-5-slide .vc-step .vs-title { font-size: 13px; }
+.phase-5-slide .vc-step .vs-desc { font-size: 13px; }
 .phase-5-slide .vc-step svg { width: 35px; height: 20px; }
-.phase-5-slide .col-intro { font-size: 11px; margin-bottom: 1px; }
-.phase-5-slide .vc-detail { font-size: 11px; }
+.phase-5-slide .col-intro { font-size: 13px; margin-bottom: 1px; }
+.phase-5-slide .vc-detail { font-size: 13px; }
 .phase-5-slide .vc-detail code { font-size: 10px; }
-.phase-5-slide .cols-3 { gap: 4px; }
-.phase-5-slide .cols-3 .col { gap: 2px; }
-.phase-5-slide .feat-cards { gap: 3px !important; }
-.phase-5-slide .insight-box { margin-top: 3px !important; padding: 5px 8px !important; }
+.phase-5-slide .cols-3 { overflow-y: auto; flex: 1; min-height: 0; gap: 4px; }
+.phase-5-slide .cols-3 .col { gap: 3px; }
+.phase-5-slide .feat-cards { gap: 4px !important; }
+.phase-5-slide .insight-box { margin-top: 4px !important; padding: 6px 10px !important; }
 .phase-5-slide .vc-step { gap: 4px !important; }
-.phase-5-slide .vc-step svg { width: 28px !important; height: 16px !important; }
+.phase-5-slide .vc-step svg { width: 30px !important; height: 18px !important; }
 
 /* ===== Phase 6: compact layout (no screenshots, scrollable) ===== */
 .phase-6-slide .keyword { font-size: 18px; padding: 4px 12px; }
@@ -452,9 +454,9 @@ body { font-size: 16px; }
 
 /* Override card-item for phase 3 */
 .phase-3-slide .card-item { padding: 10px 14px; }
-.phase-3-slide .card-item h4 { font-size: 15px; margin-bottom: 6px; }
+.phase-3-slide .card-item h4 { font-size: 17px; margin-bottom: 6px; }
 .phase-3-slide .card-item li,
-.phase-3-slide .card-item p { font-size: 12px; line-height: 1.4; }
+.phase-3-slide .card-item p { font-size: 13px; line-height: 1.4; }
 
 /* Override summary insight boxes */
 .summary-slide [style*="padding:8px 12px;font-size:18px;font-weight:700"] { padding: 5px 8px !important; font-size: 13px !important; }
@@ -1245,9 +1247,9 @@ body { font-size: 16px; }
         将设计决策从"你想象一下"变为"你看一下"。
       </div>
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:4px;">
         <div style="padding:6px 10px;font-size:13px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📈 分布图表系统</div>
-        <div style="padding:6px 10px;">
+        <div style="padding:4px 6px;">
           <div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">Agent 展示 3 种布局实时 mockup，用户根据需求直观选择：</div>
 
           <div class="vc-step" style="display:flex;gap:8px;align-items:center;">
@@ -1310,25 +1312,25 @@ body { font-size: 16px; }
             </div>
           </div>
 
-          <div class="vc-detail" style="margin-top:4px;padding:6px 8px;background:var(--surface);border-radius:4px;">
+          <div class="vc-detail" style="margin-top:2px;padding:4px 6px;background:var(--surface);border-radius:4px;">
             <span style="color:var(--good);font-weight:600;">用户选择驱动 →</span> 4 种分布自动拟合（正态/对数正态/Gamma/双峰 EM），BIC 选择最优模型
           </div>
-          <div class="vc-detail" style="margin-top:4px;padding:6px 8px;background:color-mix(in srgb,var(--warn) 10%,transparent);border-radius:4px;border:1px solid color-mix(in srgb,var(--warn) 20%,transparent);">
+          <div class="vc-detail" style="margin-top:2px;padding:4px 6px;background:color-mix(in srgb,var(--warn) 10%,transparent);border-radius:4px;border:1px solid color-mix(in srgb,var(--warn) 20%,transparent);">
             <span style="font-weight:700;">图标选择逻辑：</span>Agent 不预设偏好，而是提供 3 种视觉方案由用户按实际需求选择——<br>用户希望同时看到"数据分布 + 统计指标"，因此选择了组合布局方案 C。
           </div>
         </div>
       </div>
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:6px 10px;font-size:13px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📅 日期自动回退</div>
-        <div class="vc-detail" style="padding:6px 10px;line-height:1.5;">
+      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:4px;">
+        <div style="padding:4px 8px;font-size:13px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📅 日期自动回退</div>
+        <div class="vc-detail" style="padding:4px 8px;line-height:1.5;">
           Agent 初提：<span style="color:var(--bad);">"严格日期匹配，无数据就显示 --"</span><br>
           用户推翻 → 补提 <span style="color:var(--good);">"自动回退 + banner 通知"</span><br>
           <span style="color:var(--text-3);font-size:13px;">今日覆盖度不足时自动搜索最近 7 天第一个可用日期，用可关闭的 banner 保持数据诚实。</span>
         </div>
       </div>
 
-      <div class="insight-box" style="margin-top:6px;">
+      <div class="insight-box" style="margin-top:4px;">
         <div class="il" style="font-size:12px;">💡 Visual Companion 的价值</div>
         <p style="font-size:11px;line-height:1.3;">用户选择"方案 C 组合布局"只用了 3 秒——如果让用户用文字描述需求，来回沟通至少需要 3 轮。Visual Companion 将设计选择从"你想象一下"变为"你看一下"，极大降低了沟通成本。同样，日期回退展示了 Agent 被用户推翻后的设计迭代能力——从"无数据就不显示"到"自动回退 + 诚实通知"。</p>
       </div>
