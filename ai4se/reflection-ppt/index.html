@@ -339,6 +339,14 @@ body { font-size: 16px; }
 .bg-slide .tp { font-size: 15px; padding: 6px 12px; }
 .bg-slide .ta { font-size: 15px; }
 
+/* GitHub repo slide */
+.repo-badge { display:inline-block; padding:4px 14px; border-radius:999px; font-size:13px; font-weight:600; background:var(--surface-2); border:1px solid var(--border); color:var(--text-2); }
+.tech-tag { display:inline-block; padding:3px 10px; border-radius:6px; font-size:12px; font-weight:500; background:color-mix(in srgb,var(--accent) 10%,transparent); color:var(--accent); border:1px solid color-mix(in srgb,var(--accent) 20%,transparent); }
+.gh-link { font-size:13px; color:var(--text-3); font-family:var(--font-mono); }
+.stat-card { text-align:center; padding:10px 20px; border-radius:var(--radius-sm); background:var(--surface); border:1px solid var(--border); min-width:80px; }
+.stat-num { font-size:26px; font-weight:800; color:var(--accent); line-height:1.2; }
+.stat-label { font-size:12px; color:var(--text-3); margin-top:2px; }
+
 /* ===== Phase 4: font scaling ===== */
 .phase-4-slide .keyword { font-size: 14px; padding: 2px 8px; }
 .phase-4-slide .col-label { font-size: 14px; }
@@ -382,11 +390,12 @@ body { font-size: 16px; }
 .phase-5-slide .col-intro { font-size: 13px; margin-bottom: 1px; }
 .phase-5-slide .vc-detail { font-size: 13px; }
 .phase-5-slide .vc-detail code { font-size: 10px; }
-.phase-5-slide .cols-3 { overflow-y: auto; flex: 1; min-height: 0; gap: 4px; }
-.phase-5-slide .cols-3 .col { gap: 3px; }
+.phase-5-slide .cols-3 { flex: 1; min-height: 0; gap: 4px; grid-template-rows: 1fr; }
+.phase-5-slide .cols-3 .col { gap: 3px; min-height: 0; }
+.phase-5-slide .feat-cards { flex: 1; min-height: 0; }
 .phase-5-slide .feat-cards { gap: 4px !important; }
 .phase-5-slide .insight-box { margin-top: 4px !important; padding: 6px 10px !important; }
-.phase-5-slide .vc-step { gap: 4px !important; }
+.phase-5-slide .vc-step { gap: 4px !important; margin-bottom: 0 !important; }
 .phase-5-slide .vc-step svg { width: 30px !important; height: 18px !important; }
 
 /* ===== Phase 6: compact layout (no screenshots, scrollable) ===== */
@@ -490,31 +499,126 @@ body { font-size: 16px; }
   </div>
 </section>
 
-<!-- SLIDE 2: Background -->
-<section class="slide bg-slide" data-title="背景">
-  <p class="kicker">Background · 项目简介</p>
-  <h2 class="h2">南京大学宿舍电费查询与监控系统</h2>
-  <div class="card-grid-2">
-    <div class="card-item">
-      <h4>项目概况</h4>
-      <ul>
-        <li><strong>数据源</strong>: epay.nju.edu.cn 缴费系统</li>
-        <li><strong>部署</strong>: GitHub Pages（纯静态）</li>
-        <li><strong>技术栈</strong>: Python 采集 + Vanilla JS 前端</li>
-      </ul>
+<!-- SLIDE 2: GitHub Repo / Project Intro -->
+<section class="slide bg-slide" data-title="项目介绍" style="padding:28px 44px;">
+  <!-- ===== TITLE ROW ===== -->
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;flex-shrink:0;">
+    <div>
+      <p class="kicker" style="margin:0;font-size:12px;letter-spacing:.10em;">Open Source · NJU Dorm Electricity Monitor</p>
+      <h2 class="h2" style="font-size:34px;margin:0;line-height:1.15;">⚡ NJU Power Watch</h2>
+      <p style="font-size:14px;color:var(--text-2);margin:1px 0 0;font-weight:300;">南大宿舍电费自动监控系统 — 让你的每一度电都看得见</p>
     </div>
-    <div class="card-item">
-      <h4>本文价值</h4>
-      <p>记录 AI 工具在真实项目中如何在不同阶段扮演不同角色——从 API 逆向、数据建模、前端架构到自动化部署，每个阶段暴露了 AI 不同的能力上限与盲区。</p>
+    <div style="text-align:right;flex-shrink:0;">
+      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;margin-bottom:3px;">
+        <span class="repo-badge" style="font-size:11px;padding:3px 10px;">⭐ 11 Stars</span>
+        <span class="repo-badge" style="font-size:11px;padding:3px 10px;">⑂ 1 Fork</span>
+        <span class="repo-badge" style="font-size:11px;padding:3px 10px;">✓ 98 Commits</span>
+        <span class="repo-badge" style="font-size:11px;padding:3px 10px;">📜 MIT</span>
+      </div>
+      <p style="font-size:11px;color:var(--text-3);margin:0;font-family:var(--font-mono);">github.com/Chen-Rong-Zi/nju-power-watch</p>
     </div>
   </div>
-  <div class="timeline-bar">
-    <span class="tp">API 逆向</span><span class="ta">→</span>
-    <span class="tp">数据建模</span><span class="ta">→</span>
-    <span class="tp">前端架构</span><span class="ta">→</span>
-    <span class="tp">Open Design</span><span class="ta">→</span>
-    <span class="tp">功能深化</span><span class="ta">→</span>
-    <span class="tp">Bug 修复</span>
+
+  <!-- ===== PAIN → SOLUTION ===== -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;flex-shrink:0;">
+    <div style="border:1px solid var(--bad);border-radius:var(--radius-sm);padding:6px 10px;background:color-mix(in srgb,var(--bad) 5%,transparent);">
+      <p style="font-size:11px;font-weight:700;color:var(--bad);margin:0 0 3px;letter-spacing:.06em;">😫 痛点</p>
+      <ul style="padding-left:15px;margin:0;">
+        <li style="font-size:11px;line-height:1.5;color:var(--text-2);margin-bottom:1px;">半夜突然停电才发现余额不足</li>
+        <li style="font-size:11px;line-height:1.5;color:var(--text-2);margin-bottom:1px;">手动登录 epay 查询步骤繁琐</li>
+        <li style="font-size:11px;line-height:1.5;color:var(--text-2);">用电量没有参照，对"度"无感知</li>
+      </ul>
+    </div>
+    <div style="border:1px solid var(--good);border-radius:var(--radius-sm);padding:6px 10px;background:color-mix(in srgb,var(--good) 5%,transparent);">
+      <p style="font-size:11px;font-weight:700;color:var(--good);margin:0 0 3px;letter-spacing:.06em;">✅ 解决方案</p>
+      <ul style="padding-left:15px;margin:0;">
+        <li style="font-size:11px;line-height:1.5;color:var(--text-2);margin-bottom:1px;">每天自动采集全校宿舍电量数据</li>
+        <li style="font-size:11px;line-height:1.5;color:var(--text-2);margin-bottom:1px;">个人趋势分析 + 余额预警 + 充值建议</li>
+        <li style="font-size:11px;line-height:1.5;color:var(--text-2);">趣味类比让"度"变得可感知</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== MAIN: GITHUB SCREENSHOT + FEATURES ===== -->
+  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:8px;flex:1;min-height:0;margin-bottom:4px;">
+
+    <!-- GitHub screenshot (primary) -->
+    <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface);display:flex;flex-direction:column;">
+      <div style="padding:4px 10px;font-size:10px;font-weight:600;background:#24292e;color:#fff;flex-shrink:0;display:flex;align-items:center;gap:6px;">
+        <span style="display:inline-flex;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:#ff5f57;"></span><span style="width:8px;height:8px;border-radius:50%;background:#ffbd2e;"></span><span style="width:8px;height:8px;border-radius:50%;background:#28c840;"></span></span>
+        <span style="opacity:.7;">github.com/Chen-Rong-Zi/nju-power-watch</span>
+      </div>
+      <img src="github-repo.png" alt="GitHub 仓库截图" style="flex:1;width:100%;object-fit:cover;object-position:top;" />
+    </div>
+
+    <!-- Features + Stats (secondary) -->
+    <div style="display:flex;flex-direction:column;gap:5px;min-height:0;">
+      <div class="card-item" style="flex:1;padding:6px 9px;display:flex;flex-direction:column;">
+        <p style="font-size:11px;font-weight:700;color:var(--accent);margin:0 0 2px;">🏠 个人视角 · 日常查看</p>
+        <ul style="padding-left:14px;margin:0;font-size:10px;line-height:1.5;color:var(--text-2);flex:1;">
+          <li>电费趋势图（7d / 30d / 全部）</li>
+          <li>余额耗尽预测 + 低余额预警 + 充值建议</li>
+          <li>直观类比："2度 ≈ iPhone充150次"</li>
+        </ul>
+      </div>
+      <div class="card-item" style="flex:1;padding:6px 9px;display:flex;flex-direction:column;">
+        <p style="font-size:11px;font-weight:700;color:var(--accent);margin:0 0 2px;">🏢 楼栋视角 · 社交对比</p>
+        <ul style="padding-left:14px;margin:0;font-size:10px;line-height:1.5;color:var(--text-2);flex:1;">
+          <li>耗电量排行榜 · 快速搜索 · 位次查看</li>
+          <li>整栋楼用电趋势</li>
+        </ul>
+      </div>
+      <div class="card-item" style="flex:1;padding:6px 9px;display:flex;flex-direction:column;">
+        <p style="font-size:11px;font-weight:700;color:var(--accent);margin:0 0 2px;">🏫 校区视角 · 宏观洞察</p>
+        <ul style="padding-left:14px;margin:0;font-size:10px;line-height:1.5;color:var(--text-2);flex:1;">
+          <li>仪表盘总览 · 各楼栋用电量对比</li>
+          <li>基于数据的智能节能建议</li>
+        </ul>
+      </div>
+      <div style="display:flex;gap:3px;flex-shrink:0;">
+        <div style="text-align:center;flex:1;padding:3px 2px;background:var(--surface);border-radius:6px;border:1px solid var(--border);">
+          <div style="font-size:13px;font-weight:800;color:var(--accent);line-height:1.2;">4</div>
+          <div style="font-size:8px;color:var(--text-3);line-height:1.2;">校区</div>
+        </div>
+        <div style="text-align:center;flex:1;padding:3px 2px;background:var(--surface);border-radius:6px;border:1px solid var(--border);">
+          <div style="font-size:13px;font-weight:800;color:var(--accent);line-height:1.2;">106</div>
+          <div style="font-size:8px;color:var(--text-3);line-height:1.2;">楼栋</div>
+        </div>
+        <div style="text-align:center;flex:1;padding:3px 2px;background:var(--surface);border-radius:6px;border:1px solid var(--border);">
+          <div style="font-size:13px;font-weight:800;color:var(--accent);line-height:1.2;">16k+</div>
+          <div style="font-size:8px;color:var(--text-3);line-height:1.2;">房间</div>
+        </div>
+        <div style="text-align:center;flex:1;padding:3px 2px;background:color-mix(in srgb,var(--accent) 8%,transparent);border-radius:6px;border:1px solid var(--accent);">
+          <div style="font-size:9px;font-weight:700;color:var(--accent);line-height:1.3;">🌐 体验</div>
+          <div style="font-size:8px;color:var(--accent);line-height:1.2;opacity:.7;">njupower.top</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== TECH + FUN ===== -->
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:8px;flex-shrink:0;">
+
+    <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 10px;background:var(--surface);display:flex;align-items:center;gap:6px;">
+      <span style="font-size:13px;">🔧</span>
+      <div style="display:flex;align-items:center;gap:2px;font-size:10px;color:var(--text-2);flex-wrap:wrap;">
+        <span class="tech-tag" style="font-size:10px;padding:2px 7px;">GitHub Actions 自动采集</span>
+        <span style="color:var(--text-3);">→</span>
+        <span class="tech-tag" style="font-size:10px;padding:2px 7px;">分层聚合存储</span>
+        <span style="color:var(--text-3);">→</span>
+        <span class="tech-tag" style="font-size:10px;padding:2px 7px;">纯前端可视化</span>
+      </div>
+    </div>
+
+    <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 10px;background:color-mix(in srgb,var(--accent) 6%,transparent);display:flex;align-items:center;gap:8px;">
+      <span style="font-size:15px;">💡</span>
+      <div>
+        <p style="font-size:10px;font-weight:600;margin:0 0 1px;">趣味亮点 · 电量直观类比</p>
+        <p style="font-size:10px;color:var(--text-2);margin:0;">1度 ≈ iPhone充74次 / 洗衣2桶 / 电动车骑50km</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1196,7 +1300,7 @@ body { font-size: 16px; }
       </div>
 
       <div class="feat-cards" style="gap:5px;">
-        <div class="feat-card">
+        <div class="feat-card" style="flex:1;">
           <span class="feat-icon">⚡</span>
           <div class="feat-body">
             <div class="feat-title">耗电量直观类比</div>
@@ -1204,7 +1308,7 @@ body { font-size: 16px; }
             <div style="margin-top:2px;font-size:13px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
           </div>
         </div>
-        <div class="feat-card">
+        <div class="feat-card" style="flex:1;">
           <span class="feat-icon">📊</span>
           <div class="feat-body">
             <div class="feat-title">全校区排名百分位</div>
@@ -1212,7 +1316,7 @@ body { font-size: 16px; }
             <div style="margin-top:2px;font-size:13px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--bad);font-weight:600;">0</span><span style="color:var(--text-3);">（纯 Claude 交互 + Mentaturan 协作）</span></div>
           </div>
         </div>
-        <div class="feat-card">
+        <div class="feat-card" style="flex:1;">
           <span class="feat-icon">🔄</span>
           <div class="feat-body">
             <div class="feat-title">排行榜请求池</div>
@@ -1220,7 +1324,7 @@ body { font-size: 16px; }
             <div style="margin-top:2px;font-size:13px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
           </div>
         </div>
-        <div class="feat-card">
+        <div class="feat-card" style="flex:1;">
           <span class="feat-icon">💾</span>
           <div class="feat-body">
             <div class="feat-title">IndexedDB 缓存迁移</div>
@@ -1228,7 +1332,7 @@ body { font-size: 16px; }
             <div style="margin-top:2px;font-size:13px;color:var(--text-3);"><span style="color:var(--text-3);">Superpowers 轮数：</span><span style="color:var(--accent);font-weight:600;">1</span><span style="color:var(--text-3);">（Superpowers）</span></div>
           </div>
         </div>
-        <div class="feat-card">
+        <div class="feat-card" style="flex:1;">
           <span class="feat-icon">🧠</span>
           <div class="feat-body">
             <div class="feat-title">智慧排序</div>
@@ -1247,12 +1351,15 @@ body { font-size: 16px; }
         将设计决策从"你想象一下"变为"你看一下"。
       </div>
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:4px;">
-        <div style="padding:6px 10px;font-size:13px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📈 分布图表系统</div>
-        <div style="padding:4px 6px;">
-          <div style="font-size:12px;color:var(--text-3);margin-bottom:4px;">Agent 展示 3 种布局实时 mockup，用户根据需求直观选择：</div>
+      <div style="flex:1;min-height:0;display:grid;grid-template-rows:2fr 1fr;gap:4px;overflow:hidden;">
 
-          <div class="vc-step" style="display:flex;gap:8px;align-items:center;">
+      <div style="flex:1;min-height:0;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="padding:6px 10px;font-size:13px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);flex-shrink:0;">📈 分布图表系统</div>
+        <div style="flex:1;min-height:0;display:grid;grid-template-rows:auto 1fr auto auto;padding:4px 6px;overflow:hidden;">
+          <div style="font-size:12px;color:var(--text-3);margin-bottom:4px;flex-shrink:0;">Agent 展示 3 种布局实时 mockup，用户根据需求直观选择：</div>
+
+          <div style="flex:1;min-height:0;display:grid;grid-template-rows:1fr 1fr 1fr;overflow:hidden;">
+          <div class="vc-step" style="flex:1;min-height:0;display:flex;gap:8px;align-items:center;margin-bottom:0;overflow:hidden;">
             <svg width="70" height="42" viewBox="0 0 70 42" style="flex-shrink:0;">
               <rect x="2" y="30" width="8" height="10" fill="#888" opacity=".4" rx="1"/>
               <rect x="12" y="24" width="8" height="16" fill="#888" opacity=".4" rx="1"/>
@@ -1269,7 +1376,7 @@ body { font-size: 16px; }
             </div>
           </div>
 
-          <div class="vc-step" style="display:flex;gap:8px;align-items:center;">
+          <div class="vc-step" style="flex:1;min-height:0;display:flex;gap:8px;align-items:center;margin-bottom:0;overflow:hidden;">
             <svg width="70" height="42" viewBox="0 0 70 42" style="flex-shrink:0;">
               <path d="M0,40 L5,40 L10,39 L15,38 L20,35 L25,30 L30,22 L35,14 L40,9 L45,6 L50,4 L55,3 L60,2 L65,1.5 L70,1" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
               <circle cx="20" cy="35" r="1.5" fill="var(--accent)"/>
@@ -1289,7 +1396,7 @@ body { font-size: 16px; }
             </div>
           </div>
 
-          <div class="vc-step" style="display:flex;gap:8px;align-items:center;border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent);">
+          <div class="vc-step" style="flex:1;min-height:0;display:flex;gap:8px;align-items:center;margin-bottom:0;overflow:hidden;border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,transparent);">
             <svg width="70" height="42" viewBox="0 0 70 42" style="flex-shrink:0;">
               <rect x="2" y="30" width="8" height="10" fill="var(--accent)" opacity=".5" rx="1"/>
               <rect x="12" y="24" width="8" height="16" fill="var(--accent)" opacity=".5" rx="1"/>
@@ -1311,36 +1418,34 @@ body { font-size: 16px; }
               <div class="vs-desc">直方图 + 箱线图 + 统计摘要一体化</div>
             </div>
           </div>
+          </div>
 
-          <div class="vc-detail" style="margin-top:2px;padding:4px 6px;background:var(--surface);border-radius:4px;">
+          <div class="vc-detail" style="flex-shrink:0;margin-top:2px;padding:4px 6px;background:var(--surface);border-radius:4px;">
             <span style="color:var(--good);font-weight:600;">用户选择驱动 →</span> 4 种分布自动拟合（正态/对数正态/Gamma/双峰 EM），BIC 选择最优模型
           </div>
-          <div class="vc-detail" style="margin-top:2px;padding:4px 6px;background:color-mix(in srgb,var(--warn) 10%,transparent);border-radius:4px;border:1px solid color-mix(in srgb,var(--warn) 20%,transparent);">
+          <div class="vc-detail" style="flex-shrink:0;margin-top:2px;padding:4px 6px;background:color-mix(in srgb,var(--warn) 10%,transparent);border-radius:4px;border:1px solid color-mix(in srgb,var(--warn) 20%,transparent);">
             <span style="font-weight:700;">图标选择逻辑：</span>Agent 不预设偏好，而是提供 3 种视觉方案由用户按实际需求选择——<br>用户希望同时看到"数据分布 + 统计指标"，因此选择了组合布局方案 C。
           </div>
         </div>
       </div>
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:4px;">
-        <div style="padding:4px 8px;font-size:13px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📅 日期自动回退</div>
-        <div class="vc-detail" style="padding:4px 8px;line-height:1.5;">
+      <div style="flex:1;min-height:0;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="padding:4px 8px;font-size:13px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);flex-shrink:0;">📅 日期自动回退</div>
+        <div class="vc-detail" style="flex:1;min-height:0;padding:4px 8px;line-height:1.5;">
           Agent 初提：<span style="color:var(--bad);">"严格日期匹配，无数据就显示 --"</span><br>
           用户推翻 → 补提 <span style="color:var(--good);">"自动回退 + banner 通知"</span><br>
           <span style="color:var(--text-3);font-size:13px;">今日覆盖度不足时自动搜索最近 7 天第一个可用日期，用可关闭的 banner 保持数据诚实。</span>
         </div>
       </div>
 
-      <div class="insight-box" style="margin-top:4px;">
-        <div class="il" style="font-size:12px;">💡 Visual Companion 的价值</div>
-        <p style="font-size:11px;line-height:1.3;">用户选择"方案 C 组合布局"只用了 3 秒——如果让用户用文字描述需求，来回沟通至少需要 3 轮。Visual Companion 将设计选择从"你想象一下"变为"你看一下"，极大降低了沟通成本。同样，日期回退展示了 Agent 被用户推翻后的设计迭代能力——从"无数据就不显示"到"自动回退 + 诚实通知"。</p>
       </div>
     </div>
 
     <!-- COL 3: Insight & summary -->
     <div class="col">
-      <p class="col-label" style="font-size:12px;">阶段五的启示</p>
+      <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:4px;">
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:4px;">
+      <div style="flex:1;min-height:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
         <div style="padding:5px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🧩 业务 vs 设计：本质差异</div>
         <div class="vc-detail" style="padding:5px 8px;line-height:1.4;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
@@ -1356,8 +1461,8 @@ body { font-size: 16px; }
         </div>
       </div>
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:4px;">
-        <div style="padding:5px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎯 图标选择的原则</div>
+      <div style="flex:1;min-height:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="padding:5px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);flex-shrink:0;">🎯 图标选择的原则</div>
         <div class="vc-detail" style="padding:5px 8px;line-height:1.4;">
           Agent 提出的图表方案必须配合用户需求，而非自行决定：<br>
           <span style="color:var(--good);">✓</span> 提供多种方案让用户选择<br>
@@ -1368,15 +1473,15 @@ body { font-size: 16px; }
         </div>
       </div>
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+      <div style="flex:1;min-height:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
         <div style="padding:5px 8px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">📐 Agent 被推翻后的迭代</div>
-        <div class="vc-detail" style="padding:5px 8px;line-height:1.4;">
+        <div class="vc-detail" style="flex:1;min-height:0;padding:5px 8px;line-height:1.4;">
           日期回退功能展示了 Agent 被用户推翻后<br>的<span style="color:var(--good);">设计迭代能力</span>：<br>
           初提方案 → 用户拒绝 → 补提改进 → 验收通过<br>
           <span style="color:var(--text-3);font-size:13px;">关键在于：Agent 不坚持初始方案，<br>而是快速理解用户意图并迭代。</span>
         </div>
       </div>
-    </div>
+      </div>    </div>
 
   </div>
 
