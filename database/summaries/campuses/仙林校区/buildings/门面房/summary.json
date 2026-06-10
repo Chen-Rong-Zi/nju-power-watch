@@ -1,131 +1,135 @@
 {
   "building": "门面房",
   "campus": "仙林校区",
-  "total_rooms": 31,
+  "total_rooms": 32,
   "rooms": {
     "咖啡厅(政府楼)": {
-      "current_balance": 3983.22,
-      "last_updated": "20260609"
+      "current_balance": 3897.78,
+      "last_updated": "20260610"
     },
     "雅园水果店（10栋）": {
-      "current_balance": 788.94,
-      "last_updated": "20260609"
+      "current_balance": 704.62,
+      "last_updated": "20260610"
     },
     "0137": {
       "current_balance": 0.0,
-      "last_updated": "20260609"
+      "last_updated": "20260610"
     },
     "联通（5幢）": {
       "current_balance": 0.0,
-      "last_updated": "20260609"
+      "last_updated": "20260610"
     },
     "理发店（22幢）": {
-      "current_balance": 88.27,
-      "last_updated": "20260609"
+      "current_balance": 189.25,
+      "last_updated": "20260610"
     },
     "06栋快递柜": {
-      "current_balance": 1321.14,
-      "last_updated": "20260609"
+      "current_balance": 1307.2,
+      "last_updated": "20260610"
     },
     "雅思园快印店（4幢）": {
-      "current_balance": 1634.39,
-      "last_updated": "20260609"
+      "current_balance": 1568.21,
+      "last_updated": "20260610"
     },
     "大唐文化(2幢)": {
-      "current_balance": 2980.01,
-      "last_updated": "20260609"
+      "current_balance": 2856.8,
+      "last_updated": "20260610"
     },
     "水吧（第四食堂）": {
-      "current_balance": 946.52,
-      "last_updated": "20260609"
+      "current_balance": 769.01,
+      "last_updated": "20260610"
     },
     "瑞幸咖啡（23幢）": {
-      "current_balance": 186.52,
-      "last_updated": "20260609"
+      "current_balance": 177.56,
+      "last_updated": "20260610"
     },
     "罗森超市（4幢）": {
-      "current_balance": 12363.37,
-      "last_updated": "20260609"
+      "current_balance": 12055.53,
+      "last_updated": "20260610"
     },
     "几米图文（5幢）": {
-      "current_balance": 293.39,
-      "last_updated": "20260609"
+      "current_balance": 1640.31,
+      "last_updated": "20260610"
     },
     "卫星水果超市（5幢）": {
-      "current_balance": 3710.48,
-      "last_updated": "20260609"
+      "current_balance": 3524.24,
+      "last_updated": "20260610"
     },
     "电信（5幢）": {
-      "current_balance": 290.71,
-      "last_updated": "20260609"
+      "current_balance": 288.18,
+      "last_updated": "20260610"
     },
     "好的超市（2幢）": {
-      "current_balance": 21.46,
-      "last_updated": "20260609"
+      "current_balance": 17.94,
+      "last_updated": "20260610"
     },
     "星巴克": {
-      "current_balance": 378.37,
-      "last_updated": "20260609"
+      "current_balance": 375.08,
+      "last_updated": "20260610"
     },
     "京东数码（4幢）": {
-      "current_balance": 23.13,
-      "last_updated": "20260609"
+      "current_balance": 21.58,
+      "last_updated": "20260610"
     },
     "哈尼家（22幢）": {
-      "current_balance": 23.4,
-      "last_updated": "20260609"
+      "current_balance": 21.77,
+      "last_updated": "20260610"
     },
     "中超超市（23幢）": {
-      "current_balance": 6063.81,
-      "last_updated": "20260609"
+      "current_balance": 5931.91,
+      "last_updated": "20260610"
     },
     "一鸣奶吧（3幢）": {
       "current_balance": 0.0,
-      "last_updated": "20260609"
+      "last_updated": "20260610"
     },
     "大金发型（4幢）": {
-      "current_balance": 1048.01,
-      "last_updated": "20260609"
+      "current_balance": 1001.34,
+      "last_updated": "20260610"
     },
     "学友零食店（3幢）": {
       "current_balance": 606.05,
-      "last_updated": "20260609"
+      "last_updated": "20260610"
     },
     "宇奥文印店（22幢）": {
-      "current_balance": 28.06,
-      "last_updated": "20260609"
+      "current_balance": 28.05,
+      "last_updated": "20260610"
     },
     "眼镜店（1幢）": {
-      "current_balance": 69.9,
-      "last_updated": "20260609"
+      "current_balance": 51.94,
+      "last_updated": "20260610"
     },
     "大唐仓库（5幢）": {
       "current_balance": 1686.65,
-      "last_updated": "20260609"
+      "last_updated": "20260610"
     },
     "小金金手作（4幢）": {
       "current_balance": 1.5,
-      "last_updated": "20260609"
+      "last_updated": "20260610"
     },
     "电脑、手表维修（1幢）": {
       "current_balance": 493.78,
-      "last_updated": "20260609"
+      "last_updated": "20260610"
     },
     "麦当劳（3幢）": {
-      "current_balance": 368.76,
-      "last_updated": "20260609"
+      "current_balance": 352.63,
+      "last_updated": "20260610"
     },
     "22栋快递柜": {
-      "current_balance": 182.95,
-      "last_updated": "20260609"
+      "current_balance": 174.93,
+      "last_updated": "20260610"
     },
     "07栋快递柜": {
       "current_balance": 226.86,
-      "last_updated": "20260609"
+      "last_updated": "20260610"
     },
     "华为数码店（4幢）": {
       "current_balance": 12.98,
-      "last_updated": "20260609"
+      "last_updated": "20260610"
+    },
+    "品缘（4幢）": {
+      "current_balance": 23.41,
+      "last_updated": "20260610"
     }
   }
 }
