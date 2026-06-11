@@ -3,21 +3,21 @@
   "campus": "苏州校区",
   "total_rooms": 4,
   "rooms": {
-    "丙702": {
+    "丙204": {
       "current_balance": 0.0,
-      "last_updated": "20260610"
-    },
-    "丙503": {
-      "current_balance": 0.0,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
     },
     "丙511": {
       "current_balance": 0.0,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
     },
-    "丙204": {
+    "丙702": {
       "current_balance": 0.0,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
+    },
+    "丙503": {
+      "current_balance": 0.0,
+      "last_updated": "20260611"
     }
   }
 }

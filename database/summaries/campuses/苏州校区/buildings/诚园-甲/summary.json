@@ -1,567 +1,571 @@
 {
   "building": "诚园-甲",
   "campus": "苏州校区",
-  "total_rooms": 140,
+  "total_rooms": 141,
   "rooms": {
-    "诚园-甲-705": {
-      "current_balance": 380.71,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-411": {
-      "current_balance": 9.99,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-601": {
-      "current_balance": 250.65,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-622": {
-      "current_balance": 165.99,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-526": {
-      "current_balance": 916.87,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-609": {
-      "current_balance": 292.6,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-603": {
-      "current_balance": 104.55,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-709": {
-      "current_balance": 68.71,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-410": {
-      "current_balance": 91.18,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-202": {
-      "current_balance": 269.93,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-424": {
-      "current_balance": 120.62,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-703": {
-      "current_balance": 86.01,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-710": {
-      "current_balance": 273.18,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-415": {
-      "current_balance": 170.0,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-414": {
-      "current_balance": 83.08,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-517": {
-      "current_balance": 282.43,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-322": {
-      "current_balance": 123.12,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-525": {
-      "current_balance": 179.21,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-704": {
-      "current_balance": 412.34,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-418": {
-      "current_balance": 181.9,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-209": {
-      "current_balance": 56.38,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-627": {
-      "current_balance": 214.6,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-419": {
-      "current_balance": 229.33,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-327": {
-      "current_balance": 136.63,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-602": {
-      "current_balance": 88.16,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-321": {
-      "current_balance": 188.52,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-514": {
-      "current_balance": 249.0,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-407": {
-      "current_balance": 134.36,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-416": {
-      "current_balance": 450.25,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-224": {
-      "current_balance": 373.43,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-207": {
-      "current_balance": 316.15,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-520": {
-      "current_balance": 332.2,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-311": {
-      "current_balance": 345.09,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-523": {
-      "current_balance": 359.95,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-318": {
-      "current_balance": 267.5,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-216": {
-      "current_balance": 270.81,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-604": {
-      "current_balance": 43.73,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-203": {
-      "current_balance": 272.39,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-113": {
-      "current_balance": 208.24,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-521": {
-      "current_balance": 9.1,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-422": {
-      "current_balance": 291.06,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-614": {
-      "current_balance": 262.51,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-206": {
-      "current_balance": 82.55,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-509": {
-      "current_balance": 428.16,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-607": {
-      "current_balance": 248.23,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-421": {
-      "current_balance": 227.22,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-218": {
-      "current_balance": 39.41,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-306": {
-      "current_balance": 7.42,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-711": {
-      "current_balance": 18.78,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-612": {
-      "current_balance": 370.24,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-510": {
-      "current_balance": 379.01,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-408": {
-      "current_balance": 25.06,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-316": {
-      "current_balance": 51.34,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-518": {
-      "current_balance": 288.58,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-616": {
-      "current_balance": 124.99,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-519": {
-      "current_balance": 103.76,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-615": {
-      "current_balance": 319.29,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-214": {
-      "current_balance": 46.94,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-623": {
-      "current_balance": 69.21,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-606": {
-      "current_balance": 54.86,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-217": {
-      "current_balance": 141.55,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-212": {
-      "current_balance": 9.86,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-303": {
-      "current_balance": 283.2,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-707": {
-      "current_balance": 269.15,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-225": {
-      "current_balance": 259.66,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-219": {
-      "current_balance": 914.36,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-221": {
-      "current_balance": 200.4,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-406": {
-      "current_balance": 315.89,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-508": {
-      "current_balance": 64.25,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-402": {
-      "current_balance": 117.72,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-426": {
-      "current_balance": 257.57,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-413": {
-      "current_balance": 127.22,
-      "last_updated": "20260610"
-    },
     "诚园-甲-425": {
-      "current_balance": 59.83,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-427": {
-      "current_balance": 15.5,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-502": {
-      "current_balance": 180.2,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-211": {
-      "current_balance": 389.56,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-506": {
-      "current_balance": 175.29,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-412": {
-      "current_balance": 26.49,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-325": {
-      "current_balance": 631.87,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-320": {
-      "current_balance": 24.4,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-702": {
-      "current_balance": 164.04,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-608": {
-      "current_balance": 122.19,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-512": {
-      "current_balance": 84.11,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-226": {
-      "current_balance": 140.27,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-208": {
-      "current_balance": 158.84,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-409": {
-      "current_balance": 136.32,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-307": {
-      "current_balance": 104.39,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-308": {
-      "current_balance": 53.29,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-620": {
-      "current_balance": 128.51,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-516": {
-      "current_balance": 67.15,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-205": {
-      "current_balance": 119.91,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-319": {
-      "current_balance": 139.6,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-524": {
-      "current_balance": 482.62,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-222": {
-      "current_balance": 419.5,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-227": {
-      "current_balance": 120.78,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-220": {
-      "current_balance": 28.26,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-305": {
-      "current_balance": 387.01,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-404": {
-      "current_balance": 35.71,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-618": {
-      "current_balance": 102.22,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-613": {
-      "current_balance": 243.86,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-204": {
-      "current_balance": 338.46,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-313": {
-      "current_balance": 69.24,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-701": {
-      "current_balance": 108.86,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-223": {
-      "current_balance": 190.15,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-315": {
-      "current_balance": 123.15,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-617": {
-      "current_balance": 173.12,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-312": {
-      "current_balance": 147.86,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-507": {
-      "current_balance": 25.04,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-522": {
-      "current_balance": 133.03,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-504": {
-      "current_balance": 205.61,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-301": {
-      "current_balance": 49.62,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-503": {
-      "current_balance": 176.66,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-420": {
-      "current_balance": 15.45,
-      "last_updated": "20260610"
+      "current_balance": 54.72,
+      "last_updated": "20260611"
     },
     "诚园-甲-210": {
-      "current_balance": 180.5,
-      "last_updated": "20260610"
+      "current_balance": 173.56,
+      "last_updated": "20260611"
     },
-    "诚园-甲-309": {
-      "current_balance": 165.45,
-      "last_updated": "20260610"
+    "诚园-甲-211": {
+      "current_balance": 385.05,
+      "last_updated": "20260611"
     },
-    "诚园-甲-706": {
-      "current_balance": 267.32,
-      "last_updated": "20260610"
+    "诚园-甲-305": {
+      "current_balance": 366.37,
+      "last_updated": "20260611"
     },
-    "诚园-甲-310": {
-      "current_balance": 31.97,
-      "last_updated": "20260610"
+    "诚园-甲-223": {
+      "current_balance": 181.96,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-503": {
+      "current_balance": 167.14,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-407": {
+      "current_balance": 122.31,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-618": {
+      "current_balance": 99.34,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-409": {
+      "current_balance": 124.7,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-404": {
+      "current_balance": 25.9,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-225": {
+      "current_balance": 249.12,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-427": {
+      "current_balance": 6.99,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-414": {
+      "current_balance": 71.45,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-522": {
+      "current_balance": 127.31,
+      "last_updated": "20260611"
     },
     "诚园-甲-626": {
-      "current_balance": 225.03,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-317": {
-      "current_balance": 60.99,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-527": {
-      "current_balance": 351.58,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-505": {
-      "current_balance": 118.78,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-513": {
-      "current_balance": 47.77,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-625": {
-      "current_balance": 329.36,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-405": {
-      "current_balance": 265.57,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-326": {
-      "current_balance": 134.56,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-314": {
-      "current_balance": 306.01,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-213": {
-      "current_balance": 17.58,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-624": {
-      "current_balance": 155.22,
-      "last_updated": "20260610"
-    },
-    "诚园-甲-605": {
-      "current_balance": 450.88,
-      "last_updated": "20260610"
+      "current_balance": 214.67,
+      "last_updated": "20260611"
     },
     "诚园-甲-708": {
-      "current_balance": 122.32,
-      "last_updated": "20260610"
+      "current_balance": 115.62,
+      "last_updated": "20260611"
     },
-    "诚园-甲-302": {
-      "current_balance": 261.36,
-      "last_updated": "20260610"
+    "诚园-甲-325": {
+      "current_balance": 614.29,
+      "last_updated": "20260611"
     },
-    "诚园-甲-403": {
-      "current_balance": 250.63,
-      "last_updated": "20260610"
+    "诚园-甲-703": {
+      "current_balance": 76.4,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-620": {
+      "current_balance": 120.35,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-205": {
+      "current_balance": 113.98,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-410": {
+      "current_balance": 84.7,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-319": {
+      "current_balance": 133.79,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-526": {
+      "current_balance": 910.1,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-406": {
+      "current_balance": 310.31,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-605": {
+      "current_balance": 443.0,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-408": {
+      "current_balance": 20.29,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-521": {
+      "current_balance": 179.23,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-502": {
+      "current_balance": 171.49,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-303": {
+      "current_balance": 271.38,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-617": {
+      "current_balance": 165.05,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-506": {
+      "current_balance": 164.62,
+      "last_updated": "20260611"
     },
     "诚园-甲-423": {
-      "current_balance": 365.58,
-      "last_updated": "20260610"
+      "current_balance": 357.48,
+      "last_updated": "20260611"
     },
-    "诚园-甲-324": {
-      "current_balance": 259.88,
-      "last_updated": "20260610"
+    "诚园-甲-227": {
+      "current_balance": 111.71,
+      "last_updated": "20260611"
     },
-    "诚园-甲-511": {
-      "current_balance": 80.51,
-      "last_updated": "20260610"
+    "诚园-甲-422": {
+      "current_balance": 288.04,
+      "last_updated": "20260611"
     },
-    "诚园-甲-215": {
-      "current_balance": 194.68,
-      "last_updated": "20260610"
+    "诚园-甲-307": {
+      "current_balance": 97.67,
+      "last_updated": "20260611"
     },
-    "诚园-甲-611": {
-      "current_balance": 31.98,
-      "last_updated": "20260610"
+    "诚园-甲-704": {
+      "current_balance": 403.54,
+      "last_updated": "20260611"
     },
-    "诚园-甲-401": {
-      "current_balance": 187.0,
-      "last_updated": "20260610"
+    "诚园-甲-613": {
+      "current_balance": 236.11,
+      "last_updated": "20260611"
     },
-    "诚园-甲-323": {
-      "current_balance": 362.21,
-      "last_updated": "20260610"
+    "诚园-甲-520": {
+      "current_balance": 326.35,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-525": {
+      "current_balance": 164.09,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-508": {
+      "current_balance": 58.84,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-513": {
+      "current_balance": 41.09,
+      "last_updated": "20260611"
     },
     "诚园-甲-201": {
-      "current_balance": 74.53,
-      "last_updated": "20260610"
+      "current_balance": 68.01,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-203": {
+      "current_balance": 263.57,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-323": {
+      "current_balance": 358.22,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-706": {
+      "current_balance": 263.4,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-519": {
+      "current_balance": 97.03,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-222": {
+      "current_balance": 412.96,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-206": {
+      "current_balance": 67.71,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-113": {
+      "current_balance": 207.57,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-416": {
+      "current_balance": 444.07,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-420": {
+      "current_balance": 4.47,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-302": {
+      "current_balance": 251.84,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-317": {
+      "current_balance": 57.46,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-504": {
+      "current_balance": 195.73,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-413": {
+      "current_balance": 119.03,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-511": {
+      "current_balance": 76.77,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-505": {
+      "current_balance": 107.42,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-315": {
+      "current_balance": 113.4,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-403": {
+      "current_balance": 247.28,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-421": {
+      "current_balance": 215.3,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-212": {
+      "current_balance": 3.01,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-313": {
+      "current_balance": 61.49,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-702": {
+      "current_balance": 156.28,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-524": {
+      "current_balance": 468.6,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-509": {
+      "current_balance": 420.81,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-318": {
+      "current_balance": 259.64,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-207": {
+      "current_balance": 293.98,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-415": {
+      "current_balance": 162.74,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-217": {
+      "current_balance": 134.44,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-709": {
+      "current_balance": 58.12,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-623": {
+      "current_balance": 60.95,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-314": {
+      "current_balance": 293.23,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-606": {
+      "current_balance": 47.59,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-609": {
+      "current_balance": 280.43,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-412": {
+      "current_balance": 14.22,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-202": {
+      "current_balance": 265.15,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-308": {
+      "current_balance": 44.89,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-711": {
+      "current_balance": 11.4,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-204": {
+      "current_balance": 326.11,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-221": {
+      "current_balance": 194.04,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-324": {
+      "current_balance": 255.4,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-224": {
+      "current_balance": 368.43,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-310": {
+      "current_balance": 24.6,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-516": {
+      "current_balance": 57.55,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-218": {
+      "current_balance": 32.42,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-405": {
+      "current_balance": 255.95,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-411": {
+      "current_balance": 1094.93,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-710": {
+      "current_balance": 263.82,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-622": {
+      "current_balance": 159.03,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-316": {
+      "current_balance": 39.75,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-701": {
+      "current_balance": 97.9,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-607": {
+      "current_balance": 237.46,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-517": {
+      "current_balance": 269.01,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-510": {
+      "current_balance": 376.66,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-309": {
+      "current_balance": 157.37,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-615": {
+      "current_balance": 306.12,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-311": {
+      "current_balance": 339.06,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-624": {
+      "current_balance": 144.79,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-424": {
+      "current_balance": 113.39,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-326": {
+      "current_balance": 126.93,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-625": {
+      "current_balance": 321.72,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-527": {
+      "current_balance": 345.09,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-418": {
+      "current_balance": 164.71,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-320": {
+      "current_balance": 14.24,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-616": {
+      "current_balance": 119.43,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-215": {
+      "current_balance": 188.52,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-306": {
+      "current_balance": 1.31,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-301": {
+      "current_balance": 41.46,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-209": {
+      "current_balance": 45.53,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-322": {
+      "current_balance": 117.89,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-518": {
+      "current_balance": 272.42,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-611": {
+      "current_balance": 23.45,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-604": {
+      "current_balance": 37.33,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-512": {
+      "current_balance": 80.24,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-419": {
+      "current_balance": 220.57,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-216": {
+      "current_balance": 268.28,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-312": {
+      "current_balance": 130.1,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-327": {
+      "current_balance": 127.36,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-514": {
+      "current_balance": 243.06,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-213": {
+      "current_balance": 10.54,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-523": {
+      "current_balance": 353.24,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-219": {
+      "current_balance": 904.01,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-614": {
+      "current_balance": 255.52,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-608": {
+      "current_balance": 110.67,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-507": {
+      "current_balance": 16.19,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-601": {
+      "current_balance": 239.67,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-627": {
+      "current_balance": 205.31,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-603": {
+      "current_balance": 96.6,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-208": {
+      "current_balance": 156.48,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-226": {
+      "current_balance": 132.38,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-401": {
+      "current_balance": 180.59,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-705": {
+      "current_balance": 372.38,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-220": {
+      "current_balance": 21.56,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-426": {
+      "current_balance": 243.35,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-612": {
+      "current_balance": 360.18,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-602": {
+      "current_balance": 82.14,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-402": {
+      "current_balance": 111.77,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-321": {
+      "current_balance": 179.46,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-214": {
+      "current_balance": 39.88,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-707": {
+      "current_balance": 261.21,
+      "last_updated": "20260611"
+    },
+    "诚园-甲-619": {
+      "current_balance": 305.32,
+      "last_updated": "20260611"
     }
   }
 }

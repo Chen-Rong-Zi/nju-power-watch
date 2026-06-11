@@ -3,21 +3,21 @@
   "campus": "鼓楼校区",
   "total_rooms": 4,
   "rooms": {
-    "咖啡馆(一层中)": {
-      "current_balance": 0.0,
-      "last_updated": "20260610"
-    },
     "0102": {
       "current_balance": 0.0,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
     },
     "机器人(一层东)": {
-      "current_balance": 785.16,
-      "last_updated": "20260610"
+      "current_balance": 785.12,
+      "last_updated": "20260611"
     },
     "咖啡馆(二层)": {
       "current_balance": 0.0,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
+    },
+    "咖啡馆(一层中)": {
+      "current_balance": 0.0,
+      "last_updated": "20260611"
     }
   }
 }

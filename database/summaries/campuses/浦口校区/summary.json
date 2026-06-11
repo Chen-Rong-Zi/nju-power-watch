@@ -2,93 +2,93 @@
   "campus": "浦口校区",
   "total_rooms": 1747,
   "buildings": {
-    "27栋宿舍": {
-      "total_rooms": 21,
-      "avg_balance": 8.39
-    },
-    "25栋宿舍": {
-      "total_rooms": 39,
-      "avg_balance": 187.92
-    },
-    "21栋宿舍": {
-      "total_rooms": 167,
-      "avg_balance": 94.65
-    },
-    "12栋宿舍": {
-      "total_rooms": 162,
-      "avg_balance": 99.18
-    },
-    "图书馆": {
-      "total_rooms": 1,
-      "avg_balance": 1025.93
-    },
-    "11栋宿舍": {
-      "total_rooms": 48,
-      "avg_balance": 274.02
-    },
-    "16栋宿舍": {
-      "total_rooms": 164,
-      "avg_balance": 113.54
-    },
-    "26栋宿舍": {
-      "total_rooms": 79,
-      "avg_balance": 27.17
-    },
-    "29栋宿舍": {
-      "total_rooms": 2,
-      "avg_balance": 63.53
-    },
-    "14栋宿舍": {
-      "total_rooms": 167,
-      "avg_balance": 92.67
-    },
-    "浴室": {
-      "total_rooms": 1,
-      "avg_balance": 241.66
+    "双亭园": {
+      "total_rooms": 8,
+      "avg_balance": 17.7
     },
     "22栋宿舍": {
       "total_rooms": 3,
       "avg_balance": 44.87
     },
-    "19栋宿舍": {
-      "total_rooms": 149,
-      "avg_balance": 87.29
-    },
     "17栋宿舍": {
       "total_rooms": 146,
-      "avg_balance": 94.0
+      "avg_balance": 95.91
+    },
+    "15栋宿舍": {
+      "total_rooms": 143,
+      "avg_balance": 80.75
+    },
+    "26栋宿舍": {
+      "total_rooms": 79,
+      "avg_balance": 26.55
+    },
+    "教学楼": {
+      "total_rooms": 1,
+      "avg_balance": 682.54
+    },
+    "11栋宿舍": {
+      "total_rooms": 48,
+      "avg_balance": 274.02
+    },
+    "浴室": {
+      "total_rooms": 1,
+      "avg_balance": 241.66
+    },
+    "20栋宿舍": {
+      "total_rooms": 137,
+      "avg_balance": 113.56
+    },
+    "一二食堂": {
+      "total_rooms": 6,
+      "avg_balance": 50.55
+    },
+    "14栋宿舍": {
+      "total_rooms": 167,
+      "avg_balance": 90.85
+    },
+    "13栋宿舍": {
+      "total_rooms": 165,
+      "avg_balance": 84.35
+    },
+    "12栋宿舍": {
+      "total_rooms": 162,
+      "avg_balance": 97.84
+    },
+    "图书馆": {
+      "total_rooms": 1,
+      "avg_balance": 1021.93
+    },
+    "29栋宿舍": {
+      "total_rooms": 2,
+      "avg_balance": 63.53
+    },
+    "21栋宿舍": {
+      "total_rooms": 167,
+      "avg_balance": 92.25
+    },
+    "25栋宿舍": {
+      "total_rooms": 39,
+      "avg_balance": 184.84
+    },
+    "18栋宿舍": {
+      "total_rooms": 136,
+      "avg_balance": 93.34
+    },
+    "19栋宿舍": {
+      "total_rooms": 149,
+      "avg_balance": 85.43
+    },
+    "27栋宿舍": {
+      "total_rooms": 21,
+      "avg_balance": 8.39
+    },
+    "16栋宿舍": {
+      "total_rooms": 164,
+      "avg_balance": 111.59
     },
     "玉辉楼": {
       "total_rooms": 1,
       "avg_balance": 2145.49
-    },
-    "13栋宿舍": {
-      "total_rooms": 165,
-      "avg_balance": 84.93
-    },
-    "教学楼": {
-      "total_rooms": 1,
-      "avg_balance": 691.54
-    },
-    "15栋宿舍": {
-      "total_rooms": 143,
-      "avg_balance": 81.47
-    },
-    "双亭园": {
-      "total_rooms": 8,
-      "avg_balance": 18.27
-    },
-    "20栋宿舍": {
-      "total_rooms": 137,
-      "avg_balance": 114.52
-    },
-    "18栋宿舍": {
-      "total_rooms": 136,
-      "avg_balance": 95.78
-    },
-    "一二食堂": {
-      "total_rooms": 6,
-      "avg_balance": 53.37
     },
     "28栋宿舍": {
       "total_rooms": 1,

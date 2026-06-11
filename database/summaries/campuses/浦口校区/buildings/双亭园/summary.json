@@ -3,37 +3,37 @@
   "campus": "浦口校区",
   "total_rooms": 8,
   "rooms": {
-    "204": {
-      "current_balance": 0.0,
-      "last_updated": "20260610"
-    },
-    "205": {
-      "current_balance": 10.1,
-      "last_updated": "20260610"
-    },
-    "108": {
-      "current_balance": 87.05,
-      "last_updated": "20260610"
-    },
-    "206": {
-      "current_balance": 16.45,
-      "last_updated": "20260610"
-    },
     "202": {
       "current_balance": 0.0,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
     },
-    "212": {
-      "current_balance": 22.05,
-      "last_updated": "20260610"
+    "205": {
+      "current_balance": 10.0,
+      "last_updated": "20260611"
     },
     "203": {
       "current_balance": 4.32,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
+    },
+    "212": {
+      "current_balance": 22.05,
+      "last_updated": "20260611"
+    },
+    "206": {
+      "current_balance": 16.45,
+      "last_updated": "20260611"
     },
     "207": {
       "current_balance": 6.15,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
+    },
+    "108": {
+      "current_balance": 82.65,
+      "last_updated": "20260611"
+    },
+    "204": {
+      "current_balance": 0.0,
+      "last_updated": "20260611"
     }
   }
 }

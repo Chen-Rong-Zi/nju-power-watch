@@ -1,70 +1,70 @@
 {
   "campus": "苏州校区",
-  "total_rooms": 1531,
+  "total_rooms": 1532,
   "buildings": {
     "诚园-乙": {
       "total_rooms": 147,
-      "avg_balance": 138.83
+      "avg_balance": 134.91
     },
-    "仁园-丁": {
-      "total_rooms": 76,
-      "avg_balance": 223.26
-    },
-    "勇园-丙": {
-      "total_rooms": 86,
-      "avg_balance": 231.72
-    },
-    "知园-甲": {
-      "total_rooms": 30,
-      "avg_balance": 14.88
-    },
-    "仁园-乙": {
-      "total_rooms": 70,
-      "avg_balance": 214.53
-    },
-    "仁园-甲": {
-      "total_rooms": 77,
-      "avg_balance": 147.24
-    },
-    "仁园-戊": {
-      "total_rooms": 52,
-      "avg_balance": 196.13
-    },
-    "仁园-己": {
-      "total_rooms": 73,
-      "avg_balance": 298.18
-    },
-    "诚园-甲": {
-      "total_rooms": 140,
-      "avg_balance": 194.33
-    },
-    "仁园-丙": {
-      "total_rooms": 67,
-      "avg_balance": 171.53
+    "诚园-丙": {
+      "total_rooms": 130,
+      "avg_balance": 138.01
     },
     "知园-乙": {
       "total_rooms": 55,
-      "avg_balance": 87.08
+      "avg_balance": 93.11
+    },
+    "诚园-甲": {
+      "total_rooms": 141,
+      "avg_balance": 195.75
+    },
+    "勇园-乙": {
+      "total_rooms": 94,
+      "avg_balance": 239.49
+    },
+    "仁园-戊": {
+      "total_rooms": 52,
+      "avg_balance": 194.0
+    },
+    "仁园-甲": {
+      "total_rooms": 77,
+      "avg_balance": 142.45
+    },
+    "勇园-甲": {
+      "total_rooms": 96,
+      "avg_balance": 182.43
+    },
+    "仁园-丁": {
+      "total_rooms": 76,
+      "avg_balance": 223.84
+    },
+    "仁园-丙": {
+      "total_rooms": 67,
+      "avg_balance": 168.34
     },
     "知园-丙": {
       "total_rooms": 4,
       "avg_balance": 0.0
     },
-    "勇园-乙": {
-      "total_rooms": 94,
-      "avg_balance": 238.8
-    },
-    "勇园-甲": {
-      "total_rooms": 96,
-      "avg_balance": 184.5
-    },
-    "诚园-丙": {
-      "total_rooms": 130,
-      "avg_balance": 138.15
-    },
     "科创大厦B": {
       "total_rooms": 334,
-      "avg_balance": 149.17
+      "avg_balance": 149.84
+    },
+    "勇园-丙": {
+      "total_rooms": 86,
+      "avg_balance": 228.8
+    },
+    "仁园-乙": {
+      "total_rooms": 70,
+      "avg_balance": 211.11
+    },
+    "知园-甲": {
+      "total_rooms": 30,
+      "avg_balance": 13.43
+    },
+    "仁园-己": {
+      "total_rooms": 73,
+      "avg_balance": 310.6
     }
   }
 }

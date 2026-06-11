@@ -3,149 +3,149 @@
   "campus": "鼓楼校区",
   "total_rooms": 36,
   "rooms": {
-    "106": {
-      "current_balance": 284.98,
-      "last_updated": "20260610"
-    },
-    "305-2": {
-      "current_balance": 40.76,
-      "last_updated": "20260610"
-    },
-    "305-1": {
-      "current_balance": 377.15,
-      "last_updated": "20260610"
-    },
-    "101-2": {
-      "current_balance": 71.68,
-      "last_updated": "20260610"
-    },
-    "2040": {
-      "current_balance": 134.33,
-      "last_updated": "20260610"
-    },
-    "2062": {
-      "current_balance": 349.2,
-      "last_updated": "20260610"
-    },
-    "平房03": {
-      "current_balance": 0.0,
-      "last_updated": "20260610"
-    },
-    "平房04": {
-      "current_balance": 0.0,
-      "last_updated": "20260610"
-    },
-    "102-3": {
-      "current_balance": 98.9,
-      "last_updated": "20260610"
-    },
-    "104": {
-      "current_balance": 145.48,
-      "last_updated": "20260610"
-    },
-    "201-2": {
-      "current_balance": 31.26,
-      "last_updated": "20260610"
-    },
-    "205-1": {
-      "current_balance": 154.78,
-      "last_updated": "20260610"
-    },
-    "303": {
-      "current_balance": 90.21,
-      "last_updated": "20260610"
-    },
-    "102-2": {
-      "current_balance": 52.88,
-      "last_updated": "20260610"
-    },
-    "平房01": {
-      "current_balance": 0.0,
-      "last_updated": "20260610"
-    },
-    "206-1": {
-      "current_balance": 111.62,
-      "last_updated": "20260610"
-    },
     "0403": {
       "current_balance": 0.0,
-      "last_updated": "20260610"
-    },
-    "302-3": {
-      "current_balance": 0.0,
-      "last_updated": "20260610"
-    },
-    "306-2": {
-      "current_balance": 55.06,
-      "last_updated": "20260610"
-    },
-    "2051": {
-      "current_balance": 154.78,
-      "last_updated": "20260610"
-    },
-    "103": {
-      "current_balance": 191.89,
-      "last_updated": "20260610"
-    },
-    "105-3": {
-      "current_balance": 125.34,
-      "last_updated": "20260610"
-    },
-    "304": {
-      "current_balance": 87.96,
-      "last_updated": "20260610"
-    },
-    "102-1": {
-      "current_balance": 33.42,
-      "last_updated": "20260610"
-    },
-    "2053": {
-      "current_balance": 273.88,
-      "last_updated": "20260610"
-    },
-    "平房06": {
-      "current_balance": 0.0,
-      "last_updated": "20260610"
-    },
-    "202-2": {
-      "current_balance": 78.45,
-      "last_updated": "20260610"
-    },
-    "平房05": {
-      "current_balance": 104.38,
-      "last_updated": "20260610"
-    },
-    "203": {
-      "current_balance": 92.36,
-      "last_updated": "20260610"
-    },
-    "305-3": {
-      "current_balance": 616.66,
-      "last_updated": "20260610"
-    },
-    "201-1": {
-      "current_balance": 152.04,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
     },
     "202-3": {
       "current_balance": 182.38,
-      "last_updated": "20260610"
-    },
-    "105-2": {
-      "current_balance": 25.04,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
     },
     "105-1": {
       "current_balance": 44.14,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
+    },
+    "102-2": {
+      "current_balance": 51.14,
+      "last_updated": "20260611"
+    },
+    "302-3": {
+      "current_balance": 0.0,
+      "last_updated": "20260611"
+    },
+    "206-1": {
+      "current_balance": 111.62,
+      "last_updated": "20260611"
+    },
+    "2040": {
+      "current_balance": 123.63,
+      "last_updated": "20260611"
+    },
+    "平房06": {
+      "current_balance": 0.0,
+      "last_updated": "20260611"
+    },
+    "101-2": {
+      "current_balance": 70.54,
+      "last_updated": "20260611"
+    },
+    "303": {
+      "current_balance": 82.33,
+      "last_updated": "20260611"
+    },
+    "105-2": {
+      "current_balance": 25.04,
+      "last_updated": "20260611"
+    },
+    "202-2": {
+      "current_balance": 69.98,
+      "last_updated": "20260611"
+    },
+    "105-3": {
+      "current_balance": 121.75,
+      "last_updated": "20260611"
+    },
+    "2051": {
+      "current_balance": 154.27,
+      "last_updated": "20260611"
+    },
+    "201-1": {
+      "current_balance": 150.39,
+      "last_updated": "20260611"
+    },
+    "305-3": {
+      "current_balance": 616.39,
+      "last_updated": "20260611"
+    },
+    "平房05": {
+      "current_balance": 102.79,
+      "last_updated": "20260611"
+    },
+    "306-2": {
+      "current_balance": 54.84,
+      "last_updated": "20260611"
+    },
+    "302-2": {
+      "current_balance": 120.11,
+      "last_updated": "20260611"
+    },
+    "103": {
+      "current_balance": 189.56,
+      "last_updated": "20260611"
+    },
+    "203": {
+      "current_balance": 88.03,
+      "last_updated": "20260611"
+    },
+    "104": {
+      "current_balance": 142.95,
+      "last_updated": "20260611"
+    },
+    "2062": {
+      "current_balance": 347.47,
+      "last_updated": "20260611"
+    },
+    "305-2": {
+      "current_balance": 39.41,
+      "last_updated": "20260611"
+    },
+    "102-3": {
+      "current_balance": 98.58,
+      "last_updated": "20260611"
+    },
+    "205-1": {
+      "current_balance": 154.27,
+      "last_updated": "20260611"
+    },
+    "2053": {
+      "current_balance": 273.81,
+      "last_updated": "20260611"
     },
     "平房02": {
       "current_balance": 0.0,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
     },
-    "302-2": {
-      "current_balance": 123.07,
-      "last_updated": "20260610"
+    "106": {
+      "current_balance": 279.83,
+      "last_updated": "20260611"
+    },
+    "305-1": {
+      "current_balance": 374.6,
+      "last_updated": "20260611"
+    },
+    "201-2": {
+      "current_balance": 30.05,
+      "last_updated": "20260611"
+    },
+    "平房01": {
+      "current_balance": 0.0,
+      "last_updated": "20260611"
+    },
+    "平房04": {
+      "current_balance": 0.0,
+      "last_updated": "20260611"
+    },
+    "102-1": {
+      "current_balance": 32.37,
+      "last_updated": "20260611"
+    },
+    "304": {
+      "current_balance": 83.74,
+      "last_updated": "20260611"
+    },
+    "平房03": {
+      "current_balance": 0.0,
+      "last_updated": "20260611"
     }
   }
 }

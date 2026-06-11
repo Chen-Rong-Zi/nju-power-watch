@@ -4,28 +4,28 @@
   "total_rooms": 6,
   "rooms": {
     "102": {
-      "current_balance": 7.9,
-      "last_updated": "20260610"
+      "current_balance": 6.0,
+      "last_updated": "20260611"
     },
-    "101": {
-      "current_balance": 49.0,
-      "last_updated": "20260610"
-    },
-    "202商户": {
-      "current_balance": 12.1,
-      "last_updated": "20260610"
+    "103": {
+      "current_balance": 3.0,
+      "last_updated": "20260611"
     },
     "207商户": {
       "current_balance": 186.0,
-      "last_updated": "20260610"
+      "last_updated": "20260611"
     },
-    "103": {
-      "current_balance": 7.8,
-      "last_updated": "20260610"
+    "202商户": {
+      "current_balance": 11.9,
+      "last_updated": "20260611"
     },
     "206商户": {
-      "current_balance": 57.4,
-      "last_updated": "20260610"
+      "current_balance": 53.4,
+      "last_updated": "20260611"
+    },
+    "101": {
+      "current_balance": 43.0,
+      "last_updated": "20260611"
     }
   }
 }
