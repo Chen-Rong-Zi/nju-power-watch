@@ -51,26 +51,25 @@ jobs:
 
       - name: Auto login to get cookie
         id: login
+        uses: nick-fields/retry@v3
         env:
           NJU_USERNAME: ${{ secrets.NJU_USERNAME }}
           NJU_PASSWORD: ${{ secrets.NJU_PASSWORD }}
           YUNMA_TOKEN: ${{ secrets.YUNMA_TOKEN }}
-        run: |
-          echo "=== 开始自动登录流程 ==="
-
-          echo "$NJU_USERNAME" > /tmp/username
-          echo "$NJU_PASSWORD" > /tmp/password
-          echo "$YUNMA_TOKEN" > /tmp/token
-
-          python scripts/nju_auto_login.py
-
-          if [ -f "/tmp/cookie.json" ]; then
-            echo "✓ Cookie文件已生成: /tmp/cookie.json"
-            echo "cookie_file=/tmp/cookie.json" >> $GITHUB_OUTPUT
-          else
-            echo "✗ Cookie文件生成失败"
-            exit 1
-          fi
+        with:
+          timeout_minutes: 3
+          max_attempts: 3
+          retry_wait_seconds: 3
+          warning_on_retry: true
+          command: |
+            echo "$NJU_USERNAME" > /tmp/username
+            echo "$NJU_PASSWORD" > /tmp/password
+            echo "$YUNMA_TOKEN" > /tmp/token
+            python scripts/nju_auto_login.py
+            if [ ! -f "/tmp/cookie.json" ]; then
+              echo "Cookie file not generated"
+              exit 1
+            fi
 
       - name: Scan for room IDs (100001-150000)
         id: scan
