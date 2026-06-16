@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>从零搭建南大电费监控系统 — AI4SE 工具链实践反思</title>
+<title>宿舍电费数据采集与分析系统 — AI4SE 工具链实践反思</title>
 <link rel="stylesheet" href="./assets/fonts.css">
 <link rel="stylesheet" href="./assets/base.css?v=2">
 <link rel="stylesheet" id="theme-link" href="./assets/themes/tokyo-night.css">
@@ -423,9 +423,12 @@ body { font-size: 16px; }
 .phase-6-slide .p6-stat[data-color="warn"] .p6-n { color: var(--warn); }
 .phase-6-slide .p6-stat .p6-l { font-size: 11px; color: var(--text-2); font-weight: 500; }
 
-/* Repo screenshot centered */
-.phase-6-slide .p6-repo-shot { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); margin-bottom: 4px; max-height: 120px; }
-.phase-6-slide .p6-repo-shot img { width: 100%; display: block; object-fit: cover; object-position: top; }
+/* Three-column top section */
+.phase-6-slide .p6-top-3 { display: grid; grid-template-columns: 1fr 1.2fr 1.2fr; gap: 6px; margin-bottom: 4px; flex-shrink: 0; min-height: 0; }
+.phase-6-slide .p6-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.phase-6-slide .p6-shot { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); display: flex; flex-direction: column; }
+.phase-6-slide .p6-shot-bar { padding: 3px 8px; font-size: 9px; font-weight: 600; background: #24292e; color: #fff; flex-shrink: 0; display: flex; align-items: center; gap: 5px; }
+.phase-6-slide .p6-shot img { width: 100%; display: block; object-fit: cover; object-position: top; flex: 1; }
 
 /* Two columns */
 .phase-6-slide .p6-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; overflow: hidden; }
@@ -480,7 +483,47 @@ body { font-size: 16px; }
 
 /* Summary table */
 .summary-slide [style*="font-size:18px;display:grid;grid-template-columns:80px 1fr 50px"] { font-size: 13px !important; }
-.summary-slide [style*="padding:4px 8px;"] { padding: 2px 6px !important; }</style>
+.summary-slide [style*="padding:4px 8px;"] { padding: 2px 6px !important; }
+
+/* ===== DEADLINE GATE SLIDE ===== */
+.dg-slide .phase-header { margin-bottom: 6px; }
+.dg-slide .dg-bounds { position: relative; border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; background: var(--surface); display:flex; flex-direction:column; }
+.dg-slide .dg-bounds-inner { border: 2px dashed color-mix(in srgb,var(--accent) 40%,transparent); border-radius: var(--radius-sm); padding: 10px 14px; margin-top: 6px; position: relative; }
+.dg-slide .dg-agent-box { background: var(--surface-2); border-radius: var(--radius-sm); padding: 8px 12px; text-align: center; font-size: 13px; color: var(--text-1); border: 1px solid var(--border); }
+.dg-slide .dg-signal { font-size: 13px; color: var(--bad); font-weight: 600; margin: 6px 0 0; padding: 4px 8px; background: color-mix(in srgb,var(--bad) 8%,transparent); border-radius: 4px; display: inline-block; }
+.dg-slide .dg-signal-item { font-size: 12px; color: var(--text-2); padding: 2px 0 2px 16px; position: relative; line-height: 1.4; }
+.dg-slide .dg-signal-item::before { content: "•"; position: absolute; left: 4px; color: var(--bad); font-weight: 700; }
+.dg-slide .dg-story { border-left: 3px solid var(--bad); padding: 8px 12px; background: color-mix(in srgb,var(--bad) 6%,transparent); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 13px; line-height: 1.5; color: var(--text-2); margin: 6px 0 0; }
+.dg-slide .dg-story strong { color: var(--text-1); }
+.dg-slide .dg-lesson { font-size: 13px; font-weight: 600; color: var(--accent); text-align: center; padding: 6px 0 0; }
+.dg-slide .dg-flow { display: flex; align-items: center; gap: 2px; font-size: 12px; flex-wrap: wrap; }
+.dg-slide .dg-flow-step { background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; text-align: center; flex: 1; min-width: 60px; font-weight: 500; display:flex; align-items:center; justify-content:center; }
+.dg-slide .dg-flow-step.dg-done { background: color-mix(in srgb,var(--good) 12%,transparent); border-color: color-mix(in srgb,var(--good) 30%,transparent); color: var(--good); }
+.dg-slide .dg-flow-step.dg-stop { background: color-mix(in srgb,var(--bad) 12%,transparent); border-color: color-mix(in srgb,var(--bad) 30%,transparent); color: var(--bad); }
+.dg-slide .dg-flow-arrow { color: var(--text-3); font-size: 14px; flex-shrink: 0; }
+.dg-slide .dg-redflag-item { padding: 3px 8px; background: color-mix(in srgb,var(--warn) 8%,transparent); border: 1px solid color-mix(in srgb,var(--warn) 20%,transparent); border-radius: 4px; font-size: 11px; line-height: 1.4; color: var(--text-2); }
+.dg-slide .dg-redflag-item .rf-thought { font-weight: 600; color: var(--text-1); }
+.dg-slide .dg-redflag-item .rf-truth { color: var(--bad); }
+.dg-slide .dg-impl { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 10px; background: var(--surface); font-size: 15px; line-height: 1.6; }
+.dg-slide .dg-impl strong { color: var(--accent); font-size: 17px; }
+.dg-slide .dg-scene { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 10px; font-size: 12px; line-height: 1.5; display: flex; align-items: center; gap: 6px; }
+.dg-slide .dg-scene .scene-icon { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+
+/* ===== dg-slide font-size overrides (matching slide 8 ~16-18px) ===== */
+.dg-slide { font-size: 16px; }
+.dg-slide .dg-bounds p { font-size: 16px; }
+.dg-slide .dg-signal { font-size: 15px; }
+.dg-slide .dg-signal-item { font-size: 14px; }
+.dg-slide .dg-story { font-size: 15px; line-height: 1.6; }
+.dg-slide .dg-lesson { font-size: 15px; }
+.dg-slide .dg-flow-step { font-size: 14px; padding: 6px 10px; }
+.dg-slide .dg-flow-arrow { font-size: 18px; }
+.dg-slide .dg-redflag-item { font-size: 13px; line-height: 1.5; }
+.dg-slide .dg-impl { font-size: 14px; line-height: 1.6; }
+.dg-slide .dg-impl strong { font-size: 15px; }
+.dg-slide .dg-scene { font-size: 14px; line-height: 1.6; }
+.dg-slide .col-label { font-size: 16px; }
+</style>
 </head>
 <body>
 <div class="deck">
@@ -488,7 +531,7 @@ body { font-size: 16px; }
 <!-- SLIDE 1: Cover -->
 <section class="slide is-active tc center" data-title="封面">
   <div style="max-width: 920px">
-    <h1 class="h1 anim-rise-in" style="font-size: 52px; line-height: 1.25">从零搭建南大电费监控系统</h1>
+    <h1 class="h1 anim-rise-in" style="font-size: 52px; line-height: 1.25">宿舍电费数据采集与分析系统</h1>
     <p class="cover-tagline anim-fade-up" data-anim="fade-up" style="font-size: 20px">一段 AI4SE 工具链的实践记录与反思</p>
     <div class="divider-accent"></div>
     <div class="cover-meta anim-fade-up" data-anim="fade-up">
@@ -497,6 +540,9 @@ body { font-size: 16px; }
       <span>🎯 3 周 · 6 个阶段</span>
     </div>
   </div>
+  <aside class="notes">
+    <p>大家好，今天我想和大家分享一下我的项目——"宿舍电费数据采集与分析系统"的开发经历与体会。</p>
+  </aside>
 </section>
 
 <!-- SLIDE 2: GitHub Repo / Project Intro -->
@@ -505,7 +551,7 @@ body { font-size: 16px; }
   <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;flex-shrink:0;">
     <div>
       <p class="kicker" style="margin:0;font-size:12px;letter-spacing:.10em;">Open Source · NJU Dorm Electricity Monitor</p>
-      <h2 class="h2" style="font-size:34px;margin:0;line-height:1.15;">⚡ NJU Power Watch</h2>
+      <h2 class="h2" style="font-size:34px;margin:0;line-height:1.15;">⚡ NJU Power Watch <span style="font-size:22px;color:var(--text-3);font-weight:300;">——</span> <span style="font-size:34px;color:var(--accent);font-weight:700;font-family:var(--font-mono);">njupower.top</span></h2>
       <p style="font-size:14px;color:var(--text-2);margin:1px 0 0;font-weight:300;">南大宿舍电费自动监控系统 — 让你的每一度电都看得见</p>
     </div>
     <div style="text-align:right;flex-shrink:0;">
@@ -620,6 +666,14 @@ body { font-size: 16px; }
     </div>
 
   </div>
+
+  <aside class="notes">
+    <p>先说下做这个项目的动机。</p>
+    <p>五月的南京已经很热了，宿舍空调不得不开，但大家心里都没底——上个月电费还剩多少？这个月够不够用？半夜突然停电才发现余额不足，这种事情在宿舍里太常见了。而且通过南大app查看,步骤繁琐。就算看到了余额数字，也无法知道当日消耗的费用以及余额还能使用多久</p>
+    <p>为了解决以上痛点, 这个项目部署了自动爬虫, 获取每日余额数据并提供了房间,楼栋,校区三个视角的数据分析情况, 给同学们对于电费一个直观的感受</p>
+    <p>该项目目前托管在github pages上, 并在github上收获了同学们的11个star和多个issue, 同学们可以通过njupower.top访问,如果觉得有用也希望可以点一个star支持一下</p>
+    <p>接下来介绍一下这个项目的几个开发阶段</p>
+  </aside>
 </section>
 
 <!-- ==================== SLIDE 3: Phase 1 ==================== -->
@@ -786,27 +840,13 @@ body { font-size: 16px; }
 
   <!-- Speaker Notes -->
   <aside class="notes">
-    <h3>阶段一讲稿：项目探索期</h3>
-
-    <p><strong>南京大学的统一认证体系</strong></p>
-    <p>南京大学几乎所有的门户网站都挂在 authserver.nju.edu.cn 这个统一身份认证平台上。无论是教务系统、财务系统、还是我们今天要攻克的电费查询系统，全部走同一套认证流程。</p>
-    <p>你在页面上看到的这张截图，就是 authserver 的登录页面。它长得很普通——用户名、密码、验证码——但背后的加密机制并不简单。</p>
-
-    <p><strong>电费查询系统的认证壁垒</strong></p>
-    <p>我们的目标是 epay.nju.edu.cn 这个电费查询网站。但它不对外开放，你必须先通过 authserver 的统一认证，拿到 Cookie，然后带着这个凭证才能访问电费数据。</p>
-    <p>这就带来了第一个问题：我们不知道认证流程的具体细节。密码是怎么加密的？验证码是怎么生成的？登录成功后的 Cookie 长什么样？这些信息全部隐藏在浏览器的网络请求和 JavaScript 代码中，必须动手逆向。</p>
-
-    <p><strong>逆向过程</strong></p>
-    <p>为了解决这些问题，Agent 借助了 js-reverse-automation skill——这是一个专门做前端 JS 逆向的自动化工具集，GitHub 上 446 Stars，v2.0 版本。它的工作流程分 9 个 Phase（P0-P8），从设置 MCP 连接、注入 Hook 探针，到分析加密算法、评分验证，再到 JSRPC 注入和 Burp 对接，最终交付可运行的工程代码。</p>
-
-    <p>映射到 NJU 实战中：第一步，定位登录入口——识别 lt、execution、_eventId 等隐藏参数。第二步，Hook 密码加密——捕获 pwdEncryptSalt，发现 AES-CBC 加密链路，密码先拼接 64 位随机前缀，再用 salt 加密后 Base64 编码。第三步，验证码识别——接入云码 API 实现自动识别。第四步，还原完整流程——从登录页到 Cookie 持久化再到电费系统，一气呵成。</p>
-
-    <p><strong>最终产出</strong></p>
-    <p>有了登录凭证之后，Agent 将同步脚本改造成了异步批量版本——aiohttp 并发、Semaphore 限流、指数退避重试，产出了 nju_electric_query.py 的第一个可用版本。</p>
-
-    <p><strong>关于 AI 的思考</strong></p>
-    <p>这个阶段展示了 AI 一个非常突出的能力：在人类指导方向的前提下，Agent 可以独立执行细节层面的逆向工程。传统做法需要开发者手动分析每个请求和每行 JS 代码，而 Agent 借助 skill 在几个小时内完成了从"不知道有什么 API"到"可运行脚本"的全链路交付。但有一个前提不可忽视：需要人类来判断"下一步该做什么"。Agent 擅长执行，不擅长决策方向。</p>
-  </aside>
+  <p>第一阶段是项目探索期——目标是拿到电费系统的数据。</p>
+  <p>同学们了解过南大app的大致架构吗? 我第一次安装的时候以为这是一个安卓原生的app，但其实南大 App 本质上就是一个浏览器，或者说是一个门户网站。里面查成绩、查课表、查电费这些按钮，每一个点进去都是打开一个独立的网页, 在电脑中使用浏览器也可以打开。这些网页全部挂在统一认证网关后面。</p>
+  <p>意味着只要在统一认证系统中登录一次、拿到 Cookie，就等于拿到了访问所有网页的通行证。电费系统也不例外。</p>
+  <p>统一身份认证手动登录一次很简单，但目标是自动化——让脚本每天自动登录、自动查询。这就必须搞清楚 authserver 的认证流程：密码怎么加密的？验证码怎么识别的？</p>
+  <p>我找到了一个专门做 js 逆向的skill——js-reverse-automation。它赋予了 Agent 在浏览器中逆向分析加密流程的能力——自动注入 Hook 探针、捕获加密函数、还原加密算法。</p>
+  <p>Agent 先分析了 authserver 登录页面的表单提交过程，在浏览器中 Hook 住了密码加密函数，发现是 AES-CBC 加密——密码会先拼接 64 位随机前缀，再用 salt 加密后 Base64 编码。接着接入了第三方 API 实现验证码自动识别，最终成功模拟了完整的登录流程，拿到了有效的 Cookie。</p>
+</aside>
 </section>
 
 <!-- ==================== SLIDE 4: Phase 2 ==================== -->
@@ -910,21 +950,10 @@ body { font-size: 16px; }
 
   <!-- Speaker Notes -->
   <aside class="notes">
-    <h3>阶段二讲稿：数据模型与自动化管道</h3>
-
-    <p><strong>从脚本到系统</strong></p>
-    <p>有了可运行的查询脚本之后，下一步不是急着写前端，而是先把数据模型和自动化管道搭好。让数据采集从"手动跑脚本"变成"可持续运行的系统"。</p>
-
-    <p><strong>数据管道</strong></p>
-    <p>整个数据采集由 GitHub Actions 定时触发——每天 UTC 2:00 自动运行。流程是这样的：首先 nju_auto_login.py 用凭据登录 authserver.nju.edu.cn，经过 AES-CBC 加密认证拿到 Cookie 文件。然后 nju_electric_query.py 用这个 Cookie 并发查询所有房间，控制并发数防止触发服务端限流。查询完成后，aggregate_data.py 聚合生成分层摘要，最后自动 commit 并 push 到 GitHub Pages，前端就能读到最新数据了。</p>
-
-    <p><strong>两层数据模型</strong></p>
-    <p>这里最核心的设计是两层存储结构。原始数据层按校区→楼栋→房间→日期的路径组织，每个 JSON 文件就是一次查询的结果，append-only 写入。聚合摘要层按相同的层级组织，但在每一层上都预先算好了统计信息——overview.json 有全局统计，校区摘要含各楼栋汇总，楼栋摘要含各房间的 balance_history。这样前端加载时不需要遍历几千个原始文件，直接从摘要层读就行。</p>
-
-    <p><strong>为什么这个设计能贯穿始终</strong></p>
-    <p>这套模型从 5 月 16 日定型后，经历了 room_id 到 room_name 的大规模重构、前端三次重写、新增十几个功能模块——但数据模型的基本形态一次都没改过。原因在于：它把"数据怎么存"和"数据怎么用"清晰地分开了。原始层只管记录，摘要层只管查询，各自独立演化。</p>
-
-    <p>这个阶段的教训是：在 AI 协作中，先让 Agent 定义数据契约再实现功能，比先写代码再补数据结构要高效得多。Agent 在数据建模上展现的架构直觉，其实比在写具体功能代码时更可靠。</p>
+    <p>拿到 Cookie 之后，查询数据的脚本就很容易完成了。但需求是每天自动抓取数据，而不是手动跑脚本——Agent 告诉我 GitHub Actions 可以创建定时任务，并设计了下面的流水线配置。</p>
+    <p>左边是 GitHub Actions 的工作流配置。每天 UTC 2:00 自动触发。</p>
+    <p>中间是完整的数据采集流水线：携带上一个step拿到的 Cookie 即可通过验证，然后并发查询全校所有房间，接着按校区→楼栋→房间的层级聚合生成摘要，最后自动 commit 到仓库并部署到到 GitHub Pages。</p>
+    <p>GitHub Actions 的定时任务还有很多有趣的用法——比如自动抓取推送每日科技新闻、自动签到等等。感兴趣的同学也可以去试试。</p>
   </aside>
 </section>
 
@@ -1083,22 +1112,11 @@ body { font-size: 16px; }
   </div>
 
   <aside class="notes">
-    <h3>阶段三讲稿：前端需求探索阶段</h3>
-    <p><strong>三个视角的设计动机</strong></p>
-    <p>整个前端系统的核心围绕两个概念展开——电费余额还剩多少钱和耗电量用了多少度。围绕这两个核心指标，系统需要在三个视角上提供数据分析。</p>
-    <p>房间视角是最直接的——"我"的宿舍还有多少余额？消耗趋势如何？需要充值吗？这是每个学生最关心的问题。楼栋视角则把视野拉高到整栋楼——这栋楼的整体用电分布如何？哪些房间耗电异常？其他同学的平均用电水平是多少？我在楼里排第几？校区视角是对全校的整体把控——不同校区的用电总量对比如何？各楼栋的消耗排名怎样？有没有需要预警的低余额楼栋？</p>
-    <p>这三个视角构成了前端需求的骨架。Agent 通过 Speckit 框架，从这三个视角出发，系统性地产出了完整的用户故事和功能需求。</p>
-    <p><strong>Speckit 框架的高效与代价</strong></p>
-    <p>Speckit 将需求拆解为 122 个任务，分布在 13 个 Phase 中，覆盖从数据加载、视图渲染到交互和图表可视化的完整链路。最终汇集为 5 个核心视图页面——首页仪表盘、预警中心、楼栋排行榜、楼层热力图、多房间对比。</p>
-    <p>好处是覆盖率很高，122 个任务一步到位，没有遗漏。但代价是一次性交付大量代码带来了不少问题——ECharts 文件截断导致白屏、排行榜排序方向反了、预警中心串行加载 10 秒以上。</p>
-    <p><strong>Spec 不清晰的四个典型案例</strong></p>
-    <p>看这几个例子。"Top10 节能"——Spec 只写了这四个字，Agent 按照对"排行榜"的默认理解实现了耗电从高到低，结果节能模范的榜首显示的是最费电的房间。如果 spec 明确写了"按耗电量升序排列"，就不会有这个偏差。</p>
-    <p>"显示房间耗电量"——Spec 没有定义边界状态。"这个房间今天还没采集到数据"和"API 返回了错误"在 UI 上应该怎么区分？Agent 合并处理为"暂无数据"，直到验收才发现两种状态需要不同的视觉提示。</p>
-    <p>"全校预警扫描"——Spec 定义了做什么，但没有定义多快。Agent 用三重嵌套循环串行请求，预警中心需要 90 多次 HTTP 请求、耗时 10 秒以上。如果 spec 明确了"3 秒内完成"，Agent 会设计完全不同的架构。</p>
-    <p>最隐蔽的是——有的需求甚至没有 spec。数据完整度的标准完全没有定义，Agent 只能用自己的假设填补。</p>
-    <p><strong>Brainstorming 的价值</strong></p>
-    <p>这些问题的共性是：问题在写 spec 时不可见，只有在尝试回答时才会浮现。Brainstorming 通过追问链让不可见的问题在实现前变得可见——"按升序还是降序？""空状态和错误状态怎么区分？""性能指标是多少？"——这些追问在 Speckit 阶段从未被提出，所以问题直到验收才被发现。</p>
-    <p>修正成本是最直接的证据：122 个任务的代码生成用了几个小时，但修复 spec 不清晰导致的问题花了超过 2 天。核心教训是——如果你不确定 spec 的质量，就不要用 Speckit。手动逐个实现、逐个验收，反而能更早发现问题。</p>
+    <p>第三阶段是前端需求探索。</p>
+    <p>这个项目设计的前端需求围绕`电费余额`与`耗电量`两个核心概念, 分别在 房间 / 楼栋 / 校区 三个视角提供数据分析。</p>
+    <p>这个阶段在项目要求发布前完成, 所以这一阶段我使用的是 opencode + speckit 并未使用 superpowers。</p>
+    <p>Agent 通过 Speckit 框架将需求拆解为 10 份 User Stories、122 个任务。但效果不尽人意——大多数规格最终都需要重新来解释。前期需求不明确的阶段，Agent 只能用自己的假设填补空白，比如"Top10 节能"没说排序方向，Agent 默认降序，结果榜首是最费电的房间；"加载和错误处理"没定义边界状态，"未采集"和"API 报错"被合并处理，直到验收才发现问题。</p>
+    <p>Speckit 用 Story 描述"用户要什么"，用 Spec 描述"系统做什么", speckit将story和spec分离, 似乎想从用户需求中提炼出具体的软件规格。但由于缺乏 Brainstorming 追问环节，没有真实的用户反馈来校准 Spec 的完整性，Spec 本身可能已经偏离了用户的真实意图。122 个任务的代码生成用了几个小时，但修复 spec 不清晰导致的问题花了超过 2 天。</p>
   </aside>
 </section>
 
@@ -1262,15 +1280,11 @@ body { font-size: 16px; }
   </div>
 
   <aside class="notes">
-    <h3>阶段四讲稿：功能深化与数据完善期</h3>
-    <p><strong>为什么需要 Open Design</strong></p>
-    <p>阶段三的 Speckit 122 tasks 交付了完整的前端功能，但视觉风格停留在"能用"的层面——页面布局和 UI 细节由 Speckit 生成的代码直接决定，CSS 变量体系不存在，内联样式和全局 CSS 混用，缺乏统一的设计语言。</p>
-    <p><strong>Open Design 做了什么</strong></p>
-    <p>第一，从零构建了完整的 CSS 变量体系。用 oklch 色域定义了 --accent、--surface、--radius、--shadow、--font-display 等设计 Token，全局风格从此统一。第二，数据服务层重构——将 20+ 散落模块合并为 data-service.js，统一数据获取和缓存。第三，页面拆分——独立的 building-view、campus-view、room-view、electricity-monitor-index，替代单页 SPA 结构。</p>
-    <p>净变化：+6041 / -13574 行。这是主动的设计增强，不是被动修复。</p>
-    <p><strong>Open Design 的边界</strong></p>
-    <p>但 Open Design 遇到业务需求时就力不从心了。最典型的例子是耗电量直观类比——把抽象的 kWh 转化为"小米 SU7 跑 X 公里""够 ChatGPT 回答 Y 个问题"这类有感知的场景。这需要作者对科技产品有了解、对受众的认知语境有判断、对类比精度有取舍。Open Design 的 DESIGN.md 可以定义颜色和间距，但定义不了"什么样的类比能让大学生觉得有趣且准确"。</p>
-    <p>同样，排行榜请求池并发控制、IndexedDB 缓存迁移、校区真实消耗数据计算——这些不涉及"好不好看"，只涉及"对不对"。Open Design 的定位是设计工具，不是业务逻辑引擎。理解这个边界才能正确地使用它。</p>
+    <p>在这一开发阶段中项目要求发布了, 于是我使用Open Design来重构我的前端设计师 。</p>
+    <p>左边是 重构前 的效果——Speckit 生成的页面。没有统一字体栈，没有设计自检。</p>
+    <p>右边是 重构后 的效果——CSS Token 完整体系、SF Pro + Mono 字体、data-service.js 收敛数据访问层、P0 设计自检通过。</p>
+    <p>后来我继续使用open design来拓展前端的分析业务, 但是open-design在执行逻辑任务就有点力不从心了</p>
+    <p>尽管在背后open-design调用了claude code但是, 不能自动使用superpowers相关的能力。视觉规范可以通过 DESIGN.md 定义清楚，但业务逻辑的正确性没有类似的规范机制来保证。</p>
   </aside>
 </section>
 
@@ -1487,12 +1501,15 @@ body { font-size: 16px; }
 
   <aside class="notes">
     <h3>阶段五讲稿：新需求密集开发期</h3>
-    <p><strong>业务增强功能</strong></p>
-    <p>Open Design 确立了代码结构和视觉语言，但业务功能仍需逐个实现。耗电量直观类比把抽象的 kWh 转化为有感知的场景——够 iPhone 16 充满 X 次、小米 SU7 跑 X 公里。全校区排行榜百分比让用户知道自己的用电水平处于什么位置。排行榜请求池做批量请求的并发控制，IndexedDB 缓存迁移支持更大的缓存容量。</p>
-    <p><strong>Visual Companion</strong></p>
-    <p>分布图表系统是 Agent 首次使用 Visual Companion 模式——在浏览器中展示 3 种布局方案的实时 mockup，用户直观选择而非想象描述。选中后实现对 4 种分布类型的自动拟合。日期自动回退展示了 Agent 被用户推翻后的设计迭代能力——从严格日期匹配到自动回退加 banner 通知。</p>
-    <p><strong>Visual Companion 的意义</strong></p>
-    <p>用户选择方案 C 只用了 3 秒，如果用文字描述来回沟通至少需要 3 轮。Visual Companion 将设计选择从"你想象一下"变为"你看一下"，极大降低了沟通成本。</p>
+    <p><strong>工具转变</strong></p>
+    <p>第五阶段开始，工具使用转向了 Claude + Superpowers。严格遵循完整流程——Brainstorming 阶段澄清需求，实现阶段走 TDD，完成后还有 Review 验收。</p>
+    <p>左侧的几个新功能——耗电量直观类比、排名百分位、请求池并发控制、IndexedDB 缓存迁移——大部分都只需要一轮 Superpowers 就能完成。验收时基本不用返工。</p>
+    <p><strong>在这个阶段我发现了superpowers相比speckit更好的一点</strong></p>
+    <p>最初的有一个增加当前房间在楼栋消耗分布的需求——"加个分布图，让用户了解当日耗电量位于本楼栋中的什么位置"</p>
+    <p>但 claude 在 Brainstorming 阶段根据我的需求 提出可以用不同的统计模型（比如正态分布）来拟合楼栋的耗电量分布，让系统自动用 BIC 选出最匹配的统计模型。</p>
+    <p>让用户不仅能看到"我在什么位置"，还能看出整栋楼的耗电模式是正态分布还是偏态分布，有没有异常聚类。claude最终把我的模糊的想法转化成了可落地的规格。</p>
+    <p><strong>衔接下一阶段</strong></p>
+    <p>值得一提的是，这阶段有一项功能来自外部开发者的贡献。仓库公开后，开始有真实用户参与进来——这也自然过渡到了下一阶段：开源开发模式转型。</p>
   </aside>
 </section>
 
@@ -1504,16 +1521,6 @@ body { font-size: 16px; }
     <span class="pd">May 26 - Jun 3 · 真实用户 + 外部贡献者</span>
   </div>
 
-  <!-- Banner: 开源成果统计（紧凑版） -->
-  <div class="p6-banner">
-    <div class="p6-stat" data-color="good"><span class="p6-n">6</span><span class="p6-l">PR 已合并</span></div>
-    <div class="p6-stat" data-color="bad"><span class="p6-n">1</span><span class="p6-l">Bug 修复</span></div>
-    <div class="p6-stat" data-color="accent"><span class="p6-n">5</span><span class="p6-l">功能增加</span></div>
-    <div class="p6-stat" data-color="good"><span class="p6-n">3</span><span class="p6-l">Issue 已关闭</span></div>
-    <div class="p6-stat" data-color="warn"><span class="p6-n">1</span><span class="p6-l">Issue 讨论中</span></div>
-    <div class="p6-stat" data-color="good"><span class="p6-n">1</span><span class="p6-l">外部贡献者</span></div>
-  </div>
-
   <div class="keywords">
     <span class="keyword" style="font-size:14px;">本地→GitHub</span>
     <span class="keyword" style="font-size:14px;">真实用户反馈</span>
@@ -1522,9 +1529,40 @@ body { font-size: 16px; }
     <span class="keyword" style="font-size:14px;">GitHub Actions</span>
   </div>
 
-  <!-- GitHub repo screenshot (center, intro) -->
-  <div class="p6-repo-shot">
-    <img src="../screenshot/phase6-github-repo.png" alt="nju-power-watch GitHub 仓库" onerror="this.style.display='none'">
+  <!-- ===== TOP: 3-column (Stats + PR + Issue) ===== -->
+  <div class="p6-top-3">
+
+    <!-- Col 1: Stats 3x2 grid -->
+    <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 8px;background:var(--surface);display:flex;flex-direction:column;justify-content:center;">
+      <p style="font-size:11px;font-weight:700;color:var(--text-2);margin:0 0 4px;text-align:center;">📊 项目统计</p>
+      <div class="p6-stats-grid">
+        <div class="p6-stat" data-color="good"><span class="p6-n">6</span><span class="p6-l">PR 已合并</span></div>
+        <div class="p6-stat" data-color="accent"><span class="p6-n">5</span><span class="p6-l">功能增加</span></div>
+        <div class="p6-stat" data-color="bad"><span class="p6-n">1</span><span class="p6-l">Bug 修复</span></div>
+        <div class="p6-stat" data-color="good"><span class="p6-n">3</span><span class="p6-l">Issue 已关闭</span></div>
+        <div class="p6-stat" data-color="warn"><span class="p6-n">1</span><span class="p6-l">Issue 讨论中</span></div>
+        <div class="p6-stat" data-color="good"><span class="p6-n">1</span><span class="p6-l">外部贡献者</span></div>
+      </div>
+    </div>
+
+    <!-- Col 2: PR list screenshot -->
+    <div class="p6-shot">
+      <div class="p6-shot-bar">
+        <span style="display:inline-flex;gap:3px;"><span style="width:7px;height:7px;border-radius:50%;background:#ff5f57;"></span><span style="width:7px;height:7px;border-radius:50%;background:#ffbd2e;"></span><span style="width:7px;height:7px;border-radius:50%;background:#28c840;"></span></span>
+        <span style="opacity:.7;">Pull Requests</span>
+      </div>
+      <img src="./phase6-github-prs.png" alt="GitHub PR 列表" onerror="this.style.display='none'">
+    </div>
+
+    <!-- Col 3: Issue list screenshot -->
+    <div class="p6-shot">
+      <div class="p6-shot-bar">
+        <span style="display:inline-flex;gap:3px;"><span style="width:7px;height:7px;border-radius:50%;background:#ff5f57;"></span><span style="width:7px;height:7px;border-radius:50%;background:#ffbd2e;"></span><span style="width:7px;height:7px;border-radius:50%;background:#28c840;"></span></span>
+        <span style="opacity:.7;">Issues</span>
+      </div>
+      <img src="./phase6-github-issues.png" alt="GitHub Issue 列表" onerror="this.style.display='none'">
+    </div>
+
   </div>
 
   <!-- Two columns: Bug left / Feature right -->
@@ -1600,129 +1638,117 @@ body { font-size: 16px; }
   </div>
 
   <aside class="notes">
-    <h3>阶段六讲稿：开源开发模式转型</h3>
-    <p><strong>统计数据</strong></p>
-    <p>项目公开后共合并 6 个 PR（1 个 Bug 修复 + 5 个功能增加），关闭 3 个 Issue，1 个 Issue 讨论中，吸引了 1 位外部贡献者参与。</p>
-    <p><strong>Bug 类别</strong></p>
-    <p>#1 苏州校区电费显示是最典型的数据解析 bug——不同校区 HTML 结构不同导致正则匹配错误。#5 异常耗电误判是更有深度的 bug——余额骤降导致公式算出不合理结果，外部贡献者 @Mentaturan 提出分类框架。</p>
-    <p><strong>Feature 类别</strong></p>
-    <p>5 个功能覆盖了排名系统、可视化、数据完整性、基础设施四个维度。</p>
+    <p>第六阶段是转型开源开发模式——仓库公开后，开始收到真实用户的反馈。</p>
+    <p>左上角是项目统计：一共合并了 6 个 PR，其中 5 个功能增加、1 个 Bug 修复，关闭了 3 个 Issue，还有 1 个在讨论中，吸引了 1 位外部贡献者。左边是 PR 列表，中间是 Issue 列表。</p>
+    <p>下方 Bug 类别里，#1 苏州校区电费显示是最典型的——不同校区 HTML 结构不同导致正则匹配错误，按校区区分解析后修复。#5 异常耗电误判更有深度——余额从 517 骤降到 53 元，外部贡献者 Mentaturan 提出了"数据质量 vs 行为异常"的分类框架。</p>
+    <p>Feature 类别这边，5 个 PR 覆盖了排名系统、UX 增强、可视化、数据完整性等维度——每个功能都来自真实的issue</p>
   </aside>
 </section>
-<!-- ===== SLIDE 9: Summary ===== -->
-<section class="slide phase-slide summary-slide" data-title="总结 · AI4SE 工具链反思">
+<!-- ===== SLIDE 9: Deadline Gate (上) ===== -->
+<section class="slide phase-slide dg-slide" data-title="Deadline Gate · 为什么需要时间门禁" style="padding:32px 44px;">
   <div class="phase-header">
     <span class="pn" style="opacity:0.5;">∑</span>
-    <h2>总结：AI4SE 工具链的实践反思</h2>
-    <span class="pd">Jun 8</span>
-  </div>
-  <div class="keywords">
-    <span class="keyword" style="font-size:14px;">+19,032 / -23,014</span>
-    <span class="keyword" style="font-size:14px;">6 个阶段</span>
-    <span class="keyword" style="font-size:14px;">3 种范式</span>
-    <span class="keyword" style="font-size:14px;">16 轮 Superpowers</span>
+    <h2>Deadline Gate（上）：为什么 Agent 跑了一晚上却没完成？</h2>
+    <span class="pd">从 6 个阶段中提炼的 execution discipline</span>
   </div>
 
-  <div class="cols-2" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;overflow-y:auto;flex:1;min-height:0;">
+  <!-- Top section: Problem + Bounds diagram in 2-column -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;min-height:0;">
 
-    <!-- COL 1: Project Stats + Paradigm Evolution -->
-    <div class="col">
-      <p class="col-label">📊 项目概况</p>
+    <!-- Left: Venn diagram — Agent execution outcomes -->
+    <div style="display:flex;flex-direction:column;gap:6px;min-height:0;">
+      <div class="dg-bounds" style="flex:1;display:flex;flex-direction:column;">
+        <p style="font-size:16px;font-weight:700;margin:0 0 2px;color:var(--text-1);flex-shrink:0;">📊 Agent 执行全集</p>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
-        <div class="stat-card"><span class="sc-num">6</span><span class="sc-label">开发阶段</span></div>
-        <div class="stat-card"><span class="sc-num">3</span><span class="sc-label">协作范式</span></div>
-        <div class="stat-card"><span class="sc-num">~3</span><span class="sc-label">开发周数</span></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
-        <div class="stat-card"><span class="sc-num" style="color:var(--good);">+19,032</span><span class="sc-label">新增行</span></div>
-        <div class="stat-card"><span class="sc-num" style="color:var(--bad);">-23,014</span><span class="sc-label">删除行</span></div>
-        <div class="stat-card"><span class="sc-num">16</span><span class="sc-label">Superpowers 轮</span></div>
-      </div>
+        <!-- Venn circles -->
+        <div style="position:relative;flex:1;min-height:0;margin:0;border:1px dashed color-mix(in srgb,var(--text-3) 25%,transparent);border-radius:8px;">
+          <!-- Circle A: 出问题 -->
+          <div style="position:absolute;left:3%;top:5%;width:65%;height:90%;border-radius:50%;
+            background:color-mix(in srgb,var(--bad) 12%,transparent);
+            border:2px solid color-mix(in srgb,var(--bad) 35%,transparent);"></div>
+          <!-- Circle B: 有限资源内完成 -->
+          <div style="position:absolute;right:3%;top:5%;width:65%;height:90%;border-radius:50%;
+            background:color-mix(in srgb,var(--good) 12%,transparent);
+            border:2px solid color-mix(in srgb,var(--good) 35%,transparent);"></div>
 
-      <p class="col-label" style="margin-top:8px;">🔄 三种协作范式的演进</p>
+          <!-- Label: A\B 超资源 -->
+          <div style="position:absolute;left:2%;top:50%;transform:translateY(-50%);z-index:2;text-align:center;width:24%;">
+            <div style="font-size:14px;font-weight:700;color:var(--bad);">出问题</div>
+            <div style="font-size:11px;color:var(--text-2);line-height:1.3;">超资源耗尽<br>Deadline Gate 拦截</div>
+          </div>
+          <!-- Label: A∩B 取决于 Context Engineering -->
+          <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;text-align:center;width:24%;">
+            <div style="font-size:11px;font-weight:600;color:var(--text-1);">交集</div>
+            <div style="font-size:10px;color:var(--text-2);line-height:1.3;">资源内完成但有问题<br>取决于<br><strong style="color:var(--accent);">Context Engineering</strong></div>
+          </div>
+          <!-- Label: B\A 正确 -->
+          <div style="position:absolute;right:2%;top:50%;transform:translateY(-50%);z-index:2;text-align:center;width:24%;">
+            <div style="font-size:14px;font-weight:700;color:var(--good);">有限资源内完成</div>
+            <div style="font-size:11px;color:var(--text-2);">正确完成 ✅</div>
+          </div>
+        </div>
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
-        <div style="display:grid;grid-template-columns:60px 1fr;font-size:15px;gap:0;">
-          <div style="padding:6px 8px;font-weight:700;background:var(--surface);border-bottom:1px solid var(--border);text-align:center;color:var(--text-3);">P1</div>
-          <div style="padding:6px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">纯 Claude 交互 · 无结构化流程</div>
-          <div style="padding:6px 8px;font-weight:700;background:var(--surface);border-bottom:1px solid var(--border);text-align:center;color:var(--text-3);">P2</div>
-          <div style="padding:6px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">OpenCode /speckit · spec→plan→implement</div>
-          <div style="padding:6px 8px;font-weight:700;background:var(--surface);text-align:center;color:var(--text-3);">P3</div>
-          <div style="padding:6px 8px;background:var(--surface);border-left:1px solid var(--border);">Superpowers · brainstorming→plan→implement→verify</div>
+        <!-- Legend: three regions -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;flex-shrink:0;margin-top:2px;">
+          <div style="padding:3px 6px;background:color-mix(in srgb,var(--bad) 8%,transparent);border-radius:4px;font-size:12px;line-height:1.4;text-align:center;">
+            <span style="font-weight:600;color:var(--bad);">A\B</span><br>
+            <span style="color:var(--text-2);font-size:11px;">超资源 → 门禁</span>
+          </div>
+          <div style="padding:3px 6px;background:color-mix(in srgb,var(--accent) 8%,transparent);border-radius:4px;font-size:12px;line-height:1.4;text-align:center;">
+            <span style="font-weight:600;color:var(--accent);">A∩B</span><br>
+            <span style="color:var(--text-2);font-size:11px;">Context Engineering</span>
+          </div>
+          <div style="padding:3px 6px;background:color-mix(in srgb,var(--good) 8%,transparent);border-radius:4px;font-size:12px;line-height:1.4;text-align:center;">
+            <span style="font-weight:600;color:var(--good);">B\A</span><br>
+            <span style="color:var(--text-2);font-size:11px;">正确完成 ✅</span>
+          </div>
         </div>
       </div>
 
-      <p class="col-label" style="margin-top:8px;">🎯 各阶段 Superpowers 轮数</p>
-
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
-        <div style="display:grid;grid-template-columns:80px 1fr 50px;font-size:15px;gap:0;">
-          <div style="padding:4px 8px;font-weight:700;background:var(--surface);border-bottom:1px solid var(--border);">阶段</div>
-          <div style="padding:4px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);">内容</div>
-          <div style="padding:4px 8px;background:var(--surface);border-bottom:1px solid var(--border);border-left:1px solid var(--border);text-align:right;">轮</div>
-          <div style="padding:4px 8px;">P1 项目探索</div>
-          <div style="padding:4px 8px;border-left:1px solid var(--border);">curl 探索 · 数据管道</div>
-          <div style="padding:4px 8px;border-left:1px solid var(--border);text-align:right;color:var(--text-3);">0</div>
-          <div style="padding:4px 8px;background:var(--surface);">P2 数据管道</div>
-          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);">GitHub Actions 自动化</div>
-          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);text-align:right;color:var(--text-3);">0</div>
-          <div style="padding:4px 8px;">P3 前端需求</div>
-          <div style="padding:4px 8px;border-left:1px solid var(--border);">Speckit 122 tasks</div>
-          <div style="padding:4px 8px;border-left:1px solid var(--border);text-align:right;color:var(--text-3);">0</div>
-          <div style="padding:4px 8px;background:var(--surface);">P4 Open Design</div>
-          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);">CSS 变量 · 设计系统</div>
-          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);text-align:right;color:var(--accent);font-weight:600;">1</div>
-          <div style="padding:4px 8px;">P5 业务功能</div>
-          <div style="padding:4px 8px;border-left:1px solid var(--border);">业务增强 + Visual Companion</div>
-          <div style="padding:4px 8px;border-left:1px solid var(--border);text-align:right;color:var(--accent);font-weight:600;">7</div>
-          <div style="padding:4px 8px;background:var(--surface);">P6 Bug 修复</div>
-          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);">系统性盲区排查</div>
-          <div style="padding:4px 8px;background:var(--surface);border-left:1px solid var(--border);text-align:right;color:var(--accent);font-weight:600;">8</div>
+      <!-- Link to project context -->
+      <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 10px;background:var(--surface);flex-shrink:0;">
+        <p style="font-size:14px;font-weight:600;margin:0 0 2px;color:var(--text-1);">🔗 回顾项目中的体现</p>
+        <div style="display:flex;gap:8px;font-size:14px;color:var(--text-2);">
+          <span style="flex:1;padding:3px 6px;background:color-mix(in srgb,var(--bad) 8%,transparent);border-radius:3px;"><strong style="color:var(--bad);">阶段三</strong> Spec 模糊 → 2 天返工</span>
+          <span style="flex:1;padding:3px 6px;background:color-mix(in srgb,var(--warn) 8%,transparent);border-radius:3px;"><strong style="color:var(--warn);">阶段四</strong> Open Design 在不擅长的领域无限尝试</span>
+          <span style="flex:1;padding:3px 6px;background:color-mix(in srgb,var(--accent) 8%,transparent);border-radius:3px;"><strong style="color:var(--accent);">阶段五/六</strong> 每次迭代都需要人为喊停</span>
         </div>
       </div>
     </div>
 
-    <!-- COL 2: Key Insights -->
-    <div class="col">
-      <p class="col-label">💡 核心洞察</p>
-
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:8px 12px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🎯 Spec 质量决定实现的天花板</div>
-        <div style="padding:8px 12px;font-size:15px;color:var(--text-2);line-height:1.4;">
-          Speckit 的任务分解效率很高，但 spec 的清晰度直接决定了产出的质量。模糊的规约迫使 Agent 依赖隐含假设填补空白——排序方向、错误状态区分、性能目标，这些在 spec 中没有明确写明的细节最终都成为了 bug。核心教训：<strong style="color:var(--accent);">如果你不确定 spec 的质量，就不要用 Speckit</strong>。
+    <!-- Right: The story -->
+    <div style="display:flex;flex-direction:column;gap:6px;min-height:0;">
+      <div style="border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;background:var(--surface);flex:1;display:flex;flex-direction:column;">
+        <p style="font-size:17px;font-weight:700;margin:0 0 3px;color:var(--bad);flex-shrink:0;">🩸 血的教训：为什么必须事先计划？</p>
+        <div style="display:flex;gap:8px;flex:1;">
+          <div style="flex:1;padding:6px 8px;background:color-mix(in srgb,var(--bad) 6%,transparent);border-radius:var(--radius-sm);font-size:16px;line-height:1.6;">
+            <div style="font-weight:600;color:var(--text-1);margin-bottom:2px;">📋 原始需求</div>
+            "仓库里刚新增了一个文件，<br>帮我把它追踪并 push 到远端。<br>
+            <strong>注意：其他未追踪的文件<br>不要动，保留在本地。</strong>"
+          </div>
+          <div style="flex:1;padding:6px 8px;background:color-mix(in srgb,var(--warn) 6%,transparent);border-radius:var(--radius-sm);font-size:16px;line-height:1.6;">
+            <div style="font-weight:600;color:var(--text-1);margin-bottom:2px;">💬 Agent 的反应</div>
+            "这个很简单，就一个文件，<br><strong>不需要计划</strong>，直接开干吧。<br>几行命令的事，一分钟搞定。"
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:5px;flex:1;">
+          <div style="flex:1;padding:5px 8px;background:color-mix(in srgb,var(--bad) 10%,transparent);border-radius:var(--radius-sm);border-left:3px solid var(--bad);font-size:16px;line-height:1.5;">
+            <strong>❌ 实际结果</strong><br>
+            git push 后发现远端已有新提交<br>→ Agent 自动执行 rebase 解决冲突<br>→ rebase 过程中误操作，<strong style="color:var(--bad);">本地其他未追踪的文件被连带删除</strong>。<br>等我发现时，文件已经找不回来了。
+          </div>
+          <div style="flex:1;padding:5px 8px;background:color-mix(in srgb,var(--good) 10%,transparent);border-radius:var(--radius-sm);border-left:3px solid var(--good);font-size:16px;line-height:1.5;">
+            <strong>✅ 如果事先计划了</strong><br>
+            会先意识到：① 远端状态未知，push 有冲突风险<br>② rebase 操作本身有危险性<br>③ 必须先确认本地未追踪文件清单并备份<br>→ 计划中自然包含备份步骤<br>→ <strong style="color:var(--good);">文件不会丢</strong>
+          </div>
         </div>
       </div>
 
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:8px 12px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🔄 Brainstorming 让不可见的问题变得可见</div>
-        <div style="padding:8px 12px;font-size:15px;color:var(--text-2);line-height:1.4;">
-          122 个任务的代码生成用了几个小时，但修复 spec 不清晰导致的问题花了超过 2 天。Brainstorming 通过追问链让不可见的问题在实现前变得可见——"按升序还是降序？""空状态和错误状态怎么区分？""性能指标是多少？"——这些追问在 Speckit 阶段从未被提出。
-        </div>
-      </div>
-
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:8px 12px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">👁️ Visual Companion 降低沟通成本</div>
-        <div style="padding:8px 12px;font-size:15px;color:var(--text-2);line-height:1.4;">
-          用户选择方案 C 只用了 3 秒——如果用文字描述来回沟通至少需要 3 轮。Visual Companion 将设计选择从<strong>"你想象一下"</strong>变为<strong>"你看一下"</strong>，极大降低了沟通成本。
-        </div>
-      </div>
-
-      <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:6px;">
-        <div style="padding:8px 12px;font-size:12px;font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--border);color:var(--accent);">🧩 AI 的盲区需要结构性补偿</div>
-        <div style="padding:8px 12px;font-size:15px;color:var(--text-2);line-height:1.4;">
-          <span style="color:var(--bad);">运行时语义盲区</span>：Chart.js Proxy 死循环、坐标类型不匹配<br>
-          <span style="color:var(--bad);">边界情况盲区</span>：负余额、最后 bin、同名房间去重<br>
-          <span style="color:var(--bad);">并发环境盲区</span>：workflow 竞态条件、数据一致性<br><br>
-          <span style="color:var(--accent);">systematic-debugging</span> 和 <span style="color:var(--accent);">code review</span> 是当前最有效的补偿手段。
-        </div>
-      </div>
-
-      <div class="insight-box">
-        <div class="il" style="font-size:20px;">📌 核心结论</div>
-        <p style="font-size:15px;line-height:1.4;">
-          <strong>Spec 决定"做对的事"，Plan 决定"把事做对"。</strong>两者中的任何缺位都会使 Agent 的执行质量退化到纯模型先验的水平。<br><br>
-          Open Design 擅长设计，不擅长业务——理解这个边界才能正确地使用它。<br><br>
-          <strong style="color:var(--accent);">AI4SE 不是取代开发者，而是改变开发者需要关注的事情。</strong>
+      <div style="flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;padding:6px 12px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 8%,transparent),color-mix(in srgb,var(--bad) 6%,transparent));border:1px solid var(--border);border-radius:var(--radius);">
+        <p style="font-size:16px;font-weight:700;text-align:center;margin:0 0 2px;color:var(--text-1);">🎯 核心结论</p>
+        <p style="font-size:15px;text-align:center;color:var(--text-2);line-height:1.5;margin:0;">
+          这个案例属于<strong style="color:var(--bad);">"出问题 \ 有限资源"</strong>区域——Agent 超资源边界却不自知。<br>
+          <strong style="color:var(--accent);">没有计划就没有边界</strong>，没有边界就没有安全网。<br>
+          Deadline Gate 就是给 Agent 装上的<strong>边界检测器</strong>——超限就停，等人介入。
         </p>
       </div>
     </div>
@@ -1730,14 +1756,128 @@ body { font-size: 16px; }
   </div>
 
   <aside class="notes">
-    <h3>总结讲稿：AI4SE 工具链的实践反思</h3>
-    <p><strong>项目概况</strong></p>
-    <p>整个项目历时约三周，经历了三种协作范式：纯 Claude 交互、OpenCode /speckit、Superpowers。净增 +19,032 行，删除 -23,014 行，共 16 轮 Superpowers 流程。</p>
-    <p><strong>三种协作范式的演进</strong></p>
-    <p>第一阶段是纯 Claude 交互，无结构化流程。第二阶段引入 OpenCode /speckit，实现了 spec→plan→implement 的流程化。第三阶段使用 Superpowers，增加了 brainstorming→verify 环节，形成了完整的闭环。</p>
-    <p><strong>核心洞察</strong></p>
-    <p>第一，Spec 质量决定实现的天花板——模糊的规约迫使 Agent 依赖隐含假设。第二，Brainstorming 让不可见的问题变得可见——追问链能在实现前发现问题。第三，Visual Companion 将设计选择从"你想象一下"变为"你看一下"，极大降低了沟通成本。第四，AI 的盲区需要结构性补偿——systematic-debugging 和 code review 是最有效的手段。</p>
+    <p>最后是这段开发过程里面根据实际情况构建出的skills</p>
+    <p>同学们有没有遇到过这种情况——你给了你的agent所有权限让它跑了一整个晚上，第二天早上发现它什么都没完成，甚至让事情变得更糟了？</p>
+    <p>那期待中agent的工作模式是什么?我认为是agent使用"有限资源", 在"一定假设"内可以完成任务, 如果agent使用了超过计划中的资源, 他应该停下来反思, 是否偏离计划, 以及假设是否被破坏.</p>
+    <p>这里的资源可以代表时间, token, 上下文余量等可以计算的量, 而"一定假设"则代表了任务计划里面假设存在的情况(比如网络通畅, 认证通过, 外部资源可用等)</p>
+    <p>在上面的情况里面也许是agent偏离了计划, 导致了使用过量资源, 也许是某些假设被破坏(比如无法下载依赖的包), 才导致任务无法被实现</p>
+    <p>为了杜绝这两种情况, 我根据agent"是否在有限资源能结束任务"和"结束的任务是否被正确完成"划分了四种情况</p>
+    <p>左边红色代表"没能在有限资源内结束任务"，右边绿色则代表"能够在有限资源内结束任务"的区域。</p>
+    <p>它们的交集则代表了"能够结束任务, 但无法正确完成"</p>
+    <p>我希望可以harness来彻底杜绝左边红色减去交集的情况</p>
+    <p>至于交集的这部分我认为取决于 Context Engineering，也就是 计划, spec 写得清不清楚、prompt 设计得好不好才能解决。</p>
+    <p>所以我设计了一个skills, 强制agent事先计划并给每一个子任务设计定时器, 如果执行任务中定时器结束, 则告诉agent反思是否偏离计划或者某些假设被打破</p>
+    <p>有同学可能会问, 上面的分析中假设了agent会先制定计划在执行, 但是所以任务一定需要计划吗?</p>
+    <p>右边是一个真实的教训。有一次我让 Agent 追踪一个新文件并 push 到远端，特别强调了其他未追踪的文件不要动。Agent 觉得太简单了，几行命令的事，不需要计划。结果 push 时发现远端有冲突，Agent 自动执行 rebase，过程中误操作把本地其他未追踪文件删除了。等我发现的时候已经找不回来了。</p>
+    <p>这个案例就落在"出问题"区域——Agent 超出了资源边界却不自知。所以 Deadline Gate 就是给 Agent 装上的边界检测器，超限就停，等人介入。</p>
   </aside>
-</section><script src="./assets/runtime.js"></script>
+</section>
+
+<!-- ===== SLIDE 10: Deadline Gate (下) ===== -->
+<section class="slide phase-slide dg-slide" data-title="Deadline Gate · 机制与实现" style="padding:32px 44px;">
+  <div class="phase-header">
+    <span class="pn" style="opacity:0.5;">∑</span>
+    <h2>Deadline Gate（下）：机制、Red Flag 与实现</h2>
+    <span class="pd">Claude Code · opencode · 适用场景</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:8px;flex:1;min-height:0;">
+    <!-- Left column: Flow + Red Flags (wider now) -->
+    <div style="display:flex;flex-direction:column;gap:6px;min-height:0;">
+
+      <!-- Flow -->
+      <div style="border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;background:var(--surface);flex:2;display:flex;flex-direction:column;">
+        <p style="font-size:17px;font-weight:700;margin:0 0 4px;">核心流程</p>
+        <div class="dg-flow" style="flex:1;display:flex;align-items:center;">
+          <span class="dg-flow-step">① 估算</span>
+          <span class="dg-flow-arrow">→</span>
+          <span class="dg-flow-step">② 设截止</span>
+          <span class="dg-flow-arrow">→</span>
+          <span class="dg-flow-step">③ 执行</span>
+          <span class="dg-flow-arrow">→</span>
+          <span class="dg-flow-step">④ 到期</span>
+          <span class="dg-flow-arrow">↓</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:3px;flex:1;">
+          <span class="dg-flow-step dg-done" style="flex:1;display:flex;align-items:center;justify-content:center;">⑤ 停止 + 分析</span>
+          <span class="dg-flow-step dg-done" style="flex:1;display:flex;align-items:center;justify-content:center;">⑥ 汇报 + 人类介入</span>
+        </div>
+        <p style="font-size:14px;color:var(--text-3);margin:3px 0 0;text-align:center;">每步完成后重算剩余时间，重置门禁 · 没有"再给我一分钟"</p>
+
+        <!-- Stop prompt detail (new) -->
+        <div style="margin-top:6px;padding:6px 10px;background:color-mix(in srgb,var(--bad) 8%,transparent);border-radius:var(--radius-sm);border-left:3px solid var(--bad);flex:1;display:flex;flex-direction:column;justify-content:center;">
+          <p style="font-size:14px;font-weight:600;margin:0 0 2px;color:var(--bad);">⏰ 到期后 Agent 收到的提示词</p>
+          <p style="font-size:13px;color:var(--text-2);margin:0;line-height:1.5;">
+            "⏰ 门禁触发，已暂停<br>
+            已完成：步骤 X/Y（[done]… [blocked]…）<br><br>
+            请分析：<br>
+            &nbsp;① 为什么超时？是否某个步骤估算偏差过大？<br>
+            &nbsp;② 是否偏离了原始计划？在哪个节点偏航的？<br>
+            &nbsp;③ 是否遇到了未预料的情况？（网络、数据格式、权限…）<br><br>
+            给出建议方案（方案 A 推荐 / 方案 B）<br>
+            ——请指示下一步方向"
+          </p>
+        </div>
+      </div>
+
+      <!-- Red Flags -->
+      <div style="border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;background:var(--surface);flex:1;min-height:0;">
+        <p style="font-size:15px;font-weight:700;margin:0 0 2px;color:var(--warn);">🚩 Red Flag — 听到这些要警惕</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+          <div class="dg-redflag-item"><span class="rf-thought">"很简单，几个命令而已"</span><br><span class="rf-truth">简单 ≠ 不需要流程</span></div>
+          <div class="dg-redflag-item"><span class="rf-thought">"流程比做事还慢"</span><br><span class="rf-truth">流程花 10 秒，出错花 10 分钟</span></div>
+          <div class="dg-redflag-item"><span class="rf-thought">"先动手再补计划"</span><br><span class="rf-truth">计划必须在执行之前</span></div>
+          <div class="dg-redflag-item"><span class="rf-thought">"设了定时器=走了流程"</span><br><span class="rf-truth">定时器是第 3 步，前提是已有计划</span></div>
+        </div>
+      </div>
+
+      <!-- Scenes -->
+      <div style="border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;background:var(--surface);flex-shrink:0;">
+        <p style="font-size:17px;font-weight:700;margin:0 0 3px;">适用场景</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;">
+          <div class="dg-scene"><span class="scene-icon" style="background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good);">✓</span> 克隆仓库 → 装依赖 → 跑起来</div>
+          <div class="dg-scene"><span class="scene-icon" style="background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good);">✓</span> CI 修复：定位 → 修复 → 验证</div>
+          <div class="dg-scene"><span class="scene-icon" style="background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good);">✓</span> 批量脚本：迁移 / 转换 / 重命名</div>
+          <div class="dg-scene"><span class="scene-icon" style="background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good);">✓</span> 部署：构建 → 测试 → 发布</div>
+        </div>
+        <p style="font-size:13px;color:var(--text-3);margin:2px 0 0;">❌ 探索性研究（API 调研 / 架构设计 / 需求分析）不适用</p>
+      </div>
+    </div>
+
+    <!-- Right column: Implementation -->
+    <div style="display:flex;flex-direction:column;gap:6px;min-height:0;">
+      <p style="font-size:17px;font-weight:700;margin:0;color:var(--accent);">实现机制</p>
+
+      <div class="dg-impl" style="flex:1;min-height:0;">
+        <strong>▸ Claude Code</strong><br>
+        <span style="color:var(--text-2);">通过 CronCreate 设定一次性定时器：</span><br>
+        ① 写计划（每步标注 ~Xmin 估算）<br>
+        ② 估算总和 → CronCreate(Nmin, goal)<br>
+        ③ 每完成一步 → 重算剩余时间 → 重新 CronCreate<br>
+        ④ 到期 → Claude 收到 prompt → 停止 + 分析 + 汇报<br>
+        <span style="color:var(--text-3);">约束：到期后提醒 Claude 主动停止，不强制打断</span>
+      </div>
+
+      <div class="dg-impl" style="flex:1;min-height:0;">
+        <strong>▸ opencode</strong><br>
+        <span style="color:var(--text-2);">通过插件提供 set_timeout / clear_timeout 工具：</span><br>
+        ① 写计划 → set_timeout(seconds, goal)<br>
+        ② 到期 → session.abort() 打断当前执行<br>
+        ③ 注入 reflection prompt 要求分析汇报<br>
+        ④ tool.execute.before 钩子拦截后续所有工具调用<br>
+        ⑤ 即使 bash 正在跑也能强制中断<br>
+        <span style="color:var(--text-3);">约束：需要注册 deadline-gate 插件</span>
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes">
+    <p>核心流程六步：估算 → 设截止 → 执行 → 到期 → 停止 + 分析 → 汇报 + 人类介入。关键在"到期"和"停止"之间没有缓冲——没有"再给我一分钟"。</p>
+    <p>四个 Red Flag 是实际使用中 Agent 最常用的借口："很简单"、"流程比做事慢"、"先动手再补计划"、"设了定时器就算走流程了"——看到就要警惕。</p>
+    <p>实现上两个平台不同。Claude Code 通过 CronCreate 设定定时器，到期后提醒 Claude 停止并汇报，是软约束。opencode 更彻底——插件通过 set_timeout 设定时间，到期后 session.abort() 强制打断当前执行，包括正在跑的 bash 命令，再注入 prompt 要求分析汇报，同时工具钩子拦截后续所有调用。</p>
+    <p>适用场景是有明确边界、步骤可预期的任务：GitHub 复现、CI 修复、批量脚本、部署流程。探索性研究不适用——API 调研、架构设计这些没有明确的"完成"定义。</p>
+  </aside>
+</section>
+<script src="./assets/runtime.js"></script>
 </body>
 </html>
