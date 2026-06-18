@@ -4,43 +4,47 @@
   "buildings": {
     "诚园-乙": {
       "total_rooms": 147,
-      "avg_balance": 135.64
+      "avg_balance": 136.16
     },
     "诚园-丙": {
       "total_rooms": 132,
-      "avg_balance": 128.67
+      "avg_balance": 127.11
     },
     "知园-乙": {
       "total_rooms": 60,
-      "avg_balance": 93.13
+      "avg_balance": 92.26
     },
     "诚园-甲": {
       "total_rooms": 143,
-      "avg_balance": 190.0
+      "avg_balance": 190.98
     },
     "勇园-乙": {
       "total_rooms": 98,
-      "avg_balance": 215.11
+      "avg_balance": 212.31
     },
     "仁园-戊": {
       "total_rooms": 52,
-      "avg_balance": 184.32
+      "avg_balance": 181.28
     },
     "仁园-甲": {
       "total_rooms": 77,
-      "avg_balance": 125.5
+      "avg_balance": 119.91
+    },
+    "勤园-乙": {
+      "total_rooms": 1,
+      "avg_balance": 0.0
     },
     "勇园-甲": {
       "total_rooms": 96,
-      "avg_balance": 180.12
+      "avg_balance": 177.91
     },
     "仁园-丁": {
       "total_rooms": 76,
-      "avg_balance": 210.94
+      "avg_balance": 217.91
     },
     "仁园-丙": {
       "total_rooms": 67,
-      "avg_balance": 156.45
+      "avg_balance": 153.62
     },
     "知园-丙": {
       "total_rooms": 4,
@@ -48,27 +52,23 @@
     },
     "科创大厦B": {
       "total_rooms": 338,
-      "avg_balance": 151.96
+      "avg_balance": 151.99
     },
     "勇园-丙": {
       "total_rooms": 87,
-      "avg_balance": 250.95
+      "avg_balance": 248.59
     },
     "仁园-乙": {
       "total_rooms": 71,
-      "avg_balance": 196.97
+      "avg_balance": 193.31
     },
     "知园-甲": {
       "total_rooms": 32,
-      "avg_balance": 7.98
+      "avg_balance": 7.7
     },
     "仁园-己": {
       "total_rooms": 73,
-      "avg_balance": 280.63
-    },
-    "勤园-乙": {
-      "total_rooms": 1,
-      "avg_balance": 0.0
+      "avg_balance": 273.56
     }
   }
 }
