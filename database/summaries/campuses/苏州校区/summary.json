@@ -1,34 +1,34 @@
 {
   "campus": "苏州校区",
-  "total_rooms": 1554,
+  "total_rooms": 1556,
   "buildings": {
     "诚园-乙": {
       "total_rooms": 147,
-      "avg_balance": 139.07
+      "avg_balance": 141.07
     },
     "诚园-丙": {
-      "total_rooms": 132,
-      "avg_balance": 120.95
+      "total_rooms": 133,
+      "avg_balance": 124.11
     },
     "知园-乙": {
       "total_rooms": 60,
-      "avg_balance": 92.65
+      "avg_balance": 92.29
     },
     "诚园-甲": {
       "total_rooms": 143,
-      "avg_balance": 183.59
+      "avg_balance": 183.12
     },
     "勇园-乙": {
       "total_rooms": 98,
-      "avg_balance": 203.22
+      "avg_balance": 200.51
     },
     "仁园-戊": {
       "total_rooms": 52,
-      "avg_balance": 176.94
+      "avg_balance": 178.45
     },
     "仁园-甲": {
       "total_rooms": 77,
-      "avg_balance": 106.15
+      "avg_balance": 103.31
     },
     "勤园-乙": {
       "total_rooms": 1,
@@ -36,39 +36,39 @@
     },
     "勇园-甲": {
       "total_rooms": 96,
-      "avg_balance": 173.52
+      "avg_balance": 172.64
     },
     "仁园-丁": {
       "total_rooms": 76,
-      "avg_balance": 198.08
+      "avg_balance": 205.64
     },
     "仁园-丙": {
       "total_rooms": 67,
-      "avg_balance": 149.12
+      "avg_balance": 147.04
     },
     "知园-丙": {
       "total_rooms": 4,
       "avg_balance": 0.0
     },
     "科创大厦B": {
-      "total_rooms": 338,
-      "avg_balance": 151.05
+      "total_rooms": 339,
+      "avg_balance": 152.28
     },
     "勇园-丙": {
       "total_rooms": 87,
-      "avg_balance": 239.09
+      "avg_balance": 238.06
     },
     "仁园-乙": {
       "total_rooms": 71,
-      "avg_balance": 183.12
+      "avg_balance": 181.41
     },
     "知园-甲": {
       "total_rooms": 32,
-      "avg_balance": 6.81
+      "avg_balance": 6.64
     },
     "仁园-己": {
       "total_rooms": 73,
-      "avg_balance": 261.15
+      "avg_balance": 256.31
     }
   }
 }
