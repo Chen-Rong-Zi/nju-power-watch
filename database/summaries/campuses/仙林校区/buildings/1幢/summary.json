@@ -1,123 +1,127 @@
 {
   "building": "1幢",
   "campus": "仙林校区",
-  "total_rooms": 29,
+  "total_rooms": 30,
   "rooms": {
     "1B214": {
       "current_balance": 0.0,
-      "last_updated": "20260626"
+      "last_updated": "20260627"
     },
     "1A106": {
-      "current_balance": 9.67,
-      "last_updated": "20260626"
+      "current_balance": 6.49,
+      "last_updated": "20260627"
     },
     "1B112": {
-      "current_balance": 14.03,
-      "last_updated": "20260626"
+      "current_balance": 11.92,
+      "last_updated": "20260627"
     },
     "1B115": {
-      "current_balance": 169.86,
-      "last_updated": "20260626"
+      "current_balance": 169.43,
+      "last_updated": "20260627"
     },
     "A112": {
-      "current_balance": 211.16,
-      "last_updated": "20260626"
+      "current_balance": 210.34,
+      "last_updated": "20260627"
     },
     "1B111": {
-      "current_balance": 306.09,
-      "last_updated": "20260626"
+      "current_balance": 292.91,
+      "last_updated": "20260627"
     },
     "1A104": {
-      "current_balance": 62.06,
-      "last_updated": "20260626"
+      "current_balance": 61.97,
+      "last_updated": "20260627"
     },
     "1B117": {
-      "current_balance": 12.66,
-      "last_updated": "20260626"
+      "current_balance": 12.54,
+      "last_updated": "20260627"
     },
     "1A119": {
       "current_balance": 134.07,
-      "last_updated": "20260626"
+      "last_updated": "20260627"
     },
     "1A113": {
-      "current_balance": 106.31,
-      "last_updated": "20260626"
+      "current_balance": 91.3,
+      "last_updated": "20260627"
     },
     "1A114": {
-      "current_balance": 189.53,
-      "last_updated": "20260626"
+      "current_balance": 177.21,
+      "last_updated": "20260627"
     },
     "1B118": {
-      "current_balance": 88.54,
-      "last_updated": "20260626"
+      "current_balance": 88.3,
+      "last_updated": "20260627"
     },
     "1A102": {
-      "current_balance": 0.8,
-      "last_updated": "20260626"
+      "current_balance": 2.46,
+      "last_updated": "20260627"
     },
     "1A115": {
-      "current_balance": 28.3,
-      "last_updated": "20260626"
+      "current_balance": 27.21,
+      "last_updated": "20260627"
     },
     "1A120": {
-      "current_balance": 142.5,
-      "last_updated": "20260626"
+      "current_balance": 142.02,
+      "last_updated": "20260627"
     },
     "1A117": {
-      "current_balance": 18.65,
-      "last_updated": "20260626"
+      "current_balance": 18.63,
+      "last_updated": "20260627"
     },
     "1B114": {
-      "current_balance": 122.7,
-      "last_updated": "20260626"
+      "current_balance": 121.88,
+      "last_updated": "20260627"
     },
     "1A112": {
-      "current_balance": 211.16,
-      "last_updated": "20260626"
+      "current_balance": 210.34,
+      "last_updated": "20260627"
     },
     "A117": {
       "current_balance": 19.52,
       "last_updated": "20260521"
     },
     "B114": {
-      "current_balance": 122.7,
-      "last_updated": "20260626"
+      "current_balance": 121.88,
+      "last_updated": "20260627"
     },
     "1B109": {
-      "current_balance": 132.26,
-      "last_updated": "20260626"
+      "current_balance": 131.42,
+      "last_updated": "20260627"
     },
     "1A116": {
-      "current_balance": 13.38,
-      "last_updated": "20260626"
+      "current_balance": 11.3,
+      "last_updated": "20260627"
     },
     "1A105": {
-      "current_balance": 2.07,
-      "last_updated": "20260626"
+      "current_balance": 1.88,
+      "last_updated": "20260627"
     },
     "1B110": {
-      "current_balance": 17.27,
-      "last_updated": "20260626"
+      "current_balance": 17.03,
+      "last_updated": "20260627"
     },
     "1A118": {
       "current_balance": 60.91,
-      "last_updated": "20260626"
+      "last_updated": "20260627"
     },
     "1B113": {
-      "current_balance": 9.45,
-      "last_updated": "20260626"
+      "current_balance": 8.67,
+      "last_updated": "20260627"
     },
     "1A108": {
       "current_balance": 16.07,
-      "last_updated": "20260626"
+      "last_updated": "20260627"
     },
     "1A101": {
-      "current_balance": 155.8,
-      "last_updated": "20260626"
+      "current_balance": 155.62,
+      "last_updated": "20260627"
     },
     "1A121": {
       "current_balance": 43.15,
       "last_updated": "20260626"
+    },
+    "A121": {
+      "current_balance": 43.15,
+      "last_updated": "20260627"
     }
   }
 }
