@@ -74,22 +74,15 @@ jobs:
           warning_on_retry: true
           command: python scripts/validate_cookie.py /tmp/cookie.json
       
-      - name: Read room IDs
-        id: rooms
-        run: |
-          ROOM_IDS=$(cat config/room_ids.txt | grep -v '^#' | grep -v '^$' | tr '\n' ' ')
-          echo "room_ids=$ROOM_IDS" >> $GITHUB_OUTPUT
-          echo "Room IDs to query: $ROOM_IDS"
-      
       - name: Query electricity data
         id: query
         run: |
           python nju_electric_query.py \
             --cookie-file /tmp/cookie.json \
+            --from-mapping config/room_ids.json \
             -d ./database \
             -c 200 \
             -q \
-            ${{ steps.rooms.outputs.room_ids }} \
             2>&1 | tee query_output.log
           
           SUCCESS=$(grep -oP '成功: \K\d+' query_output.log || echo "0")
@@ -184,9 +177,9 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          TOTAL=$(echo ${{ steps.rooms.outputs.room_ids }} | wc -w | tr -d ' ')
           SUCCESS=${{ steps.query.outputs.success_count }}
           FAILED=${{ steps.query.outputs.failed_count }}
+          TOTAL=$((SUCCESS + FAILED))
           
           echo "## 📊 Daily Query Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

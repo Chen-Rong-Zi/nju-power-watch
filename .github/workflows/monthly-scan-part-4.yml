@@ -82,27 +82,27 @@ jobs:
           python nju_electric_query.py \
             --cookie-file /tmp/cookie.json \
             --scan $START_ID $END_ID \
-            --scan-output config/room_ids.txt \
+            --scan-output config/room_ids.json \
             -c 200
 
-          COUNT=$(grep -c '^[0-9]' config/room_ids.txt || echo "0")
+          COUNT=$(python3 -c "import json; m=json.load(open('config/room_ids.json')); print(sum(len(r) for b in m.values() for r in b.values()))" || echo "0")
           echo "found_count=$COUNT" >> $GITHUB_OUTPUT
           echo "发现 $COUNT 个有效房间ID"
 
-      - name: Commit and push updated room_ids.txt
+      - name: Commit and push updated room_ids.json
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-          git add config/room_ids.txt
+          git add config/room_ids.json
 
           STAGED_FILES=$(git diff --staged --name-only)
           if [ -z "$STAGED_FILES" ]; then
             echo "No changes to commit"
           else
-            git commit -m "chore: update room_ids.txt - scan part 4 (150001-200000) - ${{ steps.scan.outputs.found_count }} rooms"
+            git commit -m "chore: update room_ids.json - scan part 4 (150001-200000) - ${{ steps.scan.outputs.found_count }} rooms"
             git push
-            echo "✓ room_ids.txt 已更新"
+            echo "✓ room_ids.json 已更新"
           fi
 
       - name: Summary

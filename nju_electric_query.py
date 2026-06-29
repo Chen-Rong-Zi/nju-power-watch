@@ -375,20 +375,18 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         max_concurrent: 最大并发数
         show_progress: 是否显示进度
     """
-    # 加载已有ID
-    existing_ids = load_existing_ids(output_file)
-    if existing_ids and show_progress:
-        print(f"从 {output_file} 加载了 {len(existing_ids)} 个已有ID")
+    # 加载已有ID (使用 config_utils 的 room-name based mapping)
+    from scripts.config_utils import load_mapping, extract_ids, is_room_known, update_id, save_mapping
+
+    mapping = load_mapping(output_file)
+    existing_id_set = set(extract_ids(mapping))
+    if existing_id_set and show_progress:
+        print(f"从 {output_file} 加载了 {len(existing_id_set)} 个已有ID")
 
     total = end_id - start_id + 1
     processed = 0
-    found = 0
+    new_found = 0
     skipped = 0  # 跳过的已有ID计数
-
-    # 去重: 记录已发现的房间 (校区, 楼栋, 房间名) -> room_id
-    seen_rooms = {}
-    # 记录 room_id -> (校区, 楼栋) 用于分组输出
-    room_info = {}
 
     # 错误统计
     error_counts = {
@@ -400,49 +398,11 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         "parse_error": 0,     # 解析失败
     }
 
-    # 保存结果的辅助函数
-    saving_in_progress = False  # 防止重入
-
-    def save_results():
-        """保存已发现的房间ID到文件"""
-        nonlocal saving_in_progress
-        if saving_in_progress:
-            return
-        saving_in_progress = True
-
-        if not seen_rooms:
-            return
-
-        # 按楼栋分组
-        buildings = {}
-        for room_id, (campus, building) in room_info.items():
-            key = f"{campus}/{building}"
-            if key not in buildings:
-                buildings[key] = []
-            buildings[key].append(room_id)
-
-        # 排序
-        sorted_buildings = sorted(buildings.keys())
-        for key in sorted_buildings:
-            buildings[key].sort(key=int)
-
-        # 写入文件
-        output_path = Path(output_file)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-
-        with open(output_path, "w", encoding="utf-8") as f:
-            for key in sorted_buildings:
-                f.write(f"# {key}\n")
-                for room_id in buildings[key]:
-                    f.write(f"{room_id}\n")
-
-        print(f"\n已保存 {len(seen_rooms)} 个房间ID到 {output_file}")
-
     # 信号处理器
     def signal_handler():
         """处理终止信号，保存已发现的结果"""
         print(f"\n\n收到终止信号，正在保存已发现的结果...")
-        save_results()
+        save_mapping(mapping, output_file)
         os._exit(0)  # 立即退出，防止重入
 
     # 注册 asyncio 信号处理器
@@ -453,7 +413,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
     semaphore = asyncio.Semaphore(max_concurrent)
 
     async def scan_single(session, room_id):
-        nonlocal processed
+        nonlocal processed, new_found
         url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
         attempt = 0  # 重试次数
 
@@ -496,11 +456,17 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
                         print(f"{room_id = }")
                         break
 
-                    # 成功：实时去重并记录
-                    room_key = (result.get("校区", ""), result.get("楼栋", ""), result.get("房间", ""))
-                    if room_key not in seen_rooms:
-                        seen_rooms[room_key] = room_id
-                        room_info[room_id] = room_key[:2]  # (校区, 楼栋)
+                    # 成功：实时去重并记录（基于房间名去重）
+                    campus = result.get("校区", "")
+                    building = result.get("楼栋", "")
+                    room_name = result.get("房间", "")
+
+                    # Track whether this is a new room before updating
+                    if not is_room_known(mapping, campus, building, room_name):
+                        new_found += 1
+
+                    # Update ID (add new or replace existing)
+                    update_id(mapping, campus, building, room_name, str(room_id))
 
                     break
 
@@ -530,19 +496,15 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         # 只在函数退出时更新进度
         processed += 1
         if show_progress:
-            print(f"\r[{processed}/{scan_count}] 已发现: {len(seen_rooms)}", end="", flush=True)
+            print(f"\r[{processed}/{scan_count}] 新发现: {new_found}", end="", flush=True)
 
     # 生成待扫描的ID列表，跳过已有ID
     ids_to_scan = []
     for room_id in range(start_id, end_id + 1):
-        if str(room_id) in existing_ids:
+        if str(room_id) in existing_id_set:
             skipped += 1
         else:
             ids_to_scan.append(room_id)
-
-    # 将已有ID的楼栋信息预先加入room_info
-    for existing_id, (campus, building) in existing_ids.items():
-        room_info[int(existing_id)] = (campus, building)
 
     scan_count = len(ids_to_scan)
     if show_progress:
@@ -553,52 +515,17 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         tasks = [scan_single(session, room_id) for room_id in ids_to_scan]
         await asyncio.gather(*tasks)
 
-    found = len(seen_rooms)
     total_errors = sum(error_counts.values())
 
     if show_progress:
         print()
 
-    # 按楼栋分组
-    buildings = {}
-    no_building_ids = []  # 没有楼栋信息的ID
-    for room_id, (campus, building) in room_info.items():
-        if campus is None or building is None:
-            no_building_ids.append(room_id)
-        else:
-            key = f"{campus}/{building}"
-            if key not in buildings:
-                buildings[key] = []
-            buildings[key].append(room_id)
-
-    # 按校区+楼栋排序，每个楼栋内的ID也排序
-    sorted_buildings = sorted(buildings.keys())
-    for key in sorted_buildings:
-        buildings[key].sort(key=int)
-
-    # 排序没有楼栋信息的ID
-    no_building_ids.sort(key=int)
-
-    # 确保输出目录存在
-    output_path = Path(output_file)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    # 写入文件，格式: # 校区/楼栋 注释行，后跟该楼栋的所有ID
-    async with aiofiles.open(output_path, "w", encoding="utf-8") as f:
-        # 先写入有楼栋信息的ID
-        for key in sorted_buildings:
-            await f.write(f"# {key}\n")
-            for room_id in buildings[key]:
-                await f.write(f"{room_id}\n")
-        # 再写入没有楼栋信息的已有ID（放在最后，标记为未知）
-        if no_building_ids:
-            await f.write("# 未知/未知\n")
-            for room_id in no_building_ids:
-                await f.write(f"{room_id}\n")
+    save_mapping(mapping, output_file)
 
     if show_progress:
-        print(f"扫描完成: 扫描 {scan_count} 个ID, 发现 {found} 个新房间, 跳过 {skipped} 个已有ID")
-        print(f"结果已保存到: {output_file} (共 {len(seen_rooms) + len(no_building_ids)} 个ID)")
+        print(f"扫描完成: 扫描 {scan_count} 个ID, 发现 {new_found} 个新房间, 跳过 {skipped} 个已有ID")
+        total_rooms = len(extract_ids(mapping))
+        print(f"结果已保存到: {output_file} (共 {total_rooms} 个ID)")
 
         if total_errors > 0:
             print("\n--- 错误统计 ---")
@@ -617,11 +544,11 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
     return {
         "total": total,
         "scanned": scan_count,
-        "found": found,
+        "found": new_found,
         "skipped": skipped,
         "errors": error_counts,
         "total_errors": total_errors,
-        "output_file": str(output_path)
+        "output_file": output_file
     }
 
 
@@ -691,7 +618,8 @@ async def async_main():
     parser.add_argument("--cookie-file", type=str, help="Cookie JSON文件路径", default=DEFAULT_COOKIE_FILE)
     parser.add_argument("-q", "--quiet", action="store_true", help="安静模式，减少输出")
     parser.add_argument("--scan", type=int, nargs=2, metavar=('START', 'END'), help="扫描ID区间模式: 扫描指定范围内的所有ID")
-    parser.add_argument("--scan-output", type=str, default="config/room_ids.txt", help="扫描结果输出文件 (默认: config/room_ids.txt)")
+    parser.add_argument("--scan-output", type=str, default="config/room_ids.json", help="扫描结果输出文件 (默认: config/room_ids.json)")
+    parser.add_argument("--from-mapping", type=str, help="从JSON映射文件读取房间ID列表")
     parser.add_argument("room_ids", nargs="*", help="宿舍ID列表 (扫描模式下不需要)")
     args = parser.parse_args()
 
@@ -700,6 +628,24 @@ async def async_main():
     max_concurrent = args.concurrency
     cookie_file = args.cookie_file
     show_progress = not args.quiet
+
+    if args.from_mapping:
+        from pathlib import Path as _Path
+        if not _Path(args.from_mapping).exists():
+            print(f"错误: 映射文件不存在: {args.from_mapping}")
+            sys.exit(1)
+        from scripts.config_utils import load_mapping, extract_ids
+        mapping = load_mapping(args.from_mapping)
+        try:
+            room_ids = extract_ids(mapping)
+        except (AttributeError, TypeError) as e:
+            print(f"错误: 映射文件格式错误: {args.from_mapping} ({e})")
+            sys.exit(1)
+        if not room_ids:
+            print(f"错误: 映射文件 {args.from_mapping} 中没有找到任何房间ID")
+            sys.exit(1)
+        if show_progress:
+            print(f"✓ 从映射文件加载了 {len(room_ids)} 个房间ID: {args.from_mapping}")
 
     if not os.path.exists(cookie_file):
         print(f"错误: Cookie 文件不存在: {cookie_file}")
