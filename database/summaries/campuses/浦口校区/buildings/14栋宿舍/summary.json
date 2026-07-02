@@ -1,675 +1,679 @@
 {
   "building": "14栋宿舍",
   "campus": "浦口校区",
-  "total_rooms": 167,
+  "total_rooms": 168,
   "rooms": {
     "417": {
-      "current_balance": 38.2,
-      "last_updated": "20260701"
+      "current_balance": 34.5,
+      "last_updated": "20260702"
     },
     "525": {
-      "current_balance": 40.3,
-      "last_updated": "20260701"
+      "current_balance": 47.4,
+      "last_updated": "20260702"
     },
     "619": {
-      "current_balance": 110.4,
-      "last_updated": "20260701"
+      "current_balance": 107.4,
+      "last_updated": "20260702"
     },
     "306": {
-      "current_balance": 17.8,
-      "last_updated": "20260701"
+      "current_balance": 8.9,
+      "last_updated": "20260702"
     },
     "319": {
-      "current_balance": 77.6,
-      "last_updated": "20260701"
+      "current_balance": 76.5,
+      "last_updated": "20260702"
     },
     "606": {
-      "current_balance": 62.1,
-      "last_updated": "20260701"
+      "current_balance": 56.9,
+      "last_updated": "20260702"
     },
     "320": {
       "current_balance": 0.5,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "412": {
-      "current_balance": 20.9,
-      "last_updated": "20260701"
+      "current_balance": 20.7,
+      "last_updated": "20260702"
     },
     "105": {
-      "current_balance": 61.9,
-      "last_updated": "20260701"
+      "current_balance": 57.1,
+      "last_updated": "20260702"
     },
     "419": {
-      "current_balance": 15.8,
-      "last_updated": "20260701"
+      "current_balance": 14.7,
+      "last_updated": "20260702"
     },
     "209": {
       "current_balance": 223.5,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "511": {
-      "current_balance": 141.2,
-      "last_updated": "20260701"
+      "current_balance": 135.8,
+      "last_updated": "20260702"
     },
     "620": {
       "current_balance": 101.9,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "515": {
-      "current_balance": 152.9,
-      "last_updated": "20260701"
+      "current_balance": 152.0,
+      "last_updated": "20260702"
     },
     "211": {
-      "current_balance": 141.98,
-      "last_updated": "20260701"
+      "current_balance": 135.28,
+      "last_updated": "20260702"
     },
     "326": {
-      "current_balance": 398.3,
-      "last_updated": "20260701"
+      "current_balance": 397.1,
+      "last_updated": "20260702"
     },
     "426": {
-      "current_balance": 70.4,
-      "last_updated": "20260701"
+      "current_balance": 67.0,
+      "last_updated": "20260702"
     },
     "102": {
-      "current_balance": 92.3,
-      "last_updated": "20260701"
+      "current_balance": 91.2,
+      "last_updated": "20260702"
     },
     "610": {
-      "current_balance": 0.0,
-      "last_updated": "20260701"
+      "current_balance": 1.4,
+      "last_updated": "20260702"
     },
     "413": {
-      "current_balance": 9.5,
-      "last_updated": "20260701"
+      "current_balance": 3.5,
+      "last_updated": "20260702"
     },
     "627": {
-      "current_balance": 172.17,
-      "last_updated": "20260701"
+      "current_balance": 167.97,
+      "last_updated": "20260702"
     },
     "427": {
-      "current_balance": 15.4,
-      "last_updated": "20260701"
+      "current_balance": 10.7,
+      "last_updated": "20260702"
     },
     "612": {
-      "current_balance": 53.3,
-      "last_updated": "20260701"
+      "current_balance": 49.2,
+      "last_updated": "20260702"
     },
     "611": {
-      "current_balance": 102.3,
-      "last_updated": "20260701"
+      "current_balance": 97.0,
+      "last_updated": "20260702"
     },
     "321": {
-      "current_balance": 2.9,
-      "last_updated": "20260701"
+      "current_balance": 1.9,
+      "last_updated": "20260702"
     },
     "309": {
-      "current_balance": 130.6,
-      "last_updated": "20260701"
+      "current_balance": 127.0,
+      "last_updated": "20260702"
     },
     "423": {
-      "current_balance": 14.8,
-      "last_updated": "20260701"
+      "current_balance": 12.9,
+      "last_updated": "20260702"
     },
     "523": {
-      "current_balance": 31.0,
-      "last_updated": "20260701"
+      "current_balance": 29.0,
+      "last_updated": "20260702"
     },
     "503": {
-      "current_balance": 108.9,
-      "last_updated": "20260701"
+      "current_balance": 107.0,
+      "last_updated": "20260702"
     },
     "608": {
-      "current_balance": 83.1,
-      "last_updated": "20260701"
+      "current_balance": 78.1,
+      "last_updated": "20260702"
     },
     "601": {
-      "current_balance": 12.1,
-      "last_updated": "20260701"
+      "current_balance": 8.8,
+      "last_updated": "20260702"
     },
     "220": {
-      "current_balance": 95.9,
-      "last_updated": "20260701"
+      "current_balance": 92.4,
+      "last_updated": "20260702"
     },
     "407": {
-      "current_balance": 18.8,
-      "last_updated": "20260701"
+      "current_balance": 17.2,
+      "last_updated": "20260702"
     },
     "626": {
-      "current_balance": 258.3,
-      "last_updated": "20260701"
+      "current_balance": 252.5,
+      "last_updated": "20260702"
     },
     "618": {
-      "current_balance": 6.3,
-      "last_updated": "20260701"
+      "current_balance": 2.4,
+      "last_updated": "20260702"
     },
     "228": {
-      "current_balance": 11.7,
-      "last_updated": "20260701"
+      "current_balance": 11.6,
+      "last_updated": "20260702"
     },
     "303": {
-      "current_balance": 42.3,
-      "last_updated": "20260701"
+      "current_balance": 39.1,
+      "last_updated": "20260702"
     },
     "428": {
-      "current_balance": 4.5,
-      "last_updated": "20260701"
+      "current_balance": 3.8,
+      "last_updated": "20260702"
     },
     "414": {
-      "current_balance": 2.9,
-      "last_updated": "20260701"
+      "current_balance": 1.9,
+      "last_updated": "20260702"
     },
     "623": {
-      "current_balance": 39.8,
-      "last_updated": "20260701"
+      "current_balance": 35.0,
+      "last_updated": "20260702"
     },
     "609": {
       "current_balance": 76.2,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "603": {
-      "current_balance": 22.8,
-      "last_updated": "20260701"
+      "current_balance": 13.3,
+      "last_updated": "20260702"
     },
     "617": {
-      "current_balance": 23.1,
-      "last_updated": "20260701"
+      "current_balance": 21.8,
+      "last_updated": "20260702"
     },
     "114": {
-      "current_balance": 45.1,
-      "last_updated": "20260701"
+      "current_balance": 43.4,
+      "last_updated": "20260702"
     },
     "605": {
-      "current_balance": 71.4,
-      "last_updated": "20260701"
+      "current_balance": 67.4,
+      "last_updated": "20260702"
     },
     "107": {
-      "current_balance": 3.7,
-      "last_updated": "20260701"
+      "current_balance": 0.8,
+      "last_updated": "20260702"
     },
     "517": {
-      "current_balance": 8.2,
-      "last_updated": "20260701"
+      "current_balance": 7.5,
+      "last_updated": "20260702"
     },
     "325": {
-      "current_balance": 13.8,
-      "last_updated": "20260701"
+      "current_balance": 10.0,
+      "last_updated": "20260702"
     },
     "210": {
-      "current_balance": 53.1,
-      "last_updated": "20260701"
+      "current_balance": 49.0,
+      "last_updated": "20260702"
     },
     "625": {
-      "current_balance": 2.0,
-      "last_updated": "20260701"
+      "current_balance": 1.0,
+      "last_updated": "20260702"
     },
     "621": {
       "current_balance": 16.4,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "213": {
       "current_balance": 853.8,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "125": {
       "current_balance": 31.8,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "310": {
-      "current_balance": 13.9,
-      "last_updated": "20260701"
+      "current_balance": 8.3,
+      "last_updated": "20260702"
     },
     "226": {
-      "current_balance": 75.9,
-      "last_updated": "20260701"
+      "current_balance": 72.3,
+      "last_updated": "20260702"
     },
     "512": {
-      "current_balance": 118.7,
-      "last_updated": "20260701"
+      "current_balance": 117.7,
+      "last_updated": "20260702"
     },
     "215": {
-      "current_balance": 48.3,
-      "last_updated": "20260701"
+      "current_balance": 46.5,
+      "last_updated": "20260702"
     },
     "410": {
-      "current_balance": 156.5,
-      "last_updated": "20260701"
+      "current_balance": 155.7,
+      "last_updated": "20260702"
     },
     "422": {
-      "current_balance": 86.8,
-      "last_updated": "20260701"
+      "current_balance": 85.6,
+      "last_updated": "20260702"
     },
     "202": {
       "current_balance": 19.5,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "406": {
-      "current_balance": 259.1,
-      "last_updated": "20260701"
+      "current_balance": 258.5,
+      "last_updated": "20260702"
     },
     "508": {
-      "current_balance": 56.6,
-      "last_updated": "20260701"
+      "current_balance": 53.1,
+      "last_updated": "20260702"
     },
     "513": {
       "current_balance": 10.3,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "519": {
-      "current_balance": 76.7,
-      "last_updated": "20260701"
+      "current_balance": 72.9,
+      "last_updated": "20260702"
     },
     "313": {
-      "current_balance": 480.6,
-      "last_updated": "20260701"
+      "current_balance": 477.6,
+      "last_updated": "20260702"
     },
     "411": {
       "current_balance": 2.34,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "615": {
-      "current_balance": 13.0,
-      "last_updated": "20260701"
+      "current_balance": 5.9,
+      "last_updated": "20260702"
     },
     "527": {
-      "current_balance": 316.6,
-      "last_updated": "20260701"
+      "current_balance": 314.0,
+      "last_updated": "20260702"
     },
     "420": {
-      "current_balance": 36.7,
-      "last_updated": "20260701"
+      "current_balance": 36.5,
+      "last_updated": "20260702"
     },
     "214": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "415": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "509": {
-      "current_balance": 12.0,
-      "last_updated": "20260701"
+      "current_balance": 9.4,
+      "last_updated": "20260702"
     },
     "524": {
-      "current_balance": 39.6,
-      "last_updated": "20260701"
+      "current_balance": 34.5,
+      "last_updated": "20260702"
     },
     "324": {
-      "current_balance": 13.4,
-      "last_updated": "20260701"
+      "current_balance": 12.8,
+      "last_updated": "20260702"
     },
     "110": {
-      "current_balance": 8.2,
-      "last_updated": "20260701"
+      "current_balance": 6.1,
+      "last_updated": "20260702"
     },
     "502": {
-      "current_balance": 87.7,
-      "last_updated": "20260701"
+      "current_balance": 81.2,
+      "last_updated": "20260702"
     },
     "312": {
-      "current_balance": 0.0,
-      "last_updated": "20260701"
+      "current_balance": 8.4,
+      "last_updated": "20260702"
     },
     "404": {
-      "current_balance": 77.6,
-      "last_updated": "20260701"
+      "current_balance": 73.9,
+      "last_updated": "20260702"
     },
     "516": {
       "current_balance": 29.3,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "425": {
       "current_balance": 27.8,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "408": {
-      "current_balance": 21.2,
-      "last_updated": "20260701"
+      "current_balance": 15.8,
+      "last_updated": "20260702"
     },
     "308": {
-      "current_balance": 48.4,
-      "last_updated": "20260701"
+      "current_balance": 45.0,
+      "last_updated": "20260702"
     },
     "111": {
       "current_balance": 32.2,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "302": {
-      "current_balance": 14.1,
-      "last_updated": "20260701"
+      "current_balance": 11.2,
+      "last_updated": "20260702"
     },
     "327": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "506": {
-      "current_balance": 88.3,
-      "last_updated": "20260701"
+      "current_balance": 83.9,
+      "last_updated": "20260702"
     },
     "117": {
-      "current_balance": 222.4,
-      "last_updated": "20260701"
+      "current_balance": 221.1,
+      "last_updated": "20260702"
     },
     "205": {
-      "current_balance": 497.2,
-      "last_updated": "20260701"
+      "current_balance": 492.8,
+      "last_updated": "20260702"
     },
     "322": {
-      "current_balance": 42.9,
-      "last_updated": "20260701"
+      "current_balance": 40.8,
+      "last_updated": "20260702"
     },
     "227": {
-      "current_balance": 51.8,
-      "last_updated": "20260701"
+      "current_balance": 48.7,
+      "last_updated": "20260702"
     },
     "103": {
-      "current_balance": 4.2,
-      "last_updated": "20260701"
+      "current_balance": 2.9,
+      "last_updated": "20260702"
     },
     "307": {
-      "current_balance": 116.5,
-      "last_updated": "20260701"
+      "current_balance": 112.1,
+      "last_updated": "20260702"
     },
     "222": {
-      "current_balance": 42.4,
-      "last_updated": "20260701"
+      "current_balance": 41.1,
+      "last_updated": "20260702"
     },
     "518": {
-      "current_balance": 16.0,
-      "last_updated": "20260701"
+      "current_balance": 13.5,
+      "last_updated": "20260702"
     },
     "216": {
-      "current_balance": 87.1,
-      "last_updated": "20260701"
+      "current_balance": 82.8,
+      "last_updated": "20260702"
     },
     "409": {
-      "current_balance": 136.6,
-      "last_updated": "20260701"
+      "current_balance": 130.5,
+      "last_updated": "20260702"
     },
     "203": {
-      "current_balance": 56.9,
-      "last_updated": "20260701"
+      "current_balance": 55.0,
+      "last_updated": "20260702"
     },
     "521": {
-      "current_balance": 4.2,
-      "last_updated": "20260701"
+      "current_balance": 16.3,
+      "last_updated": "20260702"
     },
     "504": {
-      "current_balance": 27.0,
-      "last_updated": "20260701"
+      "current_balance": 23.7,
+      "last_updated": "20260702"
     },
     "104": {
-      "current_balance": 26.2,
-      "last_updated": "20260701"
+      "current_balance": 25.2,
+      "last_updated": "20260702"
     },
     "604": {
-      "current_balance": 119.3,
-      "last_updated": "20260701"
+      "current_balance": 111.9,
+      "last_updated": "20260702"
     },
     "528": {
       "current_balance": 52.3,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "328": {
-      "current_balance": 52.7,
-      "last_updated": "20260701"
+      "current_balance": 48.1,
+      "last_updated": "20260702"
     },
     "316": {
-      "current_balance": 39.3,
-      "last_updated": "20260701"
+      "current_balance": 37.4,
+      "last_updated": "20260702"
     },
     "208": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "520": {
-      "current_balance": 18.5,
-      "last_updated": "20260701"
+      "current_balance": 17.8,
+      "last_updated": "20260702"
     },
     "217": {
-      "current_balance": 17.8,
-      "last_updated": "20260701"
+      "current_balance": 16.8,
+      "last_updated": "20260702"
     },
     "311": {
       "current_balance": 15.1,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "124": {
-      "current_balance": 83.1,
-      "last_updated": "20260701"
+      "current_balance": 78.1,
+      "last_updated": "20260702"
     },
     "501": {
       "current_balance": 79.9,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "212": {
       "current_balance": 10.6,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "526": {
-      "current_balance": 46.0,
-      "last_updated": "20260701"
+      "current_balance": 41.3,
+      "last_updated": "20260702"
     },
     "219": {
-      "current_balance": 153.6,
-      "last_updated": "20260701"
+      "current_balance": 153.5,
+      "last_updated": "20260702"
     },
     "421": {
-      "current_balance": 12.3,
-      "last_updated": "20260701"
+      "current_balance": 9.6,
+      "last_updated": "20260702"
     },
     "201": {
-      "current_balance": 55.1,
-      "last_updated": "20260701"
+      "current_balance": 50.7,
+      "last_updated": "20260702"
     },
     "624": {
-      "current_balance": 108.8,
-      "last_updated": "20260701"
+      "current_balance": 103.7,
+      "last_updated": "20260702"
     },
     "424": {
-      "current_balance": 14.4,
-      "last_updated": "20260701"
+      "current_balance": 12.0,
+      "last_updated": "20260702"
     },
     "301": {
-      "current_balance": 25.2,
-      "last_updated": "20260701"
+      "current_balance": 21.5,
+      "last_updated": "20260702"
     },
     "323": {
       "current_balance": 19.7,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "223": {
-      "current_balance": 15.8,
-      "last_updated": "20260701"
+      "current_balance": 13.6,
+      "last_updated": "20260702"
     },
     "507": {
-      "current_balance": 169.2,
-      "last_updated": "20260701"
+      "current_balance": 160.9,
+      "last_updated": "20260702"
     },
     "315": {
-      "current_balance": 102.8,
-      "last_updated": "20260701"
+      "current_balance": 101.7,
+      "last_updated": "20260702"
     },
     "225": {
-      "current_balance": 149.1,
-      "last_updated": "20260701"
+      "current_balance": 146.0,
+      "last_updated": "20260702"
     },
     "607": {
       "current_balance": 108.4,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "113": {
-      "current_balance": 9.0,
-      "last_updated": "20260701"
+      "current_balance": 6.1,
+      "last_updated": "20260702"
     },
     "401": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "126": {
-      "current_balance": 33.1,
-      "last_updated": "20260701"
+      "current_balance": 28.0,
+      "last_updated": "20260702"
     },
     "402": {
-      "current_balance": 108.6,
-      "last_updated": "20260701"
+      "current_balance": 107.1,
+      "last_updated": "20260702"
     },
     "106": {
-      "current_balance": 6.6,
-      "last_updated": "20260701"
+      "current_balance": 5.6,
+      "last_updated": "20260702"
     },
     "305": {
-      "current_balance": 4.3,
-      "last_updated": "20260701"
+      "current_balance": 0.0,
+      "last_updated": "20260702"
     },
     "221": {
-      "current_balance": 32.6,
-      "last_updated": "20260701"
+      "current_balance": 30.4,
+      "last_updated": "20260702"
     },
     "514": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "120": {
-      "current_balance": 119.5,
-      "last_updated": "20260701"
+      "current_balance": 117.2,
+      "last_updated": "20260702"
     },
     "118": {
-      "current_balance": 93.8,
-      "last_updated": "20260701"
+      "current_balance": 86.0,
+      "last_updated": "20260702"
     },
     "318": {
-      "current_balance": 124.4,
-      "last_updated": "20260701"
+      "current_balance": 124.0,
+      "last_updated": "20260702"
     },
     "403": {
-      "current_balance": 371.0,
-      "last_updated": "20260701"
+      "current_balance": 366.3,
+      "last_updated": "20260702"
     },
     "505": {
-      "current_balance": 24.6,
-      "last_updated": "20260701"
+      "current_balance": 20.2,
+      "last_updated": "20260702"
     },
     "122": {
-      "current_balance": 65.9,
-      "last_updated": "20260701"
+      "current_balance": 64.5,
+      "last_updated": "20260702"
     },
     "224": {
       "current_balance": 11.4,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "119": {
-      "current_balance": 81.4,
-      "last_updated": "20260701"
+      "current_balance": 74.7,
+      "last_updated": "20260702"
     },
     "123": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "622": {
-      "current_balance": 39.5,
-      "last_updated": "20260701"
+      "current_balance": 34.3,
+      "last_updated": "20260702"
     },
     "206": {
-      "current_balance": 107.1,
-      "last_updated": "20260701"
+      "current_balance": 106.1,
+      "last_updated": "20260702"
     },
     "405": {
-      "current_balance": 74.4,
-      "last_updated": "20260701"
+      "current_balance": 73.0,
+      "last_updated": "20260702"
     },
     "109": {
-      "current_balance": 34.9,
-      "last_updated": "20260701"
+      "current_balance": 32.8,
+      "last_updated": "20260702"
     },
     "510": {
-      "current_balance": 130.9,
-      "last_updated": "20260701"
+      "current_balance": 130.8,
+      "last_updated": "20260702"
     },
     "127": {
-      "current_balance": 102.4,
-      "last_updated": "20260701"
+      "current_balance": 96.9,
+      "last_updated": "20260702"
     },
     "317": {
-      "current_balance": 24.5,
-      "last_updated": "20260701"
+      "current_balance": 22.1,
+      "last_updated": "20260702"
     },
     "304": {
-      "current_balance": 383.8,
-      "last_updated": "20260701"
+      "current_balance": 382.8,
+      "last_updated": "20260702"
     },
     "207": {
-      "current_balance": 18.8,
-      "last_updated": "20260701"
+      "current_balance": 16.1,
+      "last_updated": "20260702"
     },
     "522": {
-      "current_balance": 102.3,
-      "last_updated": "20260701"
+      "current_balance": 97.9,
+      "last_updated": "20260702"
     },
     "115": {
-      "current_balance": 43.8,
-      "last_updated": "20260701"
+      "current_balance": 43.1,
+      "last_updated": "20260702"
     },
     "108": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "218": {
-      "current_balance": 159.2,
-      "last_updated": "20260701"
+      "current_balance": 158.1,
+      "last_updated": "20260702"
     },
     "116": {
-      "current_balance": 25.3,
-      "last_updated": "20260701"
+      "current_balance": 42.9,
+      "last_updated": "20260702"
     },
     "204": {
-      "current_balance": 85.4,
-      "last_updated": "20260701"
+      "current_balance": 76.9,
+      "last_updated": "20260702"
     },
     "613": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "112": {
-      "current_balance": 74.8,
-      "last_updated": "20260701"
+      "current_balance": 71.5,
+      "last_updated": "20260702"
     },
     "418": {
-      "current_balance": 36.0,
-      "last_updated": "20260701"
+      "current_balance": 31.2,
+      "last_updated": "20260702"
     },
     "628": {
-      "current_balance": 14.6,
-      "last_updated": "20260701"
+      "current_balance": 9.3,
+      "last_updated": "20260702"
     },
     "614": {
-      "current_balance": 130.9,
-      "last_updated": "20260701"
+      "current_balance": 123.8,
+      "last_updated": "20260702"
     },
     "616": {
-      "current_balance": 21.7,
-      "last_updated": "20260701"
+      "current_balance": 16.9,
+      "last_updated": "20260702"
     },
     "128": {
       "current_balance": 0.6,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "602": {
-      "current_balance": 209.4,
-      "last_updated": "20260701"
+      "current_balance": 208.9,
+      "last_updated": "20260702"
     },
     "121": {
-      "current_balance": 36.2,
-      "last_updated": "20260701"
+      "current_balance": 28.1,
+      "last_updated": "20260702"
     },
     "314": {
-      "current_balance": 51.2,
-      "last_updated": "20260701"
+      "current_balance": 50.0,
+      "last_updated": "20260702"
     },
     "101": {
-      "current_balance": 36.5,
-      "last_updated": "20260701"
+      "current_balance": 32.4,
+      "last_updated": "20260702"
+    },
+    "416": {
+      "current_balance": 79.0,
+      "last_updated": "20260702"
     }
   }
 }

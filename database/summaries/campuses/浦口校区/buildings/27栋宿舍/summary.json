@@ -1,95 +1,99 @@
 {
   "building": "27栋宿舍",
   "campus": "浦口校区",
-  "total_rooms": 22,
+  "total_rooms": 23,
   "rooms": {
     "5034": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "1011": {
       "current_balance": 111.43,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "2024": {
       "current_balance": 2.2,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "3044": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "4031": {
       "current_balance": 0.28,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "1001": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "4033": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "5021": {
       "current_balance": 2.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "1023": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "5023": {
       "current_balance": 36.8,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "5031": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "4032": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "1021": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "5011": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "1024": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "5024": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "2021": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "5022": {
       "current_balance": 22.7,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "4044": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "2013": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "1012": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
     },
     "4034": {
       "current_balance": 0.0,
-      "last_updated": "20260701"
+      "last_updated": "20260702"
+    },
+    "3001": {
+      "current_balance": 0.0,
+      "last_updated": "20260702"
     }
   }
 }
