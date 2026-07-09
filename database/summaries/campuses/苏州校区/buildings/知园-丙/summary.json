@@ -1,27 +1,31 @@
 {
   "building": "知园-丙",
   "campus": "苏州校区",
-  "total_rooms": 5,
+  "total_rooms": 6,
   "rooms": {
     "丙204": {
       "current_balance": 0.0,
-      "last_updated": "20260708"
+      "last_updated": "20260709"
     },
     "丙511": {
       "current_balance": 0.0,
-      "last_updated": "20260708"
+      "last_updated": "20260709"
     },
     "丙702": {
       "current_balance": 0.0,
-      "last_updated": "20260708"
+      "last_updated": "20260709"
     },
     "丙605": {
       "current_balance": 0.0,
-      "last_updated": "20260708"
+      "last_updated": "20260709"
     },
     "丙503": {
       "current_balance": 0.0,
-      "last_updated": "20260708"
+      "last_updated": "20260709"
+    },
+    "丙711": {
+      "current_balance": 0.0,
+      "last_updated": "20260709"
     }
   }
 }
