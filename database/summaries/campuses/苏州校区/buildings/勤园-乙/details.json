@@ -1,7 +1,7 @@
 {
   "building": "勤园-乙",
   "campus": "苏州校区",
-  "total_rooms": 3,
+  "total_rooms": 5,
   "rooms": {
     "勤园-乙-206": {
       "room_name": "勤园-乙-206",
@@ -17,21 +17,43 @@
       "room_name": "勤园-乙-414",
       "campus": "苏州校区",
       "building": "勤园-乙",
-      "current_balance": 1276.57,
+      "current_balance": 1274.08,
       "balance_history": {
-        "20260709": 1276.57
+        "20260709": 1276.57,
+        "20260710": 1274.08
       },
-      "last_updated": "20260709"
+      "last_updated": "20260710"
     },
     "勤园-乙-406": {
       "room_name": "勤园-乙-406",
       "campus": "苏州校区",
       "building": "勤园-乙",
-      "current_balance": 1279.67,
+      "current_balance": 1279.41,
       "balance_history": {
-        "20260709": 1279.67
+        "20260709": 1279.67,
+        "20260710": 1279.41
       },
-      "last_updated": "20260709"
+      "last_updated": "20260710"
+    },
+    "勤园-乙-407": {
+      "room_name": "勤园-乙-407",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1252.11,
+      "balance_history": {
+        "20260710": 1252.11
+      },
+      "last_updated": "20260710"
+    },
+    "勤园-乙-312": {
+      "room_name": "勤园-乙-312",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1258.31,
+      "balance_history": {
+        "20260710": 1258.31
+      },
+      "last_updated": "20260710"
     }
   }
 }
