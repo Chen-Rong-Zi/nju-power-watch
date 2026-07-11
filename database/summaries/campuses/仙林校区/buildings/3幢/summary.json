@@ -1,203 +1,223 @@
 {
   "building": "3幢",
   "campus": "仙林校区",
-  "total_rooms": 71,
+  "total_rooms": 72,
   "rooms": {
     "3B116": {
-      "current_balance": 1.28,
-      "last_updated": "20260710"
+      "current_balance": 1.23,
+      "last_updated": "20260711"
     },
     "A114": {
-      "current_balance": 193.62,
-      "last_updated": "20260710"
+      "current_balance": 174.01,
+      "last_updated": "20260711"
     },
     "3B231": {
-      "current_balance": 109.44,
-      "last_updated": "20260710"
+      "current_balance": 97.41,
+      "last_updated": "20260711"
     },
     "3A116": {
       "current_balance": 59.47,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3A426": {
       "current_balance": 5.64,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3B107": {
-      "current_balance": 23.6,
-      "last_updated": "20260710"
+      "current_balance": 21.73,
+      "last_updated": "20260711"
     },
     "3A106": {
-      "current_balance": 138.14,
-      "last_updated": "20260710"
+      "current_balance": 137.96,
+      "last_updated": "20260711"
     },
     "3A218": {
-      "current_balance": 35.25,
-      "last_updated": "20260710"
+      "current_balance": 35.06,
+      "last_updated": "20260711"
     },
     "3A111": {
-      "current_balance": 36.57,
-      "last_updated": "20260710"
+      "current_balance": 27.5,
+      "last_updated": "20260711"
+    },
+    "3B540": {
+      "current_balance": 28.88,
+      "last_updated": "20260711"
     },
     "3B113": {
-      "current_balance": 11.55,
-      "last_updated": "20260710"
+      "current_balance": 10.71,
+      "last_updated": "20260711"
     },
     "B102": {
       "current_balance": 17.9,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3A104": {
-      "current_balance": 53.16,
-      "last_updated": "20260710"
+      "current_balance": 50.88,
+      "last_updated": "20260711"
     },
     "3A102": {
-      "current_balance": 149.87,
-      "last_updated": "20260710"
+      "current_balance": 149.09,
+      "last_updated": "20260711"
     },
     "3B118": {
-      "current_balance": 755.66,
-      "last_updated": "20260710"
+      "current_balance": 748.27,
+      "last_updated": "20260711"
     },
     "3B421": {
-      "current_balance": 89.82,
-      "last_updated": "20260710"
+      "current_balance": 84.13,
+      "last_updated": "20260711"
     },
     "3B308": {
-      "current_balance": 158.62,
-      "last_updated": "20260710"
+      "current_balance": 155.39,
+      "last_updated": "20260711"
     },
     "3B102": {
       "current_balance": 17.9,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3B105": {
-      "current_balance": 29.46,
-      "last_updated": "20260710"
+      "current_balance": 26.92,
+      "last_updated": "20260711"
     },
     "3B103": {
-      "current_balance": 94.43,
-      "last_updated": "20260710"
+      "current_balance": 82.83,
+      "last_updated": "20260711"
     },
     "3A622": {
-      "current_balance": 54.41,
-      "last_updated": "20260710"
+      "current_balance": 47.54,
+      "last_updated": "20260711"
     },
     "3B111": {
-      "current_balance": 28.27,
-      "last_updated": "20260710"
+      "current_balance": 26.09,
+      "last_updated": "20260711"
     },
     "3B115": {
       "current_balance": 7.68,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3B109": {
-      "current_balance": 103.64,
-      "last_updated": "20260710"
+      "current_balance": 101.18,
+      "last_updated": "20260711"
     },
     "3B317": {
-      "current_balance": 194.82,
-      "last_updated": "20260710"
+      "current_balance": 188.92,
+      "last_updated": "20260711"
+    },
+    "3A209": {
+      "current_balance": 55.94,
+      "last_updated": "20260711"
     },
     "3A114": {
-      "current_balance": 193.62,
-      "last_updated": "20260710"
+      "current_balance": 174.01,
+      "last_updated": "20260711"
     },
     "3A118": {
-      "current_balance": 30.05,
-      "last_updated": "20260710"
+      "current_balance": 29.62,
+      "last_updated": "20260711"
     },
     "3B510": {
-      "current_balance": 110.58,
-      "last_updated": "20260710"
+      "current_balance": 104.23,
+      "last_updated": "20260711"
     },
     "3B110": {
-      "current_balance": 29.18,
-      "last_updated": "20260710"
+      "current_balance": 27.02,
+      "last_updated": "20260711"
     },
     "3B444": {
       "current_balance": 514.25,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3B546": {
-      "current_balance": 12.08,
-      "last_updated": "20260710"
+      "current_balance": 12.07,
+      "last_updated": "20260711"
     },
     "3A112": {
-      "current_balance": 30.2,
-      "last_updated": "20260710"
+      "current_balance": 29.71,
+      "last_updated": "20260711"
     },
     "3A621": {
       "current_balance": 23.43,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3B117": {
-      "current_balance": 29.89,
-      "last_updated": "20260710"
+      "current_balance": 23.38,
+      "last_updated": "20260711"
     },
     "3A227": {
-      "current_balance": 10.78,
-      "last_updated": "20260710"
+      "current_balance": 11.71,
+      "last_updated": "20260711"
     },
     "A216": {
-      "current_balance": 343.95,
-      "last_updated": "20260710"
+      "current_balance": 337.34,
+      "last_updated": "20260711"
     },
     "3A413": {
-      "current_balance": 8.49,
-      "last_updated": "20260710"
+      "current_balance": 1.79,
+      "last_updated": "20260711"
     },
     "3B342": {
-      "current_balance": 58.1,
-      "last_updated": "20260710"
+      "current_balance": 50.0,
+      "last_updated": "20260711"
+    },
+    "3B644": {
+      "current_balance": 70.42,
+      "last_updated": "20260711"
     },
     "3A446": {
       "current_balance": 350.14,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3A107": {
       "current_balance": 1140.37,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3B108": {
-      "current_balance": 16.14,
-      "last_updated": "20260710"
+      "current_balance": 15.98,
+      "last_updated": "20260711"
     },
     "3B517": {
-      "current_balance": 9.23,
-      "last_updated": "20260710"
+      "current_balance": 2.36,
+      "last_updated": "20260711"
     },
     "3B114": {
-      "current_balance": 40.63,
-      "last_updated": "20260710"
+      "current_balance": 37.17,
+      "last_updated": "20260711"
     },
     "3B119": {
-      "current_balance": 1.19,
-      "last_updated": "20260710"
+      "current_balance": 36.47,
+      "last_updated": "20260711"
+    },
+    "3B340": {
+      "current_balance": 68.14,
+      "last_updated": "20260711"
     },
     "3B408": {
-      "current_balance": 0.0,
-      "last_updated": "20260710"
+      "current_balance": 169.35,
+      "last_updated": "20260711"
     },
     "3A119": {
-      "current_balance": 34.66,
-      "last_updated": "20260710"
+      "current_balance": 34.65,
+      "last_updated": "20260711"
     },
     "3A309": {
-      "current_balance": 27.3,
-      "last_updated": "20260710"
+      "current_balance": 22.49,
+      "last_updated": "20260711"
     },
     "3A121": {
-      "current_balance": 27.94,
-      "last_updated": "20260710"
+      "current_balance": 276.23,
+      "last_updated": "20260711"
+    },
+    "3A421": {
+      "current_balance": 65.01,
+      "last_updated": "20260711"
     },
     "3B112": {
-      "current_balance": 54.82,
-      "last_updated": "20260710"
+      "current_balance": 53.89,
+      "last_updated": "20260711"
     },
     "3A113": {
       "current_balance": 1111.73,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3A447": {
       "current_balance": 30.18,
@@ -205,87 +225,71 @@
     },
     "3B106": {
       "current_balance": 18.61,
-      "last_updated": "20260710"
-    },
-    "3A105": {
-      "current_balance": 5.05,
-      "last_updated": "20260710"
-    },
-    "3A319": {
-      "current_balance": 11.58,
-      "last_updated": "20260710"
-    },
-    "3A633": {
-      "current_balance": 93.16,
-      "last_updated": "20260710"
-    },
-    "3B234": {
-      "current_balance": 66.13,
-      "last_updated": "20260710"
-    },
-    "3A340": {
-      "current_balance": 150.2,
-      "last_updated": "20260710"
-    },
-    "3A108": {
-      "current_balance": 28.84,
-      "last_updated": "20260710"
-    },
-    "3A110": {
-      "current_balance": 140.22,
-      "last_updated": "20260710"
-    },
-    "3A109": {
-      "current_balance": 32.11,
-      "last_updated": "20260710"
-    },
-    "B111": {
-      "current_balance": 28.27,
-      "last_updated": "20260710"
-    },
-    "3B229": {
-      "current_balance": 356.79,
-      "last_updated": "20260710"
-    },
-    "3B206": {
-      "current_balance": 30.88,
-      "last_updated": "20260710"
-    },
-    "3A120": {
-      "current_balance": 132.03,
-      "last_updated": "20260710"
+      "last_updated": "20260711"
     },
     "3B344": {
-      "current_balance": 31.68,
-      "last_updated": "20260710"
+      "current_balance": 21.44,
+      "last_updated": "20260711"
     },
-    "3B644": {
-      "current_balance": 78.9,
-      "last_updated": "20260710"
+    "3A105": {
+      "current_balance": 270.53,
+      "last_updated": "20260711"
     },
-    "3B406": {
-      "current_balance": 86.08,
-      "last_updated": "20260710"
+    "3A319": {
+      "current_balance": 37.08,
+      "last_updated": "20260711"
     },
-    "3B340": {
-      "current_balance": 53.11,
-      "last_updated": "20260710"
+    "3A633": {
+      "current_balance": 82.34,
+      "last_updated": "20260711"
     },
-    "3B540": {
-      "current_balance": 36.48,
-      "last_updated": "20260710"
+    "3B234": {
+      "current_balance": 60.73,
+      "last_updated": "20260711"
     },
-    "3A209": {
-      "current_balance": 63.61,
-      "last_updated": "20260710"
+    "3A340": {
+      "current_balance": 141.6,
+      "last_updated": "20260711"
+    },
+    "3A108": {
+      "current_balance": 20.62,
+      "last_updated": "20260711"
+    },
+    "3A110": {
+      "current_balance": 140.21,
+      "last_updated": "20260711"
+    },
+    "3A109": {
+      "current_balance": 31.39,
+      "last_updated": "20260711"
+    },
+    "B111": {
+      "current_balance": 26.09,
+      "last_updated": "20260711"
     },
     "3A306": {
-      "current_balance": 159.81,
-      "last_updated": "20260710"
+      "current_balance": 152.32,
+      "last_updated": "20260711"
     },
-    "3A421": {
-      "current_balance": 79.95,
-      "last_updated": "20260710"
+    "3B406": {
+      "current_balance": 80.85,
+      "last_updated": "20260711"
+    },
+    "3B229": {
+      "current_balance": 356.73,
+      "last_updated": "20260711"
+    },
+    "3B206": {
+      "current_balance": 22.4,
+      "last_updated": "20260711"
+    },
+    "3A120": {
+      "current_balance": 121.4,
+      "last_updated": "20260711"
+    },
+    "3B511": {
+      "current_balance": 38.77,
+      "last_updated": "20260711"
     }
   }
 }
