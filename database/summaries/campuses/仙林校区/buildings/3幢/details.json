@@ -2258,6 +2258,16 @@
       },
       "last_updated": "20260714"
     },
+    "3A310": {
+      "room_name": "3A310",
+      "campus": "仙林校区",
+      "building": "3幢",
+      "current_balance": 0.06,
+      "balance_history": {
+        "20260714": 0.06
+      },
+      "last_updated": "20260714"
+    },
     "3B112": {
       "room_name": "3B112",
       "campus": "仙林校区",
@@ -2985,16 +2995,6 @@
         "20260712": 119.61,
         "20260713": 111.88,
         "20260714": 100.23
-      },
-      "last_updated": "20260714"
-    },
-    "3A310": {
-      "room_name": "3A310",
-      "campus": "仙林校区",
-      "building": "3幢",
-      "current_balance": 0.06,
-      "balance_history": {
-        "20260714": 0.06
       },
       "last_updated": "20260714"
     }
