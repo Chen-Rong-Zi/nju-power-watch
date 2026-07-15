@@ -723,29 +723,32 @@ async def async_main():
         print(f"完成: {summary['succeeded']}/{summary['total']} 成功, 失败 {summary['failed']}, 耗时 {elapsed:.2f}s")
 
     if summary['failed'] > 0:
-        if show_progress:
-            print("\n--- 失败原因统计 ---")
-            error_count = {}
-            for detail in summary.get("failed_details", []):
-                error_type = detail.get("error_type", "unknown")
-                error_count[error_type] = error_count.get(error_type, 0) + 1
+        print("\n--- 失败原因统计 ---")
+        error_count = {}
+        for detail in summary.get("failed_details", []):
+            error_type = detail.get("error_type", "unknown")
+            error_count[error_type] = error_count.get(error_type, 0) + 1
 
-            error_messages = {
-                "network_error": "网络错误: 无法连接到服务器",
-                "timeout": "请求超时: 服务器响应过慢",
-                "auth_failed": "认证失败: Cookie已过期，请更新认证信息",
-                "not_found": "资源不存在: 宿舍ID无效或已下架",
-                "room_not_found": "房间不存在: 该房间ID在系统中不存在",
-                "http_error": "HTTP错误: 服务器内部错误",
-                "parse_error": "解析失败: 页面格式已更新",
-                "retry_exhausted": "重试次数耗尽",
-                "unknown": "未知错误",
-            }
-            for error_type, count in error_count.items():
-                msg = error_messages.get(error_type, error_type)
-                print(f"  {msg}: {count}个")
-        if summary['failed'] >= summary['succeeded']:
-            sys.exit(1)
+        error_messages = {
+            "network_error": "网络错误: 无法连接到服务器",
+            "timeout": "请求超时: 服务器响应过慢",
+            "auth_failed": "认证失败: Cookie已过期，请更新认证信息",
+            "not_found": "资源不存在: 宿舍ID无效或已下架",
+            "room_not_found": "房间不存在: 该房间ID在系统中不存在",
+            "http_error": "HTTP错误: 服务器内部错误",
+            "parse_error": "解析失败: 页面格式已更新",
+            "retry_exhausted": "重试次数耗尽",
+            "unknown": "未知错误",
+        }
+        for error_type, count in error_count.items():
+            msg = error_messages.get(error_type, error_type)
+            print(f"  {msg}: {count}个")
+
+    # 90% success threshold
+    success_rate = summary['succeeded'] / summary['total'] if summary['total'] > 0 else 0
+    if success_rate < 0.9:
+        print(f"错误: 成功率 {success_rate:.1%} ({summary['succeeded']}/{summary['total']}) 低于 90% 阈值")
+        sys.exit(1)
 
 
 def main():

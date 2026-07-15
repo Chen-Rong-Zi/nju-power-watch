@@ -77,6 +77,7 @@ jobs:
       - name: Query electricity data
         id: query
         run: |
+          set -o pipefail
           python nju_electric_query.py \
             --cookie-file /tmp/cookie.json \
             --from-mapping config/room_ids.json \
@@ -193,7 +194,12 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Login Attempts**: ${{ steps.login.outputs.total_attempts }}" >> $GITHUB_STEP_SUMMARY
           if [ "$FAILED" -gt 0 ]; then
-            echo "**Failed Rooms**: $FAILED" >> $GITHUB_STEP_SUMMARY
+              echo "**Failed Rooms**: $FAILED" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**Failure Breakdown:**" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              awk '/--- 失败原因统计 ---/{flag=1} flag' query_output.log 2>/dev/null >> $GITHUB_STEP_SUMMARY || true
+              echo '```' >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
 
