@@ -1,14 +1,14 @@
 {
   "building": "25栋宿舍",
   "campus": "浦口校区",
-  "total_rooms": 47,
+  "total_rooms": 49,
   "rooms": {
     "306": {
-      "current_balance": 31.0,
+      "current_balance": 30.6,
       "last_updated": "20260715"
     },
     "319": {
-      "current_balance": 4.7,
+      "current_balance": 4.5,
       "last_updated": "20260715"
     },
     "105": {
@@ -16,7 +16,7 @@
       "last_updated": "20260715"
     },
     "209": {
-      "current_balance": 26.1,
+      "current_balance": 25.1,
       "last_updated": "20260715"
     },
     "427": {
@@ -28,15 +28,15 @@
       "last_updated": "20260715"
     },
     "309": {
-      "current_balance": 18.9,
+      "current_balance": 18.4,
       "last_updated": "20260715"
     },
     "303": {
-      "current_balance": 181.7,
+      "current_balance": 178.7,
       "last_updated": "20260715"
     },
     "114": {
-      "current_balance": 3070.3,
+      "current_balance": 3070.0,
       "last_updated": "20260715"
     },
     "325": {
@@ -44,7 +44,7 @@
       "last_updated": "20260715"
     },
     "210": {
-      "current_balance": 23.5,
+      "current_balance": 22.1,
       "last_updated": "20260715"
     },
     "213": {
@@ -56,11 +56,11 @@
       "last_updated": "20260715"
     },
     "215": {
-      "current_balance": 903.14,
+      "current_balance": 902.54,
       "last_updated": "20260715"
     },
     "202": {
-      "current_balance": 100.2,
+      "current_balance": 99.7,
       "last_updated": "20260715"
     },
     "313": {
@@ -72,7 +72,7 @@
       "last_updated": "20260715"
     },
     "110": {
-      "current_balance": 106.7,
+      "current_balance": 101.7,
       "last_updated": "20260715"
     },
     "312": {
@@ -80,7 +80,7 @@
       "last_updated": "20260715"
     },
     "308": {
-      "current_balance": 24.1,
+      "current_balance": 24.0,
       "last_updated": "20260715"
     },
     "111": {
@@ -88,7 +88,7 @@
       "last_updated": "20260715"
     },
     "302": {
-      "current_balance": 60.3,
+      "current_balance": 59.6,
       "last_updated": "20260715"
     },
     "327": {
@@ -100,19 +100,19 @@
       "last_updated": "20260715"
     },
     "208": {
-      "current_balance": 22.6,
+      "current_balance": 22.0,
       "last_updated": "20260715"
     },
     "311": {
-      "current_balance": 132.3,
+      "current_balance": 131.8,
       "last_updated": "20260715"
     },
     "201宿管宿舍": {
-      "current_balance": 177.3,
+      "current_balance": 175.0,
       "last_updated": "20260715"
     },
     "212": {
-      "current_balance": 147.7,
+      "current_balance": 147.3,
       "last_updated": "20260715"
     },
     "219": {
@@ -120,11 +120,11 @@
       "last_updated": "20260715"
     },
     "323": {
-      "current_balance": 53.9,
+      "current_balance": 53.2,
       "last_updated": "20260715"
     },
     "223": {
-      "current_balance": 106.4,
+      "current_balance": 105.4,
       "last_updated": "20260715"
     },
     "315": {
@@ -136,7 +136,7 @@
       "last_updated": "20260715"
     },
     "305": {
-      "current_balance": 127.5,
+      "current_balance": 124.5,
       "last_updated": "20260715"
     },
     "221": {
@@ -148,11 +148,11 @@
       "last_updated": "20260715"
     },
     "123": {
-      "current_balance": 163.2,
+      "current_balance": 162.7,
       "last_updated": "20260715"
     },
     "206": {
-      "current_balance": 300.6,
+      "current_balance": 297.6,
       "last_updated": "20260715"
     },
     "109": {
@@ -164,7 +164,7 @@
       "last_updated": "20260715"
     },
     "304": {
-      "current_balance": 61.5,
+      "current_balance": 59.4,
       "last_updated": "20260715"
     },
     "207": {
@@ -176,11 +176,11 @@
       "last_updated": "20260715"
     },
     "204": {
-      "current_balance": 97.9,
+      "current_balance": 96.5,
       "last_updated": "20260715"
     },
     "112": {
-      "current_balance": 193.4,
+      "current_balance": 190.4,
       "last_updated": "20260715"
     },
     "121": {
@@ -189,6 +189,14 @@
     },
     "314": {
       "current_balance": 24.3,
+      "last_updated": "20260715"
+    },
+    "108": {
+      "current_balance": 223.7,
+      "last_updated": "20260715"
+    },
+    "225": {
+      "current_balance": 1172.2,
       "last_updated": "20260715"
     }
   }

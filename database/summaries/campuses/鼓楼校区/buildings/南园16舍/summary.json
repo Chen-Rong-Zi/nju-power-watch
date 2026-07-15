@@ -1,11 +1,11 @@
 {
   "building": "南园16舍",
   "campus": "鼓楼校区",
-  "total_rooms": 27,
+  "total_rooms": 29,
   "rooms": {
     "606": {
-      "current_balance": 550.03,
-      "last_updated": "20260714"
+      "current_balance": 533.76,
+      "last_updated": "20260715"
     },
     "320": {
       "current_balance": 0.0,
@@ -16,16 +16,16 @@
       "last_updated": "20260715"
     },
     "610": {
-      "current_balance": 23.89,
-      "last_updated": "20260714"
+      "current_balance": 14.2,
+      "last_updated": "20260715"
     },
     "612": {
-      "current_balance": 248.96,
-      "last_updated": "20260714"
+      "current_balance": 240.41,
+      "last_updated": "20260715"
     },
     "608": {
       "current_balance": 5.55,
-      "last_updated": "20260714"
+      "last_updated": "20260715"
     },
     "220": {
       "current_balance": 29.13,
@@ -33,11 +33,11 @@
     },
     "414": {
       "current_balance": 5.0,
-      "last_updated": "20260714"
+      "last_updated": "20260715"
     },
     "310": {
-      "current_balance": 103.8,
-      "last_updated": "20260714"
+      "current_balance": 94.7,
+      "last_updated": "20260715"
     },
     "512": {
       "current_balance": 10.54,
@@ -48,16 +48,16 @@
       "last_updated": "20260715"
     },
     "508": {
-      "current_balance": 61.33,
-      "last_updated": "20260714"
+      "current_balance": 61.19,
+      "last_updated": "20260715"
     },
     "502": {
-      "current_balance": 9.79,
-      "last_updated": "20260714"
+      "current_balance": 463.94,
+      "last_updated": "20260715"
     },
     "312": {
-      "current_balance": 6.97,
-      "last_updated": "20260714"
+      "current_balance": 6.82,
+      "last_updated": "20260715"
     },
     "302": {
       "current_balance": 5.0,
@@ -68,28 +68,28 @@
       "last_updated": "20260715"
     },
     "322": {
-      "current_balance": 49.82,
-      "last_updated": "20260714"
+      "current_balance": 32.04,
+      "last_updated": "20260715"
     },
     "222": {
       "current_balance": 55.53,
       "last_updated": "20260715"
     },
     "518": {
-      "current_balance": 9.52,
-      "last_updated": "20260714"
+      "current_balance": 9.4,
+      "last_updated": "20260715"
     },
     "216": {
-      "current_balance": 66.62,
-      "last_updated": "20260714"
+      "current_balance": 65.94,
+      "last_updated": "20260715"
     },
     "316": {
-      "current_balance": 14.0,
-      "last_updated": "20260714"
+      "current_balance": 13.69,
+      "last_updated": "20260715"
     },
     "212": {
-      "current_balance": 20.19,
-      "last_updated": "20260714"
+      "current_balance": 14.87,
+      "last_updated": "20260715"
     },
     "416": {
       "current_balance": 96.19,
@@ -100,16 +100,24 @@
       "last_updated": "20260715"
     },
     "510": {
-      "current_balance": 10.83,
-      "last_updated": "20260714"
+      "current_balance": 23.24,
+      "last_updated": "20260715"
     },
     "218": {
       "current_balance": 18.63,
       "last_updated": "20260715"
     },
     "602": {
-      "current_balance": 294.27,
-      "last_updated": "20260714"
+      "current_balance": 285.25,
+      "last_updated": "20260715"
+    },
+    "118": {
+      "current_balance": 36.34,
+      "last_updated": "20260715"
+    },
+    "122": {
+      "current_balance": 36.48,
+      "last_updated": "20260715"
     }
   }
 }

@@ -2,9 +2,10 @@
   "room_name": "3A310",
   "campus": "仙林校区",
   "building": "3幢",
-  "current_balance": 0.06,
+  "current_balance": 0.05,
   "balance_history": {
-    "20260714": 0.06
+    "20260714": 0.06,
+    "20260715": 0.05
   },
-  "last_updated": "20260714"
+  "last_updated": "20260715"
 }

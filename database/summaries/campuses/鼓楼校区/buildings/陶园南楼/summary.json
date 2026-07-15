@@ -1,31 +1,31 @@
 {
   "building": "陶园南楼",
   "campus": "鼓楼校区",
-  "total_rooms": 36,
+  "total_rooms": 37,
   "rooms": {
     "105": {
       "current_balance": 0.0,
-      "last_updated": "20260714"
+      "last_updated": "20260715"
     },
     "209": {
       "current_balance": 0.0,
       "last_updated": "20260715"
     },
     "0109": {
-      "current_balance": 87.23,
-      "last_updated": "20260714"
+      "current_balance": 82.75,
+      "last_updated": "20260715"
     },
     "211": {
-      "current_balance": 97.46,
-      "last_updated": "20260714"
+      "current_balance": 90.42,
+      "last_updated": "20260715"
     },
     "0207": {
-      "current_balance": 117.14,
-      "last_updated": "20260714"
+      "current_balance": 116.0,
+      "last_updated": "20260715"
     },
     "102": {
-      "current_balance": 16.87,
-      "last_updated": "20260714"
+      "current_balance": 23.91,
+      "last_updated": "20260715"
     },
     "107": {
       "current_balance": 56.46,
@@ -36,8 +36,8 @@
       "last_updated": "20260715"
     },
     "210": {
-      "current_balance": 277.73,
-      "last_updated": "20260714"
+      "current_balance": 262.8,
+      "last_updated": "20260715"
     },
     "213": {
       "current_balance": 134.18,
@@ -48,36 +48,36 @@
       "last_updated": "20260715"
     },
     "202": {
-      "current_balance": 178.07,
-      "last_updated": "20260714"
+      "current_balance": 169.22,
+      "last_updated": "20260715"
     },
     "110": {
       "current_balance": 0.0,
-      "last_updated": "20260714"
+      "last_updated": "20260715"
     },
     "111": {
       "current_balance": 94.99,
       "last_updated": "20260715"
     },
     "117": {
-      "current_balance": 41.61,
-      "last_updated": "20260714"
+      "current_balance": 31.53,
+      "last_updated": "20260715"
     },
     "205": {
-      "current_balance": 5.69,
-      "last_updated": "20260714"
+      "current_balance": 11.27,
+      "last_updated": "20260715"
     },
     "103": {
-      "current_balance": 177.98,
-      "last_updated": "20260714"
+      "current_balance": 177.92,
+      "last_updated": "20260715"
     },
     "203": {
-      "current_balance": 676.81,
-      "last_updated": "20260714"
+      "current_balance": 669.53,
+      "last_updated": "20260715"
     },
     "104": {
       "current_balance": 74.25,
-      "last_updated": "20260714"
+      "last_updated": "20260715"
     },
     "208": {
       "current_balance": 269.63,
@@ -100,52 +100,56 @@
       "last_updated": "20260715"
     },
     "106": {
-      "current_balance": 3.45,
-      "last_updated": "20260714"
+      "current_balance": 3.42,
+      "last_updated": "20260715"
     },
     "221": {
       "current_balance": 0.0,
-      "last_updated": "20260714"
+      "last_updated": "20260715"
     },
     "119": {
-      "current_balance": 127.17,
-      "last_updated": "20260714"
+      "current_balance": 127.11,
+      "last_updated": "20260715"
     },
     "123": {
-      "current_balance": 369.72,
-      "last_updated": "20260714"
+      "current_balance": 362.88,
+      "last_updated": "20260715"
     },
     "206": {
-      "current_balance": 91.23,
-      "last_updated": "20260714"
+      "current_balance": 76.51,
+      "last_updated": "20260715"
     },
     "109": {
       "current_balance": 82.75,
       "last_updated": "20260715"
     },
     "207": {
-      "current_balance": 117.14,
-      "last_updated": "20260714"
+      "current_balance": 116.0,
+      "last_updated": "20260715"
     },
     "108": {
-      "current_balance": 2.23,
-      "last_updated": "20260714"
+      "current_balance": 2.14,
+      "last_updated": "20260715"
     },
     "204": {
-      "current_balance": 48.75,
-      "last_updated": "20260714"
+      "current_balance": 35.23,
+      "last_updated": "20260715"
     },
     "112": {
       "current_balance": 6.13,
       "last_updated": "20260715"
     },
     "121": {
-      "current_balance": 111.49,
-      "last_updated": "20260714"
+      "current_balance": 101.38,
+      "last_updated": "20260715"
     },
     "101": {
       "current_balance": 19.97,
-      "last_updated": "20260714"
+      "last_updated": "20260715"
+    },
+    "0205": {
+      "current_balance": 11.27,
+      "last_updated": "20260715"
     }
   }
 }

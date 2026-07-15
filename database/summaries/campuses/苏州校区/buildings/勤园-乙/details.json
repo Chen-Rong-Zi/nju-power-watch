@@ -1,20 +1,20 @@
 {
   "building": "勤园-乙",
   "campus": "苏州校区",
-  "total_rooms": 5,
+  "total_rooms": 62,
   "rooms": {
     "勤园-乙-407": {
       "room_name": "勤园-乙-407",
       "campus": "苏州校区",
       "building": "勤园-乙",
-      "current_balance": 1197.17,
+      "current_balance": 1197.15,
       "balance_history": {
         "20260710": 1252.11,
         "20260711": 1228.43,
         "20260712": 1214.28,
         "20260713": 1202.29,
         "20260714": 1197.43,
-        "20260715": 1197.17
+        "20260715": 1197.15
       },
       "last_updated": "20260715"
     },
@@ -22,17 +22,18 @@
       "room_name": "勤园-乙-206",
       "campus": "苏州校区",
       "building": "勤园-乙",
-      "current_balance": 0.0,
+      "current_balance": 1209.48,
       "balance_history": {
-        "20260617": 0.0
+        "20260617": 0.0,
+        "20260715": 1209.48
       },
-      "last_updated": "20260617"
+      "last_updated": "20260715"
     },
     "勤园-乙-414": {
       "room_name": "勤园-乙-414",
       "campus": "苏州校区",
       "building": "勤园-乙",
-      "current_balance": 1267.38,
+      "current_balance": 1267.26,
       "balance_history": {
         "20260709": 1276.57,
         "20260710": 1274.08,
@@ -40,7 +41,7 @@
         "20260712": 1271.41,
         "20260713": 1270.07,
         "20260714": 1268.71,
-        "20260715": 1267.38
+        "20260715": 1267.26
       },
       "last_updated": "20260715"
     },
@@ -48,7 +49,7 @@
       "room_name": "勤园-乙-406",
       "campus": "苏州校区",
       "building": "勤园-乙",
-      "current_balance": 1278.1,
+      "current_balance": 1278.08,
       "balance_history": {
         "20260709": 1279.67,
         "20260710": 1279.41,
@@ -56,7 +57,7 @@
         "20260712": 1278.89,
         "20260713": 1278.63,
         "20260714": 1278.36,
-        "20260715": 1278.1
+        "20260715": 1278.08
       },
       "last_updated": "20260715"
     },
@@ -64,14 +65,584 @@
       "room_name": "勤园-乙-312",
       "campus": "苏州校区",
       "building": "勤园-乙",
-      "current_balance": 1216.46,
+      "current_balance": 1213.82,
       "balance_history": {
         "20260710": 1258.31,
         "20260711": 1251.0,
         "20260712": 1244.48,
         "20260713": 1235.66,
         "20260714": 1227.44,
-        "20260715": 1216.46
+        "20260715": 1213.82
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-210": {
+      "room_name": "勤园-乙-210",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1195.2,
+      "balance_history": {
+        "20260715": 1195.2
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-403": {
+      "room_name": "勤园-乙-403",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1200.11,
+      "balance_history": {
+        "20260715": 1200.11
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-405": {
+      "room_name": "勤园-乙-405",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1227.95,
+      "balance_history": {
+        "20260715": 1227.95
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-323": {
+      "room_name": "勤园-乙-323",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1216.34,
+      "balance_history": {
+        "20260715": 1216.34
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-205": {
+      "room_name": "勤园-乙-205",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1195.18,
+      "balance_history": {
+        "20260715": 1195.18
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-324": {
+      "room_name": "勤园-乙-324",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1239.38,
+      "balance_history": {
+        "20260715": 1239.38
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-224": {
+      "room_name": "勤园-乙-224",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1221.16,
+      "balance_history": {
+        "20260715": 1221.16
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-314": {
+      "room_name": "勤园-乙-314",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1243.44,
+      "balance_history": {
+        "20260715": 1243.44
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-423": {
+      "room_name": "勤园-乙-423",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1220.08,
+      "balance_history": {
+        "20260715": 1220.08
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-313": {
+      "room_name": "勤园-乙-313",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1263.65,
+      "balance_history": {
+        "20260715": 1263.65
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-311": {
+      "room_name": "勤园-乙-311",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1260.11,
+      "balance_history": {
+        "20260715": 1260.11
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-214": {
+      "room_name": "勤园-乙-214",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1201.99,
+      "balance_history": {
+        "20260715": 1201.99
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-317": {
+      "room_name": "勤园-乙-317",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1175.93,
+      "balance_history": {
+        "20260715": 1175.93
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-211": {
+      "room_name": "勤园-乙-211",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1224.99,
+      "balance_history": {
+        "20260715": 1224.99
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-315": {
+      "room_name": "勤园-乙-315",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1245.47,
+      "balance_history": {
+        "20260715": 1245.47
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-320": {
+      "room_name": "勤园-乙-320",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1220.92,
+      "balance_history": {
+        "20260715": 1220.92
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-308": {
+      "room_name": "勤园-乙-308",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1237.79,
+      "balance_history": {
+        "20260715": 1237.79
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-304": {
+      "room_name": "勤园-乙-304",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1224.23,
+      "balance_history": {
+        "20260715": 1224.23
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-307": {
+      "room_name": "勤园-乙-307",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1251.53,
+      "balance_history": {
+        "20260715": 1251.53
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-404": {
+      "room_name": "勤园-乙-404",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1207.82,
+      "balance_history": {
+        "20260715": 1207.82
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-413": {
+      "room_name": "勤园-乙-413",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1211.82,
+      "balance_history": {
+        "20260715": 1211.82
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-223": {
+      "room_name": "勤园-乙-223",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1216.07,
+      "balance_history": {
+        "20260715": 1216.07
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-418": {
+      "room_name": "勤园-乙-418",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1273.69,
+      "balance_history": {
+        "20260715": 1273.69
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-419": {
+      "room_name": "勤园-乙-419",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1217.37,
+      "balance_history": {
+        "20260715": 1217.37
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-204": {
+      "room_name": "勤园-乙-204",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1189.1,
+      "balance_history": {
+        "20260715": 1189.1
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-221": {
+      "room_name": "勤园-乙-221",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1204.74,
+      "balance_history": {
+        "20260715": 1204.74
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-417": {
+      "room_name": "勤园-乙-417",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1215.26,
+      "balance_history": {
+        "20260715": 1215.26
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-426": {
+      "room_name": "勤园-乙-426",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1260.95,
+      "balance_history": {
+        "20260715": 1260.95
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-408": {
+      "room_name": "勤园-乙-408",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1191.03,
+      "balance_history": {
+        "20260715": 1191.03
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-203": {
+      "room_name": "勤园-乙-203",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1212.66,
+      "balance_history": {
+        "20260715": 1212.66
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-219": {
+      "room_name": "勤园-乙-219",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1274.96,
+      "balance_history": {
+        "20260715": 1274.96
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-207": {
+      "room_name": "勤园-乙-207",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1213.6,
+      "balance_history": {
+        "20260715": 1213.6
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-309": {
+      "room_name": "勤园-乙-309",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1205.36,
+      "balance_history": {
+        "20260715": 1205.36
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-225": {
+      "room_name": "勤园-乙-225",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1227.62,
+      "balance_history": {
+        "20260715": 1227.62
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-409": {
+      "room_name": "勤园-乙-409",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1244.99,
+      "balance_history": {
+        "20260715": 1244.99
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-305": {
+      "room_name": "勤园-乙-305",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1196.94,
+      "balance_history": {
+        "20260715": 1196.94
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-220": {
+      "room_name": "勤园-乙-220",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1199.17,
+      "balance_history": {
+        "20260715": 1199.17
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-401": {
+      "room_name": "勤园-乙-401",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1258.03,
+      "balance_history": {
+        "20260715": 1258.03
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-411": {
+      "room_name": "勤园-乙-411",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1217.65,
+      "balance_history": {
+        "20260715": 1217.65
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-208": {
+      "room_name": "勤园-乙-208",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1210.37,
+      "balance_history": {
+        "20260715": 1210.37
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-424": {
+      "room_name": "勤园-乙-424",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1233.36,
+      "balance_history": {
+        "20260715": 1233.36
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-327": {
+      "room_name": "勤园-乙-327",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1236.23,
+      "balance_history": {
+        "20260715": 1236.23
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-218": {
+      "room_name": "勤园-乙-218",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1228.9,
+      "balance_history": {
+        "20260715": 1228.9
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-226": {
+      "room_name": "勤园-乙-226",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1223.56,
+      "balance_history": {
+        "20260715": 1223.56
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-222": {
+      "room_name": "勤园-乙-222",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1202.0,
+      "balance_history": {
+        "20260715": 1202.0
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-422": {
+      "room_name": "勤园-乙-422",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1263.24,
+      "balance_history": {
+        "20260715": 1263.24
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-316": {
+      "room_name": "勤园-乙-316",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1180.14,
+      "balance_history": {
+        "20260715": 1180.14
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-216": {
+      "room_name": "勤园-乙-216",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1201.1,
+      "balance_history": {
+        "20260715": 1201.1
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-321": {
+      "room_name": "勤园-乙-321",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1229.71,
+      "balance_history": {
+        "20260715": 1229.71
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-322": {
+      "room_name": "勤园-乙-322",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1218.71,
+      "balance_history": {
+        "20260715": 1218.71
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-303": {
+      "room_name": "勤园-乙-303",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1273.69,
+      "balance_history": {
+        "20260715": 1273.69
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-202": {
+      "room_name": "勤园-乙-202",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1200.83,
+      "balance_history": {
+        "20260715": 1200.83
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-402": {
+      "room_name": "勤园-乙-402",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1205.5,
+      "balance_history": {
+        "20260715": 1205.5
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-209": {
+      "room_name": "勤园-乙-209",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1230.74,
+      "balance_history": {
+        "20260715": 1230.74
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-302": {
+      "room_name": "勤园-乙-302",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1211.06,
+      "balance_history": {
+        "20260715": 1211.06
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-410": {
+      "room_name": "勤园-乙-410",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1249.66,
+      "balance_history": {
+        "20260715": 1249.66
+      },
+      "last_updated": "20260715"
+    },
+    "勤园-乙-217": {
+      "room_name": "勤园-乙-217",
+      "campus": "苏州校区",
+      "building": "勤园-乙",
+      "current_balance": 1201.88,
+      "balance_history": {
+        "20260715": 1201.88
       },
       "last_updated": "20260715"
     }

@@ -1,74 +1,74 @@
 {
   "campus": "苏州校区",
-  "total_rooms": 1587,
+  "total_rooms": 1735,
   "buildings": {
     "诚园-乙": {
-      "total_rooms": 153,
-      "avg_balance": 124.05
+      "total_rooms": 161,
+      "avg_balance": 163.37
     },
     "诚园-丙": {
-      "total_rooms": 138,
-      "avg_balance": 90.6
+      "total_rooms": 170,
+      "avg_balance": 319.12
     },
     "知园-乙": {
       "total_rooms": 60,
-      "avg_balance": 96.64
+      "avg_balance": 96.33
     },
     "诚园-甲": {
-      "total_rooms": 150,
-      "avg_balance": 143.07
+      "total_rooms": 198,
+      "avg_balance": 403.82
     },
     "勇园-乙": {
       "total_rooms": 98,
-      "avg_balance": 171.49
+      "avg_balance": 171.02
     },
     "仁园-戊": {
       "total_rooms": 53,
-      "avg_balance": 143.75
+      "avg_balance": 143.39
     },
     "仁园-甲": {
       "total_rooms": 77,
-      "avg_balance": 59.5
+      "avg_balance": 59.07
     },
     "勤园-乙": {
-      "total_rooms": 5,
-      "avg_balance": 991.82
+      "total_rooms": 62,
+      "avg_balance": 1223.72
     },
     "勇园-甲": {
       "total_rooms": 98,
-      "avg_balance": 144.14
+      "avg_balance": 144.09
     },
     "仁园-丁": {
       "total_rooms": 76,
-      "avg_balance": 149.96
+      "avg_balance": 148.73
     },
     "仁园-丙": {
-      "total_rooms": 67,
-      "avg_balance": 114.74
+      "total_rooms": 68,
+      "avg_balance": 114.87
     },
     "知园-丙": {
       "total_rooms": 6,
       "avg_balance": 0.0
     },
     "科创大厦B": {
-      "total_rooms": 339,
-      "avg_balance": 150.79
+      "total_rooms": 340,
+      "avg_balance": 150.07
     },
     "勇园-丙": {
       "total_rooms": 90,
-      "avg_balance": 267.25
+      "avg_balance": 266.8
     },
     "仁园-乙": {
-      "total_rooms": 71,
-      "avg_balance": 150.59
+      "total_rooms": 72,
+      "avg_balance": 149.16
     },
     "知园-甲": {
       "total_rooms": 32,
-      "avg_balance": 4.1
+      "avg_balance": 4.09
     },
     "仁园-己": {
       "total_rooms": 74,
-      "avg_balance": 197.84
+      "avg_balance": 196.76
     }
   }
 }
