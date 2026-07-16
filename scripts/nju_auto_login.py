@@ -203,18 +203,61 @@ def login_with_captcha(username, password, token):
         raise ValueError("登录失败，请检查用户名和密码")
 
 
-def save_cookies(session):
-    """
-    保存cookie到文件
-    
-    Args:
-        session: requests Session对象
-    """
-    cookies = session.cookies.get_dict()
-    
-    # 转换为标准格式
+def login_with_nju_login(username: str, password: str) -> requests.Session:
+    """使用 nju-login-simple 登录，返回包含完整 auth cookie 的 Session"""
+    from nju_login import do_captcha, encrypt, etree
+
+    print("\n[nju-login-simple]")
+    session = requests.Session()
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6.1 Safari/605.1.15",
+        "origin": "https://authserver.nju.edu.cn",
+        "referer": "https://authserver.nju.edu.cn/authserver/login",
+    })
+
+    # 获取登录页面参数
+    page = etree.HTML(session.get("https://authserver.nju.edu.cn/authserver/login").text)
+    lt = page.xpath('//*[@id="pwdFromId"]/input[@name="lt"]//@value')[0]
+    execution = page.xpath('//*[@id="pwdFromId"]/input[@name="execution"]//@value')[0]
+    eventid = page.xpath('//*[@id="pwdFromId"]/input[@name="_eventId"]//@value')[0]
+    salt_nodes = page.xpath('//*[@id="pwdEncryptSalt"]//@value')
+    salt = salt_nodes[0] if salt_nodes else execution[:16]
+
+    # 获取验证码并识别（加时间戳防止缓存）
+    import time
+    captcha_url = f"https://authserver.nju.edu.cn/authserver/getCaptcha.htl?t={int(time.time() * 1000)}"
+    captcha_data = session.get(captcha_url).content
+    captcha = do_captcha(captcha_data)
+
+    # 加密密码并提交
+    encrypted_password = encrypt(password, salt)
+    data = {
+        "username": username,
+        "password": encrypted_password,
+        "captchaResponse": captcha,
+        "lt": lt,
+        "dllt": "mobileLogin",
+        "execution": execution,
+        "_eventId": eventid,
+    }
+    login_response = session.post(
+        "https://authserver.nju.edu.cn/authserver/login",
+        data=data,
+        allow_redirects=True,
+    )
+
+    # 检查是否成功（跟随重定向后应看到个人中心页面）
+    if "personalInfo" in login_response.url or "accountsecurity" in login_response.url:
+        print(f"    ✓ 登录成功")
+    else:
+        raise ValueError(f"登录失败，请检查用户名和密码")
+    return session
+
+
+def _save_cookie_dict(cookies_dict: dict) -> None:
+    """将 cookie dict 写入 /tmp/cookie.json  (共用函数)"""
     cookie_list = []
-    for name, value in cookies.items():
+    for name, value in cookies_dict.items():
         cookie_list.append({
             "name": name,
             "value": value,
@@ -224,11 +267,10 @@ def save_cookies(session):
             "httpOnly": False,
             "secure": False
         })
-    
-    # 保存到文件
+
     with open(COOKIE_OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(cookie_list, f, indent=2)
-    
+
     print(f"\n[Cookie已保存]")
     print(f"    文件: {COOKIE_OUTPUT_FILE}")
     print(f"    数量: {len(cookie_list)} 个")
@@ -238,46 +280,80 @@ def save_cookies(session):
         print(f"    - {name}: {value}")
 
 
+def save_cookies_from_session(session):
+    """从 requests.Session 提取 cookies 并保存"""
+    _save_cookie_dict(session.cookies.get_dict())
+
+
+def save_cookies(session):
+    """
+    保存cookie到文件
+
+    Args:
+        session: requests Session对象
+    """
+    _save_cookie_dict(session.cookies.get_dict())
+
+
+def _login_fallback(username: str, password: str, token: str) -> None:
+    """回退方式：云码 API 登录"""
+    print("\n[备] 使用云码 API 登录...")
+    session = login_with_captcha(username, password, token)
+    save_cookies(session)
+    print("    ✓ 使用云码方式登录成功")
+
+
+def _validate_cookie() -> None:
+    """验证 cookie 有效性"""
+    print("\n[验证Cookie]...")
+    import subprocess
+    import sys
+    result = subprocess.run(
+        [sys.executable, "scripts/validate_cookie.py", COOKIE_OUTPUT_FILE],
+        capture_output=True,
+        text=True
+    )
+    if result.returncode == 0:
+        print("    ✓ Cookie验证成功")
+        print("\n" + "=" * 60)
+        print("登录流程完成！Cookie已保存到 /tmp/cookie.json")
+        print("=" * 60)
+    else:
+        print(f"    ✗ Cookie验证失败: {result.stderr}")
+        sys.exit(1)
+
+
 def main():
-    """主函数"""
+    """主函数：先试 nju-login-simple，失败则回退到云码方式"""
     print("开始自动登录流程...")
-    
+
     # 加载配置
     username, password, token = load_credentials()
     print(f"\n[配置信息]")
     print(f"    用户名: {username}")
-    print(f"    云码Token: {token[:10]}...")
-    
-    # 登录
+    if token:
+        print(f"    云码Token: {token[:10]}...")
+
+    # [主] nju-login-simple 方式
     try:
-        session = login_with_captcha(username, password, token)
-        
-        # 保存cookie
-        save_cookies(session)
-        
-        # 验证cookie
-        print("\n[6] 验证Cookie...")
-        import subprocess
-        result = subprocess.run(
-            ["python", "scripts/validate_cookie.py", COOKIE_OUTPUT_FILE],
-            capture_output=True,
-            text=True
-        )
-        
-        if result.returncode == 0:
-            print("    ✓ Cookie验证成功")
-            print("\n" + "=" * 60)
-            print("登录流程完成！Cookie已保存到 /tmp/cookie.json")
-            print("=" * 60)
-        else:
-            print(f"    ✗ Cookie验证失败: {result.stderr}")
-            sys.exit(1)
-    
+        print("\n[主] 尝试 nju-login-simple 登录...")
+        session = login_with_nju_login(username, password)
+        save_cookies_from_session(session)
+        print("    ✓ 使用 nju-login-simple 登录成功")
+    except ImportError:
+        print("    nju-login-simple 未安装，跳过")
+        _login_fallback(username, password, token)
     except Exception as e:
-        print(f"\n✗ 登录失败: {e}")
-        import traceback
-        traceback.print_exc()
-        sys.exit(1)
+        print(f"    nju-login-simple 失败: {e}")
+        print("    回退到云码方式...")
+        _login_fallback(username, password, token)
+    else:
+        # 主方式成功，直接验证
+        _validate_cookie()
+        return
+
+    # 如果走到这里，说明回退方式已执行完毕
+    _validate_cookie()
 
 
 if __name__ == '__main__':
