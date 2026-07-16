@@ -220,10 +220,13 @@ def login_with_nju_login(username: str, password: str) -> requests.Session:
     lt = page.xpath('//*[@id="pwdFromId"]/input[@name="lt"]//@value')[0]
     execution = page.xpath('//*[@id="pwdFromId"]/input[@name="execution"]//@value')[0]
     eventid = page.xpath('//*[@id="pwdFromId"]/input[@name="_eventId"]//@value')[0]
-    salt = page.xpath('//*[@id="pwdEncryptSalt"]//@value')[0]
+    salt_nodes = page.xpath('//*[@id="pwdEncryptSalt"]//@value')
+    salt = salt_nodes[0] if salt_nodes else execution[:16]
 
-    # 获取验证码并识别
-    captcha_data = session.get("https://authserver.nju.edu.cn/authserver/getCaptcha.htl").content
+    # 获取验证码并识别（加时间戳防止缓存）
+    import time
+    captcha_url = f"https://authserver.nju.edu.cn/authserver/getCaptcha.htl?t={int(time.time() * 1000)}"
+    captcha_data = session.get(captcha_url).content
     captcha = do_captcha(captcha_data)
 
     # 加密密码并提交
@@ -304,8 +307,9 @@ def _validate_cookie() -> None:
     """验证 cookie 有效性"""
     print("\n[验证Cookie]...")
     import subprocess
+    import sys
     result = subprocess.run(
-        ["python", "scripts/validate_cookie.py", COOKIE_OUTPUT_FILE],
+        [sys.executable, "scripts/validate_cookie.py", COOKIE_OUTPUT_FILE],
         capture_output=True,
         text=True
     )
