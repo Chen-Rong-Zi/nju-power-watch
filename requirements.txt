@@ -9,3 +9,4 @@ jsonschema>=3.2.0
 requests>=2.28.0
 beautifulsoup4>=4.11.0
 pycryptodome>=3.15.0
+nju-login-simple~=1.1.0
