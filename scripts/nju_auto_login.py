@@ -157,13 +157,13 @@ def main():
     try:
         print("\n[主] 尝试 NJUlogin.pwdLogin 登录...")
         session = login_with_nju_pwdlogin(username, password, DEST_URL)
-        save_cookies_from_session(session)
-        print("    \u2713 使用 NJUlogin.pwdLogin 登录成功")
     except ImportError:
         print("    NJUlogin 未安装，跳过")
     except Exception as e:  # noqa: BLE001
         print(f"    NJUlogin.pwdLogin 失败: {e}")
     else:
+        save_cookies_from_session(session)
+        print("    \u2713 使用 NJUlogin.pwdLogin 登录成功")
         _validate_cookie()
         return
 
@@ -171,8 +171,6 @@ def main():
     try:
         print("\n[备] 尝试 nju-login-simple 登录...")
         session = login_with_nju_login(username, password)
-        save_cookies_from_session(session)
-        print("    \u2713 使用 nju-login-simple 登录成功")
     except ImportError:
         print("    nju-login-simple 未安装，跳过")
         print("    \u2717 所有登录方式均不可用")
@@ -181,6 +179,9 @@ def main():
         print(f"    nju-login-simple 失败: {e}")
         print("    \u2717 所有登录方式均失败")
         sys.exit(1)
+    else:
+        save_cookies_from_session(session)
+        print("    \u2713 使用 nju-login-simple 登录成功")
 
     _validate_cookie()
 

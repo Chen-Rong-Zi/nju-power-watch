@@ -82,12 +82,11 @@ class TestLoadCredentials:
 class TestSaveCookieDict:
     """Test cookie saving."""
 
-    def test_saves_cookie_json(self, tmp_path):
+    def test_saves_cookie_json(self, monkeypatch, tmp_path):
         """Test that cookies are saved in expected format."""
         from scripts.nju_auto_login import _save_cookie_dict
 
         cookie_file = tmp_path / "cookie.json"
-        monkeypatch = pytest.MonkeyPatch()
         monkeypatch.setattr("scripts.nju_auto_login.COOKIE_OUTPUT_FILE", str(cookie_file))
 
         _save_cookie_dict({"CASTGC": "ticket-123"})
