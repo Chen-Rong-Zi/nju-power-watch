@@ -90,7 +90,7 @@ while [[ $# -gt 0 ]]; do
             echo "环境变量:"
             echo "  NJU_USERNAME       南京大学统一认证用户名"
             echo "  NJU_PASSWORD       南京大学统一认证密码"
-            echo "  YUNMA_TOKEN        云码 token"
+
             exit 0
             ;;
         *)
@@ -165,12 +165,11 @@ elif [ "$DRY_RUN" = true ]; then
     echo "[DRY-RUN] 将执行自动登录流程"
 else
     # 检查必需的环境变量
-    if [ -z "$NJU_USERNAME" ] || [ -z "$NJU_PASSWORD" ] || [ -z "$YUNMA_TOKEN" ]; then
+    if [ -z "$NJU_USERNAME" ] || [ -z "$NJU_PASSWORD" ]; then
         echo -e "${YELLOW}⚠️  未设置登录凭据环境变量${NC}"
         echo "请设置以下环境变量:"
         echo "  export NJU_USERNAME='your_username'"
         echo "  export NJU_PASSWORD='your_password'"
-        echo "  export YUNMA_TOKEN='your_token'"
         echo ""
         echo "或者使用 --skip-login 跳过登录步骤"
 
@@ -185,7 +184,6 @@ else
         echo "写入配置文件..."
         echo "$NJU_USERNAME" > /tmp/username
         echo "$NJU_PASSWORD" > /tmp/password
-        echo "$YUNMA_TOKEN" > /tmp/token
 
         echo "执行自动登录..."
         python scripts/nju_auto_login.py

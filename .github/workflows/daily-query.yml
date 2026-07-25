@@ -48,7 +48,6 @@ jobs:
         env:
           NJU_USERNAME: ${{ secrets.NJU_USERNAME }}
           NJU_PASSWORD: ${{ secrets.NJU_PASSWORD }}
-          YUNMA_TOKEN: ${{ secrets.YUNMA_TOKEN }}
         with:
           timeout_minutes: 3
           max_attempts: 3
@@ -57,7 +56,6 @@ jobs:
           command: |
             echo "$NJU_USERNAME" > /tmp/username
             echo "$NJU_PASSWORD" > /tmp/password
-            echo "$YUNMA_TOKEN" > /tmp/token
             python scripts/nju_auto_login.py
             if [ ! -f "/tmp/cookie.json" ]; then
               echo "Cookie file not generated"
