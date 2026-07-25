@@ -185,7 +185,6 @@ else
         echo "写入配置文件..."
         echo "$NJU_USERNAME" > /tmp/username
         echo "$NJU_PASSWORD" > /tmp/password
-        echo "$YUNMA_TOKEN" > /tmp/token
 
         echo "执行自动登录..."
         python scripts/nju_auto_login.py
