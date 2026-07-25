@@ -4,9 +4,10 @@
 主：NJUlogin.pwdLogin（滑块验证码）
 备：nju-login-simple（文字验证码）
 """
-import requests
-import sys
 import json
+import sys
+
+import requests
 
 USERNAME_FILE = "/tmp/username"
 PASSWORD_FILE = "/tmp/password"
@@ -103,7 +104,7 @@ def _save_cookie_dict(cookies_dict: dict) -> None:
     with open(COOKIE_OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(cookie_list, f, indent=2)
 
-    print(f"\n[Cookie已保存]")
+    print("\n[Cookie已保存]")
     print(f"    文件: {COOKIE_OUTPUT_FILE}")
     print(f"    数量: {len(cookie_list)} 个")
     for cookie in cookie_list:
@@ -129,7 +130,8 @@ def _validate_cookie() -> None:
     result = subprocess.run(
         [sys.executable, "scripts/validate_cookie.py", COOKIE_OUTPUT_FILE],
         capture_output=True,
-        text=True
+        text=True,
+        check=False,
     )
     if result.returncode == 0:
         print("    \u2713 Cookie验证成功")
@@ -146,7 +148,7 @@ def main():
     print("开始自动登录流程...")
 
     username, password = load_credentials()
-    print(f"\n[配置信息]")
+    print("\n[配置信息]")
     print(f"    用户名: {username}")
 
     DEST_URL = "https://epay.nju.edu.cn"
@@ -159,7 +161,7 @@ def main():
         print("    \u2713 使用 NJUlogin.pwdLogin 登录成功")
     except ImportError:
         print("    NJUlogin 未安装，跳过")
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"    NJUlogin.pwdLogin 失败: {e}")
     else:
         _validate_cookie()
@@ -175,7 +177,7 @@ def main():
         print("    nju-login-simple 未安装，跳过")
         print("    \u2717 所有登录方式均不可用")
         sys.exit(1)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"    nju-login-simple 失败: {e}")
         print("    \u2717 所有登录方式均失败")
         sys.exit(1)
