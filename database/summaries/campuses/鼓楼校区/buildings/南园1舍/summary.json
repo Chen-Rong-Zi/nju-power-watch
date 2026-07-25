@@ -1,835 +1,839 @@
 {
   "building": "南园1舍",
   "campus": "鼓楼校区",
-  "total_rooms": 207,
+  "total_rooms": 208,
   "rooms": {
-    "519": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "413": {
-      "current_balance": 41.67,
-      "last_updated": "20260724"
-    },
-    "309": {
-      "current_balance": 417.1,
-      "last_updated": "20260724"
-    },
-    "1010": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "518": {
-      "current_balance": 417.31,
-      "last_updated": "20260724"
-    },
-    "412": {
-      "current_balance": 469.92,
-      "last_updated": "20260724"
-    },
-    "616": {
-      "current_balance": 2.51,
-      "last_updated": "20260724"
-    },
-    "205": {
-      "current_balance": 49.88,
-      "last_updated": "20260724"
-    },
-    "526": {
-      "current_balance": 0.63,
-      "last_updated": "20260724"
-    },
-    "415": {
-      "current_balance": 92.9,
-      "last_updated": "20260724"
-    },
-    "312": {
-      "current_balance": 1.68,
-      "last_updated": "20260724"
-    },
-    "218": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "202": {
-      "current_balance": 242.23,
-      "last_updated": "20260724"
-    },
-    "508": {
-      "current_balance": 21.48,
-      "last_updated": "20260724"
-    },
-    "0606": {
-      "current_balance": 23.66,
-      "last_updated": "20260724"
-    },
-    "123": {
-      "current_balance": 7.03,
-      "last_updated": "20260724"
-    },
-    "0528": {
-      "current_balance": 23.39,
-      "last_updated": "20260724"
-    },
-    "315": {
-      "current_balance": 121.56,
-      "last_updated": "20260724"
-    },
-    "0321": {
-      "current_balance": 8.72,
-      "last_updated": "20260719"
-    },
-    "0504": {
-      "current_balance": 8.45,
-      "last_updated": "20260724"
-    },
-    "306": {
-      "current_balance": 239.43,
-      "last_updated": "20260724"
-    },
-    "1018": {
-      "current_balance": 67.5,
-      "last_updated": "20260724"
-    },
-    "421": {
-      "current_balance": 69.19,
-      "last_updated": "20260724"
-    },
-    "607": {
-      "current_balance": 28.38,
-      "last_updated": "20260724"
-    },
-    "608": {
-      "current_balance": 18.59,
-      "last_updated": "20260724"
-    },
-    "517": {
-      "current_balance": 183.33,
-      "last_updated": "20260724"
-    },
-    "0309": {
-      "current_balance": 417.1,
-      "last_updated": "20260724"
-    },
-    "609": {
-      "current_balance": 8.12,
-      "last_updated": "20260724"
-    },
-    "221": {
-      "current_balance": 760.43,
-      "last_updated": "20260724"
-    },
-    "423": {
-      "current_balance": 289.93,
-      "last_updated": "20260724"
-    },
-    "330": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "417": {
-      "current_balance": 1.37,
-      "last_updated": "20260724"
-    },
-    "1001": {
-      "current_balance": 183.5,
-      "last_updated": "20260724"
-    },
-    "507": {
-      "current_balance": 10.43,
-      "last_updated": "20260724"
-    },
-    "0624": {
-      "current_balance": 85.41,
-      "last_updated": "20260724"
-    },
-    "408": {
-      "current_balance": 23.19,
-      "last_updated": "20260724"
-    },
-    "0523": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "224": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "630": {
-      "current_balance": 22.59,
-      "last_updated": "20260724"
-    },
-    "112": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "405": {
-      "current_balance": 1.24,
-      "last_updated": "20260724"
-    },
-    "117": {
-      "current_balance": 411.09,
-      "last_updated": "20260724"
-    },
-    "105": {
-      "current_balance": 0.89,
-      "last_updated": "20260724"
-    },
-    "301": {
-      "current_balance": 20.75,
-      "last_updated": "20260710"
-    },
-    "626": {
-      "current_balance": 0.48,
-      "last_updated": "20260724"
-    },
-    "121": {
-      "current_balance": 1589.12,
-      "last_updated": "20260724"
-    },
-    "602": {
-      "current_balance": 103.21,
-      "last_updated": "20260724"
-    },
-    "521": {
-      "current_balance": 392.52,
-      "last_updated": "20260724"
-    },
-    "214": {
-      "current_balance": 72.6,
-      "last_updated": "20260724"
-    },
-    "406": {
-      "current_balance": 326.74,
-      "last_updated": "20260724"
-    },
-    "416": {
-      "current_balance": 548.78,
-      "last_updated": "20260724"
-    },
-    "211": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "219": {
-      "current_balance": 17.38,
-      "last_updated": "20260724"
-    },
-    "302": {
+    "420": {
       "current_balance": 0.23,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
     },
-    "0230": {
-      "current_balance": 11.72,
-      "last_updated": "20260724"
+    "0522": {
+      "current_balance": 9.84,
+      "last_updated": "20260725"
+    },
+    "407": {
+      "current_balance": 281.67,
+      "last_updated": "20260725"
+    },
+    "126": {
+      "current_balance": 6.19,
+      "last_updated": "20260725"
+    },
+    "1012": {
+      "current_balance": 7.99,
+      "last_updated": "20260725"
+    },
+    "104": {
+      "current_balance": 3.26,
+      "last_updated": "20260725"
     },
     "0307": {
       "current_balance": 0.0,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
     },
-    "228": {
-      "current_balance": 9.09,
-      "last_updated": "20260724"
+    "602": {
+      "current_balance": 103.16,
+      "last_updated": "20260725"
     },
-    "217": {
-      "current_balance": 531.3,
-      "last_updated": "20260724"
+    "517": {
+      "current_balance": 183.28,
+      "last_updated": "20260725"
     },
-    "614": {
-      "current_balance": 66.03,
-      "last_updated": "20260724"
+    "103": {
+      "current_balance": 178.73,
+      "last_updated": "20260725"
     },
-    "0224": {
+    "309": {
+      "current_balance": 417.05,
+      "last_updated": "20260725"
+    },
+    "0504": {
+      "current_balance": 8.39,
+      "last_updated": "20260725"
+    },
+    "628": {
+      "current_balance": 9.22,
+      "last_updated": "20260725"
+    },
+    "511": {
+      "current_balance": 67.34,
+      "last_updated": "20260725"
+    },
+    "620": {
+      "current_balance": 6.3,
+      "last_updated": "20260725"
+    },
+    "419": {
+      "current_balance": 93.68,
+      "last_updated": "20260725"
+    },
+    "218": {
       "current_balance": 0.0,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
     },
-    "515": {
-      "current_balance": 0.14,
-      "last_updated": "20260724"
+    "315": {
+      "current_balance": 121.51,
+      "last_updated": "20260725"
     },
-    "404": {
-      "current_balance": 349.91,
-      "last_updated": "20260724"
+    "520": {
+      "current_balance": 5.33,
+      "last_updated": "20260725"
+    },
+    "609": {
+      "current_balance": 8.07,
+      "last_updated": "20260725"
+    },
+    "203": {
+      "current_balance": 495.15,
+      "last_updated": "20260725"
+    },
+    "304": {
+      "current_balance": 53.13,
+      "last_updated": "20260725"
     },
     "209": {
       "current_balance": 19.85,
-      "last_updated": "20260724"
-    },
-    "624": {
-      "current_balance": 85.41,
-      "last_updated": "20260724"
-    },
-    "110": {
-      "current_balance": 205.89,
-      "last_updated": "20260724"
-    },
-    "208": {
-      "current_balance": 608.21,
-      "last_updated": "20260724"
-    },
-    "522": {
-      "current_balance": 9.89,
-      "last_updated": "20260724"
-    },
-    "0215": {
-      "current_balance": 15.73,
-      "last_updated": "20260724"
-    },
-    "414": {
-      "current_balance": 36.39,
-      "last_updated": "20260724"
-    },
-    "0521": {
-      "current_balance": 392.52,
-      "last_updated": "20260724"
-    },
-    "311": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "109": {
-      "current_balance": 351.01,
-      "last_updated": "20260709"
-    },
-    "201": {
-      "current_balance": 8.61,
-      "last_updated": "20260724"
-    },
-    "0115": {
-      "current_balance": 1.12,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
     },
     "322": {
-      "current_balance": 378.8,
-      "last_updated": "20260724"
-    },
-    "418": {
-      "current_balance": 153.99,
-      "last_updated": "20260724"
-    },
-    "303": {
-      "current_balance": 116.9,
-      "last_updated": "20260724"
-    },
-    "207": {
-      "current_balance": 313.96,
-      "last_updated": "20260724"
-    },
-    "0407": {
-      "current_balance": 281.72,
-      "last_updated": "20260724"
-    },
-    "113": {
-      "current_balance": 737.71,
-      "last_updated": "20260724"
-    },
-    "317": {
-      "current_balance": 351.72,
-      "last_updated": "20260724"
-    },
-    "504": {
-      "current_balance": 8.45,
-      "last_updated": "20260724"
-    },
-    "210": {
-      "current_balance": 599.26,
-      "last_updated": "20260724"
-    },
-    "523": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "514": {
-      "current_balance": 7.56,
-      "last_updated": "20260724"
-    },
-    "623": {
-      "current_balance": 17.68,
-      "last_updated": "20260724"
-    },
-    "502": {
-      "current_balance": 138.9,
-      "last_updated": "20260724"
-    },
-    "305": {
-      "current_balance": 154.32,
-      "last_updated": "20260724"
-    },
-    "0610": {
-      "current_balance": 7.52,
-      "last_updated": "20260724"
-    },
-    "0313": {
-      "current_balance": 222.3,
-      "last_updated": "20260724"
-    },
-    "613": {
-      "current_balance": 19.03,
-      "last_updated": "20260724"
-    },
-    "223": {
-      "current_balance": 34.98,
-      "last_updated": "20260724"
-    },
-    "430": {
-      "current_balance": 11.17,
-      "last_updated": "20260724"
-    },
-    "612": {
-      "current_balance": 229.88,
-      "last_updated": "20260724"
-    },
-    "0625": {
-      "current_balance": 3.79,
-      "last_updated": "20260724"
-    },
-    "122": {
-      "current_balance": 630.27,
-      "last_updated": "20260724"
-    },
-    "0417": {
-      "current_balance": 1.37,
-      "last_updated": "20260724"
-    },
-    "104": {
-      "current_balance": 3.31,
-      "last_updated": "20260724"
-    },
-    "0110": {
-      "current_balance": 205.89,
-      "last_updated": "20260724"
-    },
-    "0118": {
-      "current_balance": 31.69,
-      "last_updated": "20260724"
-    },
-    "324": {
-      "current_balance": 517.65,
-      "last_updated": "20260724"
-    },
-    "0105": {
-      "current_balance": 0.89,
-      "last_updated": "20260724"
-    },
-    "520": {
-      "current_balance": 5.38,
-      "last_updated": "20260724"
-    },
-    "509": {
-      "current_balance": 94.38,
-      "last_updated": "20260724"
-    },
-    "0611": {
-      "current_balance": 16.26,
-      "last_updated": "20260724"
-    },
-    "428": {
-      "current_balance": 242.94,
-      "last_updated": "20260724"
-    },
-    "618": {
-      "current_balance": 50.0,
-      "last_updated": "20260724"
-    },
-    "215": {
-      "current_balance": 15.73,
-      "last_updated": "20260724"
-    },
-    "501": {
-      "current_balance": 39.44,
-      "last_updated": "20260724"
-    },
-    "604": {
-      "current_balance": 2.64,
-      "last_updated": "20260724"
-    },
-    "0605": {
-      "current_balance": 19.31,
-      "last_updated": "20260724"
-    },
-    "0111": {
-      "current_balance": 136.61,
-      "last_updated": "20260724"
-    },
-    "622": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "326": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "419": {
-      "current_balance": 93.74,
-      "last_updated": "20260724"
-    },
-    "605": {
-      "current_balance": 19.31,
-      "last_updated": "20260724"
-    },
-    "525": {
-      "current_balance": 80.36,
-      "last_updated": "20260724"
-    },
-    "528": {
-      "current_balance": 23.39,
-      "last_updated": "20260724"
-    },
-    "203": {
-      "current_balance": 495.2,
-      "last_updated": "20260724"
-    },
-    "628": {
-      "current_balance": 9.27,
-      "last_updated": "20260724"
-    },
-    "611": {
-      "current_balance": 16.26,
-      "last_updated": "20260724"
-    },
-    "0502": {
-      "current_balance": 138.9,
-      "last_updated": "20260724"
-    },
-    "503": {
-      "current_balance": 2.05,
-      "last_updated": "20260724"
-    },
-    "325": {
-      "current_balance": 1.16,
-      "last_updated": "20260724"
-    },
-    "0108": {
-      "current_balance": 356.25,
-      "last_updated": "20260724"
-    },
-    "308": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "0113": {
-      "current_balance": 737.71,
-      "last_updated": "20260724"
-    },
-    "321": {
-      "current_balance": 8.39,
-      "last_updated": "20260724"
-    },
-    "401": {
-      "current_balance": 52.59,
-      "last_updated": "20260708"
-    },
-    "422": {
-      "current_balance": 2.96,
-      "last_updated": "20260724"
-    },
-    "524": {
-      "current_balance": 19.77,
-      "last_updated": "20260724"
-    },
-    "610": {
-      "current_balance": 7.52,
-      "last_updated": "20260724"
-    },
-    "204": {
-      "current_balance": 0.36,
-      "last_updated": "20260724"
-    },
-    "513": {
-      "current_balance": 1.1,
-      "last_updated": "20260724"
-    },
-    "0522": {
-      "current_balance": 9.89,
-      "last_updated": "20260724"
-    },
-    "1003": {
-      "current_balance": 28.48,
-      "last_updated": "20260724"
-    },
-    "307": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "402": {
-      "current_balance": 35.78,
-      "last_updated": "20260724"
+      "current_balance": 378.74,
+      "last_updated": "20260725"
     },
     "530": {
       "current_balance": 1.31,
       "last_updated": "20260709"
     },
-    "328": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
+    "118": {
+      "current_balance": 31.63,
+      "last_updated": "20260725"
     },
-    "225": {
-      "current_balance": 11.87,
-      "last_updated": "20260724"
+    "501": {
+      "current_balance": 39.39,
+      "last_updated": "20260725"
+    },
+    "215": {
+      "current_balance": 15.66,
+      "last_updated": "20260725"
+    },
+    "0113": {
+      "current_balance": 737.65,
+      "last_updated": "20260725"
     },
     "0413": {
       "current_balance": 41.67,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
     },
-    "310": {
-      "current_balance": 37.91,
-      "last_updated": "20260724"
-    },
-    "407": {
-      "current_balance": 281.72,
-      "last_updated": "20260724"
-    },
-    "0509": {
-      "current_balance": 94.38,
-      "last_updated": "20260724"
-    },
-    "410": {
-      "current_balance": 0.12,
-      "last_updated": "20260724"
-    },
-    "230": {
-      "current_balance": 11.72,
-      "last_updated": "20260724"
-    },
-    "115": {
-      "current_balance": 1.12,
-      "last_updated": "20260724"
-    },
-    "323": {
-      "current_balance": 2.79,
-      "last_updated": "20260724"
-    },
-    "505": {
-      "current_balance": 159.85,
-      "last_updated": "20260724"
-    },
-    "1012": {
-      "current_balance": 7.99,
-      "last_updated": "20260724"
-    },
-    "0304": {
-      "current_balance": 53.25,
-      "last_updated": "20260724"
-    },
-    "619": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "621": {
-      "current_balance": 11.22,
-      "last_updated": "20260724"
-    },
-    "0524": {
-      "current_balance": 19.77,
-      "last_updated": "20260724"
+    "610": {
+      "current_balance": 7.42,
+      "last_updated": "20260725"
     },
     "124": {
-      "current_balance": 6.85,
-      "last_updated": "20260724"
+      "current_balance": 6.79,
+      "last_updated": "20260725"
     },
-    "1005": {
-      "current_balance": 38.62,
-      "last_updated": "20260724"
+    "314": {
+      "current_balance": 314.02,
+      "last_updated": "20260725"
     },
-    "511": {
-      "current_balance": 67.4,
-      "last_updated": "20260724"
+    "503": {
+      "current_balance": 2.0,
+      "last_updated": "20260725"
     },
-    "617": {
-      "current_balance": 1.11,
-      "last_updated": "20260724"
+    "607": {
+      "current_balance": 28.32,
+      "last_updated": "20260725"
     },
-    "603": {
-      "current_balance": 1.43,
-      "last_updated": "20260724"
+    "406": {
+      "current_balance": 326.69,
+      "last_updated": "20260725"
     },
-    "403": {
-      "current_balance": 0.18,
-      "last_updated": "20260724"
-    },
-    "126": {
-      "current_balance": 6.24,
-      "last_updated": "20260724"
-    },
-    "108": {
-      "current_balance": 356.25,
-      "last_updated": "20260724"
-    },
-    "118": {
-      "current_balance": 31.69,
-      "last_updated": "20260724"
-    },
-    "516": {
-      "current_balance": 540.99,
-      "last_updated": "20260724"
-    },
-    "102": {
-      "current_balance": 7.06,
-      "last_updated": "20260724"
-    },
-    "313": {
-      "current_balance": 222.3,
-      "last_updated": "20260724"
-    },
-    "510": {
-      "current_balance": 549.95,
-      "last_updated": "20260724"
-    },
-    "111": {
-      "current_balance": 136.61,
-      "last_updated": "20260724"
-    },
-    "106": {
-      "current_balance": 42.63,
-      "last_updated": "20260724"
-    },
-    "620": {
-      "current_balance": 6.36,
-      "last_updated": "20260724"
-    },
-    "103": {
-      "current_balance": 178.78,
-      "last_updated": "20260724"
-    },
-    "411": {
-      "current_balance": 24.92,
-      "last_updated": "20260724"
-    },
-    "216": {
+    "330": {
       "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "304": {
-      "current_balance": 53.25,
-      "last_updated": "20260724"
-    },
-    "0210": {
-      "current_balance": 599.26,
-      "last_updated": "20260724"
-    },
-    "120": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "424": {
-      "current_balance": 0.0,
-      "last_updated": "20260708"
-    },
-    "101": {
-      "current_balance": 0.0,
-      "last_updated": "20260724"
-    },
-    "426": {
-      "current_balance": 27.63,
-      "last_updated": "20260724"
-    },
-    "420": {
-      "current_balance": 0.28,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
     },
     "506": {
       "current_balance": 0.0,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
+    },
+    "230": {
+      "current_balance": 11.66,
+      "last_updated": "20260725"
+    },
+    "612": {
+      "current_balance": 229.82,
+      "last_updated": "20260725"
+    },
+    "221": {
+      "current_balance": 760.37,
+      "last_updated": "20260725"
+    },
+    "601": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "0115": {
+      "current_balance": 1.12,
+      "last_updated": "20260725"
+    },
+    "121": {
+      "current_balance": 1589.07,
+      "last_updated": "20260725"
+    },
+    "326": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "418": {
+      "current_balance": 153.94,
+      "last_updated": "20260725"
+    },
+    "504": {
+      "current_balance": 8.39,
+      "last_updated": "20260725"
+    },
+    "324": {
+      "current_balance": 517.6,
+      "last_updated": "20260725"
+    },
+    "0407": {
+      "current_balance": 281.67,
+      "last_updated": "20260725"
+    },
+    "0606": {
+      "current_balance": 23.6,
+      "last_updated": "20260725"
+    },
+    "526": {
+      "current_balance": 0.58,
+      "last_updated": "20260725"
+    },
+    "213": {
+      "current_balance": 8.63,
+      "last_updated": "20260725"
+    },
+    "305": {
+      "current_balance": 154.26,
+      "last_updated": "20260725"
+    },
+    "405": {
+      "current_balance": 1.24,
+      "last_updated": "20260725"
+    },
+    "214": {
+      "current_balance": 72.55,
+      "last_updated": "20260725"
+    },
+    "207": {
+      "current_balance": 313.9,
+      "last_updated": "20260725"
+    },
+    "624": {
+      "current_balance": 85.36,
+      "last_updated": "20260725"
+    },
+    "509": {
+      "current_balance": 94.23,
+      "last_updated": "20260725"
+    },
+    "518": {
+      "current_balance": 417.25,
+      "last_updated": "20260725"
+    },
+    "0321": {
+      "current_balance": 8.72,
+      "last_updated": "20260719"
+    },
+    "219": {
+      "current_balance": 17.31,
+      "last_updated": "20260725"
+    },
+    "512": {
+      "current_balance": 9.82,
+      "last_updated": "20260725"
+    },
+    "402": {
+      "current_balance": 35.74,
+      "last_updated": "20260725"
+    },
+    "0611": {
+      "current_balance": 16.26,
+      "last_updated": "20260725"
+    },
+    "114": {
+      "current_balance": 208.67,
+      "last_updated": "20260725"
+    },
+    "524": {
+      "current_balance": 19.71,
+      "last_updated": "20260725"
+    },
+    "102": {
+      "current_balance": 6.96,
+      "last_updated": "20260725"
+    },
+    "425": {
+      "current_balance": 4.84,
+      "last_updated": "20260725"
+    },
+    "414": {
+      "current_balance": 36.33,
+      "last_updated": "20260725"
+    },
+    "619": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "415": {
+      "current_balance": 92.83,
+      "last_updated": "20260725"
+    },
+    "225": {
+      "current_balance": 11.81,
+      "last_updated": "20260725"
+    },
+    "522": {
+      "current_balance": 9.84,
+      "last_updated": "20260725"
+    },
+    "0304": {
+      "current_balance": 53.13,
+      "last_updated": "20260725"
+    },
+    "421": {
+      "current_balance": 69.14,
+      "last_updated": "20260725"
+    },
+    "319": {
+      "current_balance": 0.24,
+      "last_updated": "20260725"
+    },
+    "0524": {
+      "current_balance": 19.71,
+      "last_updated": "20260725"
+    },
+    "228": {
+      "current_balance": 9.04,
+      "last_updated": "20260725"
+    },
+    "0625": {
+      "current_balance": 3.73,
+      "last_updated": "20260725"
+    },
+    "604": {
+      "current_balance": 2.58,
+      "last_updated": "20260725"
+    },
+    "117": {
+      "current_balance": 411.03,
+      "last_updated": "20260725"
+    },
+    "603": {
+      "current_balance": 1.37,
+      "last_updated": "20260725"
+    },
+    "123": {
+      "current_balance": 6.98,
+      "last_updated": "20260725"
+    },
+    "201": {
+      "current_balance": 8.56,
+      "last_updated": "20260725"
+    },
+    "0230": {
+      "current_balance": 11.66,
+      "last_updated": "20260725"
+    },
+    "0624": {
+      "current_balance": 85.36,
+      "last_updated": "20260725"
+    },
+    "0206": {
+      "current_balance": 21.22,
+      "last_updated": "20260725"
+    },
+    "516": {
+      "current_balance": 540.93,
+      "last_updated": "20260725"
+    },
+    "507": {
+      "current_balance": 10.38,
+      "last_updated": "20260725"
+    },
+    "0309": {
+      "current_balance": 417.05,
+      "last_updated": "20260725"
+    },
+    "317": {
+      "current_balance": 351.67,
+      "last_updated": "20260725"
+    },
+    "614": {
+      "current_balance": 65.98,
+      "last_updated": "20260725"
+    },
+    "0101": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "616": {
+      "current_balance": 2.45,
+      "last_updated": "20260725"
     },
     "116": {
       "current_balance": 0.0,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
     },
-    "213": {
-      "current_balance": 8.69,
-      "last_updated": "20260724"
+    "403": {
+      "current_balance": 0.07,
+      "last_updated": "20260725"
     },
-    "0328": {
+    "101": {
       "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "0215": {
+      "current_balance": 15.66,
+      "last_updated": "20260725"
+    },
+    "611": {
+      "current_balance": 16.26,
+      "last_updated": "20260725"
+    },
+    "306": {
+      "current_balance": 239.43,
       "last_updated": "20260724"
     },
-    "320": {
-      "current_balance": 69.26,
-      "last_updated": "20260724"
+    "106": {
+      "current_balance": 42.57,
+      "last_updated": "20260725"
     },
-    "425": {
-      "current_balance": 4.89,
-      "last_updated": "20260724"
+    "1018": {
+      "current_balance": 67.5,
+      "last_updated": "20260725"
     },
-    "314": {
-      "current_balance": 314.08,
-      "last_updated": "20260724"
+    "412": {
+      "current_balance": 469.87,
+      "last_updated": "20260725"
     },
-    "606": {
-      "current_balance": 23.66,
-      "last_updated": "20260724"
-    },
-    "0206": {
-      "current_balance": 21.28,
-      "last_updated": "20260724"
-    },
-    "222": {
-      "current_balance": 16.68,
-      "last_updated": "20260724"
-    },
-    "212": {
+    "1010": {
       "current_balance": 0.0,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
     },
-    "409": {
-      "current_balance": 38.35,
-      "last_updated": "20260724"
+    "505": {
+      "current_balance": 159.79,
+      "last_updated": "20260725"
     },
-    "318": {
-      "current_balance": 229.23,
-      "last_updated": "20260724"
+    "115": {
+      "current_balance": 1.12,
+      "last_updated": "20260725"
     },
-    "625": {
-      "current_balance": 3.79,
-      "last_updated": "20260724"
+    "122": {
+      "current_balance": 630.22,
+      "last_updated": "20260725"
     },
-    "226": {
-      "current_balance": 254.78,
-      "last_updated": "20260724"
+    "626": {
+      "current_balance": 0.42,
+      "last_updated": "20260725"
     },
-    "206": {
-      "current_balance": 21.28,
-      "last_updated": "20260724"
+    "623": {
+      "current_balance": 17.63,
+      "last_updated": "20260725"
     },
-    "319": {
-      "current_balance": 0.35,
-      "last_updated": "20260724"
+    "113": {
+      "current_balance": 737.65,
+      "last_updated": "20260725"
     },
-    "114": {
-      "current_balance": 208.72,
-      "last_updated": "20260724"
+    "321": {
+      "current_balance": 8.33,
+      "last_updated": "20260725"
+    },
+    "0111": {
+      "current_balance": 136.56,
+      "last_updated": "20260725"
+    },
+    "120": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
     },
     "316": {
       "current_balance": 0.0,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
     },
-    "220": {
-      "current_balance": 708.04,
-      "last_updated": "20260724"
+    "311": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
     },
-    "615": {
-      "current_balance": 3.58,
-      "last_updated": "20260722"
+    "0610": {
+      "current_balance": 7.42,
+      "last_updated": "20260725"
+    },
+    "413": {
+      "current_balance": 41.67,
+      "last_updated": "20260725"
+    },
+    "422": {
+      "current_balance": 2.91,
+      "last_updated": "20260725"
+    },
+    "1005": {
+      "current_balance": 38.09,
+      "last_updated": "20260725"
+    },
+    "525": {
+      "current_balance": 80.31,
+      "last_updated": "20260725"
+    },
+    "323": {
+      "current_balance": 2.54,
+      "last_updated": "20260725"
     },
     "0315": {
       "current_balance": 128.4,
       "last_updated": "20260709"
     },
+    "416": {
+      "current_balance": 548.73,
+      "last_updated": "20260725"
+    },
+    "423": {
+      "current_balance": 289.88,
+      "last_updated": "20260725"
+    },
+    "226": {
+      "current_balance": 254.73,
+      "last_updated": "20260725"
+    },
+    "307": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "605": {
+      "current_balance": 19.25,
+      "last_updated": "20260725"
+    },
     "107": {
-      "current_balance": 7.83,
-      "last_updated": "20260724"
+      "current_balance": 7.77,
+      "last_updated": "20260725"
     },
-    "0101": {
+    "217": {
+      "current_balance": 531.25,
+      "last_updated": "20260725"
+    },
+    "617": {
+      "current_balance": 1.06,
+      "last_updated": "20260725"
+    },
+    "428": {
+      "current_balance": 242.94,
+      "last_updated": "20260725"
+    },
+    "613": {
+      "current_balance": 19.03,
+      "last_updated": "20260725"
+    },
+    "521": {
+      "current_balance": 392.47,
+      "last_updated": "20260725"
+    },
+    "408": {
+      "current_balance": 23.14,
+      "last_updated": "20260725"
+    },
+    "224": {
       "current_balance": 0.0,
-      "last_updated": "20260724"
+      "last_updated": "20260725"
     },
-    "512": {
-      "current_balance": 9.94,
-      "last_updated": "20260724"
+    "310": {
+      "current_balance": 37.85,
+      "last_updated": "20260725"
     },
-    "601": {
+    "606": {
+      "current_balance": 23.6,
+      "last_updated": "20260725"
+    },
+    "0110": {
+      "current_balance": 205.83,
+      "last_updated": "20260725"
+    },
+    "0417": {
+      "current_balance": 1.32,
+      "last_updated": "20260725"
+    },
+    "508": {
+      "current_balance": 21.43,
+      "last_updated": "20260725"
+    },
+    "204": {
+      "current_balance": 0.31,
+      "last_updated": "20260725"
+    },
+    "0502": {
+      "current_balance": 138.84,
+      "last_updated": "20260725"
+    },
+    "0528": {
+      "current_balance": 23.34,
+      "last_updated": "20260725"
+    },
+    "0118": {
+      "current_balance": 31.63,
+      "last_updated": "20260725"
+    },
+    "0605": {
+      "current_balance": 19.25,
+      "last_updated": "20260725"
+    },
+    "426": {
+      "current_balance": 27.58,
+      "last_updated": "20260725"
+    },
+    "424": {
       "current_balance": 0.0,
-      "last_updated": "20260724"
+      "last_updated": "20260708"
+    },
+    "308": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "1001": {
+      "current_balance": 183.5,
+      "last_updated": "20260725"
+    },
+    "615": {
+      "current_balance": 3.58,
+      "last_updated": "20260722"
+    },
+    "320": {
+      "current_balance": 69.21,
+      "last_updated": "20260725"
+    },
+    "202": {
+      "current_balance": 242.17,
+      "last_updated": "20260725"
+    },
+    "0521": {
+      "current_balance": 392.47,
+      "last_updated": "20260725"
+    },
+    "208": {
+      "current_balance": 608.16,
+      "last_updated": "20260725"
+    },
+    "0509": {
+      "current_balance": 94.23,
+      "last_updated": "20260725"
+    },
+    "205": {
+      "current_balance": 49.83,
+      "last_updated": "20260725"
+    },
+    "0328": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "223": {
+      "current_balance": 34.98,
+      "last_updated": "20260725"
+    },
+    "0313": {
+      "current_balance": 222.14,
+      "last_updated": "20260725"
+    },
+    "212": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "523": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "630": {
+      "current_balance": 22.54,
+      "last_updated": "20260725"
+    },
+    "105": {
+      "current_balance": 0.83,
+      "last_updated": "20260725"
+    },
+    "401": {
+      "current_balance": 52.59,
+      "last_updated": "20260708"
+    },
+    "510": {
+      "current_balance": 549.88,
+      "last_updated": "20260725"
+    },
+    "622": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "211": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "0108": {
+      "current_balance": 356.2,
+      "last_updated": "20260725"
+    },
+    "0105": {
+      "current_balance": 0.83,
+      "last_updated": "20260725"
+    },
+    "625": {
+      "current_balance": 3.73,
+      "last_updated": "20260725"
+    },
+    "206": {
+      "current_balance": 21.22,
+      "last_updated": "20260725"
+    },
+    "313": {
+      "current_balance": 222.14,
+      "last_updated": "20260725"
+    },
+    "0523": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "430": {
+      "current_balance": 11.12,
+      "last_updated": "20260725"
+    },
+    "220": {
+      "current_balance": 708.01,
+      "last_updated": "20260725"
+    },
+    "502": {
+      "current_balance": 138.84,
+      "last_updated": "20260725"
+    },
+    "302": {
+      "current_balance": 0.18,
+      "last_updated": "20260725"
+    },
+    "216": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "0224": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "411": {
+      "current_balance": 24.87,
+      "last_updated": "20260725"
+    },
+    "1003": {
+      "current_balance": 28.42,
+      "last_updated": "20260725"
+    },
+    "417": {
+      "current_balance": 1.32,
+      "last_updated": "20260725"
+    },
+    "328": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "621": {
+      "current_balance": 11.17,
+      "last_updated": "20260725"
+    },
+    "301": {
+      "current_balance": 20.75,
+      "last_updated": "20260710"
+    },
+    "514": {
+      "current_balance": 7.5,
+      "last_updated": "20260725"
+    },
+    "210": {
+      "current_balance": 599.21,
+      "last_updated": "20260725"
+    },
+    "222": {
+      "current_balance": 16.66,
+      "last_updated": "20260725"
+    },
+    "325": {
+      "current_balance": 1.11,
+      "last_updated": "20260725"
+    },
+    "409": {
+      "current_balance": 38.3,
+      "last_updated": "20260725"
+    },
+    "404": {
+      "current_balance": 349.88,
+      "last_updated": "20260725"
+    },
+    "312": {
+      "current_balance": 1.62,
+      "last_updated": "20260725"
+    },
+    "111": {
+      "current_balance": 136.56,
+      "last_updated": "20260725"
+    },
+    "318": {
+      "current_balance": 229.06,
+      "last_updated": "20260725"
+    },
+    "112": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "608": {
+      "current_balance": 18.59,
+      "last_updated": "20260725"
+    },
+    "0210": {
+      "current_balance": 599.21,
+      "last_updated": "20260725"
+    },
+    "519": {
+      "current_balance": 0.0,
+      "last_updated": "20260725"
+    },
+    "528": {
+      "current_balance": 23.34,
+      "last_updated": "20260725"
+    },
+    "110": {
+      "current_balance": 205.83,
+      "last_updated": "20260725"
+    },
+    "410": {
+      "current_balance": 0.07,
+      "last_updated": "20260725"
+    },
+    "513": {
+      "current_balance": 1.05,
+      "last_updated": "20260725"
+    },
+    "109": {
+      "current_balance": 351.01,
+      "last_updated": "20260709"
+    },
+    "303": {
+      "current_balance": 116.84,
+      "last_updated": "20260725"
+    },
+    "108": {
+      "current_balance": 356.2,
+      "last_updated": "20260725"
+    },
+    "618": {
+      "current_balance": 49.94,
+      "last_updated": "20260725"
+    },
+    "515": {
+      "current_balance": 0.09,
+      "last_updated": "20260725"
+    },
+    "0306": {
+      "current_balance": 239.38,
+      "last_updated": "20260725"
     }
   }
 }
