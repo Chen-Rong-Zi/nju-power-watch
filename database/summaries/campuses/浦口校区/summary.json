@@ -4,7 +4,7 @@
   "buildings": {
     "25栋宿舍": {
       "total_rooms": 49,
-      "avg_balance": 174.56
+      "avg_balance": 174.23
     },
     "28栋宿舍": {
       "total_rooms": 1,
@@ -16,11 +16,11 @@
     },
     "26栋宿舍": {
       "total_rooms": 80,
-      "avg_balance": 16.08
+      "avg_balance": 16.07
     },
     "13栋宿舍": {
       "total_rooms": 165,
-      "avg_balance": 54.28
+      "avg_balance": 54.5
     },
     "教学楼": {
       "total_rooms": 1,
@@ -28,19 +28,19 @@
     },
     "17栋宿舍": {
       "total_rooms": 167,
-      "avg_balance": 58.76
+      "avg_balance": 58.72
     },
     "16栋宿舍": {
       "total_rooms": 169,
-      "avg_balance": 81.97
+      "avg_balance": 81.28
     },
     "15栋宿舍": {
       "total_rooms": 167,
-      "avg_balance": 45.43
+      "avg_balance": 43.67
     },
     "18栋宿舍": {
       "total_rooms": 147,
-      "avg_balance": 60.01
+      "avg_balance": 61.8
     },
     "22栋宿舍": {
       "total_rooms": 3,
@@ -48,7 +48,7 @@
     },
     "20栋宿舍": {
       "total_rooms": 145,
-      "avg_balance": 95.6
+      "avg_balance": 95.04
     },
     "29栋宿舍": {
       "total_rooms": 3,
@@ -56,15 +56,15 @@
     },
     "21栋宿舍": {
       "total_rooms": 167,
-      "avg_balance": 81.94
+      "avg_balance": 81.98
     },
     "图书馆": {
       "total_rooms": 1,
-      "avg_balance": 845.43
+      "avg_balance": 841.73
     },
     "12栋宿舍": {
       "total_rooms": 167,
-      "avg_balance": 65.84
+      "avg_balance": 67.38
     },
     "11栋宿舍": {
       "total_rooms": 50,
@@ -72,11 +72,11 @@
     },
     "27栋宿舍": {
       "total_rooms": 24,
-      "avg_balance": 4.74
+      "avg_balance": 4.73
     },
     "双亭园": {
       "total_rooms": 8,
-      "avg_balance": 27.68
+      "avg_balance": 27.63
     },
     "浴室": {
       "total_rooms": 1,
@@ -84,15 +84,15 @@
     },
     "一二食堂": {
       "total_rooms": 6,
-      "avg_balance": 56.0
+      "avg_balance": 53.77
     },
     "19栋宿舍": {
       "total_rooms": 166,
-      "avg_balance": 46.93
+      "avg_balance": 46.17
     },
     "14栋宿舍": {
       "total_rooms": 168,
-      "avg_balance": 65.59
+      "avg_balance": 64.84
     }
   }
 }
