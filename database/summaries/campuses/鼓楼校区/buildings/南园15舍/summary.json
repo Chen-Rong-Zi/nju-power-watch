@@ -3,21 +3,21 @@
   "campus": "鼓楼校区",
   "total_rooms": 4,
   "rooms": {
+    "114房间": {
+      "current_balance": 0.0,
+      "last_updated": "20260730"
+    },
     "106房间": {
       "current_balance": 0.0,
-      "last_updated": "20260729"
+      "last_updated": "20260730"
     },
     "104房间": {
       "current_balance": 0.0,
-      "last_updated": "20260729"
+      "last_updated": "20260730"
     },
     "416房间": {
       "current_balance": 0.0,
-      "last_updated": "20260729"
-    },
-    "114房间": {
-      "current_balance": 0.0,
-      "last_updated": "20260729"
+      "last_updated": "20260730"
     }
   }
 }
