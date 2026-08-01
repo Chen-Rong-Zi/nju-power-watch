@@ -511,7 +511,7 @@
     // 清除配置
     function clearConfig() {
       if (confirm('确定要更换房间吗？')) {
-        DataService.clearUserConfig();
+        DataService.removePageConfig('room');
         checkUserConfig();
       }
     }
