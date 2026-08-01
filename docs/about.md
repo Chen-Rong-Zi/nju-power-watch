@@ -41,6 +41,6 @@
 
 再次感谢大家的使用和反馈 ❤️ 如果有任何问题或建议，欢迎在 GitHub 上提 issue。
 
-项目地址：https://github.com/Chen-Rong-Zi/nju-power-watch
+项目地址：[nju-power-watch](https://github.com/Chen-Rong-Zi/nju-power-watch)
 
 —— 荣子
