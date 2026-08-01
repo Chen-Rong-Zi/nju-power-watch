@@ -764,7 +764,7 @@
 
       campuses.forEach((campus, index) => {
         const tab = document.createElement('button');
-        tab.className = 'campus-tab' + (campus === validSavedCampus ? ' active' : index === 0 ? ' active' : '');
+        tab.className = 'campus-tab' + (campus === validSavedCampus ? ' active' : (!validSavedCampus && index === 0) ? ' active' : '');
         tab.textContent = campus;
         tab.addEventListener('click', () => selectCampus(campus, tab));
         container.appendChild(tab);
