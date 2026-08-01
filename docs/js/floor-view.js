@@ -231,12 +231,13 @@ const FloorView = {
 
   renderDrawer(floorStats, onToggle) {
     this._drawerOnToggle = onToggle;
+    var self = this;
 
     if (!this._fabEl) {
       this._fabEl = document.createElement('button');
       this._fabEl.className = 'floor-fab';
       this._fabEl.innerHTML = '<span>\u{1F3E2}</span><span class="floor-fab-badge" id="fab-badge"></span>';
-      this._fabEl.onclick = function() { FloorView._toggleDrawer(true); };
+      this._fabEl.onclick = function() { self._toggleDrawer(true); };
       document.body.appendChild(this._fabEl);
     }
     this._fabEl.style.display = 'flex';
@@ -244,7 +245,7 @@ const FloorView = {
     if (!this._overlayEl) {
       this._overlayEl = document.createElement('div');
       this._overlayEl.className = 'floor-drawer-overlay';
-      this._overlayEl.onclick = function() { FloorView._toggleDrawer(false); };
+      this._overlayEl.onclick = function() { self._toggleDrawer(false); };
       document.body.appendChild(this._overlayEl);
     }
 
@@ -259,7 +260,7 @@ const FloorView = {
         '</div>',
         '<div class="floor-drawer-list" id="drawer-list"></div>'
       ].join('');
-      this._drawerEl.querySelector('.floor-drawer-close').onclick = function() { FloorView._toggleDrawer(false); };
+      this._drawerEl.querySelector('.floor-drawer-close').onclick = function() { self._toggleDrawer(false); };
       document.body.appendChild(this._drawerEl);
     }
 
@@ -364,7 +365,7 @@ const FloorView = {
     if (!items.length) return;
     var isAll = selectedFloors === null;
 
-    var allDot = items[0].querySelector('.floor-drawer-dot');
+    var allDot = this._drawerEl.querySelector('.floor-drawer-item.all .floor-drawer-dot');
     if (allDot) {
       var allSelected = true;
       for (var i = 1; i < items.length; i++) {
@@ -396,5 +397,6 @@ const FloorView = {
   hideDrawer() {
     this._toggleDrawer(false);
     if (this._fabEl) this._fabEl.style.display = 'none';
+    this._drawerOnToggle = null;
   }
 };
