@@ -760,7 +760,7 @@
       // 从 localStorage 恢复上次选中的校区
       const savedConfig = DataService.getUserConfig();
       const savedCampus = savedConfig && savedConfig.campus;
-      const validSavedCampus = savedCampus && campuses.indexOf(savedCampus) !== -1;
+      const validSavedCampus = savedCampus && campuses.indexOf(savedCampus) !== -1 ? savedCampus : null;
 
       campuses.forEach((campus, index) => {
         const tab = document.createElement('button');
