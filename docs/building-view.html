@@ -1901,6 +1901,7 @@
       state.campus = e.target.value;
       state.currentPage = 1;
       state.selectedFloors = null;
+      state.filteredRankings = null;
       if (!state.campus) {
         showEmptyState();
         return;
@@ -1957,6 +1958,7 @@
       state.building = e.target.value;
       state.currentPage = 1;
       state.selectedFloors = null;
+      state.filteredRankings = null;
       saveStateToUrl();
       saveBuildingConfig();
       if (state.building) {
