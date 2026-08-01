@@ -1577,6 +1577,7 @@
       state.filteredRankings = state.selectedFloors === null ? null : filteredRankings;
       state.currentPage = 1;
       renderCurrentPage();
+      renderDistributionChart(filteredRankings);
     }
 
     // ==================== Fallback Banner ====================
