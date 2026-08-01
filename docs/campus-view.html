@@ -794,6 +794,14 @@
     }
 
     // ==================== 选择校区 ====================
+
+    // localStorage 读-改-写辅助，避免覆盖其他页面的字段
+    function savePartialConfig(partial) {
+      const config = DataService.getUserConfig() || {};
+      Object.assign(config, partial);
+      DataService.setUserConfig(config);
+    }
+
     async function selectCampus(campus, tabEl) {
       // 更新标签状态
       document.querySelectorAll('.campus-tab').forEach(t => t.classList.remove('active'));
@@ -861,6 +869,9 @@
 
       // 异步加载趋势数据
       loadTrendData(campus);
+
+      // 保存选中的校区到 localStorage
+      savePartialConfig({ campus: campus });
     }
 
     async function loadTrendData(campus) {
