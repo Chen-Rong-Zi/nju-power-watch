@@ -1586,8 +1586,8 @@
     // localStorage 读-改-写辅助，避免覆盖其他页面的字段
     function saveBuildingConfig() {
       const config = DataService.getUserConfig() || {};
-      config.campus = state.campus;
-      config.building = state.building;
+      if (state.campus) config.campus = state.campus;
+      if (state.building) config.building = state.building;
       config.date = state.date;
       config.sortDesc = state.sortDesc;
       config.page = state.currentPage;
