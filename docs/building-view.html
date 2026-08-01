@@ -2047,7 +2047,6 @@
       allRankings.forEach((r, idx) => r.rank = idx + 1);
 
       // === 楼层分析 ===
-      const roomNames = Object.keys(roomMap);
       const floorMap = await FloorUtils.loadFloorMap();
       state.floorMap = floorMap;
       state.floorGroups = FloorUtils.groupRoomsByFloor(roomNames, state.campus, state.building, floorMap);
