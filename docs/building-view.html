@@ -1734,6 +1734,8 @@
       FloorView.renderDrawer(state.floorStats, function(selectedFloors) {
         state.selectedFloors = selectedFloors;
         onFloorSelectionChange();
+        syncSidebarState(state.selectedFloors);
+        FloorView.updateFabBadge(state.selectedFloors, state.floorStats);
       });
     }
 

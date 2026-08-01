@@ -76,7 +76,7 @@ const FloorView = {
 
     if (allActive) {
       nodes.forEach(n => n.classList.remove('active'));
-      this._onToggle(new Set());
+      this._onToggle(null);
     } else {
       nodes.forEach(n => n.classList.add('active'));
       this._onToggle(null);
