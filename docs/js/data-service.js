@@ -467,6 +467,10 @@ const DataService = {
       const response = await fetch(
         `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${encodeURIComponent(roomName)}.json`
       );
+      if (!response.ok) {
+        console.warn(`[房间文件不存在] ${campusName}/${buildingName}/${roomName}.json`);
+        return null;
+      }
       const data = await response.json();
 
       // 转换历史数据为数组格式
@@ -580,6 +584,11 @@ const DataService = {
         const response = await fetch(
           `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${encodeURIComponent(roomName)}.json`
         );
+        if (!response.ok) {
+          loaded++;
+          onRoomLoaded(roomName, null, loaded, total);
+          return { roomName, data: null, error: new Error('File not found') };
+        }
         const rawData = await response.json();
 
         // 转换历史数据
@@ -978,6 +987,22 @@ const DataService = {
 
   clearUserConfig() {
     localStorage.removeItem('electricity_user_config');
+  },
+
+  /**
+   * 页面独立配置管理
+   * 每个页面使用独立的 key，避免互相覆盖
+   */
+  getPageConfig(page) {
+    const stored = localStorage.getItem(`electricity_user_config_${page}`);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    return null;
+  },
+
+  setPageConfig(page, config) {
+    localStorage.setItem(`electricity_user_config_${page}`, JSON.stringify(config));
   },
 
   /**

@@ -710,7 +710,7 @@
   </main>
 
   <script src="js/indexeddb-service.js"></script>
-  <script src="js/data-service.js?v=20260525-v3"></script>
+  <script src="js/data-service.js?v=20260801-v4"></script>
   <script>
     // ==================== 状态 ====================
     let currentCampus = null;
@@ -757,16 +757,21 @@
       campuses.sort((a, b) => a.localeCompare(b, 'zh-CN'));
       const container = document.getElementById('campus-tabs');
 
+      // 从 localStorage 恢复上次选中的校区
+      const savedConfig = DataService.getPageConfig('campus');
+      const savedCampus = savedConfig && savedConfig.campus;
+      const validSavedCampus = savedCampus && campuses.indexOf(savedCampus) !== -1 ? savedCampus : null;
+
       campuses.forEach((campus, index) => {
         const tab = document.createElement('button');
-        tab.className = 'campus-tab' + (index === 0 ? ' active' : '');
+        tab.className = 'campus-tab' + (campus === validSavedCampus ? ' active' : (!validSavedCampus && index === 0) ? ' active' : '');
         tab.textContent = campus;
         tab.addEventListener('click', () => selectCampus(campus, tab));
         container.appendChild(tab);
       });
 
       if (campuses.length > 0) {
-        selectCampus(campuses[0], container.querySelector('.campus-tab'));
+        selectCampus(validSavedCampus || campuses[0], container.querySelector('.campus-tab.active'));
       }
     }
 
@@ -794,6 +799,14 @@
     }
 
     // ==================== 选择校区 ====================
+
+    // localStorage 读-改-写辅助，避免覆盖其他页面的字段
+    function savePartialConfig(partial) {
+      const config = DataService.getPageConfig('campus') || {};
+      Object.assign(config, partial);
+      DataService.setPageConfig('campus', config);
+    }
+
     async function selectCampus(campus, tabEl) {
       // 更新标签状态
       document.querySelectorAll('.campus-tab').forEach(t => t.classList.remove('active'));
@@ -861,6 +874,9 @@
 
       // 异步加载趋势数据
       loadTrendData(campus);
+
+      // 保存选中的校区到 localStorage
+      savePartialConfig({ campus: campus });
     }
 
     async function loadTrendData(campus) {

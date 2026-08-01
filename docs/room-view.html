@@ -851,7 +851,7 @@
   </div>
 
   <script src="js/indexeddb-service.js"></script>
-  <script src="js/data-service.js?v=20260525-v3"></script>
+  <script src="js/data-service.js?v=20260801-v4"></script>
   <script>
     // 能耗类比数据（分层显示）
     const ENERGY_ANALOGIES = [
@@ -1182,7 +1182,7 @@
 
     // 加载用户配置
     async function loadUserConfig() {
-      userConfig = DataService.getUserConfig();
+      userConfig = DataService.getPageConfig('room');
       if (userConfig) {
         hideConfig();
         await loadRoomData();
@@ -1661,7 +1661,7 @@
       }
 
       userConfig = { campus, building, roomName, displayName };
-      DataService.setUserConfig(userConfig);
+      DataService.setPageConfig('room', userConfig);
       hideConfig();
       loadRoomData();
     }
