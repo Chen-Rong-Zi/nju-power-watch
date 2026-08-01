@@ -229,35 +229,35 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8px 0;
+      padding: 10px 0;
       cursor: pointer;
       z-index: 2;
       transition: all 0.2s;
     }
     .floor-dot {
-      width: 8px;
-      height: 8px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background: #d0d0d0;
       transition: all 0.2s;
       flex-shrink: 0;
     }
     .floor-node:hover .floor-dot {
-      width: 14px;
-      height: 14px;
+      width: 18px;
+      height: 18px;
       background: var(--accent);
     }
     .floor-node.active .floor-dot {
-      width: 14px;
-      height: 14px;
+      width: 18px;
+      height: 18px;
       background: var(--accent);
       box-shadow: 0 0 0 4px color-mix(in oklch, var(--accent) 20%, transparent);
     }
     .floor-label {
       position: absolute;
       right: 100%;
-      margin-right: 12px;
-      font-size: 12px;
+      margin-right: 14px;
+      font-size: 13px;
       color: var(--muted);
       white-space: nowrap;
       opacity: 0;
@@ -274,9 +274,13 @@
       font-weight: 600;
     }
     .floor-node.all .floor-dot {
-      width: 12px;
-      height: 12px;
+      width: 16px;
+      height: 16px;
       background: var(--accent);
+    }
+    .floor-node.all:hover .floor-dot {
+      width: 22px;
+      height: 22px;
     }
     .content-area {
       flex: 1;
@@ -1527,6 +1531,23 @@
       }
     }
 
+    // ==================== 楼层分析 ====================
+    async function runFloorAnalysis(allRankings, roomNames) {
+      const floorMap = await FloorUtils.loadFloorMap();
+      state.floorMap = floorMap;
+      state.floorGroups = FloorUtils.groupRoomsByFloor(roomNames, state.campus, state.building, floorMap);
+      state.floorStats = FloorAnalytics.calculateFloorStats(allRankings, state.floorGroups);
+
+      const floorSide = document.getElementById('floor-side');
+      FloorView.renderIndicator(state.floorStats, floorSide, (selectedFloors) => {
+        state.selectedFloors = selectedFloors;
+        onFloorSelectionChange();
+      });
+
+      const floorChartCard = document.getElementById('floor-chart-card');
+      FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloors);
+    }
+
     function onFloorSelectionChange() {
       if (!state.floorStats || !state.allRankings) return;
       const filteredRankings = state.selectedFloors === null
@@ -1552,8 +1573,8 @@
       // 更新图表
       FloorView.updateChart(state.floorStats, state.selectedFloors);
 
-      // 更新排行榜
-      state.allRankings = filteredRankings;
+      // 更新排行榜（不覆盖原始数据）
+      state.filteredRankings = state.selectedFloors === null ? null : filteredRankings;
       state.currentPage = 1;
       renderCurrentPage();
     }
@@ -1782,7 +1803,18 @@
       if (consumptionCache.has(effectiveCacheKey)) {
         updateCacheStatus('已缓存', false);
         const cachedData = consumptionCache.get(effectiveCacheKey);
-        displayRanking(cachedData.rankings || cachedData, cachedData.noDataRooms || []);
+        const rankings = cachedData.rankings || cachedData;
+        const noDataRooms = cachedData.noDataRooms || [];
+
+        // 楼层分析（建筑摘要通常已缓存，不会触发网络请求）
+        DataService.getBuildingSummary(state.campus, state.building).then(summary => {
+          if (summary && summary.rooms) {
+            const allRoomNames = Object.keys(summary.rooms);
+            runFloorAnalysis(rankings, allRoomNames);
+          }
+        });
+
+        displayRanking(rankings, noDataRooms);
         return;
       }
 
@@ -1855,6 +1887,13 @@
 
         // 同时保存到内存缓存
         consumptionCache.set(effectiveCacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
+
+        // 楼层分析（从建筑摘要获取房间名列表）
+        const buildingSummaryForFloor = await DataService.getBuildingSummary(state.campus, state.building);
+        if (buildingSummaryForFloor && buildingSummaryForFloor.rooms) {
+          const allRoomNames = Object.keys(buildingSummaryForFloor.rooms);
+          await runFloorAnalysis(allRankings, allRoomNames);
+        }
 
         // 显示结果
         displayRanking(allRankings, noDataRooms);
@@ -2049,19 +2088,7 @@
       allRankings.forEach((r, idx) => r.rank = idx + 1);
 
       // === 楼层分析 ===
-      const floorMap = await FloorUtils.loadFloorMap();
-      state.floorMap = floorMap;
-      state.floorGroups = FloorUtils.groupRoomsByFloor(roomNames, state.campus, state.building, floorMap);
-      state.floorStats = FloorAnalytics.calculateFloorStats(allRankings, state.floorGroups);
-
-      const floorSide = document.getElementById('floor-side');
-      FloorView.renderIndicator(state.floorStats, floorSide, (selectedFloors) => {
-        state.selectedFloors = selectedFloors;
-        onFloorSelectionChange();
-      });
-
-      const floorChartCard = document.getElementById('floor-chart-card');
-      FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloors);
+      await runFloorAnalysis(allRankings, roomNames);
 
       // 缓存结果到内存
       consumptionCache.set(effectiveCacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
@@ -2407,7 +2434,7 @@
 
     // ==================== 渲染当前页 ====================
     function renderCurrentPage() {
-      const allRankings = state.allRankings || [];
+      const allRankings = state.filteredRankings || state.allRankings || [];
       const noDataRooms = state.noDataRooms || [];
 
       if (allRankings.length === 0 && noDataRooms.length === 0) return;
