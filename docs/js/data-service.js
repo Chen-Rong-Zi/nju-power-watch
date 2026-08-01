@@ -1006,13 +1006,6 @@ const DataService = {
   },
 
   /**
-   * 清除页面独立配置
-   */
-  removePageConfig(page) {
-    localStorage.removeItem(`electricity_user_config_${page}`);
-  },
-
-  /**
    * 清理旧版共享配置
    * 迁移到页面独立 key 后，删除旧 shared key
    */
