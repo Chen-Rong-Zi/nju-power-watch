@@ -1583,6 +1583,17 @@
       floorMap: null,           // 楼层映射配置
     };
 
+    // localStorage 读-改-写辅助，避免覆盖其他页面的字段
+    function saveBuildingConfig() {
+      const config = DataService.getUserConfig() || {};
+      config.campus = state.campus;
+      config.building = state.building;
+      config.date = state.date;
+      config.sortDesc = state.sortDesc;
+      config.page = state.currentPage;
+      DataService.setUserConfig(config);
+    }
+
     // 三级缓存
     const roomDataCache = new Map();      // 缓存房间历史数据: key = "校区/楼栋/房间名"
     const consumptionCache = new Map();    // 缓存计算结果: key = "校区/楼栋/日期"
@@ -1809,6 +1820,7 @@
           state.date = btn.dataset.date;
           state.currentPage = 1;
           saveStateToUrl();
+          saveBuildingConfig();
           // 取消之前的请求并加载新数据
           state.currentLoadId++;
           hideProgressAndResetList();
@@ -1822,6 +1834,7 @@
         state.date = e.target.value;
         state.currentPage = 1;
         saveStateToUrl();
+        saveBuildingConfig();
         // 取消之前的请求并加载新数据
         state.currentLoadId++;
         hideProgressAndResetList();
@@ -1877,6 +1890,7 @@
       }
 
       saveStateToUrl();
+      saveBuildingConfig();
       showEmptyState();
       hideBuildingTrend();
     }
@@ -1904,6 +1918,7 @@
       state.building = e.target.value;
       state.currentPage = 1;
       saveStateToUrl();
+      saveBuildingConfig();
       if (state.building) {
         await loadRanking();
         await loadBuildingTrend(state.campus, state.building);
@@ -1937,6 +1952,7 @@
       state.currentPage = 1;
       updateSortButton();
       saveStateToUrl();
+      saveBuildingConfig();
       renderCurrentPage();
     }
 
@@ -2730,6 +2746,7 @@
       if (state.currentPage > 1) {
         state.currentPage--;
         saveStateToUrl();
+        saveBuildingConfig();
         renderCurrentPage();
       }
     }
@@ -2738,6 +2755,7 @@
       if (state.currentPage < state.totalPages) {
         state.currentPage++;
         saveStateToUrl();
+        saveBuildingConfig();
         renderCurrentPage();
       }
     }
@@ -2746,6 +2764,7 @@
       if (page === -1) page = state.totalPages; // 末页
       state.currentPage = Math.max(1, Math.min(page, state.totalPages));
       saveStateToUrl();
+      saveBuildingConfig();
       renderCurrentPage();
     }
 
