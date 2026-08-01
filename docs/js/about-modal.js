@@ -3,12 +3,37 @@
 
   let modalEl = null;
   let initialized = false;
+  let stylesInjected = false;
+
+  // Inject modal styles
+  function injectStyles() {
+    if (stylesInjected) return;
+    const style = document.createElement('style');
+    style.textContent = '.about-modal-close:hover { color: var(--fg, #333) !important; }';
+    document.head.appendChild(style);
+    stylesInjected = true;
+  }
 
   // Minimal Markdown renderer
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   function renderMarkdown(text) {
+    // Escape HTML first to prevent XSS
+    text = escapeHtml(text);
+
     const lines = text.split('\n');
     let html = '';
     let inList = false;
+
+    function closeList() {
+      if (inList) { html += '</ul>'; inList = false; }
+    }
 
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i];
@@ -17,29 +42,30 @@
       line = line
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.+?)\*/g, '<em>$1</em>')
-        .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>');
+        .replace(/\[(.+?)\]\((.+?)\)/g, function (_, text, url) {
+          // Only allow http/https/mailto links
+          if (/^(https?:\/\/|mailto:)/i.test(url)) {
+            return '<a href="' + url + '" target="_blank">' + text + '</a>';
+          }
+          return text + ' (' + url + ')';
+        });
 
       // Headings
       if (line.startsWith('## ')) {
-        if (inList) { html += '</ul>'; inList = false; }
-        html += '<h2>' + line.slice(3) + '</h2>';
+        closeList(); html += '<h2>' + line.slice(3) + '</h2>';
       } else if (line.startsWith('### ')) {
-        if (inList) { html += '</ul>'; inList = false; }
-        html += '<h3>' + line.slice(4) + '</h3>';
+        closeList(); html += '<h3>' + line.slice(4) + '</h3>';
       } else if (line.startsWith('# ')) {
-        if (inList) { html += '</ul>'; inList = false; }
-        html += '<h1>' + line.slice(2) + '</h1>';
+        closeList(); html += '<h1>' + line.slice(2) + '</h1>';
       } else if (line.startsWith('- ')) {
         if (!inList) { html += '<ul>'; inList = true; }
         html += '<li>' + line.slice(2) + '</li>';
       } else if (line.startsWith('---')) {
-        if (inList) { html += '</ul>'; inList = false; }
-        html += '<hr>';
+        closeList(); html += '<hr>';
       } else if (line.trim() === '') {
-        if (inList) { html += '</ul>'; inList = false; }
+        closeList();
       } else {
-        if (inList) { html += '</ul>'; inList = false; }
-        html += '<p>' + line + '</p>';
+        closeList(); html += '<p>' + line + '</p>';
       }
     }
     if (inList) html += '</ul>';
@@ -49,6 +75,7 @@
 
   // Create modal DOM
   function createModal() {
+    injectStyles();
     const overlay = document.createElement('div');
     overlay.id = 'about-modal-overlay';
     overlay.style.cssText = `
@@ -67,7 +94,8 @@
     `;
 
     const closeBtn = document.createElement('button');
-    closeBtn.innerHTML = '&times;';
+    closeBtn.className = 'about-modal-close';
+    closeBtn.textContent = '×';
     closeBtn.style.cssText = `
       position: sticky; top: 0; float: right;
       background: none; border: none; font-size: 28px;
@@ -75,8 +103,6 @@
       line-height: 1; padding: 0; margin: -8px -8px 0 0;
       z-index: 1;
     `;
-    closeBtn.onmouseover = () => { closeBtn.style.color = 'var(--fg, #333)'; };
-    closeBtn.onmouseout = () => { closeBtn.style.color = 'var(--muted, #888)'; };
     closeBtn.onclick = closeAboutModal;
 
     const content = document.createElement('div');
