@@ -25,23 +25,35 @@
 ### 校区视角 (campus-view.html)
 
 - **保存时机**: 每次 `selectCampus()` 被调用时，保存 `{ campus }`
-- **恢复时机**: `initCampusTabs()` 加载校区列表后，优先从 localStorage 恢复上次选中的校区；如果 localStorage 中无记录或已失效，则默认选中第一个校区
+- **恢复时机**: `initCampusTabs()` 加载校区列表后，从 localStorage 读取上次选中的校区名；如果该校区名在当前的校区列表中不存在（如数据更新导致名称变化），则默认选中第一个校区
 - **比 URL 参数优先**: 校区视角不使用 URL 参数，完全依赖 localStorage
+- **无需过期**: 校区名是静态的，只需检查缓存值是否仍在当前校区列表中即可
 
 ### 楼栋视角 (building-view.html)
 
 - **保存时机**: 每次校区或楼栋选择变化时（`onCampusChange` 和楼栋选择回调），保存 `{ campus, building, date, sortDesc, page }`
-- **恢复时机**: 优先级顺序：URL 参数 > localStorage > 默认（空选择）
+- **恢复时机**: 优先级顺序：URL 参数 > localStorage > 默认（空选择，即当前行为：无预选，用户手动选择）
   - 已有 URL 参数恢复逻辑不变
   - 无 URL 参数时，尝试从 localStorage 恢复
+- **无需过期**: 同上，只需检查缓存值是否仍有效
 
 ### 字段兼容性
 
-由于 `electricity_user_config` 被三个页面共享，需要确保字段不冲突：
+由于 `electricity_user_config` 被三个页面共享，直接使用 `setUserConfig(newObj)` 会覆盖其他页面的字段。因此采用**读-改-写**模式：
 
-- room-view 写入 `{ campus, building, roomName, displayName }` — 不包含 `date`/`sortDesc`/`page`
-- campus-view 写入 `{ campus }` — 只写 `campus`，不覆盖其他字段
-- building-view 写入 `{ campus, building, date, sortDesc, page }` — 不包含 `roomName`/`displayName`
+```javascript
+function savePartialConfig(partial) {
+  const config = DataService.getUserConfig() || {};
+  Object.assign(config, partial);
+  DataService.setUserConfig(config);
+}
+```
+
+各页面只更新自己的字段：
+
+- room-view 调用 `savePartialConfig({ campus, building, roomName, displayName })`
+- campus-view 调用 `savePartialConfig({ campus })`
+- building-view 调用 `savePartialConfig({ campus, building, date, sortDesc, page })`
 
 从 localStorage 读取时，各页面只取自己需要的字段，忽略无关字段。
 
