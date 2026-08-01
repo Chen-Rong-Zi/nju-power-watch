@@ -127,7 +127,7 @@ const FloorView = {
     highlight.style.opacity = '1';
   },
 
-  renderFloorChart(floorStats, container, selectedFloors) {
+  renderFloorChart(floorStats, container, selectedFloors, onChartClick) {
     if (this._chartInstance) {
       this._chartInstance.destroy();
       this._chartInstance = null;
@@ -197,6 +197,13 @@ const FloorView = {
             beginAtZero: true,
             grid: { color: 'rgba(0,0,0,0.05)' },
             ticks: { font: { size: 11 } }
+          }
+        },
+        onClick: function(e, elements) {
+          if (elements.length > 0) {
+            var idx = elements[0].index;
+            var floor = numericFloors[idx];
+            if (onChartClick) onChartClick(floor);
           }
         }
       }
