@@ -377,8 +377,8 @@
         const stored = localStorage.getItem('electricity_user_config_' + page);
         return stored ? JSON.parse(stored) : null;
       },
-      clearUserConfig() {
-        localStorage.removeItem('electricity_user_config');
+      removePageConfig(page) {
+        localStorage.removeItem('electricity_user_config_' + page);
       }
     };
     function checkUserConfig() {
@@ -399,7 +399,7 @@
     }
     function clearConfig() {
       if (confirm('确定要更换房间吗？')) {
-        DataService.clearUserConfig();
+        DataService.removePageConfig('room');
         location.reload();
       }
     }
