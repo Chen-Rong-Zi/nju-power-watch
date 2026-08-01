@@ -104,7 +104,7 @@ const FloorView = {
     const allSelected = Array.from(allFloorNodes).every(n => n.classList.contains('active'));
     allNode.classList.toggle('active', allSelected);
 
-    this._onToggle(selected.size > 0 ? selected : null);
+    this._onToggle(selected);
     this._updateHighlight();
   },
 

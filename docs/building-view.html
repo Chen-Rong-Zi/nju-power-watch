@@ -1459,7 +1459,7 @@
     <!-- 楼层耗电对比 -->
     <div class="chart-card" id="floor-chart-card" style="display: none;">
       <div class="chart-header">
-        <h2 class="chart-title">楼层耗电对比</h2>
+        <h2 class="chart-title">楼层平均耗电对比</h2>
       </div>
       <div class="chart-container">
         <canvas id="floor-chart"></canvas>
@@ -1765,7 +1765,7 @@
 
         if (state.selectedFloors === null) {
           newSelection = new Set(state.floorStats.sortedFloors.filter(function(f) { return f !== 'unknown'; }));
-          if (isSelected) newSelection.delete(clickedFloor);
+          newSelection.delete(clickedFloor);
         } else {
           newSelection = new Set(state.selectedFloors);
           if (isSelected) {
@@ -1900,6 +1900,7 @@
 
       state.campus = e.target.value;
       state.currentPage = 1;
+      state.selectedFloors = null;
       if (!state.campus) {
         showEmptyState();
         return;
@@ -1955,6 +1956,7 @@
 
       state.building = e.target.value;
       state.currentPage = 1;
+      state.selectedFloors = null;
       saveStateToUrl();
       saveBuildingConfig();
       if (state.building) {
