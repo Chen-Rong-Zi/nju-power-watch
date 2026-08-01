@@ -1210,6 +1210,144 @@
     .dist-legend-item:hover {
       background: var(--hover);
     }
+
+    /* 手机端隐藏侧边栏 */
+    @media (max-width: 800px) {
+      .floor-side { display: none !important; }
+    }
+
+    /* FAB 悬浮按钮 */
+    .floor-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+      z-index: 50;
+      font-size: 18px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    .floor-fab:hover { transform: scale(1.05); }
+    .floor-fab:active { transform: scale(0.92); }
+
+    .floor-fab-badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      min-width: 18px; height: 18px;
+      border-radius: 9px;
+      background: #f59e0b;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    /* 抽屉遮罩 */
+    .floor-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+    }
+    .floor-drawer-overlay.open { opacity: 1; pointer-events: auto; }
+
+    /* 抽屉面板 */
+    .floor-drawer-panel {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--surface);
+      border-radius: 20px 20px 0 0;
+      z-index: 101;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 60vh;
+      padding: 0;
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    .floor-drawer-panel.open { transform: translateY(0); }
+
+    .floor-drawer-handle {
+      width: 36px; height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      margin: 12px auto;
+      flex-shrink: 0;
+    }
+
+    .floor-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .floor-drawer-title { font-weight: 600; font-size: 16px; }
+    .floor-drawer-close {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #f5f5f5;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+    }
+    .floor-drawer-close:hover { background: #e8e8e8; }
+
+    .floor-drawer-list {
+      overflow-y: auto;
+      padding: 8px 20px 20px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .floor-drawer-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s;
+      border-radius: 8px;
+    }
+    .floor-drawer-item:last-child { border-bottom: none; }
+    .floor-drawer-item:hover { background: #f8f8fa; }
+
+    .floor-drawer-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: #d0d0d0;
+      margin-right: 14px;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .floor-drawer-dot.active {
+      background: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in oklch, var(--accent) 20%, transparent);
+      width: 16px; height: 16px;
+    }
+
+    .floor-drawer-item-label { font-size: 14px; flex: 1; }
+    .floor-drawer-item-count { font-size: 12px; color: var(--muted); }
+    .floor-drawer-item-sub { font-size: 12px; color: #bbb; margin-left: 8px; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
