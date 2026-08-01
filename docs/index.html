@@ -471,7 +471,7 @@
 
     // 检查用户配置
     function checkUserConfig() {
-      const config = DataService.getUserConfig();
+      const config = DataService.getPageConfig('room');
 
       const statusCard = document.getElementById('status-card');
       const statusIcon = document.getElementById('status-icon');

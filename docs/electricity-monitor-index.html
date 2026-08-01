@@ -372,8 +372,8 @@
   </footer>
   <script>
     const DataService = {
-      getUserConfig() {
-        const stored = localStorage.getItem('electricity_user_config');
+      getPageConfig(page) {
+        const stored = localStorage.getItem('electricity_user_config_' + page);
         return stored ? JSON.parse(stored) : null;
       },
       clearUserConfig() {
@@ -381,7 +381,7 @@
       }
     };
     function checkUserConfig() {
-      const config = DataService.getUserConfig();
+      const config = DataService.getPageConfig('room');
       const statusIcon = document.getElementById('status-icon');
       const statusTitle = document.getElementById('status-title');
       const statusSubtitle = document.getElementById('status-subtitle');

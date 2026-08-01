@@ -990,6 +990,22 @@ const DataService = {
   },
 
   /**
+   * 页面独立配置管理
+   * 每个页面使用独立的 key，避免互相覆盖
+   */
+  getPageConfig(page) {
+    const stored = localStorage.getItem(`electricity_user_config_${page}`);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    return null;
+  },
+
+  setPageConfig(page, config) {
+    localStorage.setItem(`electricity_user_config_${page}`, JSON.stringify(config));
+  },
+
+  /**
    * 耗电量直观描述
    * 根据消耗度数返回各种类比描述
    */

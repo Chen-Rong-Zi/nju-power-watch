@@ -1585,13 +1585,13 @@
 
     // localStorage 读-改-写辅助，避免覆盖其他页面的字段
     function saveBuildingConfig() {
-      const config = DataService.getUserConfig() || {};
+      const config = DataService.getPageConfig('building') || {};
       if (state.campus) config.campus = state.campus;
       if (state.building) config.building = state.building;
       config.date = state.date;
       config.sortDesc = state.sortDesc;
       config.page = state.currentPage;
-      DataService.setUserConfig(config);
+      DataService.setPageConfig('building', config);
     }
 
     // 三级缓存
@@ -1604,7 +1604,7 @@
     // ==================== 初始化 ====================
     document.addEventListener('DOMContentLoaded', async () => {
       await DataService.initDB();
-      state.userConfig = DataService.getUserConfig();
+      state.userConfig = DataService.getPageConfig('building');
       await initCampusSelect();
       restoreStateFromUrl();
       setupEventListeners();
@@ -1660,7 +1660,7 @@
 
       // 无 URL 参数时，尝试从 localStorage 恢复
       if (!campus) {
-        const savedConfig = DataService.getUserConfig();
+        const savedConfig = DataService.getPageConfig('building');
         if (savedConfig && savedConfig.campus) {
           state.campus = savedConfig.campus;
           document.getElementById('campus-select').value = savedConfig.campus;

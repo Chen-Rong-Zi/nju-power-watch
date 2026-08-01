@@ -758,7 +758,7 @@
       const container = document.getElementById('campus-tabs');
 
       // 从 localStorage 恢复上次选中的校区
-      const savedConfig = DataService.getUserConfig();
+      const savedConfig = DataService.getPageConfig('campus');
       const savedCampus = savedConfig && savedConfig.campus;
       const validSavedCampus = savedCampus && campuses.indexOf(savedCampus) !== -1 ? savedCampus : null;
 
@@ -802,9 +802,9 @@
 
     // localStorage 读-改-写辅助，避免覆盖其他页面的字段
     function savePartialConfig(partial) {
-      const config = DataService.getUserConfig() || {};
+      const config = DataService.getPageConfig('campus') || {};
       Object.assign(config, partial);
-      DataService.setUserConfig(config);
+      DataService.setPageConfig('campus', config);
     }
 
     async function selectCampus(campus, tabEl) {

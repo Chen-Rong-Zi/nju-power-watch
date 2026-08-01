@@ -1182,7 +1182,7 @@
 
     // 加载用户配置
     async function loadUserConfig() {
-      userConfig = DataService.getUserConfig();
+      userConfig = DataService.getPageConfig('room');
       if (userConfig) {
         hideConfig();
         await loadRoomData();
@@ -1661,7 +1661,7 @@
       }
 
       userConfig = { campus, building, roomName, displayName };
-      DataService.setUserConfig(userConfig);
+      DataService.setPageConfig('room', userConfig);
       hideConfig();
       loadRoomData();
     }
