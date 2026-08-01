@@ -1006,6 +1006,18 @@ const DataService = {
   },
 
   /**
+   * 清理旧版共享配置
+   * 迁移到页面独立 key 后，删除旧 shared key
+   */
+  clearOldConfig() {
+    localStorage.removeItem('electricity_user_config');
+  },
+};
+
+// 自动清理旧版共享配置 key
+DataService.clearOldConfig();
+
+  /**
    * 耗电量直观描述
    * 根据消耗度数返回各种类比描述
    */
