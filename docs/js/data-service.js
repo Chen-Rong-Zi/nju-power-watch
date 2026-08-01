@@ -467,6 +467,10 @@ const DataService = {
       const response = await fetch(
         `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${encodeURIComponent(roomName)}.json`
       );
+      if (!response.ok) {
+        console.warn(`[房间文件不存在] ${campusName}/${buildingName}/${roomName}.json`);
+        return null;
+      }
       const data = await response.json();
 
       // 转换历史数据为数组格式
@@ -580,6 +584,11 @@ const DataService = {
         const response = await fetch(
           `${this.SUMMARIES_PATH}/campuses/${encodeURIComponent(campusName)}/buildings/${encodeURIComponent(buildingName)}/rooms/${encodeURIComponent(roomName)}.json`
         );
+        if (!response.ok) {
+          loaded++;
+          onRoomLoaded(roomName, null, loaded, total);
+          return { roomName, data: null, error: new Error('File not found') };
+        }
         const rawData = await response.json();
 
         // 转换历史数据
