@@ -76,7 +76,7 @@ const FloorView = {
 
     if (allActive) {
       nodes.forEach(n => n.classList.remove('active'));
-      this._onToggle(null);
+      this._onToggle(new Set());
     } else {
       nodes.forEach(n => n.classList.add('active'));
       this._onToggle(null);
@@ -322,7 +322,7 @@ const FloorView = {
     var allDot = this._drawerEl && this._drawerEl.querySelector('.floor-drawer-item.all .floor-drawer-dot');
     var allActive = allDot && allDot.classList.contains('active');
     if (this._drawerOnToggle) {
-      this._drawerOnToggle(allActive ? null : new Set());
+      this._drawerOnToggle(allActive ? new Set() : null);
     }
   },
 

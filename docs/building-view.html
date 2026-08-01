@@ -1803,16 +1803,15 @@
         document.getElementById('stat-rooms').textContent = '--';
         document.getElementById('stat-avg').textContent = '--';
         document.getElementById('stat-max').textContent = '--';
-        return;
+      } else {
+        const total = filteredRankings.reduce((s, r) => s + r.consumption, 0);
+        const avg = total / filteredRankings.length;
+        const max = Math.max(...filteredRankings.map(r => r.consumption));
+        document.getElementById('stat-total').textContent = total.toFixed(1) + '度';
+        document.getElementById('stat-rooms').textContent = filteredRankings.length;
+        document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
+        document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
       }
-
-      const total = filteredRankings.reduce((s, r) => s + r.consumption, 0);
-      const avg = total / filteredRankings.length;
-      const max = Math.max(...filteredRankings.map(r => r.consumption));
-      document.getElementById('stat-total').textContent = total.toFixed(1) + '度';
-      document.getElementById('stat-rooms').textContent = filteredRankings.length;
-      document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
-      document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
 
       // 更新图表
       FloorView.updateChart(state.floorStats, state.selectedFloors);
