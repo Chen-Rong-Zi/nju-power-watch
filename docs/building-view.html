@@ -1657,6 +1657,44 @@
           }
         }
       }
+
+      // 无 URL 参数时，尝试从 localStorage 恢复
+      if (!campus) {
+        const savedConfig = DataService.getUserConfig();
+        if (savedConfig && savedConfig.campus) {
+          state.campus = savedConfig.campus;
+          document.getElementById('campus-select').value = savedConfig.campus;
+
+          // 等待楼栋选项加载完成
+          await onCampusChange({ target: { value: savedConfig.campus } });
+
+          if (savedConfig.building) {
+            await new Promise(resolve => requestAnimationFrame(resolve));
+            const buildingSelect = document.getElementById('building-select');
+            const optionExists = Array.from(buildingSelect.options).some(opt => opt.value === savedConfig.building);
+
+            if (optionExists) {
+              state.building = savedConfig.building;
+              buildingSelect.value = savedConfig.building;
+
+              if (savedConfig.date) {
+                state.date = savedConfig.date;
+                setActiveDateButton(savedConfig.date);
+              }
+              if (savedConfig.sortDesc !== undefined) {
+                state.sortDesc = savedConfig.sortDesc === true || savedConfig.sortDesc === 'true';
+                updateSortButton();
+              }
+              if (savedConfig.page) {
+                state.currentPage = parseInt(savedConfig.page) || 1;
+              }
+
+              await loadRanking();
+              loadBuildingTrend(state.campus, state.building);
+            }
+          }
+        }
+      }
     }
 
     function saveStateToUrl() {
