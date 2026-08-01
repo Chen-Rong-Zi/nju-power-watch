@@ -381,6 +381,8 @@
       }
     };
     function checkUserConfig() {
+      // 清理旧版共享配置 key
+      localStorage.removeItem('electricity_user_config');
       const config = DataService.getPageConfig('room');
       const statusIcon = document.getElementById('status-icon');
       const statusTitle = document.getElementById('status-title');
