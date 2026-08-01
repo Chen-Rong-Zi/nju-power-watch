@@ -1670,6 +1670,29 @@
       }
     }
 
+    function syncSidebarState(selectedFloors) {
+      document.querySelectorAll('.floor-node:not(.all)').forEach(function(node) {
+        var floor = node.dataset.floor === 'unknown' ? 'unknown' : parseInt(node.dataset.floor);
+        var isActive = selectedFloors === null || (selectedFloors && selectedFloors.has(floor));
+        node.classList.toggle('active', !!isActive);
+      });
+
+      var allNode = document.querySelector('.floor-node.all');
+      if (allNode) {
+        var allFloorNodes = document.querySelectorAll('.floor-node:not(.all)');
+        var allSelected = true;
+        for (var i = 0; i < allFloorNodes.length; i++) {
+          if (!allFloorNodes[i].classList.contains('active')) {
+            allSelected = false;
+            break;
+          }
+        }
+        allNode.classList.toggle('active', allSelected);
+      }
+
+      FloorView._updateHighlight();
+    }
+
     // ==================== 楼层分析 ====================
     async function runFloorAnalysis(allRankings, roomNames) {
       const floorMap = await FloorUtils.loadFloorMap();
@@ -1684,7 +1707,34 @@
       });
 
       const floorChartCard = document.getElementById('floor-chart-card');
-      FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloors);
+      FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloors, function(clickedFloor) {
+        var isSelected = state.selectedFloors && state.selectedFloors.has(clickedFloor);
+        var newSelection;
+
+        if (state.selectedFloors === null) {
+          newSelection = new Set(state.floorStats.sortedFloors.filter(function(f) { return f !== 'unknown'; }));
+          if (isSelected) newSelection.delete(clickedFloor);
+        } else {
+          newSelection = new Set(state.selectedFloors);
+          if (isSelected) {
+            newSelection.delete(clickedFloor);
+          } else {
+            newSelection.add(clickedFloor);
+          }
+        }
+
+        state.selectedFloors = newSelection.size > 0 ? newSelection : null;
+        onFloorSelectionChange();
+        syncSidebarState(state.selectedFloors);
+        FloorView.updateFabBadge(state.selectedFloors, state.floorStats);
+        FloorView.updateDrawer(state.selectedFloors);
+      });
+
+      // FAB + 抽屉
+      FloorView.renderDrawer(state.floorStats, function(selectedFloors) {
+        state.selectedFloors = selectedFloors;
+        onFloorSelectionChange();
+      });
     }
 
     function onFloorSelectionChange() {
@@ -1904,6 +1954,7 @@
     async function loadRanking() {
       // 增加loadId，用于取消旧请求
       const thisLoadId = ++state.currentLoadId;
+      FloorView.hideDrawer();
       const cacheKey = `${state.campus}/${state.building}/${state.date}`;
 
       // Reset fallback banner on fresh load
