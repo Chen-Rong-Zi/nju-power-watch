@@ -7,6 +7,7 @@ const FloorUtils = {
   _floorMap: null,
 
   async loadFloorMap() {
+    if (this._floorMap) return this._floorMap;
     try {
       const resp = await fetch('../config/floor_map.json');
       if (!resp.ok) {
@@ -22,6 +23,7 @@ const FloorUtils = {
   },
 
   extractFloor(roomName, campus, building, floorMap) {
+    if (!roomName) return null;
     const map = floorMap || this._floorMap || {};
 
     // 1. 检查手动映射
