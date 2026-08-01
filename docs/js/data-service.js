@@ -1012,10 +1012,6 @@ const DataService = {
   clearOldConfig() {
     localStorage.removeItem('electricity_user_config');
   },
-};
-
-// 自动清理旧版共享配置 key
-DataService.clearOldConfig();
 
   /**
    * 耗电量直观描述
@@ -2530,6 +2526,9 @@ DataService.clearOldConfig();
     }
   }
 };
+
+// 自动清理旧版共享配置 key
+DataService.clearOldConfig();
 
 /**
  * 耗电量的直观类比工具

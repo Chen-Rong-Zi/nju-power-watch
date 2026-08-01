@@ -1554,7 +1554,7 @@
 </main>
 
 <script src="js/indexeddb-service.js"></script>
-<script src="js/data-service.js?v=20260801-v4"></script>
+<script src="js/data-service.js?v=20260801-v5"></script>
 <script src="js/distribution-analyzer.js"></script>
 <script src="js/floor-utils.js"></script>
 <script src="js/floor-analytics.js"></script>
@@ -1744,8 +1744,8 @@
     }
 
     // ==================== 楼层分析 ====================
-    async function runFloorAnalysis(allRankings, roomNames) {
-      const floorMap = await FloorUtils.loadFloorMap();
+    async function runFloorAnalysis(allRankings, roomNames, preloadedFloorMap) {
+      const floorMap = preloadedFloorMap || await FloorUtils.loadFloorMap();
       state.floorMap = floorMap;
       state.floorGroups = FloorUtils.groupRoomsByFloor(roomNames, state.campus, state.building, floorMap);
       state.floorStats = FloorAnalytics.calculateFloorStats(allRankings, state.floorGroups);
@@ -2181,6 +2181,9 @@
       const roomMap = buildingSummary.rooms;
       const roomNames = Object.keys(roomMap);
 
+      // 预加载楼层地图（在流式加载期间完成，后续同步渲染）
+      FloorUtils.loadFloorMap().catch(() => {});
+
       // 如果需要动画，显示进度条和空列表
       const progressEl = document.getElementById('animation-progress');
       const progressText = document.getElementById('animation-progress-text');
@@ -2341,9 +2344,6 @@
       allRankings.sort((a, b) => b.consumption - a.consumption);
       allRankings.forEach((r, idx) => r.rank = idx + 1);
 
-      // === 楼层分析 ===
-      await runFloorAnalysis(allRankings, roomNames);
-
       // 缓存结果到内存
       consumptionCache.set(effectiveCacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
 
@@ -2360,11 +2360,8 @@
         noDataRooms: noDataRooms.map(r => r.roomName)
       });
 
-
-      // 隐藏进度条
+      // 隐藏进度条（立即隐藏，无延迟）
       if (!hasAnimationShown) {
-        progressText.textContent = '计算完成';
-        await sleep(500);
         progressEl.style.display = 'none';
       }
 
@@ -2372,6 +2369,12 @@
       if (thisLoadId !== state.currentLoadId) {
         return;
       }
+
+      // === 预加载楼层地图（此时已缓存，同步返回） ===
+      const floorMap = await FloorUtils.loadFloorMap();
+
+      // === 楼层分析（使用预加载的 floorMap，避免异步等待） ===
+      await runFloorAnalysis(allRankings, roomNames, floorMap);
 
       // 显示结果
       displayRanking(allRankings, noDataRooms);
