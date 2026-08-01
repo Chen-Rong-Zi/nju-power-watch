@@ -1704,6 +1704,8 @@
       FloorView.renderIndicator(state.floorStats, floorSide, (selectedFloors) => {
         state.selectedFloors = selectedFloors;
         onFloorSelectionChange();
+        FloorView.updateFabBadge(state.selectedFloors, state.floorStats);
+        FloorView.updateDrawer(state.selectedFloors);
       });
 
       const floorChartCard = document.getElementById('floor-chart-card');
@@ -1736,6 +1738,7 @@
         onFloorSelectionChange();
         syncSidebarState(state.selectedFloors);
         FloorView.updateFabBadge(state.selectedFloors, state.floorStats);
+        FloorView.updateDrawer(state.selectedFloors);
       });
     }
 
