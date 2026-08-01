@@ -26,27 +26,9 @@ const FloorUtils = {
     if (!roomName) return null;
     const map = floorMap || this._floorMap || {};
 
-    // Get building config for maxFloor check
-    let buildingMap = null;
-    if (map[campus] && map[campus][building]) {
-      buildingMap = map[campus][building];
-    }
-
-    // Constrain parsed floor by building's maxFloor
-    // For 4-digit codes in buildings with ≤9 floors, first digit = floor, not first 2
-    const applyMaxFloor = (floor) => {
-      if (buildingMap && buildingMap.maxFloor && floor !== null && floor > buildingMap.maxFloor) {
-        const firstDigit = parseInt(roomName[0]);
-        if (!isNaN(firstDigit) && firstDigit > 0 && firstDigit <= buildingMap.maxFloor) {
-          return firstDigit;
-        }
-        return null;
-      }
-      return floor;
-    };
-
     // 1. 检查手动映射
-    if (buildingMap) {
+    if (map[campus] && map[campus][building]) {
+      const buildingMap = map[campus][building];
       if (buildingMap.manual && buildingMap.manual[roomName] !== undefined) {
         return buildingMap.manual[roomName];
       }
@@ -71,7 +53,7 @@ const FloorUtils = {
     // 3位数字 "101" → 1层, 4位数字 "1103" → 11层
     if (/^\d+$/.test(roomName)) {
       if (roomName.length === 3) return parseInt(roomName[0]);
-      if (roomName.length >= 4) return applyMaxFloor(parseInt(roomName.slice(0, 2)));
+      if (roomName.length >= 4) return parseInt(roomName.slice(0, 2));
     }
 
     // 6. 规则: 带后缀数字房间
@@ -80,7 +62,7 @@ const FloorUtils = {
     if (suffixMatch) {
       const num = suffixMatch[1];
       if (num.length === 3) return parseInt(num[0]);
-      if (num.length >= 4) return applyMaxFloor(parseInt(num.slice(0, 2)));
+      if (num.length >= 4) return parseInt(num.slice(0, 2));
     }
 
     // 7. 无法识别

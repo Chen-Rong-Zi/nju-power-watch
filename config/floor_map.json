@@ -1,33 +1,5 @@
 {
   "仙林校区": {
-    "6幢": {
-      "mode": "auto",
-      "maxFloor": 6
-    },
-    "7幢": {
-      "mode": "auto",
-      "maxFloor": 6
-    },
-    "8幢": {
-      "mode": "auto",
-      "maxFloor": 6
-    },
-    "9幢": {
-      "mode": "auto",
-      "maxFloor": 6
-    },
-    "10幢": {
-      "mode": "auto",
-      "maxFloor": 6
-    },
-    "11幢": {
-      "mode": "auto",
-      "maxFloor": 6
-    },
-    "一期食堂": {
-      "mode": "auto",
-      "maxFloor": 1
-    },
     "19幢": {
       "mode": "auto"
     },
@@ -59,14 +31,6 @@
     }
   },
   "鼓楼校区": {
-    "南园1舍": {
-      "mode": "auto",
-      "maxFloor": 6
-    },
-    "南园8舍": {
-      "mode": "auto",
-      "maxFloor": 7
-    },
     "南园3舍": {
       "mode": "auto",
       "manual": {
