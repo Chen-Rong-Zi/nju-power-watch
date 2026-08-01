@@ -49,7 +49,23 @@ const FloorUtils = {
     const chinesePrefixMatch = roomName.match(/^[^\dA-Za-z]+(\d)/);
     if (chinesePrefixMatch) return parseInt(chinesePrefixMatch[1]);
 
-    // 5. 无法识别
+    // 5. 规则: 纯数字房间名
+    // 3位数字 "101" → 1层, 4位数字 "1103" → 11层
+    if (/^\d+$/.test(roomName)) {
+      if (roomName.length === 3) return parseInt(roomName[0]);
+      if (roomName.length >= 4) return parseInt(roomName.slice(0, 2));
+    }
+
+    // 6. 规则: 带后缀数字房间
+    // "321房间" → 截取 "321" → 3层, "105-1" → 截取 "105" → 1层
+    const suffixMatch = roomName.match(/^(\d+)(?:-\d+)?(?:房间|厨房|商户)?$/);
+    if (suffixMatch) {
+      const num = suffixMatch[1];
+      if (num.length === 3) return parseInt(num[0]);
+      if (num.length >= 4) return parseInt(num.slice(0, 2));
+    }
+
+    // 7. 无法识别
     return null;
   },
 
