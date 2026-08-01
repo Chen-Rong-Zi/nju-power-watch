@@ -46,32 +46,33 @@ renderDistributionChart(filteredRankings);
 ### 行为
 
 - 点击楼层耗电对比图表的柱子 → 切换该楼层在 `state.selectedFloors` 中的选中状态
-- 已选中的柱子：绿色（`rgba(16, 185, 129, 0.8)`）
-- 未选中的柱子：灰色（`rgba(200, 200, 200, 0.3)`）
+- 已选中的柱子保持绿色，未选中的变灰
 - 点击后同步更新侧边栏、FAB 徽标、抽屉
 
 ### 实现
 
-在 `FloorView.renderFloorChart()` 中增加 Chart.js `onClick` 回调：
+`renderFloorChart()` 增加 `onChartClick` 回调和 `numericFloors` 局部变量：
 
 ```javascript
 renderFloorChart(floorStats, container, selectedFloors, onChartClick) {
+  const { floors, sortedFloors } = floorStats;
+  const numericFloors = sortedFloors.filter(f => f !== 'unknown');
   // ... 现有图表代码 ...
-  this._chartInstance.options.onClick = (e, elements) => {
+
+  this._chartInstance.options.onClick = function(e, elements) {
     if (elements.length > 0) {
       const idx = elements[0].index;
-      const floor = numericFloors[idx];  // 映射回楼层号
+      const floor = numericFloors[idx];
       onChartClick(floor);
     }
   };
 }
 ```
 
-在 `building-view.html` 中调用：
+在 `runFloorAnalysis()` 中调用：
 
 ```javascript
-FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloors, (clickedFloor) => {
-  // 切换该楼层的选中状态
+FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloors, function(clickedFloor) {
   const isSelected = state.selectedFloors?.has(clickedFloor);
   let newSelection;
 
@@ -90,9 +91,7 @@ FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloor
 
   state.selectedFloors = newSelection.size > 0 ? newSelection : null;
   onFloorSelectionChange();
-  // 同步侧边栏状态
   syncSidebarState(state.selectedFloors);
-  // 同步 FAB/抽屉状态
   FloorView.updateFabBadge(state.selectedFloors, state.floorStats);
   FloorView.updateDrawer(state.selectedFloors);
 });
@@ -125,11 +124,10 @@ FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloor
   box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
   z-index: 50;
   font-size: 18px;
-  display: flex;
+  display: none; /* 默认隐藏，楼层数据加载后通过 JS 显示 */
   align-items: center;
   justify-content: center;
   transition: transform 0.2s;
-  display: none; /* 默认隐藏，楼层数据加载后显示 */
 }
 .floor-fab:hover { transform: scale(1.05); }
 .floor-fab:active { transform: scale(0.92); }
@@ -231,9 +229,10 @@ FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloor
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   transition: background 0.15s;
+  border-radius: 8px; /* 防止 hover 时 margin 溢出 */
 }
 .floor-drawer-item:last-child { border-bottom: none; }
-.floor-drawer-item:hover { background: #f8f8fa; margin: 0 -20px; padding-left: 20px; padding-right: 20px; }
+.floor-drawer-item:hover { background: #f8f8fa; }
 
 .floor-drawer-dot {
   width: 14px;
@@ -263,14 +262,14 @@ FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloor
 ```javascript
 // 渲染 FAB + 抽屉
 renderDrawer(floorStats, onToggle) {
-  this._drawerOnToggle = onToggle; // 复用同一状态回调
+  this._drawerOnToggle = onToggle;
 
   // 创建 FAB
   if (!this._fabEl) {
     this._fabEl = document.createElement('button');
     this._fabEl.className = 'floor-fab';
     this._fabEl.innerHTML = '<span>🏢</span><span class="floor-fab-badge" id="fab-badge"></span>';
-    this._fabEl.onclick = () => this._toggleDrawer(true);
+    this._fabEl.onclick = function() { FloorView._toggleDrawer(true); };
     document.body.appendChild(this._fabEl);
   }
   this._fabEl.style.display = 'flex';
@@ -279,7 +278,7 @@ renderDrawer(floorStats, onToggle) {
   if (!this._overlayEl) {
     this._overlayEl = document.createElement('div');
     this._overlayEl.className = 'floor-drawer-overlay';
-    this._overlayEl.onclick = () => this._toggleDrawer(false);
+    this._overlayEl.onclick = function() { FloorView._toggleDrawer(false); };
     document.body.appendChild(this._overlayEl);
   }
 
@@ -287,21 +286,21 @@ renderDrawer(floorStats, onToggle) {
   if (!this._drawerEl) {
     this._drawerEl = document.createElement('div');
     this._drawerEl.className = 'floor-drawer-panel';
-    this._drawerEl.innerHTML = `
-      <div class="floor-drawer-handle"></div>
-      <div class="floor-drawer-header">
-        <span class="floor-drawer-title">选择楼层</span>
-        <button class="floor-drawer-close">✕</button>
-      </div>
-      <div class="floor-drawer-list" id="drawer-list"></div>
-    `;
-    this._drawerEl.querySelector('.floor-drawer-close').onclick = () => this._toggleDrawer(false);
+    this._drawerEl.innerHTML = [
+      '<div class="floor-drawer-handle"></div>',
+      '<div class="floor-drawer-header">',
+      '  <span class="floor-drawer-title">选择楼层</span>',
+      '  <button class="floor-drawer-close">✕</button>',
+      '</div>',
+      '<div class="floor-drawer-list" id="drawer-list"></div>'
+    ].join('');
+    this._drawerEl.querySelector('.floor-drawer-close').onclick = function() { FloorView._toggleDrawer(false); };
     document.body.appendChild(this._drawerEl);
   }
 
   // 填充列表
   this._renderDrawerList(floorStats);
-  this._updateFabBadge(null, floorStats);
+  this.updateFabBadge(null, floorStats);
 }
 
 _renderDrawerList(floorStats) {
@@ -309,43 +308,47 @@ _renderDrawerList(floorStats) {
   const listEl = document.getElementById('drawer-list');
   listEl.innerHTML = '';
 
-  const createItem = (floor, label, stats) => {
+  const self = this;
+
+  function createItem(floor, label, stats) {
     const item = document.createElement('div');
     item.className = 'floor-drawer-item' + (floor === 'all' ? ' all' : '');
     item.dataset.floor = String(floor);
     const count = floor === 'all'
-      ? sortedFloors.filter(f => f !== 'unknown').length
+      ? sortedFloors.filter(function(f) { return f !== 'unknown'; }).length
       : stats.roomCount;
-    const avg = floor === 'all'
-      ? null
-      : stats.avgConsumption;
-    item.innerHTML = `
-      <div class="floor-drawer-dot active"></div>
-      <span class="floor-drawer-item-label">${label}</span>
-      <span class="floor-drawer-item-count">${count}间</span>
-      ${avg !== null ? `<span class="floor-drawer-item-sub">均耗 ${avg.toFixed(1)}</span>` : ''}
-    `;
-    item.onclick = (e) => {
+    var avg = null;
+    if (floor !== 'all') avg = stats.avgConsumption;
+    var html = [
+      '<div class="floor-drawer-dot active"></div>',
+      '<span class="floor-drawer-item-label">' + label + '</span>',
+      '<span class="floor-drawer-item-count">' + count + '间</span>'
+    ];
+    if (avg !== null) {
+      html.push('<span class="floor-drawer-item-sub">均耗 ' + avg.toFixed(1) + '</span>');
+    }
+    item.innerHTML = html.join('');
+    item.onclick = function(e) {
       e.stopPropagation();
       if (floor === 'all') {
-        // 全部楼层：切换全选/取消
-        this._toggleAllFromDrawer();
+        self._toggleAllFromDrawer();
       } else {
-        const f = floor === 'unknown' ? 'unknown' : parseInt(floor);
-        this._toggleFloorFromDrawer(f);
+        var f = floor === 'unknown' ? 'unknown' : parseInt(floor);
+        self._toggleFloorFromDrawer(f);
       }
     };
     return item;
-  };
+  }
 
   // 全部楼层
   listEl.appendChild(createItem('all', '全部楼层', null));
 
-  // 各楼层
-  sortedFloors.forEach(floor => {
-    if (floor === 'unknown') return;
-    listEl.appendChild(createItem(floor, `${floor}层`, floors[floor]));
-  });
+  // 各楼层（按 sortedFloors 顺序）
+  for (var i = 0; i < sortedFloors.length; i++) {
+    var floor = sortedFloors[i];
+    if (floor === 'unknown') continue;
+    listEl.appendChild(createItem(floor, floor + '层', floors[floor]));
+  }
 
   // 处理 unknown
   if (floors.unknown) {
@@ -354,58 +357,100 @@ _renderDrawerList(floorStats) {
 }
 
 _toggleAllFromDrawer() {
-  // 复用与侧边栏相同的全选逻辑
-  const allActive = this._drawerEl?.querySelector('.floor-drawer-item.all .floor-drawer-dot')?.classList.contains('active');
-  if (allActive) {
-    this._drawerOnToggle(new Set());
-  } else {
-    this._drawerOnToggle(null);
+  var allDot = this._drawerEl && this._drawerEl.querySelector('.floor-drawer-item.all .floor-drawer-dot');
+  var allActive = allDot && allDot.classList.contains('active');
+  // 全部选中 → null（全部楼层）；全部取消 → 空 Set（无选中）
+  if (this._drawerOnToggle) {
+    this._drawerOnToggle(allActive ? null : new Set());
   }
 }
 
 _toggleFloorFromDrawer(floor) {
-  // 复用与侧边栏相同的切换逻辑
-  const currentSelected = this._lastSelected || null;
-  // ... 切换逻辑通过 _drawerOnToggle 回调
-  // 实际实现会读取当前抽屉状态来计算新的 selectedFloors
+  // 读取当前抽屉选中状态，切换指定楼层
+  var items = this._drawerEl && this._drawerEl.querySelectorAll('.floor-drawer-item:not(.all)');
+  if (!items) return;
+
+  var activeSet = new Set();
+  for (var i = 0; i < items.length; i++) {
+    var dot = items[i].querySelector('.floor-drawer-dot');
+    var f = items[i].dataset.floor;
+    if (f === 'unknown') f = 'unknown';
+    else f = parseInt(f);
+    if (dot && dot.classList.contains('active')) {
+      activeSet.add(f);
+    }
+  }
+
+  // 切换指定楼层
+  if (activeSet.has(floor)) {
+    activeSet.delete(floor);
+  } else {
+    activeSet.add(floor);
+  }
+
+  if (this._drawerOnToggle) {
+    this._drawerOnToggle(activeSet.size > 0 ? activeSet : null);
+  }
 }
 
 _toggleDrawer(open) {
   this._drawerOpen = open;
-  this._overlayEl.classList.toggle('open', open);
-  this._drawerEl.classList.toggle('open', open);
+  if (this._overlayEl) this._overlayEl.classList.toggle('open', open);
+  if (this._drawerEl) this._drawerEl.classList.toggle('open', open);
   document.body.style.overflow = open ? 'hidden' : '';
 }
 
 updateDrawer(selectedFloors) {
-  const items = this._drawerEl?.querySelectorAll('.floor-drawer-item');
-  if (!items) return;
-  const isAll = selectedFloors === null;
-  items.forEach((item, i) => {
-    const dot = item.querySelector('.floor-drawer-dot');
-    if (i === 0) {
-      // 全部楼层
-      const allSelected = Array.from(items).slice(1).every(it => it.classList.contains('selected'));
-      dot.classList.toggle('active', allSelected);
-    } else {
-      const floorStr = item.dataset.floor;
-      const floor = floorStr === 'unknown' ? 'unknown' : parseInt(floorStr);
-      const isActive = isAll || selectedFloors.has(floor);
-      item.classList.toggle('selected', isActive);
-      dot.classList.toggle('active', isActive);
+  if (!this._drawerEl) return;
+  var items = this._drawerEl.querySelectorAll('.floor-drawer-item');
+  if (!items.length) return;
+  var isAll = selectedFloors === null;
+
+  // 第一个是"全部楼层"
+  var allDot = items[0].querySelector('.floor-drawer-dot');
+  if (allDot) {
+    // 检查所有非全部楼层是否都选中
+    var allSelected = true;
+    for (var i = 1; i < items.length; i++) {
+      var dot = items[i].querySelector('.floor-drawer-dot');
+      if (dot) {
+        var floor = items[i].dataset.floor;
+        if (floor === 'unknown') floor = 'unknown';
+        else floor = parseInt(floor);
+        var isActive = isAll || (selectedFloors && selectedFloors.has(floor));
+        dot.classList.toggle('active', !!isActive);
+        if (!isActive) allSelected = false;
+      }
     }
-  });
+    if (allDot) allDot.classList.toggle('active', allSelected);
+  } else {
+    // 没有"全部楼层"项，遍历所有非全部楼层
+    for (var j = 0; j < items.length; j++) {
+      var d = items[j].querySelector('.floor-drawer-dot');
+      if (d) {
+        var f = items[j].dataset.floor;
+        if (f === 'unknown') f = 'unknown';
+        else f = parseInt(f);
+        d.classList.toggle('active', !!(isAll || (selectedFloors && selectedFloors.has(f))));
+      }
+    }
+  }
 }
 
 updateFabBadge(selectedFloors, floorStats) {
-  const badge = document.getElementById('fab-badge');
+  var badge = document.getElementById('fab-badge');
   if (!badge) return;
-  const totalFloors = floorStats.sortedFloors.filter(f => f !== 'unknown').length;
-  if (selectedFloors === null) {
-    badge.textContent = totalFloors;
-  } else {
-    badge.textContent = selectedFloors.size;
+  var totalFloors = 0;
+  var floors = floorStats.sortedFloors;
+  for (var i = 0; i < floors.length; i++) {
+    if (floors[i] !== 'unknown') totalFloors++;
   }
+  badge.textContent = selectedFloors === null ? totalFloors : selectedFloors.size;
+}
+
+hideDrawer() {
+  this._toggleDrawer(false);
+  if (this._fabEl) this._fabEl.style.display = 'none';
 }
 ```
 
@@ -429,17 +474,25 @@ updateFabBadge(selectedFloors, floorStats) {
 ```javascript
 function syncSidebarState(selectedFloors) {
   // 更新所有楼层节点
-  document.querySelectorAll('.floor-node:not(.all)').forEach(node => {
-    const floor = node.dataset.floor === 'unknown' ? 'unknown' : parseInt(node.dataset.floor);
-    const isActive = selectedFloors === null || selectedFloors.has(floor);
-    node.classList.toggle('active', isActive);
+  document.querySelectorAll('.floor-node:not(.all)').forEach(function(node) {
+    var floor = node.dataset.floor === 'unknown' ? 'unknown' : parseInt(node.dataset.floor);
+    var isActive = selectedFloors === null || (selectedFloors && selectedFloors.has(floor));
+    node.classList.toggle('active', !!isActive);
   });
 
   // 更新"全部楼层"节点
-  const allNode = document.querySelector('.floor-node.all');
-  const allFloorNodes = document.querySelectorAll('.floor-node:not(.all)');
-  const allSelected = Array.from(allFloorNodes).every(n => n.classList.contains('active'));
-  allNode.classList.toggle('active', allSelected);
+  var allNode = document.querySelector('.floor-node.all');
+  if (allNode) {
+    var allFloorNodes = document.querySelectorAll('.floor-node:not(.all)');
+    var allSelected = true;
+    for (var i = 0; i < allFloorNodes.length; i++) {
+      if (!allFloorNodes[i].classList.contains('active')) {
+        allSelected = false;
+        break;
+      }
+    }
+    allNode.classList.toggle('active', allSelected);
+  }
 
   // 更新高亮线
   FloorView._updateHighlight();
@@ -450,7 +503,7 @@ function syncSidebarState(selectedFloors) {
 
 ## 5. 初始化流程
 
-在 `runFloorAnalysis()` 中增加：
+在 `runFloorAnalysis()` 中整合所有组件：
 
 ```javascript
 async function runFloorAnalysis(allRankings, roomNames) {
@@ -459,21 +512,40 @@ async function runFloorAnalysis(allRankings, roomNames) {
   state.floorGroups = FloorUtils.groupRoomsByFloor(roomNames, state.campus, state.building, floorMap);
   state.floorStats = FloorAnalytics.calculateFloorStats(allRankings, state.floorGroups);
 
-  // 侧边栏（已有）
-  const floorSide = document.getElementById('floor-side');
-  FloorView.renderIndicator(state.floorStats, floorSide, (selectedFloors) => {
+  // 侧边栏
+  var floorSide = document.getElementById('floor-side');
+  FloorView.renderIndicator(state.floorStats, floorSide, function(selectedFloors) {
     state.selectedFloors = selectedFloors;
     onFloorSelectionChange();
   });
 
-  // 楼层图表（已有，增加点击回调）
-  const floorChartCard = document.getElementById('floor-chart-card');
-  FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloors, (clickedFloor) => {
-    // ... 点击处理逻辑 ...
+  // 楼层图表（增加点击回调）
+  var floorChartCard = document.getElementById('floor-chart-card');
+  FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloors, function(clickedFloor) {
+    var isSelected = state.selectedFloors && state.selectedFloors.has(clickedFloor);
+    var newSelection;
+
+    if (state.selectedFloors === null) {
+      newSelection = new Set(state.floorStats.sortedFloors.filter(function(f) { return f !== 'unknown'; }));
+      if (isSelected) newSelection.delete(clickedFloor);
+    } else {
+      newSelection = new Set(state.selectedFloors);
+      if (isSelected) {
+        newSelection.delete(clickedFloor);
+      } else {
+        newSelection.add(clickedFloor);
+      }
+    }
+
+    state.selectedFloors = newSelection.size > 0 ? newSelection : null;
+    onFloorSelectionChange();
+    syncSidebarState(state.selectedFloors);
+    FloorView.updateFabBadge(state.selectedFloors, state.floorStats);
+    FloorView.updateDrawer(state.selectedFloors);
   });
 
-  // FAB + 抽屉（新增）
-  FloorView.renderDrawer(state.floorStats, (selectedFloors) => {
+  // FAB + 抽屉
+  FloorView.renderDrawer(state.floorStats, function(selectedFloors) {
     state.selectedFloors = selectedFloors;
     onFloorSelectionChange();
   });
@@ -488,16 +560,7 @@ async function runFloorAnalysis(allRankings, roomNames) {
 
 ```javascript
 // 切换楼栋时隐藏 FAB 和抽屉
-FloorView.hideDrawer?.();
-```
-
-新增 `FloorView.hideDrawer()` 方法：
-
-```javascript
-hideDrawer() {
-  this._toggleDrawer(false);
-  if (this._fabEl) this._fabEl.style.display = 'none';
-}
+FloorView.hideDrawer();
 ```
 
 ---
