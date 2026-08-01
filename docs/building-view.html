@@ -1605,7 +1605,7 @@
     // ==================== 初始化 ====================
     document.addEventListener('DOMContentLoaded', async () => {
       await DataService.initDB();
-      state.userConfig = DataService.getPageConfig('building');
+      state.userConfig = DataService.getPageConfig('room');
       await initCampusSelect();
       restoreStateFromUrl();
       setupEventListeners();
