@@ -78,9 +78,11 @@
 
     /* 主内容 */
     .main {
-      max-width: 1200px;
+      max-width: 1260px;
       margin: 0 auto;
       padding: 32px 24px;
+      display: flex;
+      gap: 0;
     }
 
     /* 选择器 */
@@ -191,6 +193,93 @@
       letter-spacing: -0.02em;
     }
     .stat-value.accent { color: var(--accent); }
+
+    /* 楼层指示器 */
+    .floor-side {
+      width: 60px;
+      position: relative;
+      padding: 28px 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .floor-line {
+      position: absolute;
+      left: 50%;
+      top: 20px;
+      bottom: 20px;
+      width: 1px;
+      background: #e0e0e0;
+      transform: translateX(-50%);
+    }
+    .floor-line-highlight {
+      position: absolute;
+      left: 50%;
+      width: 2px;
+      background: var(--accent);
+      transform: translateX(-50%);
+      transition: top 0.3s, height 0.3s, opacity 0.3s;
+      border-radius: 2px;
+      opacity: 0;
+    }
+    .floor-node {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 0;
+      cursor: pointer;
+      z-index: 2;
+      transition: all 0.2s;
+    }
+    .floor-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d0d0d0;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .floor-node:hover .floor-dot {
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+    }
+    .floor-node.active .floor-dot {
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in oklch, var(--accent) 20%, transparent);
+    }
+    .floor-label {
+      position: absolute;
+      left: 70px;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+    .floor-node:hover .floor-label {
+      opacity: 1;
+    }
+    .floor-node.active .floor-label {
+      opacity: 1;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .floor-node.all .floor-dot {
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+    }
+    .content-area {
+      flex: 1;
+      min-width: 0;
+    }
 
     /* 排行榜卡片 */
     .ranking-card {
@@ -1133,6 +1222,8 @@
   </nav>
 
   <main class="main">
+    <div class="floor-side" id="floor-side"></div>
+    <div class="content-area">
     <!-- 选择器 -->
     <div class="selector-bar">
       <div class="selector-group">
@@ -1220,6 +1311,16 @@
       <div class="dist-click-info" id="dist-click-info"></div>
     </div>
 
+    <!-- 楼层耗电对比 -->
+    <div class="chart-card" id="floor-chart-card" style="display: none;">
+      <div class="chart-header">
+        <h2 class="chart-title">楼层耗电对比</h2>
+      </div>
+      <div class="chart-container">
+        <canvas id="floor-chart"></canvas>
+      </div>
+    </div>
+
     <!-- 楼栋耗电趋势 -->
     <div class="chart-card" id="trend-card" style="display: none;">
       <div class="chart-header">
@@ -1304,11 +1405,15 @@
       </div>
     </div>
   </div>
+  </div>
 </main>
 
 <script src="js/indexeddb-service.js"></script>
 <script src="js/data-service.js?v=20260525-v3"></script>
 <script src="js/distribution-analyzer.js"></script>
+<script src="js/floor-utils.js"></script>
+<script src="js/floor-analytics.js"></script>
+<script src="js/floor-view.js"></script>
   <script>
     // 验证 DataService 是否正确加载
     if (typeof DataService === 'undefined') {
@@ -1326,7 +1431,11 @@
       currentPage: 1,
       itemsPerPage: 20,
       userConfig: null,
-      currentLoadId: 0  // 用于追踪和取消旧请求/动画
+      currentLoadId: 0,  // 用于追踪和取消旧请求/动画
+      selectedFloors: null,     // null = 全部楼层, Set = 选中楼层集合
+      floorStats: null,         // 楼层聚合统计
+      floorGroups: null,        // 房间 → 楼层映射
+      floorMap: null,           // 楼层映射配置
     };
 
     // 三级缓存
@@ -1414,6 +1523,37 @@
         document.getElementById('custom-date').value = date;
         document.getElementById('custom-date').parentElement.classList.add('active');
       }
+    }
+
+    function onFloorSelectionChange() {
+      if (!state.floorStats || !state.allRankings) return;
+      const filteredRankings = state.selectedFloors === null
+        ? state.allRankings
+        : FloorAnalytics.getFilteredRankings(state.allRankings, state.floorGroups, state.selectedFloors);
+
+      if (filteredRankings.length === 0) {
+        document.getElementById('stat-total').textContent = '--';
+        document.getElementById('stat-rooms').textContent = '--';
+        document.getElementById('stat-avg').textContent = '--';
+        document.getElementById('stat-max').textContent = '--';
+        return;
+      }
+
+      const total = filteredRankings.reduce((s, r) => s + r.consumption, 0);
+      const avg = total / filteredRankings.length;
+      const max = Math.max(...filteredRankings.map(r => r.consumption));
+      document.getElementById('stat-total').textContent = total.toFixed(1) + '度';
+      document.getElementById('stat-rooms').textContent = filteredRankings.length;
+      document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
+      document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
+
+      // 更新图表
+      FloorView.updateChart(state.floorStats, state.selectedFloors);
+
+      // 更新排行榜
+      state.allRankings = filteredRankings;
+      state.currentPage = 1;
+      renderCurrentPage();
     }
 
     // ==================== Fallback Banner ====================
@@ -1557,6 +1697,8 @@
 
     // 隐藏进度条并重置排行榜列表
     function hideProgressAndResetList() {
+      document.getElementById('floor-side').style.display = 'none';
+      document.getElementById('floor-chart-card').style.display = 'none';
       const progressEl = document.getElementById('animation-progress');
       const listEl = document.getElementById('ranking-list');
       if (progressEl) progressEl.style.display = 'none';
@@ -1903,6 +2045,22 @@
       // 最终排序所有数据
       allRankings.sort((a, b) => b.consumption - a.consumption);
       allRankings.forEach((r, idx) => r.rank = idx + 1);
+
+      // === 楼层分析 ===
+      const roomNames = Object.keys(roomMap);
+      const floorMap = await FloorUtils.loadFloorMap();
+      state.floorMap = floorMap;
+      state.floorGroups = FloorUtils.groupRoomsByFloor(roomNames, state.campus, state.building, floorMap);
+      state.floorStats = FloorAnalytics.calculateFloorStats(allRankings, state.floorGroups);
+
+      const floorSide = document.getElementById('floor-side');
+      FloorView.renderIndicator(state.floorStats, floorSide, (selectedFloors) => {
+        state.selectedFloors = selectedFloors;
+        onFloorSelectionChange();
+      });
+
+      const floorChartCard = document.getElementById('floor-chart-card');
+      FloorView.renderFloorChart(state.floorStats, floorChartCard, state.selectedFloors);
 
       // 缓存结果到内存
       consumptionCache.set(effectiveCacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
@@ -2675,6 +2833,8 @@
 
     // ==================== 状态显示 ====================
     function showEmptyState() {
+      document.getElementById('floor-side').style.display = 'none';
+      document.getElementById('floor-chart-card').style.display = 'none';
       document.getElementById('ranking-list').innerHTML = '';
       document.getElementById('empty-state').style.display = 'block';
       document.getElementById('no-data-state').style.display = 'none';
