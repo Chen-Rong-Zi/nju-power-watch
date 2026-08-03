@@ -12,7 +12,7 @@
 - 😱 半夜突然停电，才发现电费余额不足
 - 🤔 想知道自己的用电量算多还是少
 - 🏃 每次都要手动登录 epay 查电费，觉得麻烦
-- 🤷‍♂️ 看到电费数字，但对"度"这个单位没有概念
+- 🤷 看到电费数字，但对"度"这个单位没有概念
 
 **这个系统帮你解决这些问题！**
 
@@ -96,42 +96,7 @@
 
 ---
 
-## 🛠 技术实现
-
-```
-每日自动采集 → 数据聚合 → 静态JSON文件 → 前端可视化
-```
-
-- **数据采集**：通过 GitHub Actions 每天自动登录 NJU epay 系统采集数据
-- **智能存储**：分层聚合（校区→楼栋→房间），查询快速、存储高效
-- **纯前端**：HTML/CSS/JS，无需后端，部署简单
-- **数据缓存**：使用 IndexedDB 缓存，二次访问秒开
-
----
-
-## 📂 项目结构
-
-```
-docs/                      # 前端静态页面
-├── index.html             # 首页导航
-├── room-view.html         # 个人房间视角
-├── building-view.html     # 楼栋视角
-├── campus-view.html       # 校区视角
-├── js/
-│   ├── data-service.js    # 数据服务（缓存、加载、类比转换）
-│   └── indexeddb-service.js
-└── database/summaries/    # 聚合数据文件
-
-scripts/                   # 数据处理脚本
-├── aggregate_data.py      # 数据聚合
-└── ...
-
-.github/workflows/         # GitHub Actions 自动化采集
-```
-
----
-
-## 🚀 如何使用
+## 🚀 部署
 
 ### 在线使用
 直接访问 [njupower.top](https://njupower.top)，选择你的校区、楼栋、房间即可
@@ -142,8 +107,7 @@ scripts/                   # 数据处理脚本
 git clone https://github.com/Chen-Rong-Zi/nju-power-watch.git
 
 # 本地预览
-cd nju-power-watch
-python -m http.server 8000 --directory docs
+python -m http.server 8000 --directory nju-power-watch
 
 # 浏览器打开 http://localhost:8000
 ```
