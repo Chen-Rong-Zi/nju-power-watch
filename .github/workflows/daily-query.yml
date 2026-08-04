@@ -74,7 +74,6 @@ jobs:
             --batch-size 100 \
             --request-delay 0.5 \
             -d ./database \
-            -q \
             2>&1 | tee query_output.log
 
           SUCCESS=$(grep -oP '成功: \K\d+' query_output.log || echo "0")
