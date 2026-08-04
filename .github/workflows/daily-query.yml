@@ -29,7 +29,7 @@ env:
 jobs:
   query-electricity:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 130
 
     concurrency:
       group: daily-query-batch-${{ github.event_name == 'schedule' && github.event.schedule || github.event.inputs.batch_index }}
