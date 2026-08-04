@@ -21,14 +21,14 @@ print(f"[{completed}/{total}] 成功: {succeeded}, 失败: {failed}")
 ```
 
 影响的两处：
-- `query_batch` 中的查询进度（第 346 行）
-- 扫描模式进度（第 547 行）
+- `query_batch` 中的查询进度
+- 扫描模式进度
 
 变更后，每行进度独立一行，日志文件干净可读，`grep` 不会出现多匹配问题。
 
 ### 1. 机器可读摘要行
 
-脚本在所有输出结束时（包括正常结束和 `sys.exit()`），额外输出一行固定格式摘要：
+脚本在所有输出结束时（包括正常结束、`sys.exit()`、未捕获异常），输出一行固定格式摘要：
 
 ```
 RESULT: total=4338 success=4338 failed=0 elapsed=15183.45s
@@ -38,7 +38,8 @@ RESULT: total=4338 success=4338 failed=0 elapsed=15183.45s
 - 前缀 `RESULT:` 唯一标识，不会被进度行干扰
 - 字段：`total`、`success`、`failed`、`elapsed`（秒）
 - 字段间用空格分隔，`key=value` 格式
-- 始终输出，即使脚本因错误退出（如 `sys.exit(1)` 之前）
+- **始终输出**，不受 `--quiet` 影响
+- 查询模式和扫描模式都输出。扫描模式：`RESULT: scanned=1000 found=50 skipped=10 errors=2 elapsed=120.5s`
 
 workflow 解析方式：
 
@@ -53,7 +54,7 @@ FAILED=$(echo "$RESULT_LINE" | grep -oP 'failed=\K\d+')
 
 新增 `--log-file PATH` 参数：
 
-- 脚本将 stdout 输出同时写入文件和控制台（tee 模式）
+- 脚本将 stdout + stderr 同时写入文件和控制台（tee 模式）
 - 配合 `\r` 去除后，日志文件内容与终端输出完全一致，干净可读
 - 统一控制日志位置，不依赖 shell 重定向；workflow 命令更简洁
 
@@ -62,11 +63,10 @@ FAILED=$(echo "$RESULT_LINE" | grep -oP 'failed=\K\d+')
 #### `nju_electric_query.py`
 
 - 新增 `--log-file` 参数
-- 实现 tee 输出：`TeeLogger` 类，用 `contextlib.redirect_stdout` + 自身文件写入实现双路输出
-- 在 `async_main` 主查询逻辑外包 `try/finally`，`finally` 中输出 `RESULT:` 行
-  - 若查询已启动且有结果：输出真实统计
-  - 若查询未启动（如参数错误）：输出 `total=0 success=0 failed=0`
-- 无需 `atexit`，`try/finally` 覆盖 `sys.exit()` 和正常返回路径
+- 实现 tee 输出：`TeeLogger` 类，用 `contextlib.redirect_stdout` + `contextlib.redirect_stderr` + 自身文件写入实现双路输出
+- `try/finally` 包裹 `async_main` **整个函数体**（包括参数验证），确保所有退出路径都输出 `RESULT:` 行
+  - 若查询正常完成：输出真实统计
+  - 若参数错误或早期退出：输出 `total=0 success=0 failed=0 elapsed=0.00s`
 
 #### `.github/workflows/daily-query.yml`
 
