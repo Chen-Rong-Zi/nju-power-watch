@@ -272,8 +272,8 @@ async def _query_batch_internal(room_ids: list[str], cookies: dict, output_dir: 
 async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[Path] = None,
                       show_progress: bool = True, max_concurrent: int = DEFAULT_CONCURRENCY,
                       batch_size: int = 100, batch_delay: int = 30,
-                      request_delay: float = 0.3):
-    """异步批量查询 - 分批处理 + 请求间隔"""
+                      request_delay: float = 3.0):
+    """异步批量查询 - 分批处理 + 请求间隔 + 限流自动恢复"""
     total = len(room_ids)
     succeeded = 0
     failed = 0
@@ -285,36 +285,67 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
     async with aiohttp.ClientSession(connector=connector) as session:
         for i in range(0, total, batch_size):
             batch = room_ids[i:i + batch_size]
+            retries = 0
+            max_retries = 2
 
-            results = await _query_batch_internal(
-                batch, cookies, output_dir, show_progress,
-                max_concurrent, request_delay, session
-            )
+            while retries <= max_retries:
+                results = await _query_batch_internal(
+                    batch, cookies, output_dir, show_progress,
+                    max_concurrent, request_delay, session
+                )
 
-            for result in results:
-                if result["success"]:
-                    succeeded += 1
-                    if output_dir:
-                        await save_result(result, output_dir, quiet=not show_progress)
-                    success_details.append({
-                        "id": result["id"],
-                        "building": result.get("楼栋", "未知"),
-                        "room": result.get("房间", "未知"),
-                        "power": result.get("剩余电量", "未知"),
-                    })
-                else:
-                    failed += 1
-                    failed_details.append({
-                        "id": result["id"],
-                        "error": result.get("error", "未知错误"),
-                        "error_type": result.get("error_type", "unknown"),
-                    })
+                # 找出被限流的房间
+                rate_limited_rooms = [
+                    r for r in results
+                    if not r["success"] and r.get("error_type") == "rate_limited"
+                ]
+
+                # 先处理非限流结果
+                for result in results:
+                    if result["success"]:
+                        succeeded += 1
+                        if output_dir:
+                            await save_result(result, output_dir, quiet=not show_progress)
+                        success_details.append({
+                            "id": result["id"],
+                            "building": result.get("楼栋", "未知"),
+                            "room": result.get("房间", "未知"),
+                            "power": result.get("剩余电量", "未知"),
+                        })
+                    elif result.get("error_type") != "rate_limited":
+                        failed += 1
+                        failed_details.append({
+                            "id": result["id"],
+                            "error": result.get("error", "未知错误"),
+                            "error_type": result.get("error_type", "unknown"),
+                        })
+
+                if not rate_limited_rooms:
+                    break  # 无限流，当前子批次完成
+
+                retries += 1
+                if retries > max_retries:
+                    # 超过重试次数，标记为失败
+                    failed += len(rate_limited_rooms)
+                    for r in rate_limited_rooms:
+                        failed_details.append({
+                            "id": r["id"],
+                            "error": "重试次数耗尽（限流）",
+                            "error_type": "rate_limited",
+                        })
+                    break
+
+                # 只重试被限流的房间
+                batch = [r["id"] for r in rate_limited_rooms]
+                if show_progress:
+                    print(f"\n[限流] 检测到 {len(rate_limited_rooms)} 个限流，等待 3600s 后重试 (第 {retries} 次)...")
+                await asyncio.sleep(3600)
 
             completed = succeeded + failed
             if show_progress:
                 print(f"\r[{completed}/{total}] 成功: {succeeded}, 失败: {failed}", end="", flush=True)
 
-            # 小批量间延迟
+            # 小批量间延迟（使用原始 batch_size 判断是否还有下一批）
             if i + batch_size < total:
                 await asyncio.sleep(batch_delay)
 
