@@ -343,10 +343,7 @@ async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[P
 
             completed = succeeded + failed
             if show_progress:
-                print(f"\r[{completed}/{total}] 成功: {succeeded}, 失败: {failed}", end="", flush=True)
-
-    if show_progress:
-        print()
+                print(f"[{completed}/{total}] 成功: {succeeded}, 失败: {failed}")
 
     if success_details and show_progress:
         print("\n--- 查询成功 ---")
@@ -544,7 +541,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         # 只在函数退出时更新进度
         processed += 1
         if show_progress:
-            print(f"\r[{processed}/{scan_count}] 新发现: {new_found}", end="", flush=True)
+            print(f"[{processed}/{scan_count}] 新发现: {new_found}")
 
     # 生成待扫描的ID列表，跳过已有ID
     ids_to_scan = []
