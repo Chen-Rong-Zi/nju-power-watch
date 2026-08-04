@@ -8,6 +8,24 @@
 
 ## 方案
 
+### 0. 去除 `\r` 进度条
+
+将进度输出从 `\r`（回车覆盖）改为 `\n`（逐行输出）：
+
+```python
+# 修改前
+print(f"\r[{completed}/{total}] 成功: {succeeded}, 失败: {failed}", end="", flush=True)
+
+# 修改后
+print(f"[{completed}/{total}] 成功: {succeeded}, 失败: {failed}")
+```
+
+影响的两处：
+- `query_batch` 中的查询进度（第 346 行）
+- 扫描模式进度（第 547 行）
+
+变更后，每行进度独立一行，日志文件干净可读，`grep` 不会出现多匹配问题。
+
 ### 1. 机器可读摘要行
 
 脚本在所有输出结束时（包括正常结束和 `sys.exit()`），额外输出一行固定格式摘要：
@@ -36,9 +54,8 @@ FAILED=$(echo "$RESULT_LINE" | grep -oP 'failed=\K\d+')
 新增 `--log-file PATH` 参数：
 
 - 脚本将 stdout 输出同时写入文件和控制台（tee 模式）
-- 文件内容与终端输出**基本一致**（`\r` 字符仍存在，但 `cat` 显示时正常）
-- `--log-file` 的价值：统一控制日志位置，不依赖 shell 重定向；workflow 命令更简洁
-- **注意**：`--log-file` 不解决 `\r` 字符问题。真正解决 workflow 解析问题的是机器可读摘要行（方案 1）
+- 配合 `\r` 去除后，日志文件内容与终端输出完全一致，干净可读
+- 统一控制日志位置，不依赖 shell 重定向；workflow 命令更简洁
 
 ### 修改文件
 
@@ -63,7 +80,7 @@ FAILED=$(echo "$RESULT_LINE" | grep -oP 'failed=\K\d+')
 | 场景 | 行为 |
 |------|------|
 | `--log-file` 路径不可写 | 打印警告，继续运行（不阻断查询） |
-| 脚本正常结束 | 自动输出 `RESULT:` 行 |
-| 脚本 `sys.exit(N)` | `atexit` 注册的回调输出 `RESULT:` 行 |
-| 未捕获异常 | `atexit` 注册的回调输出 `RESULT:` 行 |
-| 信号终止（SIGTERM） | `atexit` 不触发，`RESULT:` 行可能缺失 |
+| 脚本正常结束 | `try/finally` 输出 `RESULT:` 行 |
+| 脚本 `sys.exit(N)` | `try/finally` 覆盖，输出 `RESULT:` 行 |
+| 未捕获异常 | `try/finally` 覆盖，输出 `RESULT:` 行 |
+| 信号终止（SIGTERM/SIGKILL） | `finally` 不触发，`RESULT:` 行可能缺失 |
