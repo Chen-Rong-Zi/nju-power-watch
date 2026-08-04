@@ -272,7 +272,7 @@ async def _query_batch_internal(room_ids: list[str], cookies: dict, output_dir: 
 async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[Path] = None,
                       show_progress: bool = True, max_concurrent: int = DEFAULT_CONCURRENCY,
                       batch_size: int = 100,
-                      request_delay: float = 0.5):
+                      request_delay: float = 1.0):
     """异步批量查询 - 分批处理 + 请求间隔 + 限流自动恢复"""
     total = len(room_ids)
     succeeded = 0
@@ -669,7 +669,7 @@ async def async_main():
     parser.add_argument("--scan-output", type=str, default="config/room_ids.json", help="扫描结果输出文件 (默认: config/room_ids.json)")
     parser.add_argument("--from-mapping", type=str, help="从JSON映射文件读取房间ID列表")
     parser.add_argument("--batch-size", type=int, default=100, help="小批量大小（默认 100）")
-    parser.add_argument("--request-delay", type=float, default=0.5, help="请求间最小间隔秒数（默认 0.5）")
+    parser.add_argument("--request-delay", type=float, default=1.0, help="请求间最小间隔秒数（默认 1.0）")
     parser.add_argument("room_ids", nargs="*", help="宿舍ID列表 (扫描模式下不需要)")
     args = parser.parse_args()
 

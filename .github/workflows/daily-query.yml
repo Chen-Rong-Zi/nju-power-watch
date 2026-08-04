@@ -72,9 +72,9 @@ jobs:
             --from-mapping config/room_ids.json \
             -c 1 \
             --batch-size 100 \
-            --request-delay 0.5 \
+            --request-delay 1.0 \
             -d ./database \
-            2>&1 | tee query_output.log
+            2>&1 | stdbuf -oL tee query_output.log
 
           SUCCESS=$(grep -oP '成功: \K\d+' query_output.log || echo "0")
           FAILED=$(grep -oP '失败: \K\d+' query_output.log || echo "0")
