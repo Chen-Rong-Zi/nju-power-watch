@@ -3,22 +3,19 @@ name: Daily Electricity Query
 on:
   schedule:
     - cron: '0 0 * * *'   # 00:00 UTC → batch 0
-    - cron: '0 4 * * *'   # 04:00 UTC → batch 1
-    - cron: '0 8 * * *'   # 08:00 UTC → batch 2
-    - cron: '0 12 * * *'  # 12:00 UTC → batch 3
-    - cron: '0 16 * * *'  # 16:00 UTC → batch 4
-    - cron: '0 20 * * *'  # 20:00 UTC → batch 5
+    - cron: '0 8 * * *'   # 08:00 UTC → batch 1
+    - cron: '0 16 * * *'  # 16:00 UTC → batch 2
   workflow_dispatch:
     inputs:
       batch_index:
-        description: 'Batch index (0-5)'
+        description: 'Batch index (0-2)'
         required: true
         type: number
       total_batches:
         description: 'Total number of batches'
         required: false
         type: number
-        default: 6
+        default: 3
 
 permissions:
   contents: write
@@ -29,7 +26,7 @@ env:
 jobs:
   query-electricity:
     runs-on: ubuntu-latest
-    timeout-minutes: 130
+    timeout-minutes: 360
 
     concurrency:
       group: daily-query-batch-${{ github.event_name == 'schedule' && github.event.schedule || github.event.inputs.batch_index }}
@@ -57,18 +54,15 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "BATCH_INDEX=${{ github.event.inputs.batch_index }}" >> $GITHUB_ENV
-            echo "TOTAL_BATCHES=${{ github.event.inputs.total_batches || 6 }}" >> $GITHUB_ENV
+            echo "TOTAL_BATCHES=${{ github.event.inputs.total_batches || 3 }}" >> $GITHUB_ENV
           else
             case "${{ github.event.schedule }}" in
               "0 0 * * *") BATCH_INDEX=0 ;;
-              "0 4 * * *") BATCH_INDEX=1 ;;
-              "0 8 * * *") BATCH_INDEX=2 ;;
-              "0 12 * * *") BATCH_INDEX=3 ;;
-              "0 16 * * *") BATCH_INDEX=4 ;;
-              "0 20 * * *") BATCH_INDEX=5 ;;
+              "0 8 * * *") BATCH_INDEX=1 ;;
+              "0 16 * * *") BATCH_INDEX=2 ;;
             esac
             echo "BATCH_INDEX=$BATCH_INDEX" >> $GITHUB_ENV
-            echo "TOTAL_BATCHES=6" >> $GITHUB_ENV
+            echo "TOTAL_BATCHES=3" >> $GITHUB_ENV
           fi
 
       - name: Auto login to get cookie
@@ -110,10 +104,10 @@ jobs:
             --from-mapping config/room_ids.json \
             --batch-index ${{ env.BATCH_INDEX }} \
             --total-batches ${{ env.TOTAL_BATCHES }} \
-            -c 3 \
+            -c 1 \
             --batch-size 100 \
             --batch-delay 30 \
-            --request-delay 0.3 \
+            --request-delay 3 \
             -d ./database \
             -q \
             2>&1 | tee query_output.log
@@ -182,7 +176,7 @@ jobs:
 
           if [ "$EXISTING" -eq 0 ]; then
             gh issue create \
-              --title "⚠️ 每日电费查询失败 - $TODAY (批次 ${{ env.BATCH_INDEX }})" \
+              --title "⚠️ 每日电费查询失败 - $TODAY (批次 ${{ env.BATCH_INDEX }}/${{ env.TOTAL_BATCHES }})" \
               --label "daily-query-failure" \
               --assignee "@me" \
               --body "
