@@ -229,16 +229,15 @@ async def _query_batch_internal(room_ids: list[str], cookies: dict, output_dir: 
     semaphore = asyncio.Semaphore(max_concurrent)
 
     async def limited_query(room_id):
-        async with semaphore:
-            try:
-                result = await query_single_with_retry(
-                    semaphore, session, room_id, cookies, show_progress
-                )
-            except RateLimitedError:
-                raise
-            finally:
-                await asyncio.sleep(request_delay)
-            return result
+        try:
+            result = await query_single_with_retry(
+                semaphore, session, room_id, cookies, show_progress
+            )
+        except RateLimitedError:
+            raise
+        finally:
+            await asyncio.sleep(request_delay)
+        return result
 
     tasks = [limited_query(room_id) for room_id in room_ids]
     results = await asyncio.gather(*tasks, return_exceptions=True)
