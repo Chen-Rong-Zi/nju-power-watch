@@ -669,13 +669,21 @@ async def async_main():
     parser.add_argument("--scan-output", type=str, default="config/room_ids.json", help="扫描结果输出文件 (默认: config/room_ids.json)")
     parser.add_argument("--from-mapping", type=str, help="从JSON映射文件读取房间ID列表")
     parser.add_argument("--batch-size", type=int, default=100, help="小批量大小（默认 100）")
-    parser.add_argument("--request-delay", type=float, default=1.0, help="请求间最小间隔秒数（默认 1.0）")
+    parser.add_argument("--request-delay", type=float, default=3.0, help="请求间最小间隔秒数（默认 3.0）")
+    parser.add_argument("--batch-index", type=int, default=1, help="当前批次序号（从 1 开始，默认 1）")
+    parser.add_argument("--total-batches", type=int, default=1, help="总批次数（默认 1）")
     parser.add_argument("room_ids", nargs="*", help="宿舍ID列表 (扫描模式下不需要)")
     args = parser.parse_args()
 
     # 验证批次参数
     if args.batch_size <= 0:
         print("错误: --batch-size 必须大于 0")
+        sys.exit(1)
+    if args.total_batches <= 0:
+        print("错误: --total-batches 必须大于 0")
+        sys.exit(1)
+    if args.batch_index < 1 or args.batch_index > args.total_batches:
+        print(f"错误: --batch-index 必须在 1 到 {args.total_batches} 之间")
         sys.exit(1)
 
     room_ids = args.room_ids
@@ -701,6 +709,16 @@ async def async_main():
             sys.exit(1)
         if show_progress:
             print(f"✓ 从映射文件加载了 {len(room_ids)} 个房间ID: {args.from_mapping}")
+
+        # 按批次切片
+        if args.total_batches > 1:
+            total_rooms = len(room_ids)
+            chunk_size = (total_rooms + args.total_batches - 1) // args.total_batches  # ceil division
+            start_idx = chunk_size * (args.batch_index - 1)
+            end_idx = min(chunk_size * args.batch_index, total_rooms)
+            room_ids = room_ids[start_idx:end_idx]
+            if show_progress:
+                print(f"✓ 批次 {args.batch_index}/{args.total_batches}: 查询 {len(room_ids)} 个房间 (切片 [{start_idx}:{end_idx}])")
 
     if not os.path.exists(cookie_file):
         print(f"错误: Cookie 文件不存在: {cookie_file}")
