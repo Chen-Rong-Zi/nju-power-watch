@@ -1,0 +1,8 @@
+{
+  "date": "2026-08-04",
+  "total_batches": 4,
+  "batches": {
+    "1": { "success": 4323, "failed": 15 }
+  },
+  "cumulative": { "success": 4323, "failed": 15 }
+}
