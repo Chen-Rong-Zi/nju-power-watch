@@ -719,161 +719,177 @@ async def async_main():
             tee = TeeLogger(args.log_file)
             tee.__enter__()
         except (OSError, IOError) as e:
+            tee = None
             print(f"警告: 无法创建日志文件 {args.log_file}: {e}，继续运行但不输出到文件")
 
-    # 验证批次参数
-    if args.batch_size <= 0:
-        print("错误: --batch-size 必须大于 0")
-        sys.exit(1)
-    if args.total_batches <= 0:
-        print("错误: --total-batches 必须大于 0")
-        sys.exit(1)
-    if args.batch_index < 1 or args.batch_index > args.total_batches:
-        print(f"错误: --batch-index 必须在 1 到 {args.total_batches} 之间")
-        sys.exit(1)
+    start_time = time.time()
+    summary_data = None
+    scan_result = None
+    scan_mode = False
 
-    room_ids = args.room_ids
-    output_dir = Path(args.dir) if args.dir else None
-    max_concurrent = args.concurrency
-    cookie_file = args.cookie_file
-    show_progress = not args.quiet
+    try:
+        # 验证批次参数
+        if args.batch_size <= 0:
+            print("错误: --batch-size 必须大于 0")
+            sys.exit(1)
+        if args.total_batches <= 0:
+            print("错误: --total-batches 必须大于 0")
+            sys.exit(1)
+        if args.batch_index < 1 or args.batch_index > args.total_batches:
+            print(f"错误: --batch-index 必须在 1 到 {args.total_batches} 之间")
+            sys.exit(1)
 
-    if args.from_mapping:
-        from pathlib import Path as _Path
-        if not _Path(args.from_mapping).exists():
-            print(f"错误: 映射文件不存在: {args.from_mapping}")
-            sys.exit(1)
-        from scripts.config_utils import load_mapping, extract_ids
-        mapping = load_mapping(args.from_mapping)
-        try:
-            room_ids = extract_ids(mapping)
-        except (AttributeError, TypeError) as e:
-            print(f"错误: 映射文件格式错误: {args.from_mapping} ({e})")
-            sys.exit(1)
-        if not room_ids:
-            print(f"错误: 映射文件 {args.from_mapping} 中没有找到任何房间ID")
-            sys.exit(1)
-        if show_progress:
-            print(f"✓ 从映射文件加载了 {len(room_ids)} 个房间ID: {args.from_mapping}")
+        room_ids = args.room_ids
+        output_dir = Path(args.dir) if args.dir else None
+        max_concurrent = args.concurrency
+        cookie_file = args.cookie_file
+        show_progress = not args.quiet
 
-        # 按批次切片
-        if args.total_batches > 1:
-            total_rooms = len(room_ids)
-            chunk_size = (total_rooms + args.total_batches - 1) // args.total_batches  # ceil division
-            start_idx = chunk_size * (args.batch_index - 1)
-            end_idx = min(chunk_size * args.batch_index, total_rooms)
-            room_ids = room_ids[start_idx:end_idx]
+        if args.from_mapping:
+            from pathlib import Path as _Path
+            if not _Path(args.from_mapping).exists():
+                print(f"错误: 映射文件不存在: {args.from_mapping}")
+                sys.exit(1)
+            from scripts.config_utils import load_mapping, extract_ids
+            mapping = load_mapping(args.from_mapping)
+            try:
+                room_ids = extract_ids(mapping)
+            except (AttributeError, TypeError) as e:
+                print(f"错误: 映射文件格式错误: {args.from_mapping} ({e})")
+                sys.exit(1)
+            if not room_ids:
+                print(f"错误: 映射文件 {args.from_mapping} 中没有找到任何房间ID")
+                sys.exit(1)
             if show_progress:
-                print(f"✓ 批次 {args.batch_index}/{args.total_batches}: 查询 {len(room_ids)} 个房间 (切片 [{start_idx}:{end_idx}])")
+                print(f"✓ 从映射文件加载了 {len(room_ids)} 个房间ID: {args.from_mapping}")
 
-    if not os.path.exists(cookie_file):
-        print(f"错误: Cookie 文件不存在: {cookie_file}")
-        print(f"请使用 --cookie-file 参数指定有效的 cookie 文件路径")
-        sys.exit(1)
+            # 按批次切片
+            if args.total_batches > 1:
+                total_rooms = len(room_ids)
+                chunk_size = (total_rooms + args.total_batches - 1) // args.total_batches  # ceil division
+                start_idx = chunk_size * (args.batch_index - 1)
+                end_idx = min(chunk_size * args.batch_index, total_rooms)
+                room_ids = room_ids[start_idx:end_idx]
+                if show_progress:
+                    print(f"✓ 批次 {args.batch_index}/{args.total_batches}: 查询 {len(room_ids)} 个房间 (切片 [{start_idx}:{end_idx}])")
+
+        if not os.path.exists(cookie_file):
+            print(f"错误: Cookie 文件不存在: {cookie_file}")
+            print(f"请使用 --cookie-file 参数指定有效的 cookie 文件路径")
+            sys.exit(1)
     
-    cookies = await load_cookies_from_file(cookie_file)
-    if show_progress:
-        print(f"✓ 已加载 Cookie 文件: {cookie_file}")
+        cookies = await load_cookies_from_file(cookie_file)
+        if show_progress:
+            print(f"✓ 已加载 Cookie 文件: {cookie_file}")
 
-    # 扫描模式
-    if args.scan:
-        start_id, end_id = args.scan
-        if start_id > end_id:
-            print(f"错误: 起始ID ({start_id}) 不能大于结束ID ({end_id})")
+        # 扫描模式
+        if args.scan:
+            start_id, end_id = args.scan
+            if start_id > end_id:
+                print(f"错误: 起始ID ({start_id}) 不能大于结束ID ({end_id})")
+                sys.exit(1)
+
+            if show_progress:
+                print(f"开始扫描ID区间: {start_id} - {end_id} (共 {end_id - start_id + 1} 个ID)")
+                print(f"并发数: {max_concurrent}")
+                print("-" * 50)
+
+            result = await scan_room_ids(start_id, end_id, cookies, args.scan_output, max_concurrent, show_progress)
+            scan_result = result; scan_mode = True
+            elapsed = time.time() - start_time
+
+            if show_progress:
+                print("-" * 50)
+                print(f"扫描完成!")
+                print(f"  扫描: {result['scanned']}")
+                print(f"  发现: {result['found']}")
+                print(f"  跳过: {result['skipped']}")
+                print(f"  错误: {result['total_errors']}")
+                print(f"  耗时: {elapsed:.2f}秒")
+                print(f"  输出: {result['output_file']}")
+                print("-" * 50)
+
+            return
+
+        # 正常查询模式
+        if not room_ids:
+            print("错误: 请提供宿舍ID列表或使用 --scan 模式")
             sys.exit(1)
 
+        if output_dir and output_dir.exists():
+            if not output_dir.is_dir():
+                print(f"错误: {output_dir} 不是一个目录")
+                sys.exit(1)
+            if not os.access(output_dir, os.W_OK):
+                print(f"错误: 没有权限写入目录 {output_dir}")
+                sys.exit(1)
+
         if show_progress:
-            print(f"开始扫描ID区间: {start_id} - {end_id} (共 {end_id - start_id + 1} 个ID)")
-            print(f"并发数: {max_concurrent}")
+            print(f"开始查询 {len(room_ids)} 个宿舍 (并发数: {max_concurrent})...")
             print("-" * 50)
 
-        start_time = time.time()
-        result = await scan_room_ids(start_id, end_id, cookies, args.scan_output, max_concurrent, show_progress)
+        summary_data = await query_batch(
+            room_ids, cookies, output_dir,
+            show_progress=show_progress,
+            max_concurrent=max_concurrent,
+            batch_size=args.batch_size,
+            request_delay=args.request_delay,
+        )
         elapsed = time.time() - start_time
 
         if show_progress:
-            print("-" * 50)
-            print(f"扫描完成!")
-            print(f"  扫描: {result['scanned']}")
-            print(f"  发现: {result['found']}")
-            print(f"  跳过: {result['skipped']}")
-            print(f"  错误: {result['total_errors']}")
+            print("=" * 50)
+            print(f"查询完成!")
+            print(f"  总数: {summary_data['total']}")
+            print(f"  成功: {summary_data['succeeded']}")
+            print(f"  失败: {summary_data['failed']}")
             print(f"  耗时: {elapsed:.2f}秒")
-            print(f"  输出: {result['output_file']}")
-            print("-" * 50)
+            if output_dir:
+                print(f"  输出目录: {output_dir.absolute()}")
+            print("=" * 50)
+        else:
+            print(f"成功: {summary_data['succeeded']}")
+            print(f"失败: {summary_data['failed']}")
+            print(f"耗时: {elapsed:.2f}s")
+            print(f"完成: {summary_data['succeeded']}/{summary_data['total']} 成功, 失败 {summary_data['failed']}, 耗时 {elapsed:.2f}s")
 
-        return
+        if summary_data['failed'] > 0:
+            print("\n--- 失败原因统计 ---")
+            error_count = {}
+            for detail in summary_data.get("failed_details", []):
+                error_type = detail.get("error_type", "unknown")
+                error_count[error_type] = error_count.get(error_type, 0) + 1
 
-    # 正常查询模式
-    if not room_ids:
-        print("错误: 请提供宿舍ID列表或使用 --scan 模式")
-        sys.exit(1)
+            error_messages = {
+                "network_error": "网络错误: 无法连接到服务器",
+                "timeout": "请求超时: 服务器响应过慢",
+                "auth_failed": "认证失败: Cookie已过期，请更新认证信息",
+                "not_found": "资源不存在: 宿舍ID无效或已下架",
+                "room_not_found": "房间不存在: 该房间ID在系统中不存在",
+                "http_error": "HTTP错误: 服务器内部错误",
+                "parse_error": "解析失败: 页面格式已更新",
+                "retry_exhausted": "重试次数耗尽",
+                "unknown": "未知错误",
+            }
+            for error_type, count in error_count.items():
+                msg = error_messages.get(error_type, error_type)
+                print(f"  {msg}: {count}个")
 
-    if output_dir and output_dir.exists():
-        if not output_dir.is_dir():
-            print(f"错误: {output_dir} 不是一个目录")
+        # 90% success threshold
+        success_rate = summary_data['succeeded'] / summary_data['total'] if summary_data['total'] > 0 else 0
+        if success_rate < 0.9:
+            print(f"错误: 成功率 {success_rate:.1%} ({summary_data['succeeded']}/{summary_data['total']}) 低于 90% 阈值")
             sys.exit(1)
-        if not os.access(output_dir, os.W_OK):
-            print(f"错误: 没有权限写入目录 {output_dir}")
-            sys.exit(1)
-
-    if show_progress:
-        print(f"开始查询 {len(room_ids)} 个宿舍 (并发数: {max_concurrent})...")
-        print("-" * 50)
-
-    start_time = time.time()
-    summary = await query_batch(
-        room_ids, cookies, output_dir,
-        show_progress=show_progress,
-        max_concurrent=max_concurrent,
-        batch_size=args.batch_size,
-        request_delay=args.request_delay,
-    )
-    elapsed = time.time() - start_time
-
-    if show_progress:
-        print("=" * 50)
-        print(f"查询完成!")
-        print(f"  总数: {summary['total']}")
-        print(f"  成功: {summary['succeeded']}")
-        print(f"  失败: {summary['failed']}")
-        print(f"  耗时: {elapsed:.2f}秒")
-        if output_dir:
-            print(f"  输出目录: {output_dir.absolute()}")
-        print("=" * 50)
-    else:
-        print(f"成功: {summary['succeeded']}")
-        print(f"失败: {summary['failed']}")
-        print(f"耗时: {elapsed:.2f}s")
-        print(f"完成: {summary['succeeded']}/{summary['total']} 成功, 失败 {summary['failed']}, 耗时 {elapsed:.2f}s")
-
-    if summary['failed'] > 0:
-        print("\n--- 失败原因统计 ---")
-        error_count = {}
-        for detail in summary.get("failed_details", []):
-            error_type = detail.get("error_type", "unknown")
-            error_count[error_type] = error_count.get(error_type, 0) + 1
-
-        error_messages = {
-            "network_error": "网络错误: 无法连接到服务器",
-            "timeout": "请求超时: 服务器响应过慢",
-            "auth_failed": "认证失败: Cookie已过期，请更新认证信息",
-            "not_found": "资源不存在: 宿舍ID无效或已下架",
-            "room_not_found": "房间不存在: 该房间ID在系统中不存在",
-            "http_error": "HTTP错误: 服务器内部错误",
-            "parse_error": "解析失败: 页面格式已更新",
-            "retry_exhausted": "重试次数耗尽",
-            "unknown": "未知错误",
-        }
-        for error_type, count in error_count.items():
-            msg = error_messages.get(error_type, error_type)
-            print(f"  {msg}: {count}个")
-
-    # 90% success threshold
-    success_rate = summary['succeeded'] / summary['total'] if summary['total'] > 0 else 0
-    if success_rate < 0.9:
-        print(f"错误: 成功率 {success_rate:.1%} ({summary['succeeded']}/{summary['total']}) 低于 90% 阈值")
-        sys.exit(1)
+    finally:
+        elapsed = time.time() - start_time
+        if scan_mode:
+            print(f"RESULT: scanned={scan_result['scanned']} found={scan_result['found']} skipped={scan_result['skipped']} errors={scan_result['total_errors']} elapsed={elapsed:.2f}s")
+        elif summary_data is not None:
+            print(f"RESULT: total={summary_data['total']} success={summary_data['succeeded']} failed={summary_data['failed']} elapsed={elapsed:.2f}s")
+        else:
+            print(f"RESULT: total=0 success=0 failed=0 elapsed={elapsed:.2f}s")
+        if tee is not None:
+            tee.__exit__(None, None, None)
 
 
 def main():
