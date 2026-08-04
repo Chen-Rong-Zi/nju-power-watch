@@ -196,6 +196,8 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
             last_error = {"id": room_id, "error": QueryError.TIMEOUT, "error_type": "timeout", "success": False}
         except aiohttp.ClientConnectorError:
             last_error = {"id": room_id, "error": QueryError.NETWORK_ERROR, "error_type": "network_error", "success": False}
+        except RateLimitedError:
+            raise  # 让 RateLimitedError 传播到上层，触发批量级重试
         except Exception as e:
             error_msg = str(e).lower()
             if "timeout" in error_msg:
