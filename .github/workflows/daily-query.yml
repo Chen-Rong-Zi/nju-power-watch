@@ -82,7 +82,7 @@ jobs:
             --from-mapping config/room_ids.json \
             -c 1 \
             --batch-size 100 \
-            --request-delay 3.0 \
+            --request-delay 2.0 \
             --batch-index ${{ inputs.batch_index || '1' }} \
             --total-batches ${{ inputs.total_batches || '4' }} \
             --log-file /tmp/query_output.txt \
