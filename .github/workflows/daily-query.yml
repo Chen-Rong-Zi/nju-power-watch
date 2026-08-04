@@ -59,8 +59,14 @@ jobs:
             echo "BATCH_INDEX=${{ github.event.inputs.batch_index }}" >> $GITHUB_ENV
             echo "TOTAL_BATCHES=${{ github.event.inputs.total_batches || 6 }}" >> $GITHUB_ENV
           else
-            HOUR=$(date -u +%H)
-            BATCH_INDEX=$((HOUR / 4))
+            case "${{ github.event.schedule }}" in
+              "0 0 * * *") BATCH_INDEX=0 ;;
+              "0 4 * * *") BATCH_INDEX=1 ;;
+              "0 8 * * *") BATCH_INDEX=2 ;;
+              "0 12 * * *") BATCH_INDEX=3 ;;
+              "0 16 * * *") BATCH_INDEX=4 ;;
+              "0 20 * * *") BATCH_INDEX=5 ;;
+            esac
             echo "BATCH_INDEX=$BATCH_INDEX" >> $GITHUB_ENV
             echo "TOTAL_BATCHES=6" >> $GITHUB_ENV
           fi
