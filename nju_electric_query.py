@@ -662,6 +662,18 @@ async def async_main():
     parser.add_argument("room_ids", nargs="*", help="宿舍ID列表 (扫描模式下不需要)")
     args = parser.parse_args()
 
+    # 验证批次参数
+    if args.total_batches <= 0:
+        print("错误: --total-batches 必须大于 0")
+        sys.exit(1)
+    if args.batch_size <= 0:
+        print("错误: --batch-size 必须大于 0")
+        sys.exit(1)
+    if args.batch_index is not None:
+        if args.batch_index < 0 or args.batch_index >= args.total_batches:
+            print(f"错误: --batch-index {args.batch_index} 超出范围 [0, {args.total_batches - 1}]")
+            sys.exit(1)
+
     room_ids = args.room_ids
     output_dir = Path(args.dir) if args.dir else None
     max_concurrent = args.concurrency
