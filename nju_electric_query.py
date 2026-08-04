@@ -139,6 +139,11 @@ class QueryError:
     UNKNOWN = "未知错误"
 
 
+class RateLimitedError(Exception):
+    """服务器返回限流响应时抛出，触发上层批量重试"""
+    pass
+
+
 async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp.ClientSession, room_id: str, cookies: dict, show_retry: bool = True) -> dict:
     """带重试的异步查询单个宿舍电费"""
     url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
@@ -170,6 +175,10 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
                         if "login" in html.lower() or "登录" in html:
                             last_error = {"id": room_id, "error": QueryError.AUTH_FAILED, "error_type": "auth_failed", "success": False}
                             break
+
+                        # 检查限流响应
+                        if "查询已被限制" in html or "请60分钟后再试" in html:
+                            raise RateLimitedError("查询已被限制，请60分钟后再试")
 
                         # 解析 HTML
                         result = parse_html(html)
