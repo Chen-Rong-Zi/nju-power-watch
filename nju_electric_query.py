@@ -144,7 +144,7 @@ class RateLimitedError(Exception):
     pass
 
 
-async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp.ClientSession, room_id: str, cookies: dict, show_retry: bool = True) -> dict:
+async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp.ClientSession, room_id: str, cookies: dict, show_retry: bool = True, request_delay: float = 0) -> dict:
     """带重试的异步查询单个宿舍电费"""
     url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
     last_error = None
@@ -190,6 +190,7 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
 
                         result["success"] = True
                         result["id"] = room_id  # 用于内部追踪，save_result 会过滤掉
+                        await asyncio.sleep(request_delay)  # Enforce delay inside semaphore, before release
                         return result
 
         except asyncio.TimeoutError:
@@ -229,14 +230,10 @@ async def _query_batch_internal(room_ids: list[str], cookies: dict, output_dir: 
     semaphore = asyncio.Semaphore(max_concurrent)
 
     async def limited_query(room_id):
-        try:
-            result = await query_single_with_retry(
-                semaphore, session, room_id, cookies, show_progress
-            )
-        except RateLimitedError:
-            raise
-        finally:
-            await asyncio.sleep(request_delay)
+        result = await query_single_with_retry(
+            semaphore, session, room_id, cookies, show_progress,
+            request_delay=request_delay
+        )
         return result
 
     tasks = [limited_query(room_id) for room_id in room_ids]
