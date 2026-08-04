@@ -2,20 +2,8 @@ name: Daily Electricity Query
 
 on:
   schedule:
-    - cron: '0 0 * * *'   # 00:00 UTC → batch 0
-    - cron: '0 8 * * *'   # 08:00 UTC → batch 1
-    - cron: '0 16 * * *'  # 16:00 UTC → batch 2
+    - cron: '0 0 * * *'   # 00:00 UTC daily
   workflow_dispatch:
-    inputs:
-      batch_index:
-        description: 'Batch index (0-2)'
-        required: true
-        type: number
-      total_batches:
-        description: 'Total number of batches'
-        required: false
-        type: number
-        default: 3
 
 permissions:
   contents: write
@@ -26,11 +14,7 @@ env:
 jobs:
   query-electricity:
     runs-on: ubuntu-latest
-    timeout-minutes: 480
-
-    concurrency:
-      group: daily-query-batch-${{ github.event_name == 'schedule' && github.event.schedule || github.event.inputs.batch_index }}
-      cancel-in-progress: false
+    timeout-minutes: 360
 
     steps:
       - name: Checkout repository
@@ -48,22 +32,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Determine batch index
-        id: batch
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "BATCH_INDEX=${{ github.event.inputs.batch_index }}" >> $GITHUB_ENV
-            echo "TOTAL_BATCHES=${{ github.event.inputs.total_batches || 3 }}" >> $GITHUB_ENV
-          else
-            case "${{ github.event.schedule }}" in
-              "0 0 * * *") BATCH_INDEX=0 ;;
-              "0 8 * * *") BATCH_INDEX=1 ;;
-              "0 16 * * *") BATCH_INDEX=2 ;;
-            esac
-            echo "BATCH_INDEX=$BATCH_INDEX" >> $GITHUB_ENV
-            echo "TOTAL_BATCHES=3" >> $GITHUB_ENV
-          fi
 
       - name: Auto login to get cookie
         id: login
@@ -102,12 +70,9 @@ jobs:
           python nju_electric_query.py \
             --cookie-file /tmp/cookie.json \
             --from-mapping config/room_ids.json \
-            --batch-index ${{ env.BATCH_INDEX }} \
-            --total-batches ${{ env.TOTAL_BATCHES }} \
             -c 1 \
             --batch-size 100 \
-            --batch-delay 30 \
-            --request-delay 3 \
+            --request-delay 0.5 \
             -d ./database \
             -q \
             2>&1 | tee query_output.log
@@ -176,14 +141,13 @@ jobs:
 
           if [ "$EXISTING" -eq 0 ]; then
             gh issue create \
-              --title "⚠️ 每日电费查询失败 - $TODAY (批次 ${{ env.BATCH_INDEX }}/${{ env.TOTAL_BATCHES }})" \
+              --title "⚠️ 每日电费查询失败 - $TODAY" \
               --label "daily-query-failure" \
               --assignee "@me" \
               --body "
           ## 查询失败详情
 
           - **日期**: $TODAY
-          - **批次**: ${{ env.BATCH_INDEX }}/${{ env.TOTAL_BATCHES }}
           - **工作流**: ${{ github.workflow }}
           - **运行编号**: ${{ github.run_id }}
           - **触发方式**: ${{ github.event_name }}
@@ -206,7 +170,7 @@ jobs:
           FAILED=${{ steps.query.outputs.failed_count }}
           TOTAL=$((SUCCESS + FAILED))
 
-          echo "## 📊 Daily Query Summary (Batch ${{ env.BATCH_INDEX }}/${{ env.TOTAL_BATCHES }})" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Daily Query Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
@@ -222,4 +186,4 @@ jobs:
               echo '```' >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Batch ${{ env.BATCH_INDEX }}/${{ env.TOTAL_BATCHES }}**" >> $GITHUB_STEP_SUMMARY
+          echo "**Single batch (all rooms)**" >> $GITHUB_STEP_SUMMARY
