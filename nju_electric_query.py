@@ -31,7 +31,7 @@ RETRY_BACKOFF = 1.5  # 指数退避倍数
 MAX_SCAN_RETRIES = 5  # 扫描模式下单个ID最大重试次数
 
 # 并发配置
-DEFAULT_CONCURRENCY = 3  # 默认并发数（降低以避免触发限流）
+DEFAULT_CONCURRENCY = 1  # 默认并发数（单线程，避免触发限流）
 
 HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
@@ -642,10 +642,10 @@ async def async_main():
     parser.add_argument("--scan-output", type=str, default="config/room_ids.json", help="扫描结果输出文件 (默认: config/room_ids.json)")
     parser.add_argument("--from-mapping", type=str, help="从JSON映射文件读取房间ID列表")
     parser.add_argument("--batch-index", type=int, help="当前批次编号 (从 0 开始)")
-    parser.add_argument("--total-batches", type=int, default=6, help="总批次数（默认 6）")
+    parser.add_argument("--total-batches", type=int, default=3, help="总批次数（默认 3）")
     parser.add_argument("--batch-size", type=int, default=100, help="小批量大小（默认 100）")
     parser.add_argument("--batch-delay", type=int, default=30, help="小批量间延迟秒数（默认 30）")
-    parser.add_argument("--request-delay", type=float, default=0.3, help="请求间最小间隔秒数（默认 0.3）")
+    parser.add_argument("--request-delay", type=float, default=3.0, help="请求间最小间隔秒数（默认 3.0）")
     parser.add_argument("room_ids", nargs="*", help="宿舍ID列表 (扫描模式下不需要)")
     args = parser.parse_args()
 
