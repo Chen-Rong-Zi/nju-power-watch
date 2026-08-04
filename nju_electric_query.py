@@ -31,7 +31,7 @@ RETRY_BACKOFF = 1.5  # 指数退避倍数
 MAX_SCAN_RETRIES = 5  # 扫描模式下单个ID最大重试次数
 
 # 并发配置
-DEFAULT_CONCURRENCY = 24  # 默认并发数
+DEFAULT_CONCURRENCY = 3  # 默认并发数（降低以避免触发限流）
 
 HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
@@ -222,111 +222,134 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
     return last_error or {"id": room_id, "error": QueryError.UNKNOWN, "error_type": "unknown", "success": False}
 
 
+async def _query_batch_internal(room_ids: list[str], cookies: dict, output_dir: Optional[Path],
+                                 show_progress: bool, max_concurrent: int, request_delay: float,
+                                 session: aiohttp.ClientSession) -> list[dict]:
+    """查询一小批房间，带请求间隔控制。遇限流则抛出 RateLimitedError。"""
+    semaphore = asyncio.Semaphore(max_concurrent)
+
+    async def limited_query(room_id):
+        async with semaphore:
+            try:
+                result = await query_single_with_retry(
+                    semaphore, session, room_id, cookies, show_progress
+                )
+            except RateLimitedError:
+                raise
+            finally:
+                await asyncio.sleep(request_delay)
+            return result
+
+    tasks = [limited_query(room_id) for room_id in room_ids]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    # 检查是否有 RateLimitedError
+    for r in results:
+        if isinstance(r, RateLimitedError):
+            raise RateLimitedError(str(r))
+
+    return results
+
+
 async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[Path] = None,
                       show_progress: bool = True, max_concurrent: int = DEFAULT_CONCURRENCY,
                       batch_size: int = 100, batch_delay: int = 30,
                       rate_limit_wait: int = 3600, request_delay: float = 0.3):
-    """异步批量查询 - 流式处理，内存友好
-
-    Args:
-        room_ids: 宿舍ID列表
-        cookies: Cookie字典
-        output_dir: 输出目录
-        show_progress: 是否显示进度
-        max_concurrent: 最大并发数
-    """
+    """异步批量查询 - 分批处理 + 请求间隔 + 限流恢复"""
     total = len(room_ids)
-    completed = 0
     succeeded = 0
     failed = 0
 
     failed_details = []
     success_details = []
 
-    # 使用信号量控制并发数
-    semaphore = asyncio.Semaphore(max_concurrent)
-
-    # 包装查询函数，使用信号量控制并发
-    async def limited_query(session, room_id):
-        return await query_single_with_retry(semaphore, session, room_id, cookies, show_progress)
-
     connector = aiohttp.TCPConnector(limit=max_concurrent)
     async with aiohttp.ClientSession(connector=connector) as session:
-        # 使用异步迭代器流式生成任务
-        async def task_generator():
-            for room_id in room_ids:
-                yield limited_query(session, room_id)
+        for i in range(0, total, batch_size):
+            batch = room_ids[i:i + batch_size]
+            batch_num = (i // batch_size) + 1
+            total_batches = (total + batch_size - 1) // batch_size
 
-        # 流式处理：只维护 max_concurrent * 2 个待处理任务
-        tasks_gen = task_generator()
-        pending = set()
+            max_retries = 2
+            retries = 0
+            batch_success = False
 
-        # # 初始填充：先提交一批任务
-        # batch_size = max_concurrent * 2
-        # for _ in range(min(batch_size, total)):
-        #     try:
-        #         task = await tasks_gen.__anext__()
-        #         pending.add(asyncio.create_task(task))
-        #     except StopAsyncIteration:
-        #         break
-        async for coro in tasks_gen:
-            pending.add(asyncio.create_task(coro))
-
-        # 处理完成的任务，同时补充新任务
-        while pending:
-            # 等待任意任务完成
-            done, pending = await asyncio.wait(
-                pending,
-                return_when=asyncio.FIRST_COMPLETED
-            )
-
-            for task in done:
-                result = task.result()
-                completed += 1
-
-                if result["success"]:
-                    succeeded += 1
-                    if output_dir:
-                        await save_result(result, output_dir, quiet=not show_progress)
-                    building = result.get("楼栋", "未知")
-                    room = result.get("房间", "未知")
-                    power = result.get("剩余电量", "未知")
-                    success_details.append({
-                        "id": result["id"],
-                        "building": building,
-                        "room": room,
-                        "power": power
-                    })
-                else:
-                    failed += 1
-                    failed_details.append({
-                       "id": result["id"],
-                        "error": result.get("error", "未知错误"),
-                        "error_type": result.get("error_type", "unknown")
-                    })
-
-                if show_progress:
-                    print(f"\r[{completed}/{total}] 成功: {succeeded}, 失败: {failed}", end="", flush=True)
-
-                # 补充新任务
+            while retries <= max_retries and not batch_success:
                 try:
-                    new_task = await tasks_gen.__anext__()
-                    pending.add(asyncio.create_task(new_task))
-                except StopAsyncIteration:
-                    pass  # 没有更多任务了
+                    results = await _query_batch_internal(
+                        batch, cookies, output_dir, show_progress,
+                        max_concurrent, request_delay, session
+                    )
+
+                    batch_succeeded = 0
+                    batch_failed = 0
+                    for result in results:
+                        if result["success"]:
+                            batch_succeeded += 1
+                            succeeded += 1
+                            if output_dir:
+                                await save_result(result, output_dir, quiet=not show_progress)
+                            success_details.append({
+                                "id": result["id"],
+                                "building": result.get("楼栋", "未知"),
+                                "room": result.get("房间", "未知"),
+                                "power": result.get("剩余电量", "未知"),
+                            })
+                        else:
+                            batch_failed += 1
+                            failed += 1
+                            failed_details.append({
+                                "id": result["id"],
+                                "error": result.get("error", "未知错误"),
+                                "error_type": result.get("error_type", "unknown"),
+                            })
+
+                    completed = succeeded + failed
+                    if show_progress:
+                        print(f"\r[{completed}/{total}] 成功: {succeeded}, 失败: {failed}", end="", flush=True)
+
+                    batch_success = True
+
+                except RateLimitedError:
+                    retries += 1
+                    if retries > max_retries:
+                        # 重试耗尽，标记整批失败
+                        failed += len(batch)
+                        completed = succeeded + failed
+                        for rid in batch:
+                            failed_details.append({
+                                "id": rid,
+                                "error": "限流重试耗尽",
+                                "error_type": "rate_limited",
+                            })
+                        if show_progress:
+                            print(f"\r[{completed}/{total}] 成功: {succeeded}, 失败: {failed}", end="", flush=True)
+                        break
+
+                    if show_progress:
+                        print(f"\n  [限流] 等待 {rate_limit_wait}s 后重试小批量 (第 {retries} 次)...")
+                    await asyncio.sleep(rate_limit_wait)
+
+            # 小批量间延迟（如果当前批次成功且还有下一批）
+            if batch_success and i + batch_size < total:
+                await asyncio.sleep(batch_delay)
 
     if show_progress:
         print()
 
     if success_details and show_progress:
         print("\n--- 查询成功 ---")
-        for detail in success_details:
+        for detail in success_details[:10]:  # 最多显示前10个
             print(f"  {detail['id']}: {detail['building']} {detail['room']} | 剩余电量: {detail['power']}")
 
     if failed_details and show_progress:
         print("\n--- 查询失败 (具体原因) ---")
+        error_count = {}
         for detail in failed_details:
-            print(f"  {detail['id']}: {detail['error']}")
+            error_type = detail.get("error_type", "unknown")
+            error_count[error_type] = error_count.get(error_type, 0) + 1
+        for error_type, count in error_count.items():
+            print(f"  {error_type}: {count}个")
 
     return {
         "total": total,
