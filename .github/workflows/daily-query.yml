@@ -77,7 +77,6 @@ jobs:
       - name: Query electricity data
         id: query
         run: |
-          set -o pipefail
           python nju_electric_query.py \
             --cookie-file /tmp/cookie.json \
             --from-mapping config/room_ids.json \
@@ -86,14 +85,17 @@ jobs:
             --request-delay 3.0 \
             --batch-index ${{ inputs.batch_index || '1' }} \
             --total-batches ${{ inputs.total_batches || '4' }} \
-            -d ./database \
-            > /tmp/query_output.txt 2>&1
-          cat /tmp/query_output.txt
+            --log-file /tmp/query_output.txt \
+            -d ./database
 
-          SUCCESS=$(grep -oP '成功: \K\d+' /tmp/query_output.txt || echo "0")
-          FAILED=$(grep -oP '失败: \K\d+' /tmp/query_output.txt || echo "0")
+          RESULT_LINE=$(grep '^RESULT:' /tmp/query_output.txt || true)
+          echo "RESULT_LINE=$RESULT_LINE"
+          TOTAL=$(echo "$RESULT_LINE" | grep -oP 'total=\K\d+' || echo "0")
+          SUCCESS=$(echo "$RESULT_LINE" | grep -oP 'success=\K\d+' || echo "0")
+          FAILED=$(echo "$RESULT_LINE" | grep -oP 'failed=\K\d+' || echo "0")
           echo "success_count=$SUCCESS" >> $GITHUB_OUTPUT
           echo "failed_count=$FAILED" >> $GITHUB_OUTPUT
+          echo "total_count=$TOTAL" >> $GITHUB_OUTPUT
 
           if [ "$SUCCESS" -eq 0 ]; then
             echo "::error::All queries failed ($FAILED rooms)"
@@ -298,6 +300,6 @@ jobs:
           if [ "$FAILED" -gt 0 ]; then
               echo "**Failure Breakdown:**" >> $GITHUB_STEP_SUMMARY
               echo '```' >> $GITHUB_STEP_SUMMARY
-              awk '/--- 失败原因统计 ---/{flag=1} flag' /tmp/query_output.txt 2>/dev/null >> $GITHUB_STEP_SUMMARY || true
+              awk '/^--- 失败原因统计 ---/{flag=1} /^RESULT:/{flag=0} flag' /tmp/query_output.txt 2>/dev/null >> $GITHUB_STEP_SUMMARY || true
               echo '```' >> $GITHUB_STEP_SUMMARY
           fi
