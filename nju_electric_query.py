@@ -20,9 +20,45 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import urljoin
 from typing import Optional
+import contextlib
 
 # 默认 Cookie 文件路径
 DEFAULT_COOKIE_FILE = "/tmp/cookie.json"
+
+
+class TeeLogger:
+    """将 stdout/stderr 同时输出到文件和控制台"""
+
+    def __init__(self, filepath: str):
+        self.filepath = filepath
+        self.file = None
+
+    def __enter__(self):
+        self.file = open(self.filepath, "w", encoding="utf-8")
+        self.stdout_redirect = contextlib.redirect_stdout(self._tee(sys.stdout))
+        self.stderr_redirect = contextlib.redirect_stderr(self._tee(sys.stderr))
+        self.stdout_redirect.__enter__()
+        self.stderr_redirect.__enter__()
+        return self
+
+    def __exit__(self, *args):
+        self.stderr_redirect.__exit__(*args)
+        self.stdout_redirect.__exit__(*args)
+        self.file.close()
+
+    def _tee(self, original_stream):
+        class TeeStream:
+            def __init__(self, file, original):
+                self.file = file
+                self.original = original
+            def write(self, text):
+                self.file.write(text)
+                self.original.write(text)
+            def flush(self):
+                self.file.flush()
+                self.original.flush()
+        return TeeStream(self.file, original_stream)
+
 
 # 重试配置
 MAX_RETRIES = 5
@@ -669,8 +705,21 @@ async def async_main():
     parser.add_argument("--request-delay", type=float, default=3.0, help="请求间最小间隔秒数（默认 3.0）")
     parser.add_argument("--batch-index", type=int, default=1, help="当前批次序号（从 1 开始，默认 1）")
     parser.add_argument("--total-batches", type=int, default=1, help="总批次数（默认 1）")
+    parser.add_argument("--log-file", type=str, help="日志文件路径（同时输出到文件和控制台）")
     parser.add_argument("room_ids", nargs="*", help="宿舍ID列表 (扫描模式下不需要)")
     args = parser.parse_args()
+
+    # 日志文件输出
+    tee = None
+    if args.log_file:
+        try:
+            log_dir = os.path.dirname(args.log_file)
+            if log_dir:
+                os.makedirs(log_dir, exist_ok=True)
+            tee = TeeLogger(args.log_file)
+            tee.__enter__()
+        except (OSError, IOError) as e:
+            print(f"警告: 无法创建日志文件 {args.log_file}: {e}，继续运行但不输出到文件")
 
     # 验证批次参数
     if args.batch_size <= 0:
