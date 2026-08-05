@@ -13,10 +13,14 @@
     "3": {
       "success": 4331,
       "failed": 7
+    },
+    "4": {
+      "success": 4296,
+      "failed": 39
     }
   },
   "cumulative": {
-    "success": 12987,
-    "failed": 27
+    "success": 17283,
+    "failed": 66
   }
 }
