@@ -28,10 +28,11 @@ Day N+1
   06:00 Query 启动
        ├─ 合并 scan-room → master
        ├─ 删除 scan-room 分支
-       ├─ 运行查询（4批链式）
-       └─ 查询全部完成后重建 scan-room 分支
+       └─ 运行查询（4批链式）
 
-  21:00 Scan 启动（重复）
+  21:00 Scan 启动
+       └─ scan-room 不存在 → 从 master 重建
+       运行扫描 → 推送到 scan-room（重复）
 ```
 
 ## 修改文件
@@ -106,18 +107,6 @@ Day N+1
     fi
 ```
 
-在 `Summary` 步骤之后，增加重建 scan-room 步骤（仅在最后一批次执行）：
-
-```yaml
-- name: Recreate scan-room branch
-  if: ${{ success() && inputs.batch_index == inputs.total_batches }}
-  run: |
-    echo "Recreating scan-room branch from master..."
-    git branch scan-room master
-    git push origin scan-room
-    echo "✓ scan-room branch recreated for next scan"
-```
-
 ## 容错处理
 
 | 场景 | 处理方式 |
@@ -125,11 +114,10 @@ Day N+1
 | scan-room 分支不存在 | Query 跳过合并，Scan 自己创建 |
 | 合并冲突 | Query 执行 `merge --abort`，跳过合并继续跑查询 |
 | 删除分支失败 | 记录 warning，不阻塞查询 |
-| 重建分支失败 | 记录 warning，Scan 下次自己创建 |
 | Scan 在 Query 运行时意外启动 | 不触发（concurrency 无需设置，因为操作不同分支） |
 
 ## 注意事项
 
-- Query 的 `actions/checkout@v4` 使用默认行为（checkout master），后续的 merge/delete/recreate 都在 master 上操作
+- Query 的 `actions/checkout@v4` 使用默认行为（checkout master），后续的 merge/delete 都在 master 上操作
 - Scan 的 `actions/checkout@v4` 需要确保最终工作在 scan-room 分支上
-- 删除分支和重建分支使用 `git push origin --delete` / `git push origin scan-room`，需要 `contents: write` 权限（两个 workflow 已有）
+- 删除分支使用 `git push origin --delete scan-room`，需要 `contents: write` 权限（两个 workflow 已有）
