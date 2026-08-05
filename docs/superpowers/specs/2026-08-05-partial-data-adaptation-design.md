@@ -44,10 +44,10 @@
 
 ```
 generated_at (UTC+0) → +8h → CST 日期
-├── CST 日期 = 今天 → 不触发 fallback（return null）
+├── CST 日期 = 今天 → `_checkDateCoverage` 返回 1.0 → `findLatestDateWithData` 判定无 fallback 需要，返回 null
 └── CST 日期 < 今天 → 向前搜索 7 天，找到第一个 generated_at 日期匹配的日期
     ├── 找到 → 返回该日期作为 fallback
-    └── 未找到 → return null（无数据状态）
+    └── 未找到 → `findLatestDateWithData` 返回 null（无数据状态）
 ```
 
 #### 修改点
@@ -59,22 +59,27 @@ generated_at (UTC+0) → +8h → CST 日期
 ```javascript
 } else {
   // Campus-wide: use generated_at from overview.json
-  const overview = await this.getOverview();
-  if (!overview || !overview.generated_at) return 0;
+  try {
+    const overview = await this.getOverview();
+    if (!overview || !overview.generated_at) return 0;
 
-  // generated_at is UTC+0, convert to CST (+8h)
-  // Append 'Z' to ensure consistent UTC parsing across browsers
-  const generatedDate = new Date(overview.generated_at + 'Z');
-  generatedDate.setUTCHours(generatedDate.getUTCHours() + 8);
-  // Use UTC methods to avoid local timezone interference
-  const year = generatedDate.getUTCFullYear();
-  const month = String(generatedDate.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(generatedDate.getUTCDate()).padStart(2, '0');
-  const generatedCompact = `${year}${month}${day}`;
-  const targetCompact = compactDate;
+    // generated_at is UTC+0, convert to CST (+8h)
+    // Append 'Z' to ensure consistent UTC parsing across browsers
+    const generatedDate = new Date(overview.generated_at + 'Z');
+    generatedDate.setUTCHours(generatedDate.getUTCHours() + 8);
+    // Use UTC methods to avoid local timezone interference
+    const year = generatedDate.getUTCFullYear();
+    const month = String(generatedDate.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(generatedDate.getUTCDate()).padStart(2, '0');
+    const generatedCompact = `${year}${month}${day}`;
+    const targetCompact = compactDate;
 
-  // If generated_at date matches target date, coverage is sufficient
-  return generatedCompact === targetCompact ? 1.0 : 0;
+    // If generated_at date matches target date, coverage is sufficient
+    return generatedCompact === targetCompact ? 1.0 : 0;
+  } catch (error) {
+    console.warn('Failed to get overview.json, falling back to coverage=0', error);
+    return 0;
+  }
 }
 ```
 
@@ -205,7 +210,7 @@ _isConsecutiveDates(currDate, prevDate) {
 
 | 文件 | 改动类型 | 说明 |
 |------|----------|------|
-| `docs/js/data-service.js` | 修改 | 5 处消耗计算修复 + 1 处校区 fallback + 1 处阈值 + 1 处辅助函数 + 1 处 avgConsumption 标注 |
+| `docs/js/data-service.js` | 修改 | 5 处消耗计算修复（#1-#5, #5b 归入 #5）+ 1 处校区 fallback + 1 处阈值 + 1 处辅助函数 + 2 处 avgConsumption 标注（直接调用方 A、B，解构后分开存储） |
 | `docs/campus-view.html` | 修改 | 新增扫描横幅渲染 + 异步 fetch 逻辑 |
 | `docs/building-view.html` | 修改 | 新增扫描横幅渲染 + 异步 fetch 逻辑 + 1 处消耗计算修复 |
 
@@ -213,7 +218,7 @@ _isConsecutiveDates(currDate, prevDate) {
 
 ### 模块 4：平均消耗量标注
 
-`calculateAvgConsumption` 当前返回纯数值，未反映数据基础天数。修改为返回结构体：
+`calculateAvgConsumption` 当前返回纯数值，未反映数据基础天数。修改为返回结构体，同时在调用方解构，保持 `avgConsumption` 为数值、新增 `avgConsumptionMeta` 字段：
 
 ```javascript
 // 修改前
@@ -235,7 +240,35 @@ calculateAvgConsumption(history) {
 }
 ```
 
-调用方（如 `getRoomHistory`、`campus-view.html` 等）相应更新，展示"日均消耗（基于 X/Y 天有数据）"。
+#### 调用方修改清单
+
+为避免下游消费者大面积崩溃，采用**解构后分开存储**策略：在直接调用 `calculateAvgConsumption` 的 2 个位置，解构结构体，`avgConsumption` 保持数值，`avgConsumptionMeta` 存储元数据。
+
+**直接调用方（2 处，必须修改）：**
+
+| # | 文件 | 位置 | 代码前后对比 |
+|---|------|------|-------------|
+| A | `data-service.js` | `getRoomHistory` L505 | `avgConsumption: this.calculateAvgConsumption(history)` → `const avgResult = this.calculateAvgConsumption(history); avgConsumption: avgResult.avg, avgConsumptionMeta: { daysWithData: avgResult.daysWithData, totalDays: avgResult.totalDays }` |
+| B | `data-service.js` | `batchGetRoomHistory` L618 | 同上 |
+
+**下游消费者（无需修改，自动兼容）：**
+
+| # | 文件 | 位置 | 读取方式 | 说明 |
+|---|------|------|----------|------|
+| C | `data-service.js` | `getBuildingConsumption` L912 | `history.avgConsumption` | 读取的是数值（`avgResult.avg`），无需修改 |
+| D | `data-service.js` | `_aggregateCampusResult` L1524 | `b.avgConsumption \|\| 0` | 转发数值，无需修改 |
+| E | `data-service.js` | `_aggregateCampusResult` L1537 | `totalConsumption / totalRoomsWithData` | 独立计算，不受影响 |
+| F | `data-service.js` | `getCampusConsumption` L1321, L1397, L1407 | `rankingCache.totalConsumption / rankingCache.roomCount` | 独立计算，不受影响 |
+| G | `data-service.js` | `predictDaysRemaining` L1128-1140 | `avgConsumption` 参数 | 传入的是数值，无需修改 |
+| H | `data-service.js` | `getRechargeSuggestion` L1146-1160 | `avgConsumption` 参数 | 同上 |
+| I | `campus-view.html` | L911, L942, L1002-1003, L1212, L1246, L1287, L1331, L1339, L1343-1344 | `consumption.avgConsumption` / `b.avgConsumption` | 来自聚合计算（独立），非 `calculateAvgConsumption`，无需修改 |
+| J | `building-view.html` | L2907, L2910, L2929-2930, L2980, L3003 | 本地计算 | `recentData.reduce(...)`，独立计算，无需修改 |
+| K | `room-view.html` | L1395-1448 | 本地计算 | `weekData.reduce(...)`，独立计算，无需修改 |
+| L | `room-detail.html` | L493, L497 | 本地计算 | `weekData.reduce(...)`，独立计算，无需修改 |
+| M | `floor-analytics.js` | L19, L33, L46 | 独立计算 | 独立计算，无需修改 |
+| N | `floor-view.js` | L148, L286 | `floors[f].avgConsumption` / `stats.avgConsumption` | 来自 floor-analytics 结果，无需修改 |
+
+**结论：** 实际只需修改 2 处直接调用方（A、B），所有下游消费者（C-N）保持兼容。展示"日均消耗（基于 X/Y 天有数据）"的 UI 代码可从 `avgConsumptionMeta` 读取元数据，按需更新对应的 HTML 展示元素。
 
 ---
 
