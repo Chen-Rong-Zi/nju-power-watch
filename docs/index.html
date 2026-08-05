@@ -311,6 +311,12 @@
       font-weight: 700;
       color: var(--accent);
     }
+    .stat-value.batch-warn {
+      color: var(--warning);
+    }
+    .stat-value.batch-muted {
+      color: var(--muted);
+    }
     .stat-label {
       color: var(--muted);
       font-size: 13px;
@@ -355,26 +361,7 @@
       color: var(--muted);
       font-size: 14px;
     }
-  .badge {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 500;
-    }
-    .badge-ok {
-      background: #d1fae5;
-      color: #065f46;
-    }
-    .badge-warn {
-      background: #fff3cd;
-      color: #856404;
-    }
-    .badge-muted {
-      background: #f3f4f6;
-      color: #9ca3af;
-    }
-  </style>
+    </style>
 </head>
 <body>
   <nav class="topnav">
@@ -437,7 +424,7 @@
           <div class="stat-label">房间追踪</div>
         </div>
         <div class="stat-item">
-          <div class="stat-value" id="stat-batches"><span class="badge badge-muted">尚未更新</span></div>
+          <div class="stat-value" id="stat-batches">—</div>
           <div class="stat-label">当日批次</div>
         </div>
       </div>
@@ -605,13 +592,11 @@
           if (isToday) {
             const done = Object.keys(summary.batches).length;
             const total = summary.total_batches;
-            if (done >= total) {
-              batchEl.innerHTML = '<span class="badge badge-ok">' + done + '/' + total + ' 完成</span>';
-            } else {
-              batchEl.innerHTML = '<span class="badge badge-warn">' + done + '/' + total + ' 进行中</span>';
-            }
+            batchEl.textContent = done + '/' + total;
+            batchEl.className = 'stat-value' + (done >= total ? '' : ' batch-warn');
           } else {
-            batchEl.innerHTML = '<span class="badge badge-muted">尚未更新</span>';
+            batchEl.textContent = '—';
+            batchEl.className = 'stat-value batch-muted';
           }
         }
       } catch (e) {
