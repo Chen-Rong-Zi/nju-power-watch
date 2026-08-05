@@ -607,11 +607,15 @@ const DataService = {
           }
           history.sort((a, b) => a.date.localeCompare(b.date));
 
-          // 计算每日消耗
+          // 计算每日消耗（日期不连续时返回 null，不跨日累计）
           for (let j = 1; j < history.length; j++) {
             const prev = history[j - 1];
             const curr = history[j];
-            curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+            if (!this._isConsecutiveDates(curr.date, prev.date)) {
+              curr.consumption = null;
+            } else {
+              curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+            }
           }
         }
 
