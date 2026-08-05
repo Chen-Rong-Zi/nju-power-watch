@@ -509,6 +509,13 @@
 
     // 更新主要直观描述卡片
     function updateMainAnalogy(consumption) {
+      if (consumption === null || consumption === undefined) {
+        document.getElementById('main-analogy-icon').textContent = '❓';
+        document.getElementById('main-analogy-value').textContent = '--';
+        document.getElementById('main-analogy-label').textContent = '暂无数据';
+        document.getElementById('main-analogy-desc').textContent = '数据不足，无法计算';
+        return;
+      }
       const analogy = selectBestAnalogy(consumption);
       const value = (consumption * analogy.factor).toFixed(1);
 
