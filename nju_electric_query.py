@@ -445,7 +445,10 @@ def load_existing_ids(file_path: str) -> dict:
     return existing
 
 
-async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: str, max_concurrent: int = DEFAULT_CONCURRENCY, show_progress: bool = True):
+async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: str,
+                         max_concurrent: int = DEFAULT_CONCURRENCY, show_progress: bool = True,
+                         progress_file: str | None = None, batch_size: int = 3600,
+                         request_delay: float = 3.0) -> dict:
     """扫描ID区间，发现存在的房间
 
     Args:
@@ -464,7 +467,40 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
     if existing_id_set and show_progress:
         print(f"从 {output_file} 加载了 {len(existing_id_set)} 个已有ID")
 
-    total = end_id - start_id + 1
+    # 进度追踪
+    if progress_file:
+        cursor = 0
+        cycle = 1
+        range_end = end_id
+        batches = {}
+        cumulative = {"scanned": 0, "found": 0, "failed": 0}
+        batch_seq = 0
+
+        try:
+            with open(progress_file, "r", encoding="utf-8") as f:
+                prog = json.load(f)
+                cursor = prog.get("cursor", 0)
+                cycle = prog.get("cycle", 1)
+                range_end = prog.get("range_end", end_id)
+                batches = prog.get("batches", {})
+                cumulative = prog.get("cumulative", {"scanned": 0, "found": 0, "failed": 0})
+                if batches:
+                    batch_seq = max(int(k) for k in batches.keys())
+        except (FileNotFoundError, json.JSONDecodeError, ValueError):
+            print(f"警告: 无法读取进度文件 {progress_file}，从 cursor=0 开始")
+
+        if cursor > 0 and show_progress:
+            print(f"从进度文件恢复: cursor={cursor}, cycle={cycle}")
+
+    # 如果使用进度追踪，用 cursor 覆盖扫描区间
+    if progress_file:
+        scan_start = cursor + 1
+        scan_end = min(cursor + batch_size, range_end)
+        total = scan_end - scan_start + 1
+    else:
+        scan_start = start_id
+        scan_end = end_id
+        total = scan_end - scan_start + 1
     processed = 0
     new_found = 0
     skipped = 0  # 跳过的已有ID计数
@@ -589,7 +625,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
 
     # 生成待扫描的ID列表，跳过已有ID
     ids_to_scan = []
-    for room_id in range(start_id, end_id + 1):
+    for room_id in range(scan_start, scan_end + 1):
         if str(room_id) in existing_id_set:
             skipped += 1
         else:
@@ -601,8 +637,55 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
 
     connector = aiohttp.TCPConnector(limit=max_concurrent)
     async with aiohttp.ClientSession(connector=connector) as session:
-        tasks = [scan_single(session, room_id) for room_id in ids_to_scan]
-        await asyncio.gather(*tasks)
+        task_map = {}
+        pending = set()
+        rate_limited = False
+        rate_limit_retries = 0
+        max_rate_limit_retries = 2
+        rate_limited_id = None
+
+        # 逐个创建任务
+        for room_id in ids_to_scan:
+            if rate_limited:
+                break
+            task = asyncio.create_task(scan_single(session, room_id))
+            task_map[task] = room_id
+            pending.add(task)
+
+        # 等待所有任务完成（或遇限流取消）
+        while pending and not rate_limited:
+            done, pending = await asyncio.wait(pending, return_when=asyncio.FIRST_COMPLETED)
+            for task in done:
+                rid = task_map.get(task)
+                exc = task.exception()
+                if exc is not None:
+                    if isinstance(exc, RateLimitedError):
+                        rate_limited = True
+                        rate_limited_id = rid
+                        break
+                    # 其他异常已在 scan_single 内部处理
+
+        if rate_limited:
+            # 取消剩余的待处理任务
+            for t in pending:
+                t.cancel()
+            if pending:
+                await asyncio.wait(pending)
+            error_counts["rate_limited"] = error_counts.get("rate_limited", 0) + 1
+            while rate_limit_retries < max_rate_limit_retries:
+                rate_limit_retries += 1
+                print(f"\n[限流] 等待 3600s 后重试 ID {rate_limited_id} (第 {rate_limit_retries} 次)...")
+                await asyncio.sleep(3600)
+                # 重试被限流的 ID
+                task = asyncio.create_task(scan_single(session, rate_limited_id))
+                await task
+                exc = task.exception()
+                if isinstance(exc, RateLimitedError):
+                    print(f"  ID {rate_limited_id} 重试仍被限流，跳过")
+                    error_counts["rate_limited"] = error_counts.get("rate_limited", 0) + 1
+                else:
+                    # 重试成功
+                    break
 
     total_errors = sum(error_counts.values())
 
@@ -610,6 +693,44 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         print()
 
     save_mapping(mapping, output_file)
+
+    # 保存进度
+    if progress_file:
+        batch_seq += 1
+        new_cursor = scan_end if not rate_limited else rate_limited_id - 1
+        if new_cursor >= range_end:
+            new_cursor = 0
+            cycle += 1
+            batches = {}
+            cumulative = {"scanned": 0, "found": 0, "failed": 0}
+        else:
+            batches[str(batch_seq)] = {
+                "scanned": scan_count,
+                "found": new_found,
+                "failed": error_counts.get("rate_limited", 0),
+                "date": datetime.now().strftime("%Y-%m-%d"),
+                "cycle": cycle,
+            }
+            cumulative["scanned"] += scan_count
+            cumulative["found"] += new_found
+            cumulative["failed"] += error_counts.get("rate_limited", 0)
+
+        prog_data = {
+            "cycle": cycle,
+            "date": datetime.now().strftime("%Y-%m-%d"),
+            "range_start": start_id,
+            "range_end": range_end,
+            "cursor": new_cursor,
+            "batch_size": batch_size,
+            "batches": batches,
+            "cumulative": cumulative,
+        }
+
+        # 原子写入
+        tmp_file = progress_file + ".tmp"
+        with open(tmp_file, "w", encoding="utf-8") as f:
+            json.dump(prog_data, f, ensure_ascii=False, indent=2)
+        os.replace(tmp_file, progress_file)
 
     if show_progress:
         print(f"扫描完成: 扫描 {scan_count} 个ID, 发现 {new_found} 个新房间, 跳过 {skipped} 个已有ID")
