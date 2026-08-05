@@ -135,7 +135,7 @@ const DataService = {
 
     // Check if original date has data
     const originalCoverage = await this._checkDateCoverage(campusName, buildingName, targetDate);
-    if (originalCoverage >= 0.5) {
+    if (originalCoverage > 0) {
       return null; // Original date has sufficient data, no fallback needed
     }
 
@@ -148,7 +148,7 @@ const DataService = {
       const checkDate = this._dateToCompact(checkDateObj);
 
       const coverage = await this._checkDateCoverage(campusName, buildingName, checkDate);
-      if (coverage >= 0.5) {
+      if (coverage > 0) {
         const month = checkDate.substring(4, 6);
         const day = checkDate.substring(6, 8);
         return {
@@ -190,34 +190,21 @@ const DataService = {
 
       return totalRooms > 0 ? roomsWithData / totalRooms : 0;
     } else {
-      // Check campus-wide (sample a few buildings for performance)
-      const campusStats = await this.getCampusStatistics(campusName);
-      if (!campusStats || !campusStats.buildingDetails) return 0;
+      // Campus-wide: use generated_at from overview.json
+      try {
+        const overview = await this.getOverview();
+        if (!overview || !overview.generated_at) return 0;
 
-      let totalRooms = 0;
-      let roomsWithData = 0;
+        // generated_at uses naive datetime in CST (UTC+8), parse date part directly
+        const datePart = overview.generated_at.split('T')[0];
+        const generatedCompact = datePart.replace(/-/g, '');
 
-      // Sample up to 5 buildings for quick check
-      const sampleBuildings = campusStats.buildingDetails.slice(0, 5);
-
-      for (const bd of sampleBuildings) {
-        const details = await this.getBuildingDetails(campusName, bd.name);
-        if (!details || !details.rooms) continue;
-
-        for (const roomName in details.rooms) {
-          totalRooms++;
-          const bh = details.rooms[roomName].balance_history;
-          if (bh && bh[compactDate] !== undefined) {
-            const dates = Object.keys(bh).sort();
-            const idx = dates.indexOf(compactDate);
-            if (idx > 0) {
-              roomsWithData++;
-            }
-          }
-        }
+        // If generated_at date matches target date, coverage is sufficient
+        return generatedCompact === compactDate ? 1.0 : 0;
+      } catch (error) {
+        console.warn('Failed to get overview.json, falling back to coverage=0', error);
+        return 0;
       }
-
-      return totalRooms > 0 ? roomsWithData / totalRooms : 0;
     }
   },
 
@@ -486,11 +473,15 @@ const DataService = {
         // 按日期排序
         history.sort((a, b) => a.date.localeCompare(b.date));
 
-        // 计算每日消耗
+        // 计算每日消耗（日期不连续时返回 null，不跨日累计）
         for (let i = 1; i < history.length; i++) {
           const prev = history[i - 1];
           const curr = history[i];
-          curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+          if (!this._isConsecutiveDates(curr.date, prev.date)) {
+            curr.consumption = null;
+          } else {
+            curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+          }
         }
       }
 
@@ -498,11 +489,13 @@ const DataService = {
       const todayCompact = this._formatDateCompact('today');
       const todayEntry = history.find(h => h.date === todayCompact);
 
+      const avgConsumptionResult = this.calculateAvgConsumption(history);
       const result = {
         ...data,
         history,
         dailyConsumption: todayEntry?.consumption ?? null,
-        avgConsumption: this.calculateAvgConsumption(history)
+        avgConsumption: avgConsumptionResult.avg,
+        avgConsumptionMeta: { daysWithData: avgConsumptionResult.daysWithData, totalDays: avgConsumptionResult.totalDays }
       };
 
       this._roomCache.set(cacheKey, result);
@@ -537,12 +530,16 @@ const DataService = {
    * 计算平均日消耗
    */
   calculateAvgConsumption(history) {
-    if (history.length < 2) return 0;
+    if (history.length < 2) return { avg: 0, daysWithData: 0, totalDays: Math.max(0, history.length - 1) };
 
     const consumptions = history.slice(1).map(h => h.consumption).filter(c => c > 0);
-    if (consumptions.length === 0) return 0;
+    if (consumptions.length === 0) return { avg: 0, daysWithData: 0, totalDays: Math.max(0, history.length - 1) };
 
-    return consumptions.reduce((a, b) => a + b, 0) / consumptions.length;
+    return {
+      avg: consumptions.reduce((a, b) => a + b, 0) / consumptions.length,
+      daysWithData: consumptions.length,
+      totalDays: Math.max(0, history.length - 1)
+    };
   },
 
   /**
@@ -603,19 +600,25 @@ const DataService = {
           }
           history.sort((a, b) => a.date.localeCompare(b.date));
 
-          // 计算每日消耗
+          // 计算每日消耗（日期不连续时返回 null，不跨日累计）
           for (let j = 1; j < history.length; j++) {
             const prev = history[j - 1];
             const curr = history[j];
-            curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+            if (!this._isConsecutiveDates(curr.date, prev.date)) {
+              curr.consumption = null;
+            } else {
+              curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+            }
           }
         }
 
+        const avgConsumptionResult = this.calculateAvgConsumption(history);
         const data = {
           ...rawData,
           history,
           dailyConsumption: history.length > 1 ? history[history.length - 1].consumption : 0,
-          avgConsumption: this.calculateAvgConsumption(history)
+          avgConsumption: avgConsumptionResult.avg,
+          avgConsumptionMeta: { daysWithData: avgConsumptionResult.daysWithData, totalDays: avgConsumptionResult.totalDays }
         };
 
         this._roomCache.set(cacheKey, data);
@@ -1424,6 +1427,21 @@ const DataService = {
   },
 
   /**
+   * 检查两个日期（YYYYMMDD）是否连续（相邻日期）
+   * @private
+   */
+  _isConsecutiveDates(currDate, prevDate) {
+    const curr = new Date(parseInt(currDate.substring(0, 4)),
+                          parseInt(currDate.substring(4, 6)) - 1,
+                          parseInt(currDate.substring(6, 8)));
+    const prev = new Date(parseInt(prevDate.substring(0, 4)),
+                          parseInt(prevDate.substring(4, 6)) - 1,
+                          parseInt(prevDate.substring(6, 8)));
+    const diffDays = (curr - prev) / (1000 * 60 * 60 * 24);
+    return Math.round(diffDays) === 1;
+  },
+
+  /**
    * 从 balance_history 计算指定日期的消耗量
    * @param {Object} balanceHistory - { 'YYYYMMDD': balance } 格式的历史数据
    * @param {string} dateType - 'today', 'yesterday', 'week' 或具体日期
@@ -1460,8 +1478,12 @@ const DataService = {
       let totalConsumption = 0;
       let count = 0;
       for (let i = 1; i < validDates.length; i++) {
-        const prevBalance = balanceHistory[validDates[i - 1]];
-        const currBalance = balanceHistory[validDates[i]];
+        const prevDate = validDates[i - 1];
+        const currDate = validDates[i];
+        // 日期不连续时跳过该对，不纳入平均计算
+        if (!this._isConsecutiveDates(currDate, prevDate)) continue;
+        const prevBalance = balanceHistory[prevDate];
+        const currBalance = balanceHistory[currDate];
         if (prevBalance > currBalance) {
           totalConsumption += prevBalance - currBalance;
           count++;
@@ -1474,9 +1496,13 @@ const DataService = {
     const targetIdx = dates.indexOf(targetDate);
     if (targetIdx === -1 || targetIdx === 0) return null;
 
+    const prevDate = dates[targetIdx - 1];
+    // 日期不连续时返回 null，不跨日累计
+    if (!this._isConsecutiveDates(targetDate, prevDate)) return null;
+
     // 计算消耗量：前一天余额 - 当天余额
-    const prevBalance = balanceHistory[dates[targetIdx - 1]];
-    const currBalance = balanceHistory[dates[targetIdx]];
+    const prevBalance = balanceHistory[prevDate];
+    const currBalance = balanceHistory[targetDate];
 
     return prevBalance > currBalance ? prevBalance - currBalance : 0;
   },
@@ -1815,8 +1841,11 @@ const DataService = {
 
         for (let i = 1; i < dates.length; i++) {
           const date = dates[i];
-          const prev = bh[dates[i - 1]];
+          const prevDate = dates[i - 1];
+          const prev = bh[prevDate];
           const curr = bh[date];
+          // 日期不连续时跳过，不跨日累计
+          if (!this._isConsecutiveDates(date, prevDate)) continue;
           // 消耗 = max(0, 前日余额 - 当日余额)，充值或不变记为0
           const cons = prev > curr ? prev - curr : 0;
           allDateSet.add(date);
@@ -1888,8 +1917,11 @@ const DataService = {
 
       for (let i = 1; i < dates.length; i++) {
         const date = dates[i];
-        const prev = bh[dates[i - 1]];
+        const prevDate = dates[i - 1];
+        const prev = bh[prevDate];
         const curr = bh[date];
+        // 日期不连续时跳过，不跨日累计
+        if (!this._isConsecutiveDates(date, prevDate)) continue;
         const cons = prev > curr ? prev - curr : 0;
         allDateSet.add(date);
 

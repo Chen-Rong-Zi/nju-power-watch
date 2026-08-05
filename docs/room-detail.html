@@ -461,7 +461,7 @@
           roomData = history.history.map(h => ({
             date: h.formattedDate,
             balance: h.electricity,
-            consumption: h.consumption || 0
+            consumption: h.consumption
           }));
           updateUI();
         } else {
@@ -490,8 +490,9 @@
       document.getElementById('current-balance').textContent = latest.balance.toFixed(1) + '度';
 
       // 统计数据
-      const avgConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0) / 7;
-      const weekConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0);
+      const validWeekData = weekData.filter(d => d.consumption != null);
+      const avgConsumption = validWeekData.length > 0 ? validWeekData.reduce((sum, d) => sum + d.consumption, 0) / validWeekData.length : 0;
+      const weekConsumption = validWeekData.length > 0 ? validWeekData.reduce((sum, d) => sum + d.consumption, 0) : 0;
       const maxConsumption = Math.max(...roomData.map(d => d.consumption));
 
       document.getElementById('stat-avg').textContent = avgConsumption.toFixed(1) + '度';
@@ -508,6 +509,13 @@
 
     // 更新主要直观描述卡片
     function updateMainAnalogy(consumption) {
+      if (consumption === null || consumption === undefined) {
+        document.getElementById('main-analogy-icon').textContent = '❓';
+        document.getElementById('main-analogy-value').textContent = '--';
+        document.getElementById('main-analogy-label').textContent = '暂无数据';
+        document.getElementById('main-analogy-desc').textContent = '前一日数据暂缺，无法计算今日耗电';
+        return;
+      }
       const analogy = selectBestAnalogy(consumption);
       const value = (consumption * analogy.factor).toFixed(1);
 
@@ -519,6 +527,7 @@
 
     // 更新图表
     function updateChart(range) {
+      if (typeof Chart === 'undefined') { console.warn('Chart.js 加载失败，图表不可用'); return; }
       const data = range === 'all' ? roomData : roomData.slice(-range);
       const ctx = document.getElementById('trend-chart').getContext('2d');
 

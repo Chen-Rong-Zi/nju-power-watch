@@ -252,7 +252,7 @@ jobs:
           [查看运行日志](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
           "
           else
-            echo "今日已有失败 Issue（$EXISTING 个），跳过创建"
+            echo "今日已有失败 Issue（$EXISTENT 个），跳过创建"
           fi
 
       - name: Summary

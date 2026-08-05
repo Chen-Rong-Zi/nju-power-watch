@@ -631,6 +631,45 @@
       opacity: 1;
     }
 
+    /* Scanning Banner */
+    .scanning-banner {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.08) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      animation: slideDown 0.3s ease-out;
+    }
+    .scanning-banner-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .scanning-banner-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .scanning-banner-text {
+      font-size: 14px;
+      color: var(--text);
+    }
+    .scanning-banner-dismiss {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .scanning-banner-dismiss:hover {
+      color: var(--text);
+    }
+
     /* 无数据状态 */
     .no-data-state {
       padding: 60px 24px;
@@ -1407,6 +1446,15 @@
       <button class="fallback-banner-dismiss" onclick="dismissFallbackBanner()" title="关闭">×</button>
     </div>
 
+    <!-- Scanning Banner -->
+    <div class="scanning-banner" id="scanning-banner" style="display: none;">
+      <div class="scanning-banner-content">
+        <span class="scanning-banner-icon">🔄</span>
+        <span class="scanning-banner-text" id="scanning-banner-text"></span>
+      </div>
+      <button class="scanning-banner-dismiss" onclick="dismissScanningBanner()" title="关闭">×</button>
+    </div>
+
     <!-- 统计摘要 -->
     <div class="stats-row" id="stats-row" style="display: none;">
       <div class="stat-card stat-card-hover">
@@ -1847,6 +1895,24 @@
       sessionStorage.setItem('fallbackBannerDismissed', 'true');
     }
 
+    // ==================== Scanning Banner ====================
+    function showScanningBanner(batchProgress, totalBatches) {
+      const banner = document.getElementById('scanning-banner');
+      const text = document.getElementById('scanning-banner-text');
+      text.textContent = `数据扫描中 (${batchProgress}/${totalBatches}批已完成) — 今日扫描完成后数据自动更新`;
+      banner.style.display = 'flex';
+    }
+
+    function hideScanningBanner() {
+      const banner = document.getElementById('scanning-banner');
+      banner.style.display = 'none';
+    }
+
+    function dismissScanningBanner() {
+      hideScanningBanner();
+      sessionStorage.setItem('scanningBannerDismissed', 'true');
+    }
+
     // ==================== 事件监听 ====================
     function setupEventListeners() {
       document.getElementById('campus-select').addEventListener('change', onCampusChange);
@@ -2047,6 +2113,29 @@
         }
       } else {
         hideFallbackBanner();
+      }
+
+      // Check scanning status
+      try {
+        const batchResponse = await fetch(DataService.DATABASE_PATH + '/.batch_run_summary.json');
+        if (batchResponse.ok) {
+          const batchData = await batchResponse.json();
+          if (batchData && typeof batchData.total_batches === 'number' && batchData.total_batches > 0 &&
+              batchData.batches && typeof batchData.cumulative === 'object') {
+            const batchCount = Object.keys(batchData.batches).length;
+            if (batchCount < batchData.total_batches && !sessionStorage.getItem('scanningBannerDismissed')) {
+              showScanningBanner(batchCount, batchData.total_batches);
+            } else {
+              hideScanningBanner();
+            }
+          } else {
+            hideScanningBanner();
+          }
+        } else {
+          hideScanningBanner();
+        }
+      } catch (e) {
+        hideScanningBanner();
       }
 
       // Use effective date for cache key if fallback is active
@@ -2336,8 +2425,21 @@
       }
 
       // 检查是否有有效数据
-      if (allRankings.length === 0) {
+      if (allRankings.length === 0 && noDataRooms.length === 0) {
         showNoDataState(`${getDateDisplayText(state.date)} 暂无耗电数据`);
+        return;
+      }
+
+      // 只有无数据房间（日期缺口导致所有房间消耗为 null），直接渲染
+      if (allRankings.length === 0) {
+        // 隐藏进度条
+        if (!hasAnimationShown) {
+          progressEl.style.display = 'none';
+        }
+        // 检查是否被取消
+        if (thisLoadId !== state.currentLoadId) return;
+        displayRanking(allRankings, noDataRooms);
+        updateCacheStatus('已缓存', false);
         return;
       }
 
@@ -2511,8 +2613,10 @@
         const weekData = history.filter(h => weekDates.has(h.date));
         if (weekData.length === 0) return null;
 
-        const sum = weekData.reduce((s, h) => s + (h.consumption || 0), 0);
-        return sum / weekData.length;
+        const validData = weekData.filter(h => h.consumption !== null && h.consumption !== undefined);
+        if (validData.length === 0) return null;
+        const sum = validData.reduce((s, h) => s + h.consumption, 0);
+        return sum / validData.length;
       }
 
       // 自定义日期
@@ -2522,6 +2626,7 @@
 
     // ==================== 显示排行榜 ====================
     function renderTrendChart(trendData) {
+      if (typeof Chart === 'undefined') { console.warn('Chart.js 加载失败，趋势图不可用'); return; }
       const ctx = document.getElementById('trend-chart').getContext('2d');
       if (trendChart) trendChart.destroy();
 
@@ -2653,8 +2758,8 @@
       document.getElementById('no-data-state').style.display = 'none';
 
       const totalConsumption = rankings.reduce((sum, r) => sum + r.consumption, 0);
-      const avg = totalConsumption / rankings.length;
-      const max = Math.max(...rankings.map(r => r.consumption));
+      const avg = rankings.length > 0 ? totalConsumption / rankings.length : 0;
+      const max = rankings.length > 0 ? Math.max(...rankings.map(r => r.consumption)) : 0;
 
       document.getElementById('stat-total').textContent = totalConsumption.toFixed(1) + '度';
       document.getElementById('stat-rooms').textContent = rankings.length + noDataRooms.length;
@@ -3171,6 +3276,7 @@
     let distValues = null;
 
     function renderDistributionChart(rankings) {
+      if (typeof Chart === 'undefined') { console.warn('Chart.js 加载失败，分布图不可用'); return; }
       const values = rankings.map(r => r.consumption).filter(v => v > 0);
       if (values.length < 5) {
         document.getElementById('dist-card').style.display = 'none';
