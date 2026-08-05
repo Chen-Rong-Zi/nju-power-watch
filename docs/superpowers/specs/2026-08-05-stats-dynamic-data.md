@@ -14,20 +14,68 @@
 
 | 指标 | 数据源 | 显示格式 | 动画 |
 |------|--------|----------|------|
-| 校区覆盖 | overview.json → campuses 键数 | 纯数字（如 "4"） | 无，写死 |
+| 校区覆盖 | 硬编码 "4" | 纯文本 | 无，直接显示 |
 | 楼栋监控 | overview.json → 各校区 buildings_count 之和 | 千分位数字（如 "107"） | 先缓后快 |
 | 房间追踪 | overview.json → total_rooms | 千分位数字（如 "17,404"） | 先缓后快 |
 | 当日批次 | batch_run_summary.json → batches + date | 状态标签 | 无 |
+
+> 校区覆盖写死为 4，不参与 fetch 和动画，因为南京大学校区数量不会变化。
+
+## 数据来源
+
+### overview.json 结构
+
+```json
+{
+  "generated_at": "2026-08-05T14:01:43.816820",
+  "total_rooms": 17404,
+  "campuses": {
+    "仙林校区": { "total_rooms": 9948, "buildings_count": 37 },
+    "苏州校区": { "total_rooms": 1735, "buildings_count": 17 },
+    "鼓楼校区": { "total_rooms": 3865, "buildings_count": 30 },
+    "浦口校区": { "total_rooms": 1856, "buildings_count": 23 }
+  }
+}
+```
+
+- `buildings_count` 之和 → 楼栋数
+- `total_rooms` → 房间数
+
+### batch_run_summary.json 结构
+
+```json
+{
+  "date": "2026-08-04",
+  "total_batches": 4,
+  "batches": {
+    "1": { "success": 4323, "failed": 15 },
+    "2": { "success": 4333, "failed": 5 },
+    "3": { "success": 4331, "failed": 7 },
+    "4": { "success": 4296, "failed": 39 }
+  },
+  "cumulative": { "success": 17283, "failed": 66 }
+}
+```
+
+- `date` 与当天对比 → 判断是否今日数据
+- `Object.keys(batches).length` / `total_batches` → 批次进度
 
 ## 数据加载流程
 
 ```
 页面加载
   │
-  ├─ 立即启动动画：楼栋 0→100、房间 0→16,000（缓慢递增）
+  ├─ 立即显示 "4"（校区，硬编码）
+  │
+  ├─ 立即启动楼栋/房间的"先缓"动画
+  │   ├─ 楼栋: 0→100 (3s ease-out cubic)
+  │   └─ 房间: 0→16,000 (3s ease-out cubic)
   │
   ├─ fetch /database/summaries/overview.json
-  │   └─ 返回后更新动画目标值，加速冲到真实值
+  │   └─ 返回后启动"后快"动画
+  │       ├─ 取消当前动画帧
+  │       ├─ 楼栋: 当前值→107 (0.5s)
+  │       └─ 房间: 当前值→17,404 (0.8s)
   │
   └─ fetch /database/batch_run_summary.json
       └─ 判断日期 → 渲染批次状态标签
@@ -38,26 +86,38 @@
 ### 动画函数
 
 ```javascript
-function animateValue(el, target, duration = 800, format = true) {
-  const start = 0;
+const animFrames = {};
+
+function animateValue(el, target, duration = 800) {
+  // 取消该元素上正在运行的动画
+  if (animFrames[el.id]) cancelAnimationFrame(animFrames[el.id]);
+
+  // 读取当前显示的数值作为起始点
+  const raw = el.textContent.replace(/,/g, '');
+  const start = parseInt(raw) || 0;
   const startTime = performance.now();
+  const delta = target - start;
+
   function update(currentTime) {
     const elapsed = currentTime - startTime;
     const progress = Math.min(elapsed / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-    const current = Math.round(start + (target - start) * eased);
-    el.textContent = format ? current.toLocaleString() : current;
-    if (progress < 1) requestAnimationFrame(update);
+    const current = Math.round(start + delta * eased);
+    el.textContent = current.toLocaleString();
+    if (progress < 1) {
+      animFrames[el.id] = requestAnimationFrame(update);
+    } else {
+      delete animFrames[el.id];
+    }
   }
-  requestAnimationFrame(update);
+  animFrames[el.id] = requestAnimationFrame(update);
 }
 ```
 
-### 先缓后快策略
-
-- 初始调用 `animateValue(el, initialTarget, longDuration)` — 缓慢爬升
-- fetch 返回后调用 `animateValue(el, realTarget, shortDuration)` — 从当前值快速冲到真实值
-- 通过 `performance.now()` 确保动画帧连续，不跳帧
+关键设计：
+- `animFrames` 对象追踪每个元素的动画帧 ID，新动画自动取消旧动画
+- `parseInt(el.textContent)` 从当前显示值开始，不会跳回 0
+- 先缓动画（3s）→ fetch 返回 → 后快动画（0.5s/0.8s），共用同一个元素
 
 ### 持续时间
 
@@ -68,8 +128,6 @@ function animateValue(el, target, duration = 800, format = true) {
 
 ## 批次状态逻辑
 
-从 `batch_run_summary.json` 读取：
-
 ```javascript
 const summary = await response.json();
 const today = new Date().toISOString().slice(0, 10);
@@ -79,23 +137,23 @@ if (isToday) {
   const done = Object.keys(summary.batches).length;
   const total = summary.total_batches;
   if (done >= total) {
-    // 绿色: "4/4 完成"
+    // 绿色 badge: "4/4 完成"
   } else {
-    // 黄色: "2/4 进行中"
+    // 黄色 badge: "2/4 进行中"
   }
 } else {
-  // 灰色: "尚未更新"
+  // 灰色 badge: "尚未更新"
 }
 ```
 
 ## 加载状态
 
-- 数字动画开始前，显示 `...` 占位符（灰色，带闪烁动画）
-- fetch 请求和动画同时进行，不阻塞
-- 网络请求失败时：数字停在当前动画值，批次显示"尚未更新"
+- 校区 "4" 直接显示，无加载状态
+- 楼栋/房间：数字从 0 开始递增，没有占位符（数字一直在动，视觉上就是加载中）
+- 批次：默认显示 "尚未更新"（灰色 badge），fetch 返回后更新
 
 ## 错误处理
 
 - `overview.json` 加载失败：楼栋和房间数字停在当前动画值，不显示错误
-- `batch_run_summary.json` 加载失败：批次显示"尚未更新"
+- `batch_run_summary.json` 加载失败：批次保持 "尚未更新"
 - 两个请求独立，互不影响

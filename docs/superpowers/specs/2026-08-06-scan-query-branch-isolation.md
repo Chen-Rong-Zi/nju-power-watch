@@ -49,11 +49,18 @@ Day N+1
 ```yaml
 - name: Ensure scan-room branch
   run: |
-    git fetch origin scan-room || true
+    git fetch origin scan-room --depth=50 || true
+    git fetch origin master --depth=50
     if git branch -r | grep -q 'origin/scan-room'; then
       echo "scan-room exists, rebasing onto master..."
       git checkout scan-room
-      git rebase master
+      if git rebase master; then
+        echo "✓ Rebased scan-room onto master"
+      else
+        echo "::warning::Rebase conflict, aborting rebase and creating fresh branch"
+        git rebase --abort
+        git checkout -b scan-room master
+      fi
     else
       echo "Creating scan-room from master..."
       git checkout -b scan-room master
@@ -91,11 +98,13 @@ Day N+1
 ```yaml
 - name: Merge scan-room into master
   run: |
-    git fetch origin scan-room || true
+    git fetch origin scan-room --depth=50 || true
+    git fetch origin master --depth=50
     if git branch -r | grep -q 'origin/scan-room'; then
       echo "Merging scan-room into master..."
       if git merge origin/scan-room --no-edit; then
-        echo "✓ Merged scan-room"
+        echo "✓ Merged scan-room into master"
+        git push origin master || echo "::warning::Failed to push merged master"
         echo "Deleting scan-room branch..."
         git push origin --delete scan-room || echo "::warning::Failed to delete scan-room branch"
       else
@@ -114,10 +123,11 @@ Day N+1
 | scan-room 分支不存在 | Query 跳过合并，Scan 自己创建 |
 | 合并冲突 | Query 执行 `merge --abort`，跳过合并继续跑查询 |
 | 删除分支失败 | 记录 warning，不阻塞查询 |
-| Scan 在 Query 运行时意外启动 | 不触发（concurrency 无需设置，因为操作不同分支） |
+| Scan 重复触发（手动 + 定时同时） | 操作相同分支，依赖 push retry 循环处理冲突 |
 
 ## 注意事项
 
+- `actions/checkout@v4` 默认 `fetch-depth: 1`（浅克隆），但 git rebase/merge 需要共同祖先，所以 merge 和 rebase 前必须显式 `git fetch --depth=50` 获取更多历史
 - Query 的 `actions/checkout@v4` 使用默认行为（checkout master），后续的 merge/delete 都在 master 上操作
 - Scan 的 `actions/checkout@v4` 需要确保最终工作在 scan-room 分支上
 - 删除分支使用 `git push origin --delete scan-room`，需要 `contents: write` 权限（两个 workflow 已有）
