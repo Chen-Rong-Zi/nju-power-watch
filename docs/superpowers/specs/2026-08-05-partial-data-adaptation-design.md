@@ -62,10 +62,15 @@ generated_at (UTC+0) → +8h → CST 日期
   const overview = await this.getOverview();
   if (!overview || !overview.generated_at) return 0;
 
-  // Convert UTC+0 to CST (+8h)
-  const generatedDate = new Date(overview.generated_at);
-  generatedDate.setHours(generatedDate.getHours() + 8);
-  const generatedCompact = this._dateToCompact(generatedDate);
+  // generated_at is UTC+0, convert to CST (+8h)
+  // Append 'Z' to ensure consistent UTC parsing across browsers
+  const generatedDate = new Date(overview.generated_at + 'Z');
+  generatedDate.setUTCHours(generatedDate.getUTCHours() + 8);
+  // Use UTC methods to avoid local timezone interference
+  const year = generatedDate.getUTCFullYear();
+  const month = String(generatedDate.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(generatedDate.getUTCDate()).padStart(2, '0');
+  const generatedCompact = `${year}${month}${day}`;
   const targetCompact = compactDate;
 
   // If generated_at date matches target date, coverage is sufficient
@@ -112,7 +117,7 @@ generated_at (UTC+0) → +8h → CST 日期
 [数据扫描中] 数据扫描中 (2/4 批已完成) — 今日扫描完成后数据自动更新
 ```
 
-- 点击关闭按钮可 dismiss（存 sessionStorage，同 fallback banner）
+- 点击关闭按钮可 dismiss（存 sessionStorage，独立 key `scanningBannerDismissed`）
 - 扫描进行中时，**不触发 fallback**（即使 coverage 看起来低）
 - 校区页面和楼栋页面均需显示
 
@@ -128,10 +133,11 @@ generated_at (UTC+0) → +8h → CST 日期
 
 **`campus-view.html` 和 `building-view.html`：**
 
-1. 页面加载时 fetch `./database/.batch_run_summary.json`
+1. 页面加载时异步 fetch `this.DATABASE_PATH + '/.batch_run_summary.json'`（非阻塞，不 await）
 2. 如果返回 200 → 解析 JSON，显示扫描横幅
 3. 如果返回 404 → 文件不存在，不显示横幅
-4. 扫描横幅显示期间，`findLatestDateWithData` 调用跳过（不触发 fallback）
+4. 网络错误（非 404）静默降级，不中断页面加载
+5. 扫描横幅显示期间，`findLatestDateWithData` 调用跳过（不触发 fallback）
 
 ---
 
@@ -153,11 +159,11 @@ curr.consumption = Math.max(0, prev.electricity - curr.electricity);
 
 #### 修改位置（共 6 处）
 
-所有 6 处统一增加日期连续性检查。新增 `DataService._isConsecutiveDates` 方法：
+所有 6 处统一增加日期连续性检查。新增 `DataService._isConsecutiveDates` 方法（作为 `DataService` 的方法）：
 
 ```javascript
-// 辅助函数：检查日期是否连续
-function _isConsecutiveDate(currDate, prevDate) {
+// 辅助函数：检查两个日期是否连续（相邻日期）
+_isConsecutiveDates(currDate, prevDate) {
   const curr = new Date(parseInt(currDate.substring(0, 4)),
                         parseInt(currDate.substring(4, 6)) - 1,
                         parseInt(currDate.substring(6, 8)));
@@ -165,17 +171,18 @@ function _isConsecutiveDate(currDate, prevDate) {
                         parseInt(prevDate.substring(4, 6)) - 1,
                         parseInt(prevDate.substring(6, 8)));
   const diffDays = (curr - prev) / (1000 * 60 * 60 * 24);
-  return diffDays === 1;
+  return Math.round(diffDays) === 1; // 使用 Math.round 避免夏令时边缘情况
 }
 ```
 
 | # | 文件 | 位置 | 修改 |
 |---|------|------|------|
-| 1 | `data-service.js` | `getRoomHistory` L489-494 | 循环中增加 `_isConsecutiveDate` 检查 |
+| 1 | `data-service.js` | `getRoomHistory` L489-494 | 循环中增加 `this._isConsecutiveDates` 检查 |
 | 2 | `data-service.js` | `batchGetRoomHistory` L607-610 | 同上 |
 | 3 | `data-service.js` | `getCampusConsumptionTrend` L1816-1821 | 同上 |
 | 4 | `data-service.js` | `getBuildingConsumptionTrend` L1889-1893 | 同上 |
 | 5 | `data-service.js` | `_calculateConsumptionFromHistory` L1473-1481 | 取 `dates[targetIdx-1]` 后检查日期连续性 |
+| 5b | `data-service.js` | `_calculateConsumptionFromHistory` week 分支 L1460-1470 | 日期不连续时跳过该对，不纳入平均计算 |
 | 6 | `building-view.html` | `calculateConsumption` | 取 `history.find` 结果后检查前一条记录日期 |
 
 #### 影响范围
@@ -200,9 +207,59 @@ function _isConsecutiveDate(currDate, prevDate) {
 
 | 文件 | 改动类型 | 说明 |
 |------|----------|------|
-| `docs/js/data-service.js` | 修改 | 3 处消耗计算 + 1 处校区 fallback + 1 处阈值 + 1 处辅助函数 |
-| `docs/campus-view.html` | 修改 | 新增扫描横幅渲染 + fetch 逻辑 |
-| `docs/building-view.html` | 修改 | 新增扫描横幅渲染 + fetch 逻辑 + 1 处消耗计算修复 |
+| `docs/js/data-service.js` | 修改 | 5 处消耗计算修复 + 1 处校区 fallback + 1 处阈值 + 1 处辅助函数 + 1 处 avgConsumption 标注 |
+| `docs/campus-view.html` | 修改 | 新增扫描横幅渲染 + 异步 fetch 逻辑 |
+| `docs/building-view.html` | 修改 | 新增扫描横幅渲染 + 异步 fetch 逻辑 + 1 处消耗计算修复 |
+
+---
+
+### 模块 4：平均消耗量标注
+
+`calculateAvgConsumption` 当前返回纯数值，未反映数据基础天数。修改为返回结构体：
+
+```javascript
+// 修改前
+calculateAvgConsumption(history) {
+  const consumptions = history.slice(1).map(h => h.consumption).filter(c => c > 0);
+  if (consumptions.length === 0) return 0;
+  return consumptions.reduce((a, b) => a + b, 0) / consumptions.length;
+}
+
+// 修改后
+calculateAvgConsumption(history) {
+  const consumptions = history.slice(1).map(h => h.consumption).filter(c => c > 0);
+  if (consumptions.length === 0) return { avg: 0, daysWithData: 0, totalDays: Math.max(0, history.length - 1) };
+  return {
+    avg: consumptions.reduce((a, b) => a + b, 0) / consumptions.length,
+    daysWithData: consumptions.length,
+    totalDays: Math.max(0, history.length - 1)
+  };
+}
+```
+
+调用方（如 `getRoomHistory`、`campus-view.html` 等）相应更新，展示"日均消耗（基于 X/Y 天有数据）"。
+
+---
+
+### 模块 5：`batch_run_summary.json` 格式契约
+
+前端解析时做基本校验，不符合预期格式时静默降级（视为无扫描进行中）。
+
+```json
+{
+  "date": "2026-08-04",           // string, date of the scan
+  "total_batches": 4,             // number, total batches planned
+  "batches": {                    // object, key = batch number (string)
+    "1": { "success": 4330, "failed": 8 }
+  },
+  "cumulative": {                 // object, cumulative stats
+    "success": 8665,
+    "failed": 10
+  }
+}
+```
+
+前端校验规则：`total_batches` 存在且 > 0、`batches` 非空、`cumulative` 存在。不符合时静默降级。
 
 ---
 
