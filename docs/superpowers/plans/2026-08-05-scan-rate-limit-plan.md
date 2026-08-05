@@ -20,7 +20,7 @@
 | `.github/workflows/monthly-scan-part-2.yml` | 删除 | 废弃 |
 | `.github/workflows/monthly-scan-part-3.yml` | 删除 | 废弃 |
 | `.github/workflows/monthly-scan-part-4.yml` | 删除 | 废弃 |
-| `.gitignore` | 修改 | 忽略 `.scan_progress.json.tmp` |
+| `.gitignore` | 修改 | 忽略 `scan_progress.json.tmp` |
 
 ---
 
@@ -332,7 +332,7 @@ on:
       scan_progress:
         description: 'Override progress file path'
         required: false
-        default: '.scan_progress.json'
+        default: 'scan_progress.json'
 
 permissions:
   contents: write
@@ -381,7 +381,7 @@ jobs:
         run: |
           python nju_electric_query.py \
             --scan 1 150000 \
-            --scan-progress .scan_progress.json \
+            --scan-progress scan_progress.json \
             --scan-batch-size 3600 \
             -c 1 --request-delay 3.0 \
             --cookie-file /tmp/cookie.json
@@ -390,10 +390,10 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add config/room_ids.json .scan_progress.json
+          git add config/room_ids.json scan_progress.json
           if git diff --staged --name-only | grep -q .; then
-            CURSOR=$(python3 -c "import json; d=json.load(open('.scan_progress.json')); print(d['cursor'])")
-            CYCLE=$(python3 -c "import json; d=json.load(open('.scan_progress.json')); print(d['cycle'])")
+            CURSOR=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cursor'])")
+            CYCLE=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cycle'])")
             git commit -m "scan: cursor ${CURSOR}/150000 (cycle ${CYCLE})"
             for i in 1 2 3; do
               if git push; then
@@ -445,20 +445,20 @@ git commit -m "chore: remove deprecated monthly-scan-part workflows"
 **Files:**
 - Modify: `.gitignore`
 
-- [ ] **Step 1: 添加 `.scan_progress.json.tmp` 忽略规则**
+- [ ] **Step 1: 添加 `scan_progress.json.tmp` 忽略规则**
 
 在 `*.tmp` 行附近（第 46 行）插入：
 
 ```
 # Scan progress temp files
-.scan_progress.json.tmp
+scan_progress.json.tmp
 ```
 
 - [ ] **Step 2: 提交**
 
 ```bash
 git add .gitignore
-git commit -m "chore: ignore .scan_progress.json.tmp"
+git commit -m "chore: ignore scan_progress.json.tmp"
 ```
 
 ---
@@ -470,7 +470,7 @@ git commit -m "chore: ignore .scan_progress.json.tmp"
 | Spec 需求 | 对应 Task |
 |-----------|-----------|
 | 3.0s 请求间隔 | Task 1 (scan_single sleep) + Task 3 (request_delay 接线) |
-| 进度文件格式 `.scan_progress.json` | Task 2 Step 5 |
+| 进度文件格式 `scan_progress.json` | Task 2 Step 5 |
 | 原子写入（临时文件 + os.rename） | Task 2 Step 5 (`os.replace`) |
 | cursor 到 150000 归 0 清空累积 | Task 2 Step 5 (`new_cursor >= range_end`) |
 | 限流时取消待处理任务 | Task 2 Step 4 (cancel pending on RateLimitedError) |

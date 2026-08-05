@@ -620,7 +620,7 @@ Run: `node -e "const fs=require('fs');const s=fs.readFileSync('docs/js/data-serv
 ```javascript
       // Check scanning status
       try {
-        const batchResponse = await fetch(DataService.DATABASE_PATH + '/.batch_run_summary.json');
+        const batchResponse = await fetch(DataService.DATABASE_PATH + '/batch_run_summary.json');
         if (batchResponse.ok) {
           const batchData = await batchResponse.json();
           if (batchData && typeof batchData.total_batches === 'number' && batchData.total_batches > 0 &&

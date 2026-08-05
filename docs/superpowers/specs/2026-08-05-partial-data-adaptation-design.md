@@ -97,7 +97,7 @@ generated_at (UTC+0) → +8h → CST 日期
 
 #### 数据来源
 
-`database/.batch_run_summary.json`，由后端链式工作流维护：
+`database/batch_run_summary.json`，由后端链式工作流维护：
 
 ```json
 {
@@ -137,7 +137,7 @@ generated_at (UTC+0) → +8h → CST 日期
 
 **`campus-view.html` 和 `building-view.html`：**
 
-1. 页面加载时同步 fetch `this.DATABASE_PATH + '/.batch_run_summary.json'`
+1. 页面加载时同步 fetch `this.DATABASE_PATH + '/batch_run_summary.json'`
 2. 如果返回 200 → 解析 JSON，判断 `batches 数量 < total_batches` → 显示扫描横幅
 3. 如果返回 404 或格式不符合预期 → 不显示横幅
 4. 网络错误静默降级，不中断页面加载

@@ -62,7 +62,7 @@
 
 ### 2. 跨批次状态追踪
 
-每批完成后，维护 `database/.batch_run_summary.json` 追踪累计统计：
+每批完成后，维护 `database/batch_run_summary.json` 追踪累计统计：
 
 ```json
 {
@@ -139,4 +139,4 @@
 - `workflow_dispatch` 增加 `batch_index` 和 `total_batches` 输入
 - 查询命令: `-c 1 --batch-size 100 --request-delay 3.0 --batch-index N --total-batches 4`
 - 最后一步：链式触发下一批或生成最终统计
-- 新增 `database/.batch_run_summary.json` 的提交步骤
+- 新增 `database/batch_run_summary.json` 的提交步骤
