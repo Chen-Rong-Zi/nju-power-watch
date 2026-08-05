@@ -38,7 +38,7 @@ jobs:
             else
               echo "::warning::Rebase conflict, aborting rebase and creating fresh branch"
               git rebase --abort
-              git checkout -b scan-room origin/master
+              git checkout -B scan-room origin/master
             fi
           else
             echo "Creating scan-room from master..."
@@ -87,13 +87,19 @@ jobs:
             CYCLE=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cycle'])")
             git add config/room_ids.json scan_progress.json
             git commit -m "scan: cursor ${CURSOR}/150000 (cycle ${CYCLE})" || true
+            PUSHED=0
             for i in 1 2 3; do
               if git push origin scan-room; then
                 echo "✓ Pushed to scan-room (cursor=${CURSOR})"
+                PUSHED=1
                 break
               fi
               echo "Push failed (attempt $i), retrying in 3s..."
               sleep 3
               git pull --rebase origin scan-room
             done
+            if [ "$PUSHED" -eq 0 ]; then
+              echo "::error::All push attempts failed"
+              exit 1
+            fi
           fi
