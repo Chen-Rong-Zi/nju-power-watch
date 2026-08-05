@@ -2511,8 +2511,10 @@
         const weekData = history.filter(h => weekDates.has(h.date));
         if (weekData.length === 0) return null;
 
-        const sum = weekData.reduce((s, h) => s + (h.consumption || 0), 0);
-        return sum / weekData.length;
+        const validData = weekData.filter(h => h.consumption !== null && h.consumption !== undefined);
+        if (validData.length === 0) return null;
+        const sum = validData.reduce((s, h) => s + h.consumption, 0);
+        return sum / validData.length;
       }
 
       // 自定义日期
