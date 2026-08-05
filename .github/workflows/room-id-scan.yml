@@ -8,7 +8,7 @@ on:
       scan_progress:
         description: 'Override progress file path'
         required: false
-        default: '.scan_progress.json'
+        default: 'scan_progress.json'
 
 permissions:
   contents: write
@@ -57,7 +57,7 @@ jobs:
         run: |
           python nju_electric_query.py \
             --scan 1 150000 \
-            --scan-progress .scan_progress.json \
+            --scan-progress scan_progress.json \
             --scan-batch-size 3000 \
             -c 1 --request-delay 3.0 \
             --cookie-file /tmp/cookie.json
@@ -66,12 +66,12 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          if git diff --name-only | grep -qE 'config/room_ids\.json|\.scan_progress\.json'; then
-            CURSOR=$(python3 -c "import json; d=json.load(open('.scan_progress.json')); print(d['cursor'])")
-            CYCLE=$(python3 -c "import json; d=json.load(open('.scan_progress.json')); print(d['cycle'])")
+          if git diff --name-only | grep -qE 'config/room_ids\.json|scan_progress\.json'; then
+            CURSOR=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cursor'])")
+            CYCLE=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cycle'])")
             PUSHED=0
             for i in 1 2 3; do
-              git add config/room_ids.json .scan_progress.json
+              git add config/room_ids.json scan_progress.json
               git commit -m "scan: cursor ${CURSOR}/150000 (cycle ${CYCLE})" || true
               if git push; then
                 PUSHED=1
