@@ -527,6 +527,10 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
                         attempt += 1
                         continue
 
+                    # 检查限流响应
+                    if "查询已被限制" in html or "请60分钟后再试" in html:
+                        raise RateLimitedError("查询已被限制，请60分钟后再试")
+
                     # 解析房间信息
                     result = parse_html(html)
                     if not result.get("校区") or not result.get("楼栋") or not result.get("房间"):
@@ -549,6 +553,8 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
                     # Update ID (add new or replace existing)
                     update_id(mapping, campus, building, room_name, str(room_id))
 
+                    await asyncio.sleep(request_delay)
+
                     break
 
             except asyncio.TimeoutError:
@@ -566,6 +572,8 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
                 await asyncio.sleep(delay)
                 attempt += 1
                 continue
+            except RateLimitedError:
+                raise  # 让 RateLimitedError 传播到上层，触发批量级取消
             except Exception:
                 # 可重试错误
                 error_counts["network_error"] += 1
