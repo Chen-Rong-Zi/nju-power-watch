@@ -461,7 +461,7 @@
           roomData = history.history.map(h => ({
             date: h.formattedDate,
             balance: h.electricity,
-            consumption: h.consumption || 0
+            consumption: h.consumption
           }));
           updateUI();
         } else {
@@ -490,8 +490,9 @@
       document.getElementById('current-balance').textContent = latest.balance.toFixed(1) + '度';
 
       // 统计数据
-      const avgConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0) / 7;
-      const weekConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0);
+      const validWeekData = weekData.filter(d => d.consumption != null);
+      const avgConsumption = validWeekData.length > 0 ? validWeekData.reduce((sum, d) => sum + d.consumption, 0) / validWeekData.length : 0;
+      const weekConsumption = validWeekData.length > 0 ? validWeekData.reduce((sum, d) => sum + d.consumption, 0) : 0;
       const maxConsumption = Math.max(...roomData.map(d => d.consumption));
 
       document.getElementById('stat-avg').textContent = avgConsumption.toFixed(1) + '度';

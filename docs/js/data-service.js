@@ -195,15 +195,9 @@ const DataService = {
         const overview = await this.getOverview();
         if (!overview || !overview.generated_at) return 0;
 
-        // generated_at is UTC+0, convert to CST (+8h)
-        // Append 'Z' to ensure consistent UTC parsing across browsers
-        const generatedDate = new Date(overview.generated_at + 'Z');
-        generatedDate.setUTCHours(generatedDate.getUTCHours() + 8);
-        // Use UTC methods to avoid local timezone interference
-        const year = generatedDate.getUTCFullYear();
-        const month = String(generatedDate.getUTCMonth() + 1).padStart(2, '0');
-        const day = String(generatedDate.getUTCDate()).padStart(2, '0');
-        const generatedCompact = `${year}${month}${day}`;
+        // generated_at uses naive datetime in CST (UTC+8), parse date part directly
+        const datePart = overview.generated_at.split('T')[0];
+        const generatedCompact = datePart.replace(/-/g, '');
 
         // If generated_at date matches target date, coverage is sufficient
         return generatedCompact === compactDate ? 1.0 : 0;

@@ -1246,7 +1246,7 @@
         mockData = roomData.history.map(h => ({
           date: h.formattedDate,
           balance: h.electricity,
-          consumption: h.consumption || 0
+          consumption: h.consumption
         }));
       } else {
         // 回退到模拟数据
@@ -1392,8 +1392,9 @@
       document.getElementById('current-balance').textContent = latest.balance.toFixed(1) + '度';
 
       // 统计数据
-      const avgConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0) / 7;
-      const weekConsumption = weekData.reduce((sum, d) => sum + d.consumption, 0);
+      const validWeekData = weekData.filter(d => d.consumption != null);
+      const avgConsumption = validWeekData.length > 0 ? validWeekData.reduce((sum, d) => sum + d.consumption, 0) / validWeekData.length : 0;
+      const weekConsumption = validWeekData.length > 0 ? validWeekData.reduce((sum, d) => sum + d.consumption, 0) : 0;
       const estimatedDays = Math.floor(latest.balance / avgConsumption);
 
       document.getElementById('stat-avg').textContent = avgConsumption.toFixed(1) + '度';
@@ -1412,7 +1413,8 @@
       document.getElementById('predict-days').textContent = estimatedDays;
       document.getElementById('predict-date').textContent = predictDate.toLocaleDateString('zh-CN');
 
-      const lastWeekAvg = mockData.slice(-14, -7).reduce((sum, d) => sum + d.consumption, 0) / 7;
+      const lastWeekData = mockData.slice(-14, -7).filter(d => d.consumption != null);
+      const lastWeekAvg = lastWeekData.length > 0 ? lastWeekData.reduce((sum, d) => sum + d.consumption, 0) / lastWeekData.length : 0;
       const change = ((avgConsumption - lastWeekAvg) / lastWeekAvg * 100).toFixed(0);
       document.getElementById('predict-avg').textContent = avgConsumption.toFixed(1);
       document.getElementById('predict-change').textContent = (change > 0 ? '+' : '') + change + '%';
