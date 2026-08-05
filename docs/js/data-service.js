@@ -486,11 +486,15 @@ const DataService = {
         // 按日期排序
         history.sort((a, b) => a.date.localeCompare(b.date));
 
-        // 计算每日消耗
+        // 计算每日消耗（日期不连续时返回 null，不跨日累计）
         for (let i = 1; i < history.length; i++) {
           const prev = history[i - 1];
           const curr = history[i];
-          curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+          if (!this._isConsecutiveDates(curr.date, prev.date)) {
+            curr.consumption = null;
+          } else {
+            curr.consumption = Math.max(0, prev.electricity - curr.electricity);
+          }
         }
       }
 
