@@ -487,7 +487,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
       await DataService.initDB();
       checkUserConfig();
-      loadStats();
+      loadStats().catch(e => console.warn('loadStats error:', e));
     });
 
     // 检查用户配置
@@ -581,37 +581,42 @@
       animateValue(roomEl, 16000, 3000);
 
       // 并行请求
-      const [overviewResp, batchResp] = await Promise.all([
-        fetch('/database/summaries/overview.json'),
-        fetch('/database/batch_run_summary.json')
-      ]);
+      try {
+        const [overviewResp, batchResp] = await Promise.all([
+          fetch('/database/summaries/overview.json'),
+          fetch('/database/batch_run_summary.json')
+        ]);
 
-      // 处理 overview.json
-      if (overviewResp.ok) {
-        const overview = await overviewResp.json();
-        const buildings = Object.values(overview.campuses).reduce((sum, c) => sum + c.buildings_count, 0);
-        const rooms = overview.total_rooms;
-        animateValue(buildingEl, buildings, 500);
-        animateValue(roomEl, rooms, 800);
-      }
-
-      // 处理 batch_run_summary.json
-      if (batchResp.ok) {
-        const summary = await batchResp.json();
-        const today = new Date().toISOString().slice(0, 10);
-        const isToday = summary.date === today;
-
-        if (isToday) {
-          const done = Object.keys(summary.batches).length;
-          const total = summary.total_batches;
-          if (done >= total) {
-            batchEl.innerHTML = '<span class="badge badge-ok">' + done + '/' + total + ' 完成</span>';
-          } else {
-            batchEl.innerHTML = '<span class="badge badge-warn">' + done + '/' + total + ' 进行中</span>';
-          }
-        } else {
-          batchEl.innerHTML = '<span class="badge badge-muted">尚未更新</span>';
+        // 处理 overview.json
+        if (overviewResp.ok) {
+          const overview = await overviewResp.json();
+          const buildings = Object.values(overview.campuses).reduce((sum, c) => sum + c.buildings_count, 0);
+          const rooms = overview.total_rooms;
+          animateValue(buildingEl, buildings, 500);
+          animateValue(roomEl, rooms, 800);
         }
+
+        // 处理 batch_run_summary.json
+        if (batchResp.ok) {
+          const summary = await batchResp.json();
+          const today = new Date().toISOString().slice(0, 10);
+          const isToday = summary.date === today;
+
+          if (isToday) {
+            const done = Object.keys(summary.batches).length;
+            const total = summary.total_batches;
+            if (done >= total) {
+              batchEl.innerHTML = '<span class="badge badge-ok">' + done + '/' + total + ' 完成</span>';
+            } else {
+              batchEl.innerHTML = '<span class="badge badge-warn">' + done + '/' + total + ' 进行中</span>';
+            }
+          } else {
+            batchEl.innerHTML = '<span class="badge badge-muted">尚未更新</span>';
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load stats data:', e);
+        // 保持当前动画值，批次保持"尚未更新"
       }
     }
   </script>
