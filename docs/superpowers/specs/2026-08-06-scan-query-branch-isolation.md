@@ -1,0 +1,135 @@
+# Scan-Query 分支隔离 Workflow 协调
+
+## 概述
+
+避免 Scan 和 Query 两个 workflow 同时向 master 提交导致的冲突。Scan 推送到独立分支 `scan-room`，Query 每次运行前合并 `scan-room` 到 master。
+
+## 分支策略
+
+```
+master（生产分支）
+  ↑ Query 运行在此分支，合并 scan-room 的更新
+
+scan-room（扫描分支）
+  ↑ Scan 运行在此分支，推送新发现的房间 ID
+  ↑ 每天被 Query 合并后删除，再由 Scan 或 Query 重建
+```
+
+## 生命周期
+
+```
+Day N
+  21:00 Scan 启动
+       ├─ scan-room 不存在 → 从 master 创建
+       └─ scan-room 存在 → rebase master
+       运行扫描 → 推送到 scan-room
+
+Day N+1
+  06:00 Query 启动
+       ├─ 合并 scan-room → master
+       ├─ 删除 scan-room 分支
+       ├─ 运行查询（4批链式）
+       └─ 查询全部完成后重建 scan-room 分支
+
+  21:00 Scan 启动（重复）
+```
+
+## 修改文件
+
+- `.github/workflows/daily-query.yml` — Query 增加合并/删除/重建步骤
+- `.github/workflows/room-id-scan.yml` — Scan 增加分支检查/创建步骤
+
+## 详细设计
+
+### Scan 流程变更
+
+在 `actions/checkout@v4` 之后、`Auto login` 之前，增加分支管理步骤：
+
+```yaml
+- name: Ensure scan-room branch
+  run: |
+    git fetch origin scan-room || true
+    if git branch -r | grep -q 'origin/scan-room'; then
+      echo "scan-room exists, rebasing onto master..."
+      git checkout scan-room
+      git rebase master
+    else
+      echo "Creating scan-room from master..."
+      git checkout -b scan-room master
+    fi
+```
+
+后续的扫描和提交步骤不变，但 push 目标改为 `scan-room` 分支：
+
+```yaml
+- name: Commit and push to scan-room
+  run: |
+    git config --local user.email "action@github.com"
+    git config --local user.name "GitHub Action"
+    if git diff --name-only | grep -qE 'config/room_ids\.json|scan_progress\.json'; then
+      CURSOR=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cursor'])")
+      CYCLE=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cycle'])")
+      git add config/room_ids.json scan_progress.json
+      git commit -m "scan: cursor ${CURSOR}/150000 (cycle ${CYCLE})" || true
+      # 推送到 scan-room 分支
+      for i in 1 2 3; do
+        if git push origin scan-room; then
+          echo "✓ Pushed to scan-room (cursor=${CURSOR})"
+          break
+        fi
+        sleep 3
+        git pull --rebase origin scan-room
+      done
+    fi
+```
+
+### Query 流程变更
+
+在 `Checkout repository` 和 `Set up Python` 之间，增加分支合并步骤：
+
+```yaml
+- name: Merge scan-room into master
+  run: |
+    git fetch origin scan-room || true
+    if git branch -r | grep -q 'origin/scan-room'; then
+      echo "Merging scan-room into master..."
+      if git merge origin/scan-room --no-edit; then
+        echo "✓ Merged scan-room"
+        echo "Deleting scan-room branch..."
+        git push origin --delete scan-room || echo "::warning::Failed to delete scan-room branch"
+      else
+        echo "::warning::Merge conflict with scan-room, aborting merge"
+        git merge --abort
+      fi
+    else
+      echo "scan-room branch does not exist, skipping merge"
+    fi
+```
+
+在 `Summary` 步骤之后，增加重建 scan-room 步骤（仅在最后一批次执行）：
+
+```yaml
+- name: Recreate scan-room branch
+  if: ${{ success() && inputs.batch_index == inputs.total_batches }}
+  run: |
+    echo "Recreating scan-room branch from master..."
+    git branch scan-room master
+    git push origin scan-room
+    echo "✓ scan-room branch recreated for next scan"
+```
+
+## 容错处理
+
+| 场景 | 处理方式 |
+|------|----------|
+| scan-room 分支不存在 | Query 跳过合并，Scan 自己创建 |
+| 合并冲突 | Query 执行 `merge --abort`，跳过合并继续跑查询 |
+| 删除分支失败 | 记录 warning，不阻塞查询 |
+| 重建分支失败 | 记录 warning，Scan 下次自己创建 |
+| Scan 在 Query 运行时意外启动 | 不触发（concurrency 无需设置，因为操作不同分支） |
+
+## 注意事项
+
+- Query 的 `actions/checkout@v4` 使用默认行为（checkout master），后续的 merge/delete/recreate 都在 master 上操作
+- Scan 的 `actions/checkout@v4` 需要确保最终工作在 scan-room 分支上
+- 删除分支和重建分支使用 `git push origin --delete` / `git push origin scan-room`，需要 `contents: write` 权限（两个 workflow 已有）
