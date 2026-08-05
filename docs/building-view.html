@@ -631,6 +631,45 @@
       opacity: 1;
     }
 
+    /* Scanning Banner */
+    .scanning-banner {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.08) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      animation: slideDown 0.3s ease-out;
+    }
+    .scanning-banner-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .scanning-banner-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .scanning-banner-text {
+      font-size: 14px;
+      color: var(--text);
+    }
+    .scanning-banner-dismiss {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .scanning-banner-dismiss:hover {
+      color: var(--text);
+    }
+
     /* 无数据状态 */
     .no-data-state {
       padding: 60px 24px;
@@ -1407,6 +1446,15 @@
       <button class="fallback-banner-dismiss" onclick="dismissFallbackBanner()" title="关闭">×</button>
     </div>
 
+    <!-- Scanning Banner -->
+    <div class="scanning-banner" id="scanning-banner" style="display: none;">
+      <div class="scanning-banner-content">
+        <span class="scanning-banner-icon">🔄</span>
+        <span class="scanning-banner-text" id="scanning-banner-text"></span>
+      </div>
+      <button class="scanning-banner-dismiss" onclick="dismissScanningBanner()" title="关闭">×</button>
+    </div>
+
     <!-- 统计摘要 -->
     <div class="stats-row" id="stats-row" style="display: none;">
       <div class="stat-card stat-card-hover">
@@ -1847,6 +1895,24 @@
       sessionStorage.setItem('fallbackBannerDismissed', 'true');
     }
 
+    // ==================== Scanning Banner ====================
+    function showScanningBanner(batchProgress, totalBatches) {
+      const banner = document.getElementById('scanning-banner');
+      const text = document.getElementById('scanning-banner-text');
+      text.textContent = `数据扫描中 (${batchProgress}/${totalBatches}批已完成) — 今日扫描完成后数据自动更新`;
+      banner.style.display = 'flex';
+    }
+
+    function hideScanningBanner() {
+      const banner = document.getElementById('scanning-banner');
+      banner.style.display = 'none';
+    }
+
+    function dismissScanningBanner() {
+      hideScanningBanner();
+      sessionStorage.setItem('scanningBannerDismissed', 'true');
+    }
+
     // ==================== 事件监听 ====================
     function setupEventListeners() {
       document.getElementById('campus-select').addEventListener('change', onCampusChange);
@@ -2047,6 +2113,29 @@
         }
       } else {
         hideFallbackBanner();
+      }
+
+      // Check scanning status
+      try {
+        const batchResponse = await fetch(DataService.DATABASE_PATH + '/.batch_run_summary.json');
+        if (batchResponse.ok) {
+          const batchData = await batchResponse.json();
+          if (batchData && typeof batchData.total_batches === 'number' && batchData.total_batches > 0 &&
+              batchData.batches && typeof batchData.cumulative === 'object') {
+            const batchCount = Object.keys(batchData.batches).length;
+            if (batchCount < batchData.total_batches && !sessionStorage.getItem('scanningBannerDismissed')) {
+              showScanningBanner(batchCount, batchData.total_batches);
+            } else {
+              hideScanningBanner();
+            }
+          } else {
+            hideScanningBanner();
+          }
+        } else {
+          hideScanningBanner();
+        }
+      } catch (e) {
+        hideScanningBanner();
       }
 
       // Use effective date for cache key if fallback is active
