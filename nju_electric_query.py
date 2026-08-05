@@ -492,6 +492,8 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         if cursor > 0 and show_progress:
             print(f"从进度文件恢复: cursor={cursor}, cycle={cycle}")
 
+        prog_data = None  # 用于信号处理器的进度保存
+
     # 如果使用进度追踪，用 cursor 覆盖扫描区间
     if progress_file:
         scan_start = cursor + 1
@@ -517,9 +519,18 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
 
     # 信号处理器
     def signal_handler():
-        """处理终止信号，保存已发现的结果"""
+        """处理终止信号，保存已发现的结果和进度"""
         print(f"\n\n收到终止信号，正在保存已发现的结果...")
         save_mapping(mapping, output_file)
+        # 保存进度文件（如果启用且已初始化）
+        if progress_file:
+            try:
+                tmp_file = progress_file + ".tmp"
+                with open(tmp_file, "w", encoding="utf-8") as f:
+                    json.dump(prog_data, f, ensure_ascii=False, indent=2)
+                os.replace(tmp_file, progress_file)
+            except Exception:
+                pass
         os._exit(0)  # 立即退出，防止重入
 
     # 注册 asyncio 信号处理器
@@ -678,14 +689,13 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
                 await asyncio.sleep(3600)
                 # 重试被限流的 ID
                 task = asyncio.create_task(scan_single(session, rate_limited_id))
-                await task
-                exc = task.exception()
-                if isinstance(exc, RateLimitedError):
-                    print(f"  ID {rate_limited_id} 重试仍被限流，跳过")
-                    error_counts["rate_limited"] = error_counts.get("rate_limited", 0) + 1
-                else:
+                try:
+                    await task
                     # 重试成功
                     break
+                except RateLimitedError:
+                    print(f"  ID {rate_limited_id} 重试仍被限流，跳过")
+                    error_counts["rate_limited"] = error_counts.get("rate_limited", 0) + 1
 
     total_errors = sum(error_counts.values())
 
@@ -746,6 +756,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
                 "timeout": "请求超时",
                 "network_error": "网络错误",
                 "parse_error": "解析失败",
+                "rate_limited": "限流跳过",
             }
             for error_type, count in error_counts.items():
                 if count > 0:

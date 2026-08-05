@@ -58,7 +58,7 @@ jobs:
           python nju_electric_query.py \
             --scan 1 150000 \
             --scan-progress .scan_progress.json \
-            --scan-batch-size 3600 \
+            --scan-batch-size 3000 \
             -c 1 --request-delay 3.0 \
             --cookie-file /tmp/cookie.json
 
@@ -66,17 +66,23 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add config/room_ids.json .scan_progress.json
-          if git diff --staged --name-only | grep -q .; then
+          if git diff --name-only | grep -qE 'config/room_ids\.json|\.scan_progress\.json'; then
             CURSOR=$(python3 -c "import json; d=json.load(open('.scan_progress.json')); print(d['cursor'])")
             CYCLE=$(python3 -c "import json; d=json.load(open('.scan_progress.json')); print(d['cycle'])")
-            git commit -m "scan: cursor ${CURSOR}/150000 (cycle ${CYCLE})"
+            PUSHED=0
             for i in 1 2 3; do
+              git add config/room_ids.json .scan_progress.json
+              git commit -m "scan: cursor ${CURSOR}/150000 (cycle ${CYCLE})" || true
               if git push; then
+                PUSHED=1
                 break
               fi
               echo "Push failed (attempt $i), retrying in 3s..."
               sleep 3
               git pull --rebase origin ${{ github.ref_name }}
             done
+            if [ "$PUSHED" -eq 0 ]; then
+              echo "::error::All push attempts failed"
+              exit 1
+            fi
           fi
