@@ -1914,8 +1914,11 @@ const DataService = {
 
       for (let i = 1; i < dates.length; i++) {
         const date = dates[i];
-        const prev = bh[dates[i - 1]];
+        const prevDate = dates[i - 1];
+        const prev = bh[prevDate];
         const curr = bh[date];
+        // 日期不连续时跳过，不跨日累计
+        if (!this._isConsecutiveDates(date, prevDate)) continue;
         const cons = prev > curr ? prev - curr : 0;
         allDateSet.add(date);
 
