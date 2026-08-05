@@ -311,6 +311,12 @@
       font-weight: 700;
       color: var(--accent);
     }
+    .stat-value.batch-warn {
+      color: var(--warning);
+    }
+    .stat-value.batch-muted {
+      color: var(--muted);
+    }
     .stat-label {
       color: var(--muted);
       font-size: 13px;
@@ -355,7 +361,7 @@
       color: var(--muted);
       font-size: 14px;
     }
-  </style>
+    </style>
 </head>
 <body>
   <nav class="topnav">
@@ -406,20 +412,20 @@
     <section class="stats-bar">
       <div class="stats-inner">
         <div class="stat-item">
-          <div class="stat-value">4</div>
+          <div class="stat-value" id="stat-campuses">4</div>
           <div class="stat-label">校区覆盖</div>
         </div>
         <div class="stat-item">
-          <div class="stat-value">106</div>
+          <div class="stat-value" id="stat-buildings">0</div>
           <div class="stat-label">楼栋监控</div>
         </div>
         <div class="stat-item">
-          <div class="stat-value">16,644</div>
+          <div class="stat-value" id="stat-rooms">0</div>
           <div class="stat-label">房间追踪</div>
         </div>
         <div class="stat-item">
-          <div class="stat-value">14:00</div>
-          <div class="stat-label">每日更新</div>
+          <div class="stat-value" id="stat-batches">—</div>
+          <div class="stat-label">当日批次</div>
         </div>
       </div>
     </section>
@@ -468,6 +474,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
       await DataService.initDB();
       checkUserConfig();
+      loadStats().catch(e => console.warn('loadStats error:', e));
     });
 
     // 检查用户配置
@@ -524,6 +531,78 @@
       setTimeout(() => {
         window.location.href = 'room-view.html';
       }, 1500);
+    }
+
+    const animFrames = {};
+
+    function animateValue(el, target, duration = 800) {
+      if (animFrames[el.id]) cancelAnimationFrame(animFrames[el.id]);
+
+      const raw = el.textContent.replace(/,/g, '');
+      const start = parseInt(raw) || 0;
+      const startTime = performance.now();
+      const delta = target - start;
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + delta * eased);
+        el.textContent = current.toLocaleString();
+        if (progress < 1) {
+          animFrames[el.id] = requestAnimationFrame(update);
+        } else {
+          delete animFrames[el.id];
+        }
+      }
+      animFrames[el.id] = requestAnimationFrame(update);
+    }
+
+    async function loadStats() {
+      const buildingEl = document.getElementById('stat-buildings');
+      const roomEl = document.getElementById('stat-rooms');
+      const batchEl = document.getElementById('stat-batches');
+
+      // 先缓动画 — 从 0 开始
+      animateValue(buildingEl, 100, 3000);
+      animateValue(roomEl, 16000, 3000);
+
+      // 并行请求
+      try {
+        const [overviewResp, batchResp] = await Promise.all([
+          fetch('/database/summaries/overview.json'),
+          fetch('/database/batch_run_summary.json')
+        ]);
+
+        // 处理 overview.json
+        if (overviewResp.ok) {
+          const overview = await overviewResp.json();
+          const buildings = Object.values(overview.campuses).reduce((sum, c) => sum + c.buildings_count, 0);
+          const rooms = overview.total_rooms;
+          animateValue(buildingEl, buildings, 500);
+          animateValue(roomEl, rooms, 800);
+        }
+
+        // 处理 batch_run_summary.json
+        if (batchResp.ok) {
+          const summary = await batchResp.json();
+          const today = new Date().toLocaleDateString('en-CA');
+          const isToday = summary.date === today;
+
+          if (isToday) {
+            const done = Object.keys(summary.batches).length;
+            const total = summary.total_batches;
+            batchEl.textContent = done + '/' + total;
+            batchEl.className = 'stat-value' + (done >= total ? '' : ' batch-warn');
+          } else {
+            batchEl.textContent = '—';
+            batchEl.className = 'stat-value batch-muted';
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load stats data:', e);
+        // 保持当前动画值，批次保持"尚未更新"
+      }
     }
   </script>
   <script src="js/about-modal.js"></script>

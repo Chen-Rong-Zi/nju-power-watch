@@ -26,8 +26,24 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Pull latest
-        run: git pull --rebase origin ${{ github.ref_name }}
+      - name: Ensure scan-room branch
+        run: |
+          git fetch origin scan-room --depth=200 || true
+          git fetch origin master --depth=200
+          if git branch -r | grep -q 'origin/scan-room'; then
+            echo "scan-room exists, rebasing onto origin/master..."
+            git checkout scan-room
+            if git rebase origin/master; then
+              echo "✓ Rebased scan-room onto origin/master"
+            else
+              echo "::warning::Rebase conflict, aborting rebase and creating fresh branch"
+              git rebase --abort
+              git checkout -B scan-room origin/master
+            fi
+          else
+            echo "Creating scan-room from master..."
+            git checkout -b scan-room origin/master
+          fi
 
       - uses: actions/setup-python@v5
         with:
@@ -62,24 +78,25 @@ jobs:
             -c 1 --request-delay 3.0 \
             --cookie-file /tmp/cookie.json
 
-      - name: Commit and push
+      - name: Commit and push to scan-room
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           if git diff --name-only | grep -qE 'config/room_ids\.json|scan_progress\.json'; then
             CURSOR=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cursor'])")
             CYCLE=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cycle'])")
+            git add config/room_ids.json scan_progress.json
+            git commit -m "scan: cursor ${CURSOR}/150000 (cycle ${CYCLE})" || true
             PUSHED=0
             for i in 1 2 3; do
-              git add config/room_ids.json scan_progress.json
-              git commit -m "scan: cursor ${CURSOR}/150000 (cycle ${CYCLE})" || true
-              if git push; then
+              if git push origin scan-room; then
+                echo "✓ Pushed to scan-room (cursor=${CURSOR})"
                 PUSHED=1
                 break
               fi
               echo "Push failed (attempt $i), retrying in 3s..."
               sleep 3
-              git pull --rebase origin ${{ github.ref_name }}
+              git pull --rebase origin scan-room
             done
             if [ "$PUSHED" -eq 0 ]; then
               echo "::error::All push attempts failed"
