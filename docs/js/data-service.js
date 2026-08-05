@@ -1483,8 +1483,12 @@ const DataService = {
       let totalConsumption = 0;
       let count = 0;
       for (let i = 1; i < validDates.length; i++) {
-        const prevBalance = balanceHistory[validDates[i - 1]];
-        const currBalance = balanceHistory[validDates[i]];
+        const prevDate = validDates[i - 1];
+        const currDate = validDates[i];
+        // 日期不连续时跳过该对，不纳入平均计算
+        if (!this._isConsecutiveDates(currDate, prevDate)) continue;
+        const prevBalance = balanceHistory[prevDate];
+        const currBalance = balanceHistory[currDate];
         if (prevBalance > currBalance) {
           totalConsumption += prevBalance - currBalance;
           count++;
@@ -1497,9 +1501,13 @@ const DataService = {
     const targetIdx = dates.indexOf(targetDate);
     if (targetIdx === -1 || targetIdx === 0) return null;
 
+    const prevDate = dates[targetIdx - 1];
+    // 日期不连续时返回 null，不跨日累计
+    if (!this._isConsecutiveDates(targetDate, prevDate)) return null;
+
     // 计算消耗量：前一天余额 - 当天余额
-    const prevBalance = balanceHistory[dates[targetIdx - 1]];
-    const currBalance = balanceHistory[dates[targetIdx]];
+    const prevBalance = balanceHistory[prevDate];
+    const currBalance = balanceHistory[targetDate];
 
     return prevBalance > currBalance ? prevBalance - currBalance : 0;
   },
