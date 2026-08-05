@@ -37,8 +37,8 @@ jobs:
 
       - name: Merge scan-room into master
         run: |
-          git fetch origin scan-room --depth=50 || true
-          git fetch origin master --depth=50
+          git fetch origin scan-room --depth=200 || true
+          git fetch origin master --depth=200
           if git branch -r | grep -q 'origin/scan-room'; then
             echo "Merging scan-room into master..."
             if git merge origin/scan-room --no-edit; then
@@ -47,6 +47,7 @@ jobs:
                 echo "✓ Pushed merged master"
                 echo "Deleting scan-room branch..."
                 git push origin --delete scan-room || echo "::warning::Failed to delete scan-room branch"
+                git branch -d -r origin/scan-room 2>/dev/null || true
               else
                 echo "::error::Failed to push merged master, scan-room branch preserved"
               fi
