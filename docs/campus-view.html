@@ -1109,6 +1109,7 @@
     // ==================== 图表渲染 ====================
 
     function renderTrendChart(trendData) {
+      if (typeof Chart === 'undefined') { console.warn('Chart.js 加载失败，趋势图不可用'); return; }
       const ctx = document.getElementById('trend-chart').getContext('2d');
       if (trendChart) trendChart.destroy();
 
@@ -1236,6 +1237,7 @@
     }
 
     function renderBuildingChart(consumption) {
+      if (typeof Chart === 'undefined') { console.warn('Chart.js 加载失败，楼栋图不可用'); return; }
       const ctx = document.getElementById('building-chart').getContext('2d');
       if (buildingChart) buildingChart.destroy();
 

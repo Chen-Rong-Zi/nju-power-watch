@@ -2613,6 +2613,7 @@
 
     // ==================== 显示排行榜 ====================
     function renderTrendChart(trendData) {
+      if (typeof Chart === 'undefined') { console.warn('Chart.js 加载失败，趋势图不可用'); return; }
       const ctx = document.getElementById('trend-chart').getContext('2d');
       if (trendChart) trendChart.destroy();
 
@@ -3262,6 +3263,7 @@
     let distValues = null;
 
     function renderDistributionChart(rankings) {
+      if (typeof Chart === 'undefined') { console.warn('Chart.js 加载失败，分布图不可用'); return; }
       const values = rankings.map(r => r.consumption).filter(v => v > 0);
       if (values.length < 5) {
         document.getElementById('dist-card').style.display = 'none';

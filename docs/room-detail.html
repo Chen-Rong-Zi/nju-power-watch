@@ -527,6 +527,7 @@
 
     // 更新图表
     function updateChart(range) {
+      if (typeof Chart === 'undefined') { console.warn('Chart.js 加载失败，图表不可用'); return; }
       const data = range === 'all' ? roomData : roomData.slice(-range);
       const ctx = document.getElementById('trend-chart').getContext('2d');
 
