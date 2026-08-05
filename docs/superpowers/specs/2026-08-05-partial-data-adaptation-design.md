@@ -82,7 +82,7 @@ generated_at (UTC+0) → +8h → CST 日期
 - 校区级：基于 `generated_at` 匹配（二值：1.0 或 0），不涉及阈值判断
 - 楼栋级：原来要求 ≥50% 房间有数据，改为只要有任何房间有数据（`> 0`）即认为该日期有效
 
-#### 楼栋级
+**注意**：`getOverview()` 有内存缓存，但一次页面加载中 `overview.json` 不会变化（静态文件），所以缓存不影响正确性。用户刷新页面会读到最新 commit 的快照。
 
 楼栋级 `_checkDateCoverage` 维持现有逻辑不变：逐个房间检查 `balance_history` 中是否有目标日期记录。
 
@@ -106,8 +106,8 @@ generated_at (UTC+0) → +8h → CST 日期
 }
 ```
 
-- 文件存在 → 扫描进行中
-- 文件不存在 → 扫描已完成（或未开始）
+- 该文件始终存在。判断条件：`batches 的键数量 < total_batches` → 扫描进行中；`batches 数量 === total_batches` → 扫描已完成
+- 文件不存在或格式不符合预期 → 视为扫描已完成，不显示横幅
 
 #### 交互设计
 
@@ -118,26 +118,24 @@ generated_at (UTC+0) → +8h → CST 日期
 ```
 
 - 点击关闭按钮可 dismiss（存 sessionStorage，独立 key `scanningBannerDismissed`）
-- 扫描进行中时，**不触发 fallback**（即使 coverage 看起来低）
+- 扫描横幅与 fallback 机制**完全独立**，fallback 始终基于 `generated_at` 判断，不受扫描状态影响
 - 校区页面和楼栋页面均需显示
 
 #### 扫描中与 Fallback 的交互
 
 | 状态 | 行为 |
 |------|------|
-| 扫描进行中（文件存在） | 显示扫描横幅，不触发 fallback，正常展示已有数据 |
-| 扫描已完成（文件不存在） | 无横幅，走正常 fallback 判断逻辑 |
-| 扫描已结束但无数据 | 无横幅，走正常 fallback 判断逻辑 |
+| 扫描进行中（batches < total_batches） | 显示扫描横幅，正常展示已有数据 |
+| 扫描已完成（batches === total_batches） | 不显示横幅，走正常 fallback 判断逻辑 |
 
 #### 修改点
 
 **`campus-view.html` 和 `building-view.html`：**
 
-1. 页面加载时异步 fetch `this.DATABASE_PATH + '/.batch_run_summary.json'`（非阻塞，不 await）
-2. 如果返回 200 → 解析 JSON，显示扫描横幅
-3. 如果返回 404 → 文件不存在，不显示横幅
-4. 网络错误（非 404）静默降级，不中断页面加载
-5. 扫描横幅显示期间，`findLatestDateWithData` 调用跳过（不触发 fallback）
+1. 页面加载时同步 fetch `this.DATABASE_PATH + '/.batch_run_summary.json'`
+2. 如果返回 200 → 解析 JSON，判断 `batches 数量 < total_batches` → 显示扫描横幅
+3. 如果返回 404 或格式不符合预期 → 不显示横幅
+4. 网络错误静默降级，不中断页面加载
 
 ---
 
@@ -267,15 +265,14 @@ calculateAvgConsumption(history) {
 
 | 场景 | 预期行为 |
 |------|----------|
-| 分段扫描中，第 1 批完成 | 校区：generated_at=今天 → 不 fallback，显示扫描横幅和数据 |
-| 分段扫描中，第 2 批刚触发 | 同上，横幅更新为 2/4 批 |
-| 所有批次完成 | 无横幅，generated_at=今天，正常显示 |
+| 分段扫描中，第 1 批完成 | 扫描横幅显示 1/4 批，generated_at=今天 → 不 fallback |
+| 分段扫描中，第 2 批刚触发 | 横幅更新为 2/4 批 |
+| 所有批次完成 | batches 数 = total_batches，无横幅，generated_at=今天，正常显示 |
 | 今天没有批次运行 | generated_at=昨天 → fallback 到昨天 |
 | 今天没有数据，昨天也没有 | 搜索 7 天，都无数据 → 显示无数据状态 |
 | 房间数据不连续（缺中间日期） | 消耗计算返回 null，图表显示 0.00，不跨日累计 |
 | 新房间，只有 1 条记录 | 无法计算消耗，返回 null |
-| batch_run_summary.json 404 | 视为无扫描进行中，走正常 fallback 逻辑 |
-| batch_run_summary.json 解析失败 | 视为无扫描进行中，走正常 fallback 逻辑 |
+| batch_run_summary.json 格式不符合预期 | 视为扫描已完成，无横幅，走正常 fallback |
 
 ---
 
