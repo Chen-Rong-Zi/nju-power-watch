@@ -135,7 +135,7 @@ const DataService = {
 
     // Check if original date has data
     const originalCoverage = await this._checkDateCoverage(campusName, buildingName, targetDate);
-    if (originalCoverage >= 0.5) {
+    if (originalCoverage > 0) {
       return null; // Original date has sufficient data, no fallback needed
     }
 
@@ -148,7 +148,7 @@ const DataService = {
       const checkDate = this._dateToCompact(checkDateObj);
 
       const coverage = await this._checkDateCoverage(campusName, buildingName, checkDate);
-      if (coverage >= 0.5) {
+      if (coverage > 0) {
         const month = checkDate.substring(4, 6);
         const day = checkDate.substring(6, 8);
         return {
