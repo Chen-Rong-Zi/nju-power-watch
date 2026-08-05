@@ -190,34 +190,27 @@ const DataService = {
 
       return totalRooms > 0 ? roomsWithData / totalRooms : 0;
     } else {
-      // Check campus-wide (sample a few buildings for performance)
-      const campusStats = await this.getCampusStatistics(campusName);
-      if (!campusStats || !campusStats.buildingDetails) return 0;
+      // Campus-wide: use generated_at from overview.json
+      try {
+        const overview = await this.getOverview();
+        if (!overview || !overview.generated_at) return 0;
 
-      let totalRooms = 0;
-      let roomsWithData = 0;
+        // generated_at is UTC+0, convert to CST (+8h)
+        // Append 'Z' to ensure consistent UTC parsing across browsers
+        const generatedDate = new Date(overview.generated_at + 'Z');
+        generatedDate.setUTCHours(generatedDate.getUTCHours() + 8);
+        // Use UTC methods to avoid local timezone interference
+        const year = generatedDate.getUTCFullYear();
+        const month = String(generatedDate.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(generatedDate.getUTCDate()).padStart(2, '0');
+        const generatedCompact = `${year}${month}${day}`;
 
-      // Sample up to 5 buildings for quick check
-      const sampleBuildings = campusStats.buildingDetails.slice(0, 5);
-
-      for (const bd of sampleBuildings) {
-        const details = await this.getBuildingDetails(campusName, bd.name);
-        if (!details || !details.rooms) continue;
-
-        for (const roomName in details.rooms) {
-          totalRooms++;
-          const bh = details.rooms[roomName].balance_history;
-          if (bh && bh[compactDate] !== undefined) {
-            const dates = Object.keys(bh).sort();
-            const idx = dates.indexOf(compactDate);
-            if (idx > 0) {
-              roomsWithData++;
-            }
-          }
-        }
+        // If generated_at date matches target date, coverage is sufficient
+        return generatedCompact === compactDate ? 1.0 : 0;
+      } catch (error) {
+        console.warn('Failed to get overview.json, falling back to coverage=0', error);
+        return 0;
       }
-
-      return totalRooms > 0 ? roomsWithData / totalRooms : 0;
     }
   },
 
