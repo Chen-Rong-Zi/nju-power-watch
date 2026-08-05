@@ -62,6 +62,20 @@
 
 ## 数据加载流程
 
+使用 `Promise.all` 并行请求两个 JSON 文件，互不阻塞：
+
+```javascript
+// 启动先缓动画
+const slowBuilding = animateValue(buildingEl, 100, 3000);
+const slowRoom = animateValue(roomEl, 16000, 3000);
+
+// 并行请求
+const [overviewResp, batchResp] = await Promise.all([
+  fetch('/database/summaries/overview.json'),
+  fetch('/database/batch_run_summary.json')
+]);
+```
+
 ```
 页面加载
   │

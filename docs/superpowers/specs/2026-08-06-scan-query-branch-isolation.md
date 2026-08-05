@@ -54,16 +54,16 @@ Day N+1
     if git branch -r | grep -q 'origin/scan-room'; then
       echo "scan-room exists, rebasing onto master..."
       git checkout scan-room
-      if git rebase master; then
-        echo "✓ Rebased scan-room onto master"
+      if git rebase origin/master; then
+        echo "✓ Rebased scan-room onto origin/master"
       else
         echo "::warning::Rebase conflict, aborting rebase and creating fresh branch"
         git rebase --abort
-        git checkout -b scan-room master
+        git checkout -b scan-room origin/master
       fi
     else
       echo "Creating scan-room from master..."
-      git checkout -b scan-room master
+      git checkout -b scan-room origin/master
     fi
 ```
 
@@ -104,9 +104,13 @@ Day N+1
       echo "Merging scan-room into master..."
       if git merge origin/scan-room --no-edit; then
         echo "✓ Merged scan-room into master"
-        git push origin master || echo "::warning::Failed to push merged master"
-        echo "Deleting scan-room branch..."
-        git push origin --delete scan-room || echo "::warning::Failed to delete scan-room branch"
+        if git push origin master; then
+          echo "✓ Pushed merged master"
+          echo "Deleting scan-room branch..."
+          git push origin --delete scan-room || echo "::warning::Failed to delete scan-room branch"
+        else
+          echo "::error::Failed to push merged master, scan-room branch preserved"
+        fi
       else
         echo "::warning::Merge conflict with scan-room, aborting merge"
         git merge --abort
