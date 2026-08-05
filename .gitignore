@@ -42,6 +42,9 @@ logs/query_runs/
 database/*.tmp
 database/*.temp
 
+# Scan progress temp files
+scan_progress.json.tmp
+
 # Temporary files
 *.tmp
 *.swp

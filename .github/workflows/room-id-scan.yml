@@ -1,0 +1,88 @@
+name: Room ID Scan
+
+on:
+  schedule:
+    - cron: '0 21 * * *'
+  workflow_dispatch:
+    inputs:
+      scan_progress:
+        description: 'Override progress file path'
+        required: false
+        default: 'scan_progress.json'
+
+permissions:
+  contents: write
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  scan-rooms:
+    runs-on: ubuntu-latest
+    timeout-minutes: 210
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Pull latest
+        run: git pull --rebase origin ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Auto login
+        id: login
+        uses: nick-fields/retry@v3
+        env:
+          NJU_USERNAME: ${{ secrets.NJU_USERNAME }}
+          NJU_PASSWORD: ${{ secrets.NJU_PASSWORD }}
+        with:
+          timeout_minutes: 3
+          max_attempts: 3
+          command: |
+            echo "$NJU_USERNAME" > /tmp/username
+            echo "$NJU_PASSWORD" > /tmp/password
+            python scripts/nju_auto_login.py
+            test -f /tmp/cookie.json
+
+      - name: Scan room IDs
+        id: scan
+        run: |
+          python nju_electric_query.py \
+            --scan 1 150000 \
+            --scan-progress scan_progress.json \
+            --scan-batch-size 3000 \
+            -c 1 --request-delay 3.0 \
+            --cookie-file /tmp/cookie.json
+
+      - name: Commit and push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          if git diff --name-only | grep -qE 'config/room_ids\.json|scan_progress\.json'; then
+            CURSOR=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cursor'])")
+            CYCLE=$(python3 -c "import json; d=json.load(open('scan_progress.json')); print(d['cycle'])")
+            PUSHED=0
+            for i in 1 2 3; do
+              git add config/room_ids.json scan_progress.json
+              git commit -m "scan: cursor ${CURSOR}/150000 (cycle ${CYCLE})" || true
+              if git push; then
+                PUSHED=1
+                break
+              fi
+              echo "Push failed (attempt $i), retrying in 3s..."
+              sleep 3
+              git pull --rebase origin ${{ github.ref_name }}
+            done
+            if [ "$PUSHED" -eq 0 ]; then
+              echo "::error::All push attempts failed"
+              exit 1
+            fi
+          fi

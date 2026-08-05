@@ -4,7 +4,7 @@
 
 **Goal:** 将 17,349 间房的查询分 4 批链式执行，每批独立 workflow run，最后一步触发下一批
 
-**Architecture:** 每批用 `--batch-index` 和 `--total-batches` 参数切片房间列表，3s 请求间隔安全速率。每批完成后通过 `gh workflow run` 触发下一批，`database/.batch_run_summary.json` 追踪跨批次累计统计
+**Architecture:** 每批用 `--batch-index` 和 `--total-batches` 参数切片房间列表，3s 请求间隔安全速率。每批完成后通过 `gh workflow run` 触发下一批，`database/batch_run_summary.json` 追踪跨批次累计统计
 
 **Tech Stack:** Python 3.11, aiohttp, GitHub Actions
 
@@ -186,7 +186,7 @@ on:
     TOTAL_BATCHES="${{ inputs.total_batches || '4' }}"
     SUCCESS="${{ steps.query.outputs.success_count }}"
     FAILED="${{ steps.query.outputs.failed_count }}"
-    SUMMARY_FILE="database/.batch_run_summary.json"
+    SUMMARY_FILE="database/batch_run_summary.json"
 
     if [ "$BATCH_INDEX" -eq 1 ]; then
       # 第 1 批：创建新文件
@@ -267,7 +267,7 @@ on:
   run: |
     BATCH_INDEX="${{ inputs.batch_index || '1' }}"
     TOTAL_BATCHES="${{ inputs.total_batches || '4' }}"
-    SUMMARY_FILE="database/.batch_run_summary.json"
+    SUMMARY_FILE="database/batch_run_summary.json"
     SUCCESS="${{ steps.query.outputs.success_count }}"
     FAILED="${{ steps.query.outputs.failed_count }}"
 

@@ -152,7 +152,7 @@ jobs:
           TOTAL_BATCHES="${{ inputs.total_batches || '4' }}"
           SUCCESS="${{ steps.query.outputs.success_count }}"
           FAILED="${{ steps.query.outputs.failed_count }}"
-          SUMMARY_FILE="database/.batch_run_summary.json"
+          SUMMARY_FILE="database/batch_run_summary.json"
 
           if [ "$BATCH_INDEX" -eq 1 ]; then
             CUM_SUCCESS=$SUCCESS
@@ -185,7 +185,7 @@ jobs:
 
       - name: Commit batch run summary
         run: |
-          git add -f database/.batch_run_summary.json
+          git add -f database/batch_run_summary.json
           if git diff --staged --name-only | grep -q "batch_run_summary"; then
             git commit -m "chore: update batch run summary for batch ${{ inputs.batch_index || '1' }}"
             git push
@@ -252,7 +252,7 @@ jobs:
           [查看运行日志](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
           "
           else
-            echo "今日已有失败 Issue（$EXISTENT 个），跳过创建"
+            echo "今日已有失败 Issue（$EXISTING 个），跳过创建"
           fi
 
       - name: Summary
@@ -260,7 +260,7 @@ jobs:
         run: |
           BATCH_INDEX="${{ inputs.batch_index || '1' }}"
           TOTAL_BATCHES="${{ inputs.total_batches || '4' }}"
-          SUMMARY_FILE="database/.batch_run_summary.json"
+          SUMMARY_FILE="database/batch_run_summary.json"
           SUCCESS="${{ steps.query.outputs.success_count }}"
           FAILED="${{ steps.query.outputs.failed_count }}"
 
