@@ -1424,6 +1424,21 @@ const DataService = {
   },
 
   /**
+   * 检查两个日期（YYYYMMDD）是否连续（相邻日期）
+   * @private
+   */
+  _isConsecutiveDates(currDate, prevDate) {
+    const curr = new Date(parseInt(currDate.substring(0, 4)),
+                          parseInt(currDate.substring(4, 6)) - 1,
+                          parseInt(currDate.substring(6, 8)));
+    const prev = new Date(parseInt(prevDate.substring(0, 4)),
+                          parseInt(prevDate.substring(4, 6)) - 1,
+                          parseInt(prevDate.substring(6, 8)));
+    const diffDays = (curr - prev) / (1000 * 60 * 60 * 24);
+    return Math.round(diffDays) === 1;
+  },
+
+  /**
    * 从 balance_history 计算指定日期的消耗量
    * @param {Object} balanceHistory - { 'YYYYMMDD': balance } 格式的历史数据
    * @param {string} dateType - 'today', 'yesterday', 'week' 或具体日期
