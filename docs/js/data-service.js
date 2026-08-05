@@ -495,11 +495,13 @@ const DataService = {
       const todayCompact = this._formatDateCompact('today');
       const todayEntry = history.find(h => h.date === todayCompact);
 
+      const avgConsumptionResult = this.calculateAvgConsumption(history);
       const result = {
         ...data,
         history,
         dailyConsumption: todayEntry?.consumption ?? null,
-        avgConsumption: this.calculateAvgConsumption(history)
+        avgConsumption: avgConsumptionResult.avg,
+        avgConsumptionMeta: { daysWithData: avgConsumptionResult.daysWithData, totalDays: avgConsumptionResult.totalDays }
       };
 
       this._roomCache.set(cacheKey, result);
@@ -534,12 +536,16 @@ const DataService = {
    * 计算平均日消耗
    */
   calculateAvgConsumption(history) {
-    if (history.length < 2) return 0;
+    if (history.length < 2) return { avg: 0, daysWithData: 0, totalDays: Math.max(0, history.length - 1) };
 
     const consumptions = history.slice(1).map(h => h.consumption).filter(c => c > 0);
-    if (consumptions.length === 0) return 0;
+    if (consumptions.length === 0) return { avg: 0, daysWithData: 0, totalDays: Math.max(0, history.length - 1) };
 
-    return consumptions.reduce((a, b) => a + b, 0) / consumptions.length;
+    return {
+      avg: consumptions.reduce((a, b) => a + b, 0) / consumptions.length,
+      daysWithData: consumptions.length,
+      totalDays: Math.max(0, history.length - 1)
+    };
   },
 
   /**
@@ -612,11 +618,13 @@ const DataService = {
           }
         }
 
+        const avgConsumptionResult = this.calculateAvgConsumption(history);
         const data = {
           ...rawData,
           history,
           dailyConsumption: history.length > 1 ? history[history.length - 1].consumption : 0,
-          avgConsumption: this.calculateAvgConsumption(history)
+          avgConsumption: avgConsumptionResult.avg,
+          avgConsumptionMeta: { daysWithData: avgConsumptionResult.daysWithData, totalDays: avgConsumptionResult.totalDays }
         };
 
         this._roomCache.set(cacheKey, data);
