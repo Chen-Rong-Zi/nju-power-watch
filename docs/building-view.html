@@ -2425,8 +2425,21 @@
       }
 
       // 检查是否有有效数据
-      if (allRankings.length === 0) {
+      if (allRankings.length === 0 && noDataRooms.length === 0) {
         showNoDataState(`${getDateDisplayText(state.date)} 暂无耗电数据`);
+        return;
+      }
+
+      // 只有无数据房间（日期缺口导致所有房间消耗为 null），直接渲染
+      if (allRankings.length === 0) {
+        // 隐藏进度条
+        if (!hasAnimationShown) {
+          progressEl.style.display = 'none';
+        }
+        // 检查是否被取消
+        if (thisLoadId !== state.currentLoadId) return;
+        displayRanking(allRankings, noDataRooms);
+        updateCacheStatus('已缓存', false);
         return;
       }
 
@@ -2745,8 +2758,8 @@
       document.getElementById('no-data-state').style.display = 'none';
 
       const totalConsumption = rankings.reduce((sum, r) => sum + r.consumption, 0);
-      const avg = totalConsumption / rankings.length;
-      const max = Math.max(...rankings.map(r => r.consumption));
+      const avg = rankings.length > 0 ? totalConsumption / rankings.length : 0;
+      const max = rankings.length > 0 ? Math.max(...rankings.map(r => r.consumption)) : 0;
 
       document.getElementById('stat-total').textContent = totalConsumption.toFixed(1) + '度';
       document.getElementById('stat-rooms').textContent = rankings.length + noDataRooms.length;
