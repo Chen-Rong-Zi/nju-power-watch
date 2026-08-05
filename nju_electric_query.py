@@ -829,6 +829,8 @@ async def async_main():
     parser.add_argument("-q", "--quiet", action="store_true", help="安静模式，减少输出")
     parser.add_argument("--scan", type=int, nargs=2, metavar=('START', 'END'), help="扫描ID区间模式: 扫描指定范围内的所有ID")
     parser.add_argument("--scan-output", type=str, default="config/room_ids.json", help="扫描结果输出文件 (默认: config/room_ids.json)")
+    parser.add_argument("--scan-progress", type=str, help="扫描进度文件路径")
+    parser.add_argument("--scan-batch-size", type=int, default=3600, help="每批扫描 ID 数（默认 3600）")
     parser.add_argument("--from-mapping", type=str, help="从JSON映射文件读取房间ID列表")
     parser.add_argument("--batch-size", type=int, default=100, help="小批量大小（默认 100）")
     parser.add_argument("--request-delay", type=float, default=3.0, help="请求间最小间隔秒数（默认 3.0）")
@@ -923,7 +925,13 @@ async def async_main():
                 print(f"并发数: {max_concurrent}")
                 print("-" * 50)
 
-            result = await scan_room_ids(start_id, end_id, cookies, args.scan_output, max_concurrent, show_progress)
+            result = await scan_room_ids(
+                start_id, end_id, cookies, args.scan_output,
+                max_concurrent, show_progress,
+                progress_file=args.scan_progress,
+                batch_size=args.scan_batch_size,
+                request_delay=args.request_delay,
+            )
             scan_result = result; scan_mode = True
             elapsed = time.time() - start_time
 
