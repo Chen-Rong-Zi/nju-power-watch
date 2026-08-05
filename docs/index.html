@@ -599,7 +599,7 @@
         // 处理 batch_run_summary.json
         if (batchResp.ok) {
           const summary = await batchResp.json();
-          const today = new Date().toISOString().slice(0, 10);
+          const today = new Date().toLocaleDateString('en-CA');
           const isToday = summary.date === today;
 
           if (isToday) {
