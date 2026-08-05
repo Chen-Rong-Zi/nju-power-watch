@@ -35,6 +35,29 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Merge scan-room into master
+        run: |
+          git fetch origin scan-room --depth=50 || true
+          git fetch origin master --depth=50
+          if git branch -r | grep -q 'origin/scan-room'; then
+            echo "Merging scan-room into master..."
+            if git merge origin/scan-room --no-edit; then
+              echo "✓ Merged scan-room into master"
+              if git push origin master; then
+                echo "✓ Pushed merged master"
+                echo "Deleting scan-room branch..."
+                git push origin --delete scan-room || echo "::warning::Failed to delete scan-room branch"
+              else
+                echo "::error::Failed to push merged master, scan-room branch preserved"
+              fi
+            else
+              echo "::warning::Merge conflict with scan-room, aborting merge"
+              git merge --abort
+            fi
+          else
+            echo "scan-room branch does not exist, skipping merge"
+          fi
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
