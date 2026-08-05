@@ -2,16 +2,24 @@ name: Daily Electricity Query
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+    - cron: '0 6 * * *'   # 06:00 UTC daily (14:00 CST)
   workflow_dispatch:
     inputs:
-      force_run:
-        description: 'Force run even if data exists for today'
+      batch_index:
+        description: 'Current batch index (starts at 1)'
         required: false
-        default: 'false'
+        default: '1'
+        type: string
+      total_batches:
+        description: 'Total number of batches'
+        required: false
+        default: '4'
+        type: string
 
 permissions:
   contents: write
+  actions: write
+  issues: write
 
 env:
   PYTHON_VERSION: '3.11'
@@ -19,29 +27,25 @@ env:
 jobs:
   query-electricity:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
-    
-    concurrency:
-      group: daily-query
-      cancel-in-progress: false
-    
+    timeout-minutes: 360
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
-      
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      
+
       - name: Auto login to get cookie
         id: login
         uses: nick-fields/retry@v3
@@ -61,7 +65,7 @@ jobs:
               echo "Cookie file not generated"
               exit 1
             fi
-      
+
       - name: Validate cookie
         id: validate
         uses: nick-fields/retry@v3
@@ -71,58 +75,61 @@ jobs:
           retry_wait_seconds: 3
           warning_on_retry: true
           command: python scripts/validate_cookie.py /tmp/cookie.json
-      
+
       - name: Query electricity data
         id: query
         run: |
-          set -o pipefail
           python nju_electric_query.py \
             --cookie-file /tmp/cookie.json \
             --from-mapping config/room_ids.json \
-            -d ./database \
-            -c 200 \
-            -q \
-            2>&1 | tee query_output.log
-          
-          SUCCESS=$(grep -oP '成功: \K\d+' query_output.log || echo "0")
-          FAILED=$(grep -oP '失败: \K\d+' query_output.log || echo "0")
+            -c 1 \
+            --batch-size 100 \
+            --request-delay 2.0 \
+            --batch-index ${{ inputs.batch_index || '1' }} \
+            --total-batches ${{ inputs.total_batches || '4' }} \
+            --log-file /tmp/query_output.txt \
+            -d ./database
+
+          RESULT_LINE=$(grep '^RESULT:' /tmp/query_output.txt || true)
+          echo "RESULT_LINE=$RESULT_LINE"
+          TOTAL=$(echo "$RESULT_LINE" | grep -oP 'total=\K\d+' || echo "0")
+          SUCCESS=$(echo "$RESULT_LINE" | grep -oP 'success=\K\d+' || echo "0")
+          FAILED=$(echo "$RESULT_LINE" | grep -oP 'failed=\K\d+' || echo "0")
           echo "success_count=$SUCCESS" >> $GITHUB_OUTPUT
           echo "failed_count=$FAILED" >> $GITHUB_OUTPUT
-          
+          echo "total_count=$TOTAL" >> $GITHUB_OUTPUT
+
           if [ "$SUCCESS" -eq 0 ]; then
             echo "::error::All queries failed ($FAILED rooms)"
             exit 1
           elif [ "$FAILED" -gt 0 ]; then
             echo "::warning::$FAILED rooms failed, $SUCCESS succeeded — continuing with partial results"
           fi
-      
+
       - name: Rollback on failure
         if: failure()
         run: |
           python scripts/rollback_failed_run.py -d ./database
           echo "::warning::Query failed - partial results rolled back"
-      
-      - name: Generate hierarchical aggregated summaries
-        if: success()
+
+      - name: Generate aggregated summaries (all batches)
         run: |
           python scripts/aggregate_data.py \
             --database ./database \
             --output ./database/summaries
 
-      - name: Generate building details for campus view optimization
-        if: success()
+      - name: Generate building details (all batches)
         run: |
           python scripts/generate_building_details.py \
             --summaries ./database/summaries
 
       - name: Commit and push summaries
-        if: success()
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
+
           git add -f database/summaries/
-          
+
           STAGED_FILES=$(git diff --staged --name-only)
           if [ -z "$STAGED_FILES" ]; then
             echo "No new summaries to commit"
@@ -130,12 +137,87 @@ jobs:
             echo "Files to commit:"
             echo "$STAGED_FILES" | head -10
             echo "... and $(echo "$STAGED_FILES" | wc -l) files total"
-            
+
             git commit -m "chore: update electricity summaries for $(date +%Y-%m-%d)"
             git push
             echo "✓ Summaries committed and pushed"
           fi
-      
+
+      - name: Update batch run summary
+        id: batch_summary
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BATCH_INDEX="${{ inputs.batch_index || '1' }}"
+          TOTAL_BATCHES="${{ inputs.total_batches || '4' }}"
+          SUCCESS="${{ steps.query.outputs.success_count }}"
+          FAILED="${{ steps.query.outputs.failed_count }}"
+          SUMMARY_FILE="database/.batch_run_summary.json"
+
+          if [ "$BATCH_INDEX" -eq 1 ]; then
+            CUM_SUCCESS=$SUCCESS
+            CUM_FAILED=$FAILED
+            cat > "$SUMMARY_FILE" << EOF
+          {
+            "date": "$(date +%Y-%m-%d)",
+            "total_batches": $TOTAL_BATCHES,
+            "batches": {
+              "$BATCH_INDEX": { "success": $SUCCESS, "failed": $FAILED }
+            },
+            "cumulative": { "success": $CUM_SUCCESS, "failed": $CUM_FAILED }
+          }
+          EOF
+          else
+            PREV_SUCCESS=$(python3 -c "import json; d=json.load(open('$SUMMARY_FILE')); print(d['cumulative']['success'])")
+            PREV_FAILED=$(python3 -c "import json; d=json.load(open('$SUMMARY_FILE')); print(d['cumulative']['failed'])")
+            CUM_SUCCESS=$((PREV_SUCCESS + SUCCESS))
+            CUM_FAILED=$((PREV_FAILED + FAILED))
+
+            python3 -c "
+          import json
+          d = json.load(open('$SUMMARY_FILE'))
+          d['batches']['$BATCH_INDEX'] = {'success': $SUCCESS, 'failed': $FAILED}
+          d['cumulative'] = {'success': $CUM_SUCCESS, 'failed': $CUM_FAILED}
+          json.dump(d, open('$SUMMARY_FILE', 'w'), indent=2, ensure_ascii=False)
+          "
+          fi
+          echo "✓ Batch run summary updated (batch $BATCH_INDEX/$TOTAL_BATCHES)"
+
+      - name: Commit batch run summary
+        run: |
+          git add -f database/.batch_run_summary.json
+          if git diff --staged --name-only | grep -q "batch_run_summary"; then
+            git commit -m "chore: update batch run summary for batch ${{ inputs.batch_index || '1' }}"
+            git push
+          fi
+
+      - name: Trigger next batch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BATCH_INDEX="${{ inputs.batch_index || '1' }}"
+          TOTAL_BATCHES="${{ inputs.total_batches || '4' }}"
+
+          if [ "$BATCH_INDEX" -lt "$TOTAL_BATCHES" ]; then
+            NEXT_BATCH=$((BATCH_INDEX + 1))
+            echo "Triggering batch $NEXT_BATCH/$TOTAL_BATCHES..."
+
+            for i in 1 2 3; do
+              if gh workflow run "${{ github.workflow }}" \
+                --ref "${{ github.ref_name }}" \
+                -f batch_index="$NEXT_BATCH" \
+                -f total_batches="$TOTAL_BATCHES"; then
+                echo "✓ Triggered batch $NEXT_BATCH (attempt $i)"
+                break
+              else
+                echo "::warning::Trigger failed (attempt $i), retrying in 3s..."
+                sleep 3
+              fi
+            done
+          else
+            echo "✓ All $TOTAL_BATCHES batches completed"
+          fi
+
       - name: Create failure issue
         if: failure() && github.event_name == 'schedule'
         env:
@@ -176,33 +258,50 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          SUCCESS=${{ steps.query.outputs.success_count }}
-          FAILED=${{ steps.query.outputs.failed_count }}
-          TOTAL=$((SUCCESS + FAILED))
-          
-          echo "## 📊 Daily Query Summary" >> $GITHUB_STEP_SUMMARY
+          BATCH_INDEX="${{ inputs.batch_index || '1' }}"
+          TOTAL_BATCHES="${{ inputs.total_batches || '4' }}"
+          SUMMARY_FILE="database/.batch_run_summary.json"
+          SUCCESS="${{ steps.query.outputs.success_count }}"
+          FAILED="${{ steps.query.outputs.failed_count }}"
+
+          echo "## 📊 Batch Query Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Batch $BATCH_INDEX / $TOTAL_BATCHES**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Total Rooms | $TOTAL |" >> $GITHUB_STEP_SUMMARY
           echo "| ✅ Success | $SUCCESS |" >> $GITHUB_STEP_SUMMARY
           echo "| ❌ Failed | $FAILED |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Auto Login**: ${{ steps.login.outcome }}" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f "$SUMMARY_FILE" ]; then
+            echo "### Cumulative (all batches)" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            python3 -c "
+          import json
+          d = json.load(open('$SUMMARY_FILE'))
+          print(f\"Date: {d['date']}\")
+          print(f\"Total batches: {d['total_batches']}\")
+          print()
+          print(f\"{'Batch':<8} {'Success':<10} {'Failed':<10}\")
+          print(f\"{'-----':<8} {'-------':<10} {'------':<10}\")
+          for b in sorted(d['batches'].keys()):
+              s = d['batches'][b]['success']
+              f = d['batches'][b]['failed']
+              print(f\"{b:<8} {s:<10} {f:<10}\")
+          print()
+          c = d['cumulative']
+          print(f\"Total: {c['success']} success, {c['failed']} failed\")
+          " >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Login Attempts**: ${{ steps.login.outputs.total_attempts }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Auto Login**: ${{ steps.login.outcome }}" >> $GITHUB_STEP_SUMMARY
           if [ "$FAILED" -gt 0 ]; then
-              echo "**Failed Rooms**: $FAILED" >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
               echo "**Failure Breakdown:**" >> $GITHUB_STEP_SUMMARY
               echo '```' >> $GITHUB_STEP_SUMMARY
-              awk '/--- 失败原因统计 ---/{flag=1} flag' query_output.log 2>/dev/null >> $GITHUB_STEP_SUMMARY || true
+              awk '/^--- 失败原因统计 ---/{flag=1} /^RESULT:/{flag=0} flag' /tmp/query_output.txt 2>/dev/null >> $GITHUB_STEP_SUMMARY || true
               echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          if [ "${{ job.status }}" == "success" ]; then
-            echo "**Status**: ✅ All queries completed successfully" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "**Status**: ⚠️ Some queries failed - check logs for details" >> $GITHUB_STEP_SUMMARY
           fi

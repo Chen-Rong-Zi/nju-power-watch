@@ -20,9 +20,45 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import urljoin
 from typing import Optional
+import contextlib
 
 # 默认 Cookie 文件路径
 DEFAULT_COOKIE_FILE = "/tmp/cookie.json"
+
+
+class TeeLogger:
+    """将 stdout/stderr 同时输出到文件和控制台"""
+
+    def __init__(self, filepath: str):
+        self.filepath = filepath
+        self.file = None
+
+    def __enter__(self):
+        self.file = open(self.filepath, "w", encoding="utf-8")
+        self.stdout_redirect = contextlib.redirect_stdout(self._tee(sys.stdout))
+        self.stderr_redirect = contextlib.redirect_stderr(self._tee(sys.stderr))
+        self.stdout_redirect.__enter__()
+        self.stderr_redirect.__enter__()
+        return self
+
+    def __exit__(self, *args):
+        self.stderr_redirect.__exit__(*args)
+        self.stdout_redirect.__exit__(*args)
+        self.file.close()
+
+    def _tee(self, original_stream):
+        class TeeStream:
+            def __init__(self, file, original):
+                self.file = file
+                self.original = original
+            def write(self, text):
+                self.file.write(text)
+                self.original.write(text)
+            def flush(self):
+                self.file.flush()
+                self.original.flush()
+        return TeeStream(self.file, original_stream)
+
 
 # 重试配置
 MAX_RETRIES = 5
@@ -31,7 +67,7 @@ RETRY_BACKOFF = 1.5  # 指数退避倍数
 MAX_SCAN_RETRIES = 5  # 扫描模式下单个ID最大重试次数
 
 # 并发配置
-DEFAULT_CONCURRENCY = 24  # 默认并发数
+DEFAULT_CONCURRENCY = 1  # 默认并发数（单线程，避免触发限流）
 
 HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
@@ -139,7 +175,12 @@ class QueryError:
     UNKNOWN = "未知错误"
 
 
-async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp.ClientSession, room_id: str, cookies: dict, show_retry: bool = True) -> dict:
+class RateLimitedError(Exception):
+    """服务器返回限流响应时抛出，触发上层批量重试"""
+    pass
+
+
+async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp.ClientSession, room_id: str, cookies: dict, show_retry: bool = True, request_delay: float = 0) -> dict:
     """带重试的异步查询单个宿舍电费"""
     url = urljoin(base_url, f"/epay/h5/nju/electric/charge?id={room_id}")
     last_error = None
@@ -171,6 +212,10 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
                             last_error = {"id": room_id, "error": QueryError.AUTH_FAILED, "error_type": "auth_failed", "success": False}
                             break
 
+                        # 检查限流响应
+                        if "查询已被限制" in html or "请60分钟后再试" in html:
+                            raise RateLimitedError("查询已被限制，请60分钟后再试")
+
                         # 解析 HTML
                         result = parse_html(html)
 
@@ -181,12 +226,15 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
 
                         result["success"] = True
                         result["id"] = room_id  # 用于内部追踪，save_result 会过滤掉
+                        await asyncio.sleep(request_delay)  # Enforce delay inside semaphore, before release
                         return result
 
         except asyncio.TimeoutError:
             last_error = {"id": room_id, "error": QueryError.TIMEOUT, "error_type": "timeout", "success": False}
         except aiohttp.ClientConnectorError:
             last_error = {"id": room_id, "error": QueryError.NETWORK_ERROR, "error_type": "network_error", "success": False}
+        except RateLimitedError:
+            raise  # 让 RateLimitedError 传播到上层，触发批量级重试
         except Exception as e:
             error_msg = str(e).lower()
             if "timeout" in error_msg:
@@ -211,108 +259,141 @@ async def query_single_with_retry(semaphore: asyncio.Semaphore, session: aiohttp
     return last_error or {"id": room_id, "error": QueryError.UNKNOWN, "error_type": "unknown", "success": False}
 
 
-async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[Path] = None, show_progress: bool = True, max_concurrent: int = DEFAULT_CONCURRENCY):
-    """异步批量查询 - 流式处理，内存友好
+async def _query_batch_internal(room_ids: list[str], cookies: dict, output_dir: Optional[Path],
+                                 show_progress: bool, max_concurrent: int, request_delay: float,
+                                 session: aiohttp.ClientSession) -> list[dict]:
+    """查询一小批房间，带请求间隔控制。遇限流时取消剩余任务并返回部分结果。"""
+    semaphore = asyncio.Semaphore(max_concurrent)
 
-    Args:
-        room_ids: 宿舍ID列表
-        cookies: Cookie字典
-        output_dir: 输出目录
-        show_progress: 是否显示进度
-        max_concurrent: 最大并发数
-    """
+    async def limited_query(room_id):
+        return await query_single_with_retry(
+            semaphore, session, room_id, cookies, show_progress,
+            request_delay=request_delay
+        )
+
+    # 创建所有任务
+    task_map = {asyncio.create_task(limited_query(rid)): rid for rid in room_ids}
+    pending = set(task_map.keys())
+    results = {rid: None for rid in room_ids}
+    rate_limited = False
+
+    while pending and not rate_limited:
+        done, pending = await asyncio.wait(pending, return_when=asyncio.FIRST_COMPLETED)
+
+        for task in done:
+            rid = task_map[task]
+            exc = task.exception()
+            if exc is not None:
+                if isinstance(exc, RateLimitedError):
+                    rate_limited = True
+                    break
+                results[rid] = {"id": rid, "error": str(exc), "error_type": "unknown", "success": False}
+            else:
+                results[rid] = task.result()
+
+    if rate_limited:
+        # 取消剩余待处理任务
+        for t in pending:
+            t.cancel()
+        if pending:
+            await asyncio.wait(pending)
+        # 标记未处理的房间为限流失败
+        for t, rid in task_map.items():
+            if results[rid] is None:
+                results[rid] = {"id": rid, "error": "限流", "error_type": "rate_limited", "success": False}
+
+    return [results[rid] for rid in room_ids]
+
+
+async def query_batch(room_ids: list[str], cookies: dict, output_dir: Optional[Path] = None,
+                      show_progress: bool = True, max_concurrent: int = DEFAULT_CONCURRENCY,
+                      batch_size: int = 100,
+                      request_delay: float = 1.0):
+    """异步批量查询 - 分批处理 + 请求间隔 + 限流自动恢复"""
     total = len(room_ids)
-    completed = 0
     succeeded = 0
     failed = 0
 
     failed_details = []
     success_details = []
 
-    # 使用信号量控制并发数
-    semaphore = asyncio.Semaphore(max_concurrent)
-
-    # 包装查询函数，使用信号量控制并发
-    async def limited_query(session, room_id):
-        return await query_single_with_retry(semaphore, session, room_id, cookies, show_progress)
-
     connector = aiohttp.TCPConnector(limit=max_concurrent)
     async with aiohttp.ClientSession(connector=connector) as session:
-        # 使用异步迭代器流式生成任务
-        async def task_generator():
-            for room_id in room_ids:
-                yield limited_query(session, room_id)
+        for i in range(0, total, batch_size):
+            batch = room_ids[i:i + batch_size]
+            retries = 0
+            max_retries = 2
 
-        # 流式处理：只维护 max_concurrent * 2 个待处理任务
-        tasks_gen = task_generator()
-        pending = set()
+            while retries <= max_retries:
+                results = await _query_batch_internal(
+                    batch, cookies, output_dir, show_progress,
+                    max_concurrent, request_delay, session
+                )
 
-        # # 初始填充：先提交一批任务
-        # batch_size = max_concurrent * 2
-        # for _ in range(min(batch_size, total)):
-        #     try:
-        #         task = await tasks_gen.__anext__()
-        #         pending.add(asyncio.create_task(task))
-        #     except StopAsyncIteration:
-        #         break
-        async for coro in tasks_gen:
-            pending.add(asyncio.create_task(coro))
+                # 找出被限流的房间
+                rate_limited_rooms = [
+                    r for r in results
+                    if not r["success"] and r.get("error_type") == "rate_limited"
+                ]
 
-        # 处理完成的任务，同时补充新任务
-        while pending:
-            # 等待任意任务完成
-            done, pending = await asyncio.wait(
-                pending,
-                return_when=asyncio.FIRST_COMPLETED
-            )
+                # 先处理非限流结果
+                for result in results:
+                    if result["success"]:
+                        succeeded += 1
+                        if output_dir:
+                            await save_result(result, output_dir, quiet=not show_progress)
+                        success_details.append({
+                            "id": result["id"],
+                            "building": result.get("楼栋", "未知"),
+                            "room": result.get("房间", "未知"),
+                            "power": result.get("剩余电量", "未知"),
+                        })
+                    elif result.get("error_type") != "rate_limited":
+                        failed += 1
+                        failed_details.append({
+                            "id": result["id"],
+                            "error": result.get("error", "未知错误"),
+                            "error_type": result.get("error_type", "unknown"),
+                        })
 
-            for task in done:
-                result = task.result()
-                completed += 1
+                if not rate_limited_rooms:
+                    break  # 无限流，当前子批次完成
 
-                if result["success"]:
-                    succeeded += 1
-                    if output_dir:
-                        await save_result(result, output_dir, quiet=not show_progress)
-                    building = result.get("楼栋", "未知")
-                    room = result.get("房间", "未知")
-                    power = result.get("剩余电量", "未知")
-                    success_details.append({
-                        "id": result["id"],
-                        "building": building,
-                        "room": room,
-                        "power": power
-                    })
-                else:
-                    failed += 1
-                    failed_details.append({
-                       "id": result["id"],
-                        "error": result.get("error", "未知错误"),
-                        "error_type": result.get("error_type", "unknown")
-                    })
+                retries += 1
+                if retries > max_retries:
+                    # 超过重试次数，标记为失败
+                    failed += len(rate_limited_rooms)
+                    for r in rate_limited_rooms:
+                        failed_details.append({
+                            "id": r["id"],
+                            "error": "重试次数耗尽（限流）",
+                            "error_type": "rate_limited",
+                        })
+                    break
 
+                # 只重试被限流的房间
+                batch = [r["id"] for r in rate_limited_rooms]
                 if show_progress:
-                    print(f"\r[{completed}/{total}] 成功: {succeeded}, 失败: {failed}", end="", flush=True)
+                    print(f"\n[限流] 检测到 {len(rate_limited_rooms)} 个限流，等待 3600s 后重试 (第 {retries} 次)...")
+                await asyncio.sleep(3600)
 
-                # 补充新任务
-                try:
-                    new_task = await tasks_gen.__anext__()
-                    pending.add(asyncio.create_task(new_task))
-                except StopAsyncIteration:
-                    pass  # 没有更多任务了
-
-    if show_progress:
-        print()
+            completed = succeeded + failed
+            if show_progress:
+                print(f"[{completed}/{total}] 成功: {succeeded}, 失败: {failed}")
 
     if success_details and show_progress:
         print("\n--- 查询成功 ---")
-        for detail in success_details:
+        for detail in success_details[:10]:
             print(f"  {detail['id']}: {detail['building']} {detail['room']} | 剩余电量: {detail['power']}")
 
     if failed_details and show_progress:
         print("\n--- 查询失败 (具体原因) ---")
+        error_count = {}
         for detail in failed_details:
-            print(f"  {detail['id']}: {detail['error']}")
+            error_type = detail.get("error_type", "unknown")
+            error_count[error_type] = error_count.get(error_type, 0) + 1
+        for error_type, count in error_count.items():
+            print(f"  {error_type}: {count}个")
 
     return {
         "total": total,
@@ -496,7 +577,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
         # 只在函数退出时更新进度
         processed += 1
         if show_progress:
-            print(f"\r[{processed}/{scan_count}] 新发现: {new_found}", end="", flush=True)
+            print(f"[{processed}/{scan_count}] 新发现: {new_found}")
 
     # 生成待扫描的ID列表，跳过已有ID
     ids_to_scan = []
@@ -620,135 +701,195 @@ async def async_main():
     parser.add_argument("--scan", type=int, nargs=2, metavar=('START', 'END'), help="扫描ID区间模式: 扫描指定范围内的所有ID")
     parser.add_argument("--scan-output", type=str, default="config/room_ids.json", help="扫描结果输出文件 (默认: config/room_ids.json)")
     parser.add_argument("--from-mapping", type=str, help="从JSON映射文件读取房间ID列表")
+    parser.add_argument("--batch-size", type=int, default=100, help="小批量大小（默认 100）")
+    parser.add_argument("--request-delay", type=float, default=3.0, help="请求间最小间隔秒数（默认 3.0）")
+    parser.add_argument("--batch-index", type=int, default=1, help="当前批次序号（从 1 开始，默认 1）")
+    parser.add_argument("--total-batches", type=int, default=1, help="总批次数（默认 1）")
+    parser.add_argument("--log-file", type=str, help="日志文件路径（同时输出到文件和控制台）")
     parser.add_argument("room_ids", nargs="*", help="宿舍ID列表 (扫描模式下不需要)")
     args = parser.parse_args()
 
-    room_ids = args.room_ids
-    output_dir = Path(args.dir) if args.dir else None
-    max_concurrent = args.concurrency
-    cookie_file = args.cookie_file
-    show_progress = not args.quiet
-
-    if args.from_mapping:
-        from pathlib import Path as _Path
-        if not _Path(args.from_mapping).exists():
-            print(f"错误: 映射文件不存在: {args.from_mapping}")
-            sys.exit(1)
-        from scripts.config_utils import load_mapping, extract_ids
-        mapping = load_mapping(args.from_mapping)
+    # 日志文件输出
+    tee = None
+    if args.log_file:
         try:
-            room_ids = extract_ids(mapping)
-        except (AttributeError, TypeError) as e:
-            print(f"错误: 映射文件格式错误: {args.from_mapping} ({e})")
-            sys.exit(1)
-        if not room_ids:
-            print(f"错误: 映射文件 {args.from_mapping} 中没有找到任何房间ID")
-            sys.exit(1)
-        if show_progress:
-            print(f"✓ 从映射文件加载了 {len(room_ids)} 个房间ID: {args.from_mapping}")
+            log_dir = os.path.dirname(args.log_file)
+            if log_dir:
+                os.makedirs(log_dir, exist_ok=True)
+            tee = TeeLogger(args.log_file)
+            tee.__enter__()
+        except (OSError, IOError) as e:
+            tee = None
+            print(f"警告: 无法创建日志文件 {args.log_file}: {e}，继续运行但不输出到文件")
 
-    if not os.path.exists(cookie_file):
-        print(f"错误: Cookie 文件不存在: {cookie_file}")
-        print(f"请使用 --cookie-file 参数指定有效的 cookie 文件路径")
-        sys.exit(1)
+    start_time = time.time()
+    summary_data = None
+    scan_result = None
+    scan_mode = False
+
+    try:
+        # 验证批次参数
+        if args.batch_size <= 0:
+            print("错误: --batch-size 必须大于 0")
+            sys.exit(1)
+        if args.total_batches <= 0:
+            print("错误: --total-batches 必须大于 0")
+            sys.exit(1)
+        if args.batch_index < 1 or args.batch_index > args.total_batches:
+            print(f"错误: --batch-index 必须在 1 到 {args.total_batches} 之间")
+            sys.exit(1)
+
+        room_ids = args.room_ids
+        output_dir = Path(args.dir) if args.dir else None
+        max_concurrent = args.concurrency
+        cookie_file = args.cookie_file
+        show_progress = not args.quiet
+
+        if args.from_mapping:
+            from pathlib import Path as _Path
+            if not _Path(args.from_mapping).exists():
+                print(f"错误: 映射文件不存在: {args.from_mapping}")
+                sys.exit(1)
+            from scripts.config_utils import load_mapping, extract_ids
+            mapping = load_mapping(args.from_mapping)
+            try:
+                room_ids = extract_ids(mapping)
+            except (AttributeError, TypeError) as e:
+                print(f"错误: 映射文件格式错误: {args.from_mapping} ({e})")
+                sys.exit(1)
+            if not room_ids:
+                print(f"错误: 映射文件 {args.from_mapping} 中没有找到任何房间ID")
+                sys.exit(1)
+            if show_progress:
+                print(f"✓ 从映射文件加载了 {len(room_ids)} 个房间ID: {args.from_mapping}")
+
+            # 按批次切片
+            if args.total_batches > 1:
+                total_rooms = len(room_ids)
+                chunk_size = (total_rooms + args.total_batches - 1) // args.total_batches  # ceil division
+                start_idx = chunk_size * (args.batch_index - 1)
+                end_idx = min(chunk_size * args.batch_index, total_rooms)
+                room_ids = room_ids[start_idx:end_idx]
+                if show_progress:
+                    print(f"✓ 批次 {args.batch_index}/{args.total_batches}: 查询 {len(room_ids)} 个房间 (切片 [{start_idx}:{end_idx}])")
+
+        if not os.path.exists(cookie_file):
+            print(f"错误: Cookie 文件不存在: {cookie_file}")
+            print(f"请使用 --cookie-file 参数指定有效的 cookie 文件路径")
+            sys.exit(1)
     
-    cookies = await load_cookies_from_file(cookie_file)
-    if show_progress:
-        print(f"✓ 已加载 Cookie 文件: {cookie_file}")
+        cookies = await load_cookies_from_file(cookie_file)
+        if show_progress:
+            print(f"✓ 已加载 Cookie 文件: {cookie_file}")
 
-    # 扫描模式
-    if args.scan:
-        start_id, end_id = args.scan
-        if start_id > end_id:
-            print(f"错误: 起始ID ({start_id}) 不能大于结束ID ({end_id})")
+        # 扫描模式
+        if args.scan:
+            start_id, end_id = args.scan
+            if start_id > end_id:
+                print(f"错误: 起始ID ({start_id}) 不能大于结束ID ({end_id})")
+                sys.exit(1)
+
+            if show_progress:
+                print(f"开始扫描ID区间: {start_id} - {end_id} (共 {end_id - start_id + 1} 个ID)")
+                print(f"并发数: {max_concurrent}")
+                print("-" * 50)
+
+            result = await scan_room_ids(start_id, end_id, cookies, args.scan_output, max_concurrent, show_progress)
+            scan_result = result; scan_mode = True
+            elapsed = time.time() - start_time
+
+            if show_progress:
+                print("-" * 50)
+                print(f"扫描完成!")
+                print(f"  扫描: {result['scanned']}")
+                print(f"  发现: {result['found']}")
+                print(f"  跳过: {result['skipped']}")
+                print(f"  错误: {result['total_errors']}")
+                print(f"  耗时: {elapsed:.2f}秒")
+                print(f"  输出: {result['output_file']}")
+                print("-" * 50)
+
+            return
+
+        # 正常查询模式
+        if not room_ids:
+            print("错误: 请提供宿舍ID列表或使用 --scan 模式")
             sys.exit(1)
 
+        if output_dir and output_dir.exists():
+            if not output_dir.is_dir():
+                print(f"错误: {output_dir} 不是一个目录")
+                sys.exit(1)
+            if not os.access(output_dir, os.W_OK):
+                print(f"错误: 没有权限写入目录 {output_dir}")
+                sys.exit(1)
+
         if show_progress:
-            print(f"开始扫描ID区间: {start_id} - {end_id} (共 {end_id - start_id + 1} 个ID)")
-            print(f"并发数: {max_concurrent}")
+            print(f"开始查询 {len(room_ids)} 个宿舍 (并发数: {max_concurrent})...")
             print("-" * 50)
 
-        start_time = time.time()
-        result = await scan_room_ids(start_id, end_id, cookies, args.scan_output, max_concurrent, show_progress)
+        summary_data = await query_batch(
+            room_ids, cookies, output_dir,
+            show_progress=show_progress,
+            max_concurrent=max_concurrent,
+            batch_size=args.batch_size,
+            request_delay=args.request_delay,
+        )
         elapsed = time.time() - start_time
 
         if show_progress:
-            print("-" * 50)
-            print(f"扫描完成!")
-            print(f"  扫描: {result['scanned']}")
-            print(f"  发现: {result['found']}")
-            print(f"  跳过: {result['skipped']}")
-            print(f"  错误: {result['total_errors']}")
+            print("=" * 50)
+            print(f"查询完成!")
+            print(f"  总数: {summary_data['total']}")
+            print(f"  成功: {summary_data['succeeded']}")
+            print(f"  失败: {summary_data['failed']}")
             print(f"  耗时: {elapsed:.2f}秒")
-            print(f"  输出: {result['output_file']}")
-            print("-" * 50)
+            if output_dir:
+                print(f"  输出目录: {output_dir.absolute()}")
+            print("=" * 50)
+        else:
+            print(f"成功: {summary_data['succeeded']}")
+            print(f"失败: {summary_data['failed']}")
+            print(f"耗时: {elapsed:.2f}s")
+            print(f"完成: {summary_data['succeeded']}/{summary_data['total']} 成功, 失败 {summary_data['failed']}, 耗时 {elapsed:.2f}s")
 
-        return
+        if summary_data['failed'] > 0:
+            print("\n--- 失败原因统计 ---")
+            error_count = {}
+            for detail in summary_data.get("failed_details", []):
+                error_type = detail.get("error_type", "unknown")
+                error_count[error_type] = error_count.get(error_type, 0) + 1
 
-    # 正常查询模式
-    if not room_ids:
-        print("错误: 请提供宿舍ID列表或使用 --scan 模式")
-        sys.exit(1)
+            error_messages = {
+                "network_error": "网络错误: 无法连接到服务器",
+                "timeout": "请求超时: 服务器响应过慢",
+                "auth_failed": "认证失败: Cookie已过期，请更新认证信息",
+                "not_found": "资源不存在: 宿舍ID无效或已下架",
+                "room_not_found": "房间不存在: 该房间ID在系统中不存在",
+                "http_error": "HTTP错误: 服务器内部错误",
+                "parse_error": "解析失败: 页面格式已更新",
+                "retry_exhausted": "重试次数耗尽",
+                "unknown": "未知错误",
+            }
+            for error_type, count in error_count.items():
+                msg = error_messages.get(error_type, error_type)
+                print(f"  {msg}: {count}个")
 
-    if output_dir and output_dir.exists():
-        if not output_dir.is_dir():
-            print(f"错误: {output_dir} 不是一个目录")
+        # 90% success threshold
+        success_rate = summary_data['succeeded'] / summary_data['total'] if summary_data['total'] > 0 else 0
+        if success_rate < 0.9:
+            print(f"错误: 成功率 {success_rate:.1%} ({summary_data['succeeded']}/{summary_data['total']}) 低于 90% 阈值")
             sys.exit(1)
-        if not os.access(output_dir, os.W_OK):
-            print(f"错误: 没有权限写入目录 {output_dir}")
-            sys.exit(1)
-
-    if show_progress:
-        print(f"开始查询 {len(room_ids)} 个宿舍 (并发数: {max_concurrent})...")
-        print("-" * 50)
-
-    start_time = time.time()
-    summary = await query_batch(room_ids, cookies, output_dir, show_progress=show_progress, max_concurrent=max_concurrent)
-    elapsed = time.time() - start_time
-
-    if show_progress:
-        print("=" * 50)
-        print(f"查询完成!")
-        print(f"  总数: {summary['total']}")
-        print(f"  成功: {summary['succeeded']}")
-        print(f"  失败: {summary['failed']}")
-        print(f"  耗时: {elapsed:.2f}秒")
-        if output_dir:
-            print(f"  输出目录: {output_dir.absolute()}")
-        print("=" * 50)
-    else:
-        print(f"成功: {summary['succeeded']}")
-        print(f"失败: {summary['failed']}")
-        print(f"耗时: {elapsed:.2f}s")
-        print(f"完成: {summary['succeeded']}/{summary['total']} 成功, 失败 {summary['failed']}, 耗时 {elapsed:.2f}s")
-
-    if summary['failed'] > 0:
-        print("\n--- 失败原因统计 ---")
-        error_count = {}
-        for detail in summary.get("failed_details", []):
-            error_type = detail.get("error_type", "unknown")
-            error_count[error_type] = error_count.get(error_type, 0) + 1
-
-        error_messages = {
-            "network_error": "网络错误: 无法连接到服务器",
-            "timeout": "请求超时: 服务器响应过慢",
-            "auth_failed": "认证失败: Cookie已过期，请更新认证信息",
-            "not_found": "资源不存在: 宿舍ID无效或已下架",
-            "room_not_found": "房间不存在: 该房间ID在系统中不存在",
-            "http_error": "HTTP错误: 服务器内部错误",
-            "parse_error": "解析失败: 页面格式已更新",
-            "retry_exhausted": "重试次数耗尽",
-            "unknown": "未知错误",
-        }
-        for error_type, count in error_count.items():
-            msg = error_messages.get(error_type, error_type)
-            print(f"  {msg}: {count}个")
-
-    # 90% success threshold
-    success_rate = summary['succeeded'] / summary['total'] if summary['total'] > 0 else 0
-    if success_rate < 0.9:
-        print(f"错误: 成功率 {success_rate:.1%} ({summary['succeeded']}/{summary['total']}) 低于 90% 阈值")
-        sys.exit(1)
+    finally:
+        elapsed = time.time() - start_time
+        if scan_mode:
+            print(f"RESULT: scanned={scan_result['scanned']} found={scan_result['found']} skipped={scan_result['skipped']} errors={scan_result['total_errors']} elapsed={elapsed:.2f}s")
+        elif summary_data is not None:
+            print(f"RESULT: total={summary_data['total']} success={summary_data['succeeded']} failed={summary_data['failed']} elapsed={elapsed:.2f}s")
+        else:
+            print(f"RESULT: total=0 success=0 failed=0 elapsed={elapsed:.2f}s")
+        if tee is not None:
+            tee.__exit__(None, None, None)
 
 
 def main():
