@@ -1,0 +1,22 @@
+{
+  "cycle": 1,
+  "date": "2026-08-06",
+  "range_start": 1,
+  "range_end": 150000,
+  "cursor": 3000,
+  "batch_size": 3000,
+  "batches": {
+    "1": {
+      "scanned": 2558,
+      "found": 0,
+      "failed": 0,
+      "date": "2026-08-06",
+      "cycle": 1
+    }
+  },
+  "cumulative": {
+    "scanned": 2558,
+    "found": 0,
+    "failed": 0
+  }
+}
