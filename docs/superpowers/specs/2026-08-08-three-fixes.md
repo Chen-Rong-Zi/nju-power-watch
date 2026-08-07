@@ -1,15 +1,16 @@
-# 三个修复：Workflow 互斥 · 楼栋分页 · about.md 排序
+# 四个修复：Workflow 互斥 · 楼栋分页 · about.md 排序 · 提交合并
 
 ## 概述
 
-修复三个独立问题：
+修复四个独立问题：
 1. Query 和 Scan 两个 workflow 同时运行会触发 epay 限流，需要互斥
 2. 楼栋页面排行榜的"暂无该日期数据"房间混入每一页底部，应只显示在最后几页
 3. about.md 的"功能更新"时间顺序应改为最新在上
+4. Query workflow 每个批次产生两个提交，合并为一个提交
 
 ## 修改文件
 
-- `.github/workflows/daily-query.yml` — 增加 concurrency 组
+- `.github/workflows/daily-query.yml` — 增加 concurrency 组 + 合并批次提交
 - `.github/workflows/room-id-scan.yml` — 增加 concurrency 组
 - `docs/building-view.html` — 修复分页逻辑 + 楼层筛选过滤无数据房间
 - `docs/js/floor-analytics.js` — 新增按楼层过滤房间数组的辅助函数
@@ -212,3 +213,63 @@ const noDataRooms = state.filteredNoDataRooms || state.noDataRooms || [];
 ```
 
 仅调整 `###` 标题和 `-` 列表的顺序，不修改内容文案。
+
+---
+
+## 修复四：合并 Query 的两次提交
+
+### 现状
+
+`daily-query.yml` 每次批次产生**两个提交、两次 push**：
+
+1. **Commit and push summaries**（line 150-168）：`git add -f database/summaries/` → commit `chore: update electricity summaries for $(date +%Y-%m-%d)` → push
+2. **Commit batch run summary**（line 210-216）：`git add -f database/batch_run_summary.json` → commit `chore: update batch run summary for batch N` → push
+
+### 问题
+
+- 两次提交内容强相关（同一批次的结果），语义上应是一个变更
+- 每个批次两次 push 增加仓库历史噪音与网络往返
+
+### 修复方案
+
+调整步骤顺序，把 **Update batch run summary** 步骤**提前**到提交步骤之前，然后**一次提交 + 一次 push** 同时带上 `database/summaries/` 和 `database/batch_run_summary.json`。
+
+新步骤顺序（仅重排，不新增/删除步骤）：
+1. Query electricity data
+2. Rollback on failure（if failure）
+3. Generate aggregated summaries (all batches)
+4. Generate building details (all batches)
+5. **Update batch run summary**（原第 11 步，提前到提交前）
+6. **Commit and push summaries + batch summary**（合并原第 10、12 步为一步）
+7. Trigger next batch
+
+合并后的提交步骤：
+
+```yaml
+- name: Commit summaries and batch summary
+  run: |
+    git config --local user.email "action@github.com"
+    git config --local user.name "GitHub Action"
+
+    git add -f database/summaries/ database/batch_run_summary.json
+
+    STAGED_FILES=$(git diff --staged --name-only)
+    if [ -z "$STAGED_FILES" ]; then
+      echo "No new summaries to commit"
+    else
+      echo "Files to commit:"
+      echo "$STAGED_FILES" | head -10
+      echo "... and $(echo "$STAGED_FILES" | wc -l) files total"
+
+      git commit -m "chore: update electricity summaries for $(date +%Y-%m-%d) (batch ${{ inputs.batch_index || '1' }})"
+      git push
+      echo "✓ Summaries and batch summary committed and pushed"
+    fi
+```
+
+### 注意
+
+- "Update batch run summary" 步骤依赖 `steps.query.outputs.success_count/failed_count`，提前后仍在 query 步骤之后，执行不受影响
+- 每批次产生**一个**提交、**一次** push；批次数不变（仍为 4）
+- 批次 2-4 读取的是上一批次已提交的 `database/batch_run_summary.json`，提交节奏不变，读取逻辑不受影响
+- 若某批次 `database/summaries/` 与 `database/batch_run_summary.json` 都无变更（正常不会发生，因为 batch summary 每次都会更新累计值），则跳过提交
