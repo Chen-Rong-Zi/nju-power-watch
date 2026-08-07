@@ -33,25 +33,30 @@ concurrency:
 
 - GitHub Actions 的 concurrency 组是仓库全局的，跨 workflow 生效
 - Query 的 4 个链式批次共享 `epay-access` 组，Scan 也共享同一组
-- 任何时刻 `epay-access` 组内只有一个 run 在执行，其余排队等待
-- `cancel-in-progress: false`：不取消正在运行的 run，后来的排队
+- 任何时刻 `epay-access` 组内只有一个 run 在执行
+- `cancel-in-progress: false`：不取消正在运行的 run；新 run 加入组时排队
 
-### 排队时序
+### 关键行为：排队的 run 会被新 run 取消
+
+GitHub Actions 的 concurrency 组每个组只保留**一个运行中 + 一个排队**。当组内有新的 run 加入时，**之前排队的 run 会被取消**。
 
 ```
 Query Batch 1 运行中 → Scan 触发 → Scan 排队
 Query Batch 1 完成 → 触发 Query Batch 2
-Queue: [Scan, Query Batch 2]  → Scan 先运行
-Scan 完成 → Query Batch 2 运行 → ...
+Query Batch 2 加入组 → 排队的 Scan 被取消
+Query 链继续运行直到 4 批完成
 ```
 
-- Scan 可能插在 Query 批次之间运行，但绝不重叠（限流保护达成）
-- Query 批次链通过 `batch_run_summary.json` 传递累积状态，Scan 插队不影响
+### 设计取舍
+
+- **限流保护达成**：Query 和 Scan 绝不重叠 ✅
+- **Scan 可能被取消**：若 Scan 在 Query 批次链期间手动触发，会因后续批次触发而被取消，**静默丢弃**（不报错）
+- **可接受**：正常定时调度下（Query 06:00 CST、Scan 21:00 CST）两者相隔 9 小时，永不冲突；concurrency 仅是手动触发的安全网。被取消的 Scan 由下一次定时扫描自动补上
+- 用户已确认接受"Scan 被取消"这一行为
 
 ### 注意
 
-- 手动触发 Query 时若 Scan 正在跑，Query 排队等待，不取消 Scan
-- 手动触发 Scan 时若 Query 正在跑，Scan 排队等待，不取消 Query
+- 手动触发 Scan 若撞上 Query 链，Scan 会被取消 → 需手动在 Query 完成后重新触发，或等下次定时扫描
 
 ---
 
@@ -104,6 +109,24 @@ if (state.currentPage <= dataPages) {
 ```
 
 效果：数据页绝不混入无数据房间，无数据房间只出现在最后几页。
+
+**必须同步更新 `state.totalPages`**：`displayRanking()`（约 line 2782）和 `renderCurrentPage()` 都维护 `state.totalPages`，但现有代码只在 `displayRanking` 里用旧公式赋值：
+
+```javascript
+state.totalPages = Math.ceil((rankings.length + noDataRooms.length) / state.itemsPerPage); // 旧公式
+```
+
+而 `nextPage()`、`goToPage()` 等分页导航读取的是 `state.totalPages`。若不同步更新，会出现 `updatePagination` 显示"N 页"但导航函数认为只有 M 页，导致**无法翻到最后的无数据页**。
+
+修复：在 `renderCurrentPage()` 中把新计算的 `totalPages` 同时赋给 `state.totalPages`：
+
+```javascript
+const totalPages = Math.max(1, dataPages + noDataPages);
+state.currentPage = Math.max(1, Math.min(state.currentPage, totalPages));
+state.totalPages = totalPages; // 同步更新，供导航函数使用
+```
+
+同时删除或忽略 `displayRanking` 中旧的 `state.totalPages` 赋值（新值由 renderCurrentPage 计算），避免两处不一致。
 
 #### 2. 楼层筛选同步过滤 noDataRooms
 
