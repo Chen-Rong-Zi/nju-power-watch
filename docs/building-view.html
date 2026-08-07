@@ -1867,6 +1867,9 @@
 
       // 更新排行榜（不覆盖原始数据）
       state.filteredRankings = state.selectedFloors === null ? null : filteredRankings;
+      state.filteredNoDataRooms = state.selectedFloors === null
+        ? null
+        : FloorAnalytics.filterRoomsByFloors(state.noDataRooms, state.floorGroups, state.selectedFloors);
       state.currentPage = 1;
       renderCurrentPage();
       renderDistributionChart(filteredRankings);
@@ -1969,6 +1972,7 @@
       state.currentPage = 1;
       state.selectedFloors = null;
       state.filteredRankings = null;
+      state.filteredNoDataRooms = null;
       if (!state.campus) {
         showEmptyState();
         return;
@@ -2026,6 +2030,7 @@
       state.currentPage = 1;
       state.selectedFloors = null;
       state.filteredRankings = null;
+      state.filteredNoDataRooms = null;
       saveStateToUrl();
       saveBuildingConfig();
       if (state.building) {
@@ -2779,7 +2784,6 @@
       // 存储到 state 用于分页
       state.allRankings = rankings;
       state.noDataRooms = noDataRooms;
-      state.totalPages = Math.ceil((rankings.length + noDataRooms.length) / state.itemsPerPage);
 
       renderCurrentPage();
       renderDistributionChart(rankings);
@@ -2798,7 +2802,7 @@
     // ==================== 渲染当前页 ====================
     function renderCurrentPage() {
       const allRankings = state.filteredRankings || state.allRankings || [];
-      const noDataRooms = state.noDataRooms || [];
+      const noDataRooms = state.filteredNoDataRooms || state.noDataRooms || [];
 
       if (allRankings.length === 0 && noDataRooms.length === 0) return;
 
@@ -2808,24 +2812,11 @@
       // 根据排序顺序处理有数据房间
       const displayRankings = state.sortDesc ? allRankings : [...allRankings].reverse();
 
-      // 分页计算（包含无数据房间）
-      const totalItems = displayRankings.length + noDataRooms.length;
-      const totalPages = Math.ceil(totalItems / state.itemsPerPage);
+      // 分页计算：数据房间独占前面的页，无数据房间独占后面的页
+      const { pageRankings, pageNoDataRooms, totalPages } =
+        FloorAnalytics.computePageSlices(displayRankings, noDataRooms, state.currentPage, state.itemsPerPage);
       state.currentPage = Math.max(1, Math.min(state.currentPage, totalPages));
-
-      const startIdx = (state.currentPage - 1) * state.itemsPerPage;
-      const endIdx = startIdx + state.itemsPerPage;
-
-      // 分离有数据房间的分页
-      const pageRankings = displayRankings.slice(
-        Math.max(0, startIdx),
-        Math.min(displayRankings.length, endIdx)
-      );
-
-      // 计算无数据房间的分页（排在有数据房间之后）
-      const noDataStartIdx = Math.max(0, startIdx - displayRankings.length);
-      const noDataEndIdx = Math.min(noDataRooms.length, endIdx - displayRankings.length);
-      const pageNoDataRooms = noDataRooms.slice(noDataStartIdx, noDataEndIdx);
+      state.totalPages = totalPages; // 同步更新，供 nextPage/goToPage 等导航函数使用
 
       // 渲染有数据房间
       pageRankings.forEach(item => {
