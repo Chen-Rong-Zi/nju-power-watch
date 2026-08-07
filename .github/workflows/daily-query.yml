@@ -19,6 +19,8 @@ on:
 concurrency:
   group: epay-access
   cancel-in-progress: false
+  queue:
+    max: 6
 
 permissions:
   contents: write
@@ -192,7 +194,14 @@ jobs:
           echo "✓ Batch run summary updated (batch $BATCH_INDEX/$TOTAL_BATCHES)"
 
       - name: Commit summaries and batch summary
+        env:
+          BATCH_INDEX: ${{ inputs.batch_index || '1' }}
         run: |
+          if ! [[ "$BATCH_INDEX" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::Invalid batch index: $BATCH_INDEX"
+            exit 1
+          fi
+
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
@@ -206,7 +215,7 @@ jobs:
             echo "$STAGED_FILES" | head -10
             echo "... and $(echo "$STAGED_FILES" | wc -l) files total"
 
-            git commit -m "chore: update electricity summaries for $(date +%Y-%m-%d) (batch ${{ inputs.batch_index || '1' }})"
+            git commit -m "chore: update electricity summaries for $(date +%Y-%m-%d) (batch ${BATCH_INDEX})"
             git push
             echo "✓ Summaries and batch summary committed and pushed"
           fi

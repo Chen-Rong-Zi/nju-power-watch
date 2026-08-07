@@ -2156,12 +2156,12 @@
         const noDataRooms = cachedData.noDataRooms || [];
 
         // 楼层分析（建筑摘要通常已缓存，不会触发网络请求）
-        DataService.getBuildingSummary(state.campus, state.building).then(summary => {
-          if (summary && summary.rooms) {
-            const allRoomNames = Object.keys(summary.rooms);
-            runFloorAnalysis(rankings, allRoomNames);
-          }
-        });
+        const summary = await DataService.getBuildingSummary(state.campus, state.building);
+        if (thisLoadId !== state.currentLoadId) return;
+        if (summary && summary.rooms) {
+          const allRoomNames = Object.keys(summary.rooms);
+          await runFloorAnalysis(rankings, allRoomNames);
+        }
 
         displayRanking(rankings, noDataRooms);
         return;
@@ -2787,6 +2787,11 @@
 
       renderCurrentPage();
       renderDistributionChart(rankings);
+
+      // 切换日期后若楼层筛选仍激活，用新数据重新应用（保持筛选状态，避免展示旧日期的过滤结果）
+      if (state.selectedFloors && state.floorStats) {
+        onFloorSelectionChange();
+      }
     }
 
     // ==================== 从缓存显示 ====================

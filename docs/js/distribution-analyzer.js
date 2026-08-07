@@ -34,8 +34,11 @@ const DistributionAnalyzer = {
     for (let i = 0; i <= binCount; i++) {
       edges.push(min + i * binWidth);
     }
-    // 浮点累积误差会使最后边界略小于最大值，导致最大值落在末 bin 外（点击区间无房间）
-    edges[binCount] = max;
+    // 浮点累积误差会使最后边界略小于最大值，导致最大值落在末 bin 外（点击区间无房间）。
+    // 全等值数据（max === min）时保留合成范围，避免边界非单调
+    if (max > min) {
+      edges[binCount] = max;
+    }
     for (let i = 0; i < binCount; i++) {
       bins.push((edges[i] + edges[i + 1]) / 2);
     }

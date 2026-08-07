@@ -28,40 +28,34 @@
 concurrency:
   group: epay-access
   cancel-in-progress: false
+  queue:
+    max: 6
 ```
 
 ### 行为分析
 
 - GitHub Actions 的 concurrency 组是仓库全局的，跨 workflow 生效
 - Query 的 4 个链式批次共享 `epay-access` 组，Scan 也共享同一组
-- 任何时刻 `epay-access` 组内只有一个 run 在执行
-- `cancel-in-progress: false`：不取消正在运行的 run；新 run 加入组时排队
+- `cancel-in-progress: false`：不取消正在运行的 run
+- `queue: max: 6`：组内允许多个 run 排队，**排队中的 run 也不会被新 run 取消**
 
-### 关键行为：排队的 run 会被新 run 取消
+### 关键行为：默认队列会误伤 pending 的 Query 批次，需显式加大队列
 
-GitHub Actions 的 concurrency 组每个组只保留**一个运行中 + 一个排队**。当组内有新的 run 加入时，**之前排队的 run 会被取消**。
+GitHub Actions 默认每个 concurrency 组只保留**一个运行中 + 一个排队**，新 run 加入时**旧的排队 run 会被取消**。Query 批次链在每批结束触发下一批时，下一批必然短暂处于 pending 状态——若此刻 Scan 加入，默认队列会取消这个 pending 的 Query 批次。因此共享组显式声明 `queue: max: 6`，让 Query 批次与 Scan 全部排队、顺序执行、互不取消。
 
 ```
-Query Batch 1 运行中 → Scan 触发 → Scan 排队
-Query Batch 1 完成 → 触发 Query Batch 2
-Query Batch 2 加入组 → 排队的 Scan 被取消
-Query 链继续运行直到 4 批完成
+Query Batch 1 运行中 → Scan 触发 → 进入队列（不取消任何 run）
+Query Batch 1 完成 → Query Batch 2 进入队列（按加入顺序排在 Scan 前或后）
+各 run 按队列顺序依次执行，Query 批次永不中断
 ```
 
-### 设计取舍：Scan 可取消，Query 不可取消
+### 设计取舍：Query 永不取消，Scan 排队执行
 
-**concurrency 组只取消"排队的" run，正在运行的 run 永不取消。**
-
-- **Query 永不取消** ✅：Query 的 4 个批次是顺序链式触发的。每个批次在上一批的 `Trigger next batch` 步骤中才加入组，此时组内只有上一批在运行（in-progress），无 pending 的 Query。Query 批次从"排队"变"运行"的过程没有第二个 run 与之竞争，因此**不存在处于 pending 的 Query 被后续 run 取消的路径**。
-- **Scan 可取消** ✅：若 Scan 在 Query 批次链期间触发，它成为组内 pending 的 run。当下一批 Query 批次加入组时，pending 的 Scan 被取消（静默丢弃，不报错）。
+- **Query 永不取消** ✅：`queue: max: 6` 使组内所有 run 排队互不取消；Query 批次链顺序执行，即使 Scan 加入也仅排队，不打断 Query
+- **Scan 排队执行** ✅：Scan 与 Query 共享同一组，绝不与 Query 重叠执行（限流保护）；排队等待而非被取消，最终总会执行
 - **限流保护达成**：Query 和 Scan 绝不重叠 ✅
-- **可接受**：正常定时调度下（Query 06:00 CST、Scan 21:00 CST）两者相隔 9 小时，永不冲突；concurrency 仅是手动触发的安全网。被取消的 Scan 由下一次定时扫描自动补上
-- 用户已确认接受"Scan 被取消、Query 永不取消"这一行为
-
-### 注意
-
-- 手动触发 Scan 若撞上 Query 链，Scan 会被取消 → 需手动在 Query 完成后重新触发，或等下次定时扫描
-- 唯一可能让 Query 进入 pending 的情况：手动触发 Query 时 Scan 正在运行。此时 Query 排队等待 Scan 完成，**不会被取消**（组内无新的 run 加入竞争），Scan 完成后 Query 继续运行
+- **可接受**：正常定时调度下（Query 06:00 CST、Scan 21:00 CST）两者相隔 15 小时，永不冲突；concurrency 仅是手动触发的安全网
+- 用户已确认接受"Scan 可以被取消、Query 永不取消"；`queue: max` 进一步让 Scan 也排队执行（不取消），行为更优
 
 ---
 
@@ -234,7 +228,7 @@ const noDataRooms = state.filteredNoDataRooms || state.noDataRooms || [];
 
 调整步骤顺序，把 **Update batch run summary** 步骤**提前**到提交步骤之前，然后**一次提交 + 一次 push** 同时带上 `database/summaries/` 和 `database/batch_run_summary.json`。
 
-新步骤顺序（仅重排，不新增/删除步骤）：
+新步骤顺序（删除原第 10、12 步，新增合并提交步骤）：
 1. Query electricity data
 2. Rollback on failure（if failure）
 3. Generate aggregated summaries (all batches)
