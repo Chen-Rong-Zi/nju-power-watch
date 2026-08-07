@@ -16,6 +16,11 @@ on:
         default: '4'
         type: string
 
+concurrency:
+  group: epay-access
+  cancel-in-progress: false
+  queue: max
+
 permissions:
   contents: write
   actions: write
@@ -147,26 +152,6 @@ jobs:
           python scripts/generate_building_details.py \
             --summaries ./database/summaries
 
-      - name: Commit and push summaries
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-          git add -f database/summaries/
-
-          STAGED_FILES=$(git diff --staged --name-only)
-          if [ -z "$STAGED_FILES" ]; then
-            echo "No new summaries to commit"
-          else
-            echo "Files to commit:"
-            echo "$STAGED_FILES" | head -10
-            echo "... and $(echo "$STAGED_FILES" | wc -l) files total"
-
-            git commit -m "chore: update electricity summaries for $(date +%Y-%m-%d)"
-            git push
-            echo "✓ Summaries committed and pushed"
-          fi
-
       - name: Update batch run summary
         id: batch_summary
         env:
@@ -207,12 +192,31 @@ jobs:
           fi
           echo "✓ Batch run summary updated (batch $BATCH_INDEX/$TOTAL_BATCHES)"
 
-      - name: Commit batch run summary
+      - name: Commit summaries and batch summary
+        env:
+          BATCH_INDEX: ${{ inputs.batch_index || '1' }}
         run: |
-          git add -f database/batch_run_summary.json
-          if git diff --staged --name-only | grep -q "batch_run_summary"; then
-            git commit -m "chore: update batch run summary for batch ${{ inputs.batch_index || '1' }}"
+          if ! [[ "$BATCH_INDEX" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::Invalid batch index: $BATCH_INDEX"
+            exit 1
+          fi
+
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          git add -f database/summaries/ database/batch_run_summary.json
+
+          STAGED_FILES=$(git diff --staged --name-only)
+          if [ -z "$STAGED_FILES" ]; then
+            echo "No new summaries to commit"
+          else
+            echo "Files to commit:"
+            echo "$STAGED_FILES" | head -10
+            echo "... and $(echo "$STAGED_FILES" | wc -l) files total"
+
+            git commit -m "chore: update electricity summaries for $(date +%Y-%m-%d) (batch ${BATCH_INDEX})"
             git push
+            echo "✓ Summaries and batch summary committed and pushed"
           fi
 
       - name: Trigger next batch

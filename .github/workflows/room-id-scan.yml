@@ -10,6 +10,11 @@ on:
         required: false
         default: 'scan_progress.json'
 
+concurrency:
+  group: epay-access
+  cancel-in-progress: false
+  queue: max
+
 permissions:
   contents: write
 
