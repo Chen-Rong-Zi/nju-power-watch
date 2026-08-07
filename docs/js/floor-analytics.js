@@ -62,8 +62,8 @@ const FloorAnalytics = {
     return { floors, sortedFloors };
   },
 
-  getFilteredRankings(rankings, floorGroups, selectedFloors) {
-    if (selectedFloors === null) return rankings;
+  filterRoomsByFloors(rooms, floorGroups, selectedFloors) {
+    if (selectedFloors === null) return rooms;
 
     const allowedRooms = new Set();
     selectedFloors.forEach(floor => {
@@ -74,6 +74,33 @@ const FloorAnalytics = {
       }
     });
 
-    return rankings.filter(r => allowedRooms.has(r.roomName));
-  }
+    return rooms.filter(r => allowedRooms.has(r.roomName));
+  },
+
+  getFilteredRankings(rankings, floorGroups, selectedFloors) {
+    return FloorAnalytics.filterRoomsByFloors(rankings, floorGroups, selectedFloors);
+  },
+
+  computePageSlices(displayRankings, noDataRooms, currentPage, itemsPerPage) {
+    const dataPages = Math.ceil(displayRankings.length / itemsPerPage);
+    const noDataPages = noDataRooms.length > 0
+      ? Math.ceil(noDataRooms.length / itemsPerPage)
+      : 0;
+    const totalPages = Math.max(1, dataPages + noDataPages);
+    const page = Math.max(1, Math.min(currentPage, totalPages));
+
+    let pageRankings = [];
+    let pageNoDataRooms = [];
+
+    if (page <= dataPages) {
+      const start = (page - 1) * itemsPerPage;
+      pageRankings = displayRankings.slice(start, start + itemsPerPage);
+    } else {
+      const noDataPage = page - dataPages;
+      const start = (noDataPage - 1) * itemsPerPage;
+      pageNoDataRooms = noDataRooms.slice(start, start + itemsPerPage);
+    }
+
+    return { pageRankings, pageNoDataRooms, totalPages };
+  },
 };
