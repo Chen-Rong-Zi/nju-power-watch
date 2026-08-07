@@ -47,16 +47,20 @@ Query Batch 2 加入组 → 排队的 Scan 被取消
 Query 链继续运行直到 4 批完成
 ```
 
-### 设计取舍
+### 设计取舍：Scan 可取消，Query 不可取消
 
+**concurrency 组只取消"排队的" run，正在运行的 run 永不取消。**
+
+- **Query 永不取消** ✅：Query 的 4 个批次是顺序链式触发的。每个批次在上一批的 `Trigger next batch` 步骤中才加入组，此时组内只有上一批在运行（in-progress），无 pending 的 Query。Query 批次从"排队"变"运行"的过程没有第二个 run 与之竞争，因此**不存在处于 pending 的 Query 被后续 run 取消的路径**。
+- **Scan 可取消** ✅：若 Scan 在 Query 批次链期间触发，它成为组内 pending 的 run。当下一批 Query 批次加入组时，pending 的 Scan 被取消（静默丢弃，不报错）。
 - **限流保护达成**：Query 和 Scan 绝不重叠 ✅
-- **Scan 可能被取消**：若 Scan 在 Query 批次链期间手动触发，会因后续批次触发而被取消，**静默丢弃**（不报错）
 - **可接受**：正常定时调度下（Query 06:00 CST、Scan 21:00 CST）两者相隔 9 小时，永不冲突；concurrency 仅是手动触发的安全网。被取消的 Scan 由下一次定时扫描自动补上
-- 用户已确认接受"Scan 被取消"这一行为
+- 用户已确认接受"Scan 被取消、Query 永不取消"这一行为
 
 ### 注意
 
 - 手动触发 Scan 若撞上 Query 链，Scan 会被取消 → 需手动在 Query 完成后重新触发，或等下次定时扫描
+- 唯一可能让 Query 进入 pending 的情况：手动触发 Query 时 Scan 正在运行。此时 Query 排队等待 Scan 完成，**不会被取消**（组内无新的 run 加入竞争），Scan 完成后 Query 继续运行
 
 ---
 
