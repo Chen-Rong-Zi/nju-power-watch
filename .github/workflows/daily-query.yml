@@ -16,6 +16,10 @@ on:
         default: '4'
         type: string
 
+concurrency:
+  group: epay-access
+  cancel-in-progress: false
+
 permissions:
   contents: write
   actions: write
