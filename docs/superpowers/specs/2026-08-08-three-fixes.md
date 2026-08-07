@@ -28,8 +28,7 @@
 concurrency:
   group: epay-access
   cancel-in-progress: false
-  queue:
-    max: 6
+  queue: max
 ```
 
 ### 行为分析
@@ -37,11 +36,11 @@ concurrency:
 - GitHub Actions 的 concurrency 组是仓库全局的，跨 workflow 生效
 - Query 的 4 个链式批次共享 `epay-access` 组，Scan 也共享同一组
 - `cancel-in-progress: false`：不取消正在运行的 run
-- `queue: max: 6`：组内允许多个 run 排队，**排队中的 run 也不会被新 run 取消**
+- `queue: max`：组内允许多个 run 排队（最多 100 个 pending），**排队中的 run 不会被新 run 取消**
 
 ### 关键行为：默认队列会误伤 pending 的 Query 批次，需显式加大队列
 
-GitHub Actions 默认每个 concurrency 组只保留**一个运行中 + 一个排队**，新 run 加入时**旧的排队 run 会被取消**。Query 批次链在每批结束触发下一批时，下一批必然短暂处于 pending 状态——若此刻 Scan 加入，默认队列会取消这个 pending 的 Query 批次。因此共享组显式声明 `queue: max: 6`，让 Query 批次与 Scan 全部排队、顺序执行、互不取消。
+GitHub Actions 默认每个 concurrency 组只保留**一个运行中 + 一个排队**，新 run 加入时**旧的排队 run 会被取消**。Query 批次链在每批结束触发下一批时，下一批必然短暂处于 pending 状态——若此刻 Scan 加入，默认队列会取消这个 pending 的 Query 批次。因此共享组显式声明 `queue: max`，让 Query 批次与 Scan 全部排队、顺序执行、互不取消。
 
 ```
 Query Batch 1 运行中 → Scan 触发 → 进入队列（不取消任何 run）
@@ -51,7 +50,7 @@ Query Batch 1 完成 → Query Batch 2 进入队列（按加入顺序排在 Scan
 
 ### 设计取舍：Query 永不取消，Scan 排队执行
 
-- **Query 永不取消** ✅：`queue: max: 6` 使组内所有 run 排队互不取消；Query 批次链顺序执行，即使 Scan 加入也仅排队，不打断 Query
+- **Query 永不取消** ✅：`queue: max` 使组内所有 run 排队互不取消（队列满 100 前不取消任何 run）；Query 批次链顺序执行，即使 Scan 加入也仅排队，不打断 Query
 - **Scan 排队执行** ✅：Scan 与 Query 共享同一组，绝不与 Query 重叠执行（限流保护）；排队等待而非被取消，最终总会执行
 - **限流保护达成**：Query 和 Scan 绝不重叠 ✅
 - **可接受**：正常定时调度下（Query 06:00 CST、Scan 21:00 CST）两者相隔 15 小时，永不冲突；concurrency 仅是手动触发的安全网

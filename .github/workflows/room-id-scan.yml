@@ -13,8 +13,7 @@ on:
 concurrency:
   group: epay-access
   cancel-in-progress: false
-  queue:
-    max: 6
+  queue: max
 
 permissions:
   contents: write

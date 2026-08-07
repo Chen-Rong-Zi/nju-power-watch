@@ -4,7 +4,7 @@
 
 **Goal:** 修复 4 个独立问题——Query/Scan workflow 互斥（限流保护，Query 不可取消）、楼栋排行榜分页（无数据房间只出现在最后几页）、about.md 功能更新时间倒序、Query 批次提交合并为一次。
 
-**Architecture:** ① 两个 workflow 顶层共享 `concurrency: group: epay-access, cancel-in-progress: false, queue: {max: 6}` 实现全局互斥（组内多个 run 排队、互不取消；Query 批次与 Scan 顺序执行、绝不重叠，Query 永不取消）；② 分页计算抽取为 `docs/js/floor-analytics.js` 的纯函数 `computePageSlices`（数据房间独占前面页、无数据房间独占后面页），`renderCurrentPage` 调用它并同步 `state.totalPages`；楼层筛选新增 `filterRoomsByFloors` 同时过滤有效房间与无数据房间；③ about.md 各月份条目倒序（最新在上）；④ daily-query.yml 重排步骤，把 batch summary 更新提前，合并为一次提交、一次 push。
+**Architecture:** ① 两个 workflow 顶层共享 `concurrency: group: epay-access, cancel-in-progress: false, queue: max` 实现全局互斥（组内多个 run 排队、互不取消；Query 批次与 Scan 顺序执行、绝不重叠，Query 永不取消）；② 分页计算抽取为 `docs/js/floor-analytics.js` 的纯函数 `computePageSlices`（数据房间独占前面页、无数据房间独占后面页），`renderCurrentPage` 调用它并同步 `state.totalPages`；楼层筛选新增 `filterRoomsByFloors` 同时过滤有效房间与无数据房间；③ about.md 各月份条目倒序（最新在上）；④ daily-query.yml 重排步骤，把 batch summary 更新提前，合并为一次提交、一次 push。
 
 **Tech Stack:** GitHub Actions (YAML)、vanilla JavaScript (浏览器)、Node.js 内置 test runner（`node --test`）、Markdown。
 
@@ -24,8 +24,7 @@
 concurrency:
   group: epay-access
   cancel-in-progress: false
-  queue:
-    max: 6
+  queue: max
 
 permissions:
 ```
@@ -52,8 +51,7 @@ on:
 concurrency:
   group: epay-access
   cancel-in-progress: false
-  queue:
-    max: 6
+  queue: max
 
 permissions:
   contents: write
@@ -69,8 +67,7 @@ permissions:
 concurrency:
   group: epay-access
   cancel-in-progress: false
-  queue:
-    max: 6
+  queue: max
 
 permissions:
 ```
@@ -90,7 +87,7 @@ git add .github/workflows/daily-query.yml .github/workflows/room-id-scan.yml
 git commit -m "ci: add shared epay-access concurrency group to query and scan workflows"
 ```
 
-**行为确认（不改代码，仅供理解）：** 两个 workflow 共享仓库级 concurrency 组 `epay-access`。`cancel-in-progress: false` 保证运行中的 run 永不取消；`queue: max: 6` 保证组内多个 run 排队、互不取消（默认 `queue: single` 只保留一个排队，新 run 加入时会取消旧的排队 run——会误伤 pending 的 Query 批次，因此必须加大队列）。Query 批次链在每批结束触发下一批时，下一批短暂处于 pending，此时 Scan 加入也仅排队，不取消任何 Query 批次。Scan 与 Query 顺序执行、绝不重叠。
+**行为确认（不改代码，仅供理解）：** 两个 workflow 共享仓库级 concurrency 组 `epay-access`。`cancel-in-progress: false` 保证运行中的 run 永不取消；`queue: max` 保证组内最多 100 个 run 排队、互不取消（默认 `queue: single` 只保留一个排队，新 run 加入时会取消旧的排队 run——会误伤 pending 的 Query 批次，因此必须用 `queue: max`）。Query 批次链在每批结束触发下一批时，下一批短暂处于 pending，此时 Scan 加入也仅排队，不取消任何 Query 批次。Scan 与 Query 顺序执行、绝不重叠。
 
 ---
 
