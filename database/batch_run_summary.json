@@ -1,26 +1,8 @@
 {
-  "date": "2026-08-06",
+  "date": "2026-08-07",
   "total_batches": 4,
   "batches": {
-    "1": {
-      "success": 4323,
-      "failed": 15
-    },
-    "2": {
-      "success": 4333,
-      "failed": 5
-    },
-    "3": {
-      "success": 4331,
-      "failed": 7
-    },
-    "4": {
-      "success": 4296,
-      "failed": 39
-    }
+    "1": { "success": 4322, "failed": 16 }
   },
-  "cumulative": {
-    "success": 17283,
-    "failed": 66
-  }
+  "cumulative": { "success": 4322, "failed": 16 }
 }
