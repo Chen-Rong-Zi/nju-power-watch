@@ -2,12 +2,13 @@
   "room_name": "A209",
   "campus": "仙林校区",
   "building": "5幢",
-  "current_balance": 9.05,
+  "current_balance": 9.02,
   "balance_history": {
     "20260802": 7.65,
     "20260803": 15.05,
     "20260805": 9.08,
-    "20260806": 9.05
+    "20260806": 9.05,
+    "20260807": 9.02
   },
-  "last_updated": "20260806"
+  "last_updated": "20260807"
 }
