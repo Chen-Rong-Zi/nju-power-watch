@@ -2851,6 +2851,10 @@
       // 展示顺序：数据房间按消耗排序在前，暂无数据固定末尾
       const displayOrder = FloorAnalytics.buildDisplayOrder(allRooms, state.sortDesc);
       const dataCount = displayOrder.filter(r => !r.is_noRoom).length;
+      // 升序排名基数：item.rank 是整楼全局排名；筛选时用整楼数据房间数，避免负数/越界
+      const rankBase = state.filteredRooms
+        ? (state.allRooms || []).filter(r => !r.is_noRoom).length
+        : dataCount;
 
       // 分页计算：数据房间独占前面的页，暂无数据房间独占后面的页
       const { pageRankings, pageNoDataRooms, totalPages } =
@@ -2860,7 +2864,7 @@
 
       // 渲染有数据房间
       pageRankings.forEach(item => {
-        const displayRank = state.sortDesc ? item.rank : (dataCount - item.rank + 1);
+        const displayRank = state.sortDesc ? item.rank : (rankBase - item.rank + 1);
         const rankClass = displayRank <= 3 ? `rank-${displayRank}` : 'rank-other';
         const isUserRoom = state.userConfig &&
           state.userConfig.campus === state.campus &&
