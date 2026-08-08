@@ -2458,17 +2458,13 @@
         return;
       }
 
-      // 只有暂无数据房间（日期缺口导致所有房间消耗为 null），直接渲染
+      // 只有暂无数据房间（日期缺口导致所有房间消耗为 null）
+      // 不提前返回：继续走公共的排序/缓存/楼层分析/渲染路径，保证 floorStats 与缓存和列表保持一致
       if (dataRooms.length === 0) {
         // 隐藏进度条
         if (!hasAnimationShown) {
           progressEl.style.display = 'none';
         }
-        // 检查是否被取消
-        if (thisLoadId !== state.currentLoadId) return;
-        displayRanking(allRooms);
-        updateCacheStatus('已缓存', false);
-        return;
       }
 
       // 最终排序所有数据房间，暂无数据固定末尾（重建统一列表顺序）
