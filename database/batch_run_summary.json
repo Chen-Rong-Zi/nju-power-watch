@@ -2,7 +2,17 @@
   "date": "2026-08-08",
   "total_batches": 4,
   "batches": {
-    "1": { "success": 4322, "failed": 16 }
+    "1": {
+      "success": 4322,
+      "failed": 16
+    },
+    "2": {
+      "success": 4333,
+      "failed": 5
+    }
   },
-  "cumulative": { "success": 4322, "failed": 16 }
+  "cumulative": {
+    "success": 8655,
+    "failed": 21
+  }
 }
