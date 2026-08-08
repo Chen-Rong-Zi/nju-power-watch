@@ -41,8 +41,8 @@ const FloorView = {
     sortedFloors.forEach(floor => {
       const stats = floors[floor];
       const label = floor === 'unknown'
-        ? `未识别 · ${stats.withDataCount}间`
-        : `${floor}层 · ${stats.withDataCount}间`;
+        ? `未识别 · ${stats.totalCount}间`
+        : `${floor}层 · ${stats.totalCount}间`;
       const node = this._createNode(floor, label, false, f => {
         this._toggleFloor(f);
       });
@@ -281,7 +281,7 @@ const FloorView = {
       item.dataset.floor = String(floor);
       const count = floor === 'all'
         ? sortedFloors.filter(function(f) { return f !== 'unknown'; }).length
-        : stats.withDataCount;
+        : stats.totalCount;
       var avg = null;
       if (floor !== 'all') avg = stats.avgConsumption;
       var html = [
