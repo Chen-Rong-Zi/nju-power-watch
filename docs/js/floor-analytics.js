@@ -1,53 +1,42 @@
 /**
  * 楼层聚合计算
- * 在排行榜数据基础上，按楼层聚合统计
+ * 在统一房间列表（含 is_noRoom 标记）基础上，按楼层聚合统计
  */
 
 const FloorAnalytics = {
-  calculateFloorStats(rankings, floorGroups) {
+  calculateFloorStats(allRooms, floorGroups) {
     const floors = {};
 
     Object.entries(floorGroups.groups).forEach(([floor, rooms]) => {
       const floorNum = parseInt(floor);
-      const floorRankings = rankings.filter(r => rooms.includes(r.roomName));
-
-      if (floorRankings.length === 0) {
-        floors[floorNum] = {
-          roomCount: rooms.length,
-          rooms: rooms,
-          totalConsumption: 0,
-          avgConsumption: 0,
-          maxConsumption: 0,
-          minConsumption: 0
-        };
-        return;
-      }
-
-      const consumptions = floorRankings.map(r => r.consumption);
-      const total = consumptions.reduce((s, v) => s + v, 0);
+      const dataRooms = allRooms.filter(r => !r.is_noRoom && rooms.includes(r.roomName));
+      const consumptions = dataRooms.map(r => r.consumption);
 
       floors[floorNum] = {
-        roomCount: floorRankings.length,
+        withDataCount: dataRooms.length,
+        totalCount: rooms.length,
         rooms: rooms,
-        totalConsumption: total,
-        avgConsumption: total / floorRankings.length,
-        maxConsumption: Math.max(...consumptions),
-        minConsumption: Math.min(...consumptions)
+        totalConsumption: consumptions.reduce((s, v) => s + v, 0),
+        avgConsumption: dataRooms.length > 0
+          ? consumptions.reduce((s, v) => s + v, 0) / dataRooms.length
+          : 0,
+        maxConsumption: dataRooms.length > 0 ? Math.max(...consumptions) : 0,
+        minConsumption: dataRooms.length > 0 ? Math.min(...consumptions) : 0
       };
     });
 
     // 处理 unknown 房间
     if (floorGroups.unknown && floorGroups.unknown.length > 0) {
-      const unknownRankings = rankings.filter(r => floorGroups.unknown.includes(r.roomName));
+      const uData = allRooms.filter(r => !r.is_noRoom && floorGroups.unknown.includes(r.roomName));
+      const uCons = uData.map(r => r.consumption);
       floors.unknown = {
-        roomCount: floorGroups.unknown.length,
+        withDataCount: uData.length,
+        totalCount: floorGroups.unknown.length,
         rooms: floorGroups.unknown,
-        totalConsumption: unknownRankings.reduce((s, r) => s + r.consumption, 0),
-        avgConsumption: unknownRankings.length > 0
-          ? unknownRankings.reduce((s, r) => s + r.consumption, 0) / unknownRankings.length
-          : 0,
-        maxConsumption: unknownRankings.length > 0 ? Math.max(...unknownRankings.map(r => r.consumption)) : 0,
-        minConsumption: unknownRankings.length > 0 ? Math.min(...unknownRankings.map(r => r.consumption)) : 0
+        totalConsumption: uCons.reduce((s, v) => s + v, 0),
+        avgConsumption: uData.length > 0 ? uCons.reduce((s, v) => s + v, 0) / uData.length : 0,
+        maxConsumption: uData.length > 0 ? Math.max(...uCons) : 0,
+        minConsumption: uData.length > 0 ? Math.min(...uCons) : 0
       };
     }
 
@@ -77,12 +66,18 @@ const FloorAnalytics = {
     return rooms.filter(r => allowedRooms.has(r.roomName));
   },
 
-  getFilteredRankings(rankings, floorGroups, selectedFloors) {
-    return FloorAnalytics.filterRoomsByFloors(rankings, floorGroups, selectedFloors);
+  buildDisplayOrder(allRooms, sortDesc) {
+    const dataRooms = allRooms.filter(r => !r.is_noRoom);
+    const noDataRooms = allRooms.filter(r => r.is_noRoom);
+    if (sortDesc) return [...dataRooms, ...noDataRooms];
+    return [...dataRooms].reverse().concat(noDataRooms);
   },
 
-  computePageSlices(displayRankings, noDataRooms, currentPage, itemsPerPage) {
-    const dataPages = Math.ceil(displayRankings.length / itemsPerPage);
+  computePageSlices(displayOrder, currentPage, itemsPerPage) {
+    const dataRooms = displayOrder.filter(r => !r.is_noRoom);
+    const noDataRooms = displayOrder.filter(r => r.is_noRoom);
+
+    const dataPages = Math.ceil(dataRooms.length / itemsPerPage);
     const noDataPages = noDataRooms.length > 0
       ? Math.ceil(noDataRooms.length / itemsPerPage)
       : 0;
@@ -94,7 +89,7 @@ const FloorAnalytics = {
 
     if (page <= dataPages) {
       const start = (page - 1) * itemsPerPage;
-      pageRankings = displayRankings.slice(start, start + itemsPerPage);
+      pageRankings = dataRooms.slice(start, start + itemsPerPage);
     } else {
       const noDataPage = page - dataPages;
       const start = (noDataPage - 1) * itemsPerPage;
