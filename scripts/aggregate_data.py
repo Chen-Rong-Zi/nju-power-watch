@@ -7,11 +7,20 @@ import json
 import sys
 import logging
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Any, List
 from collections import defaultdict
 import asyncio
 import aiofiles
+
+# 北京时间 (UTC+8)
+BEIJING_TZ = timezone(timedelta(hours=8))
+
+
+def beijing_now() -> datetime:
+    """返回当前北京时间的 naive datetime（用于文件名/日期标注）。"""
+    return datetime.now(BEIJING_TZ).replace(tzinfo=None)
+
 
 # Configure logging
 logging.basicConfig(
@@ -195,7 +204,7 @@ def merge_room_data(existing: Dict[str, Any], new: Dict[str, Any]) -> Dict[str, 
         current_balance = merged_history[latest_date]
     else:
         current_balance = new.get('current_balance', 0.0)
-        latest_date = new.get('last_updated', datetime.now().strftime("%Y%m%d"))
+        latest_date = new.get('last_updated', beijing_now().strftime("%Y%m%d"))
 
     return {
         'room_name': new.get('room_name', existing.get('room_name', 'Unknown')),
