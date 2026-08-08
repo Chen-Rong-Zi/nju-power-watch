@@ -252,7 +252,8 @@ const DataService = {
   async _checkDataVersion() {
     try {
       // 获取 overview.json 中的版本号
-      const response = await fetch(`${this.SUMMARIES_PATH}/overview.json`);
+      // 强制不走浏览器 HTTP 缓存，确保拿到最新 generated_at（否则版本判断可能误判"无新数据"而不清缓存）
+      const response = await fetch(`${this.SUMMARIES_PATH}/overview.json`, { cache: 'no-store' });
       const overview = await response.json();
       const serverVersion = overview.data_version || overview.generated_at;
 

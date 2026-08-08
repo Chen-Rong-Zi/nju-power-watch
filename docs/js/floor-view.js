@@ -41,8 +41,8 @@ const FloorView = {
     sortedFloors.forEach(floor => {
       const stats = floors[floor];
       const label = floor === 'unknown'
-        ? `未识别 · ${stats.roomCount}间`
-        : `${floor}层 · ${stats.roomCount}间`;
+        ? `未识别 · ${stats.totalCount}间`
+        : `${floor}层 · ${stats.totalCount}间`;
       const node = this._createNode(floor, label, false, f => {
         this._toggleFloor(f);
       });
@@ -147,7 +147,7 @@ const FloorView = {
     const labels = numericFloors.map(f => `${f}层`);
     const avgs = numericFloors.map(f => floors[f].avgConsumption);
     const totals = numericFloors.map(f => floors[f].totalConsumption);
-    const roomCounts = numericFloors.map(f => floors[f].roomCount);
+    const roomCounts = numericFloors.map(f => floors[f].withDataCount);
 
     const ctx = container.querySelector('canvas').getContext('2d');
     this._chartInstance = new Chart(ctx, {
@@ -280,8 +280,8 @@ const FloorView = {
       item.className = 'floor-drawer-item' + (floor === 'all' ? ' all' : '');
       item.dataset.floor = String(floor);
       const count = floor === 'all'
-        ? sortedFloors.filter(function(f) { return f !== 'unknown'; }).length
-        : stats.roomCount;
+        ? Object.values(floors).reduce(function(s, f) { return s + f.totalCount; }, 0)
+        : stats.totalCount;
       var avg = null;
       if (floor !== 'all') avg = stats.avgConsumption;
       var html = [
