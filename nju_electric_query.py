@@ -16,7 +16,7 @@ import signal
 import sys
 import time
 import re
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urljoin
 from typing import Optional
@@ -24,6 +24,14 @@ import contextlib
 
 # 默认 Cookie 文件路径
 DEFAULT_COOKIE_FILE = "/tmp/cookie.json"
+
+# 北京时间 (UTC+8)
+BEIJING_TZ = timezone(timedelta(hours=8))
+
+
+def beijing_now() -> datetime:
+    """返回当前北京时间的 naive datetime（用于文件名/日期标注）。"""
+    return datetime.now(BEIJING_TZ).replace(tzinfo=None)
 
 
 class TeeLogger:
@@ -718,7 +726,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
                 "scanned": scan_count,
                 "found": new_found,
                 "failed": error_counts.get("rate_limited", 0),
-                "date": datetime.now().strftime("%Y-%m-%d"),
+                "date": beijing_now().strftime("%Y-%m-%d"),
                 "cycle": cycle,
             }
             cumulative["scanned"] += scan_count
@@ -727,7 +735,7 @@ async def scan_room_ids(start_id: int, end_id: int, cookies: dict, output_file: 
 
         prog_data = {
             "cycle": cycle,
-            "date": datetime.now().strftime("%Y-%m-%d"),
+            "date": beijing_now().strftime("%Y-%m-%d"),
             "range_start": start_id,
             "range_end": range_end,
             "cursor": new_cursor,
@@ -795,7 +803,7 @@ async def save_result(result: dict, output_dir: Path, quiet: bool = False):
     room = re.sub(r'[<>:"/\\|?*]', '_', room)
 
     dir_path = output_dir / campus / building / room
-    date_str = datetime.now().strftime("%Y%m%d")
+    date_str = beijing_now().strftime("%Y%m%d")
     filename = f"{date_str}.json"
     filepath = dir_path / filename
 
