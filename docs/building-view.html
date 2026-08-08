@@ -1630,6 +1630,8 @@
       floorStats: null,         // 楼层聚合统计
       floorGroups: null,        // 房间 → 楼层映射
       floorMap: null,           // 楼层映射配置
+      allRooms: null,           // 统一房间列表（含 is_noRoom 标记）
+      filteredRooms: null,      // 楼层筛选后的子集（null = 未筛选）
     };
 
     // localStorage 读-改-写辅助，避免覆盖其他页面的字段
@@ -1793,11 +1795,11 @@
     }
 
     // ==================== 楼层分析 ====================
-    async function runFloorAnalysis(allRankings, roomNames, preloadedFloorMap) {
+    async function runFloorAnalysis(allRooms, roomNames, preloadedFloorMap) {
       const floorMap = preloadedFloorMap || await FloorUtils.loadFloorMap();
       state.floorMap = floorMap;
       state.floorGroups = FloorUtils.groupRoomsByFloor(roomNames, state.campus, state.building, floorMap);
-      state.floorStats = FloorAnalytics.calculateFloorStats(allRankings, state.floorGroups);
+      state.floorStats = FloorAnalytics.calculateFloorStats(allRooms, state.floorGroups);
 
       const floorSide = document.getElementById('floor-side');
       FloorView.renderIndicator(state.floorStats, floorSide, (selectedFloors) => {
@@ -1842,22 +1844,24 @@
     }
 
     function onFloorSelectionChange() {
-      if (!state.floorStats || !state.allRankings) return;
-      const filteredRankings = state.selectedFloors === null
-        ? state.allRankings
-        : FloorAnalytics.getFilteredRankings(state.allRankings, state.floorGroups, state.selectedFloors);
+      if (!state.floorStats || !state.allRooms) return;
+      const filteredRooms = state.selectedFloors === null
+        ? state.allRooms
+        : FloorAnalytics.filterRoomsByFloors(state.allRooms, state.floorGroups, state.selectedFloors);
 
-      if (filteredRankings.length === 0) {
+      // 顶部统计：总房间数（含暂无数据）——与数据房间是否为 0 无关
+      document.getElementById('stat-rooms').textContent = filteredRooms.length;
+
+      const dataRooms = filteredRooms.filter(r => !r.is_noRoom);
+      if (dataRooms.length === 0) {
         document.getElementById('stat-total').textContent = '--';
-        document.getElementById('stat-rooms').textContent = '--';
         document.getElementById('stat-avg').textContent = '--';
         document.getElementById('stat-max').textContent = '--';
       } else {
-        const total = filteredRankings.reduce((s, r) => s + r.consumption, 0);
-        const avg = total / filteredRankings.length;
-        const max = Math.max(...filteredRankings.map(r => r.consumption));
+        const total = dataRooms.reduce((s, r) => s + r.consumption, 0);
+        const avg = total / dataRooms.length;
+        const max = Math.max(...dataRooms.map(r => r.consumption));
         document.getElementById('stat-total').textContent = total.toFixed(1) + '度';
-        document.getElementById('stat-rooms').textContent = filteredRankings.length;
         document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
         document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
       }
@@ -1866,13 +1870,10 @@
       FloorView.updateChart(state.floorStats, state.selectedFloors);
 
       // 更新排行榜（不覆盖原始数据）
-      state.filteredRankings = state.selectedFloors === null ? null : filteredRankings;
-      state.filteredNoDataRooms = state.selectedFloors === null
-        ? null
-        : FloorAnalytics.filterRoomsByFloors(state.noDataRooms, state.floorGroups, state.selectedFloors);
+      state.filteredRooms = state.selectedFloors === null ? null : filteredRooms;
       state.currentPage = 1;
       renderCurrentPage();
-      renderDistributionChart(filteredRankings);
+      renderDistributionChart(dataRooms);
     }
 
     // ==================== Fallback Banner ====================
@@ -1971,8 +1972,7 @@
       state.campus = e.target.value;
       state.currentPage = 1;
       state.selectedFloors = null;
-      state.filteredRankings = null;
-      state.filteredNoDataRooms = null;
+      state.filteredRooms = null;
       if (!state.campus) {
         showEmptyState();
         return;
@@ -2029,8 +2029,7 @@
       state.building = e.target.value;
       state.currentPage = 1;
       state.selectedFloors = null;
-      state.filteredRankings = null;
-      state.filteredNoDataRooms = null;
+      state.filteredRooms = null;
       saveStateToUrl();
       saveBuildingConfig();
       if (state.building) {
@@ -2152,18 +2151,31 @@
       if (consumptionCache.has(effectiveCacheKey)) {
         updateCacheStatus('已缓存', false);
         const cachedData = consumptionCache.get(effectiveCacheKey);
-        const rankings = cachedData.rankings || cachedData;
-        const noDataRooms = cachedData.noDataRooms || [];
+        let allRooms;
+        if (Array.isArray(cachedData.allRooms)) {
+          allRooms = cachedData.allRooms;
+        } else if (Array.isArray(cachedData)) {
+          // 极旧格式：直接是数组（全部视为有数据）
+          allRooms = cachedData.map(r => ({ ...r, is_noRoom: false }));
+        } else {
+          // 旧格式 { rankings, noDataRooms } 合并重建
+          const rankings = cachedData.rankings || [];
+          const noDataRooms = cachedData.noDataRooms || [];
+          allRooms = [
+            ...rankings.map(r => ({ ...r, is_noRoom: false })),
+            ...noDataRooms.map(r => ({ ...r, room: r.roomName, consumption: null, balance: null, rank: null, is_noRoom: true }))
+          ];
+        }
 
         // 楼层分析（建筑摘要通常已缓存，不会触发网络请求）
         const summary = await DataService.getBuildingSummary(state.campus, state.building);
         if (thisLoadId !== state.currentLoadId) return;
         if (summary && summary.rooms) {
           const allRoomNames = Object.keys(summary.rooms);
-          await runFloorAnalysis(rankings, allRoomNames);
+          await runFloorAnalysis(allRooms, allRoomNames);
         }
 
-        displayRanking(rankings, noDataRooms);
+        displayRanking(allRooms);
         return;
       }
 
@@ -2173,52 +2185,48 @@
         console.log(`[缓存命中] 从 localStorage 读取排序结果, 总消耗: ${localStorageCache.totalConsumption?.toFixed(2) || 'N/A'}度, 已排序: ${localStorageCache.sorted}`);
 
         // 转换缓存格式，从 state 补充 campus 和 building
-        let allRankings = localStorageCache.data.map((item, idx) => ({
+        const dataRooms = localStorageCache.data.map((item, idx) => ({
           room: item.roomName || item.name,
           roomName: item.roomName || item.name,
           consumption: item.consumption,
           balance: item.balance,
           campus: state.campus,
           building: state.building,
-          rank: idx + 1
+          rank: idx + 1,
+          is_noRoom: false
         }));
 
-        // 从缓存元数据或重新计算无数据房间
-        let noDataRooms = [];
+        // 从缓存元数据或重新计算暂无数据房间名
+        let noDataNames = [];
         if (localStorageCache.noDataRooms && localStorageCache.noDataRooms.length > 0) {
-          noDataRooms = localStorageCache.noDataRooms.map(name => ({
-            roomName: name,
-            campus: state.campus,
-            building: state.building
-          }));
+          noDataNames = localStorageCache.noDataRooms;
         } else {
           // 如果缓存中没有 noDataRooms，从楼栋信息计算
           const buildingSummary = await DataService.getBuildingSummary(state.campus, state.building);
           if (buildingSummary && buildingSummary.rooms) {
             const allRoomNames = Object.keys(buildingSummary.rooms);
-            const rankingRoomNames = new Set(allRankings.map(r => r.roomName));
-            noDataRooms = allRoomNames
-              .filter(name => !rankingRoomNames.has(name))
-              .map(name => ({
-                roomName: name,
-                campus: state.campus,
-                building: state.building
-              }));
+            const rankingRoomNames = new Set(dataRooms.map(r => r.roomName));
+            noDataNames = allRoomNames.filter(name => !rankingRoomNames.has(name));
           }
         }
+        const noDataRooms = noDataNames.map(name => ({
+          roomName: name, room: name,
+          consumption: null, balance: null,
+          campus: state.campus, building: state.building,
+          rank: null, is_noRoom: true
+        }));
 
         // 检查是否需要排序（sorted 字段为 false 或不存在）
         if (!localStorageCache.sorted) {
           console.log('[缓存修正] 数据未排序，正在重新排序并更新缓存');
           updateCacheStatus('排序中...', true);
 
-          // 按消耗量降序排序
-          allRankings.sort((a, b) => b.consumption - a.consumption);
-          // 更新排名
-          allRankings.forEach((item, idx) => item.rank = idx + 1);
+          // 按消耗量降序排序（仅数据房间）
+          dataRooms.sort((a, b) => b.consumption - a.consumption);
+          dataRooms.forEach((item, idx) => item.rank = idx + 1);
 
           // 更新 IndexedDB 缓存，标记为已排序
-          const sortedCacheData = allRankings.map(item => ({
+          const sortedCacheData = dataRooms.map(item => ({
             room: item.roomName,
             roomName: item.roomName,
             consumption: item.consumption,
@@ -2234,18 +2242,21 @@
 
         updateCacheStatus('已缓存', false);
 
+        // 合并统一列表（数据在前、暂无数据在后）
+        const allRooms = dataRooms.concat(noDataRooms);
+
         // 同时保存到内存缓存
-        consumptionCache.set(effectiveCacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
+        consumptionCache.set(effectiveCacheKey, { allRooms: allRooms });
 
         // 楼层分析（从建筑摘要获取房间名列表）
         const buildingSummaryForFloor = await DataService.getBuildingSummary(state.campus, state.building);
         if (buildingSummaryForFloor && buildingSummaryForFloor.rooms) {
           const allRoomNames = Object.keys(buildingSummaryForFloor.rooms);
-          await runFloorAnalysis(allRankings, allRoomNames);
+          await runFloorAnalysis(allRooms, allRoomNames);
         }
 
         // 显示结果
-        displayRanking(allRankings, noDataRooms);
+        displayRanking(allRooms);
         return;
       }
 
@@ -2292,10 +2303,8 @@
 
       // 动态前10名列表（用于动画展示）
       let currentTop10 = [];
-      // 所有有效数据
-      const allRankings = [];
-      // 无数据房间列表
-      const noDataRooms = [];
+      // 统一房间列表（含 is_noRoom 标记）
+      const allRooms = [];
       let processedCount = 0;
 
       // 使用流式获取方法，每获取一个房间数据就立即计算并更新排行榜
@@ -2333,31 +2342,36 @@
                   consumption: consumption,
                   balance: roomInfo.current_balance,
                   campus: state.campus,
-                  building: state.building
+                  building: state.building,
+                  is_noRoom: false
                 };
-                allRankings.push(item);
+                allRooms.push(item);
 
                 // 如果需要动画，更新前10名显示
                 if (!hasAnimationShown) {
-                  // 更新前10名列表
                   const inserted = insertIntoTop10(currentTop10, item);
-                  // 立即渲染更新（CSS动画会处理视觉效果）
                   renderTop10Immediate(currentTop10, listEl, inserted ? item.roomName : null, loaded, total);
                 }
               } else {
-                // 指定日期无数据，记录到无数据房间列表
-                noDataRooms.push({
+                // 指定日期无数据
+                allRooms.push({
                   roomName: roomName,
                   campus: state.campus,
-                  building: state.building
+                  building: state.building,
+                  consumption: null,
+                  balance: null,
+                  is_noRoom: true
                 });
               }
             } else {
-              // 无历史数据，记录到无数据房间列表
-              noDataRooms.push({
+              // 无历史数据
+              allRooms.push({
                 roomName: roomName,
                 campus: state.campus,
-                building: state.building
+                building: state.building,
+                consumption: null,
+                balance: null,
+                is_noRoom: true
               });
             }
           },
@@ -2396,9 +2410,10 @@
                 consumption: consumption,
                 balance: roomInfo.current_balance,
                 campus: state.campus,
-                building: state.building
+                building: state.building,
+                is_noRoom: false
               };
-              allRankings.push(item);
+              allRooms.push(item);
 
               // 如果需要动画，更新前10名显示
               if (!hasAnimationShown) {
@@ -2407,18 +2422,24 @@
               }
             } else {
               // 指定日期无数据
-              noDataRooms.push({
+              allRooms.push({
                 roomName: roomName,
                 campus: state.campus,
-                building: state.building
+                building: state.building,
+                consumption: null,
+                balance: null,
+                is_noRoom: true
               });
             }
           } else {
             // 无历史数据
-            noDataRooms.push({
+            allRooms.push({
               roomName: roomName,
               campus: state.campus,
-              building: state.building
+              building: state.building,
+              consumption: null,
+              balance: null,
+              is_noRoom: true
             });
           }
         }
@@ -2429,34 +2450,39 @@
         return;
       }
 
+      const dataRooms = allRooms.filter(r => !r.is_noRoom);
+
       // 检查是否有有效数据
-      if (allRankings.length === 0 && noDataRooms.length === 0) {
+      if (allRooms.length === 0) {
         showNoDataState(`${getDateDisplayText(state.date)} 暂无耗电数据`);
         return;
       }
 
-      // 只有无数据房间（日期缺口导致所有房间消耗为 null），直接渲染
-      if (allRankings.length === 0) {
+      // 只有暂无数据房间（日期缺口导致所有房间消耗为 null），直接渲染
+      if (dataRooms.length === 0) {
         // 隐藏进度条
         if (!hasAnimationShown) {
           progressEl.style.display = 'none';
         }
         // 检查是否被取消
         if (thisLoadId !== state.currentLoadId) return;
-        displayRanking(allRankings, noDataRooms);
+        displayRanking(allRooms);
         updateCacheStatus('已缓存', false);
         return;
       }
 
-      // 最终排序所有数据
-      allRankings.sort((a, b) => b.consumption - a.consumption);
-      allRankings.forEach((r, idx) => r.rank = idx + 1);
+      // 最终排序所有数据房间，暂无数据固定末尾（重建统一列表顺序）
+      dataRooms.sort((a, b) => b.consumption - a.consumption);
+      dataRooms.forEach((r, idx) => r.rank = idx + 1);
+      const noDataPart = allRooms.filter(r => r.is_noRoom);
+      allRooms.length = 0;
+      allRooms.push(...dataRooms, ...noDataPart);
 
       // 缓存结果到内存
-      consumptionCache.set(effectiveCacheKey, { rankings: allRankings, noDataRooms: noDataRooms });
+      consumptionCache.set(effectiveCacheKey, { allRooms: allRooms });
 
       // 同时保存到 IndexedDB 缓存（只保存必要字段，标记为已排序）
-      const cacheData = allRankings.map(item => ({
+      const cacheData = dataRooms.map(item => ({
         room: item.roomName || item.room,
         roomName: item.roomName || item.room,
         consumption: item.consumption,
@@ -2464,8 +2490,8 @@
       }));
       await DataService.saveRankingCache(state.campus, state.building, effectiveDate === 'today' ? null : effectiveDate, cacheData, true, {
         totalRooms: roomNames.length,
-        roomsWithData: allRankings.length,
-        noDataRooms: noDataRooms.map(r => r.roomName)
+        roomsWithData: dataRooms.length,
+        noDataRooms: noDataPart.map(r => r.roomName)
       });
 
       // 隐藏进度条（立即隐藏，无延迟）
@@ -2482,10 +2508,10 @@
       const floorMap = await FloorUtils.loadFloorMap();
 
       // === 楼层分析（使用预加载的 floorMap，避免异步等待） ===
-      await runFloorAnalysis(allRankings, roomNames, floorMap);
+      await runFloorAnalysis(allRooms, roomNames, floorMap);
 
       // 显示结果
-      displayRanking(allRankings, noDataRooms);
+      displayRanking(allRooms);
       updateCacheStatus('已缓存', false);
     }
 
@@ -2757,17 +2783,18 @@
       });
     }
 
-    async function displayRanking(rankings, noDataRooms = []) {
+    async function displayRanking(allRooms) {
       document.getElementById('stats-row').style.display = 'grid';
       document.getElementById('empty-state').style.display = 'none';
       document.getElementById('no-data-state').style.display = 'none';
 
-      const totalConsumption = rankings.reduce((sum, r) => sum + r.consumption, 0);
-      const avg = rankings.length > 0 ? totalConsumption / rankings.length : 0;
-      const max = rankings.length > 0 ? Math.max(...rankings.map(r => r.consumption)) : 0;
+      const dataRooms = allRooms.filter(r => !r.is_noRoom);
+      const totalConsumption = dataRooms.reduce((sum, r) => sum + r.consumption, 0);
+      const avg = dataRooms.length > 0 ? totalConsumption / dataRooms.length : 0;
+      const max = dataRooms.length > 0 ? Math.max(...dataRooms.map(r => r.consumption)) : 0;
 
       document.getElementById('stat-total').textContent = totalConsumption.toFixed(1) + '度';
-      document.getElementById('stat-rooms').textContent = rankings.length + noDataRooms.length;
+      document.getElementById('stat-rooms').textContent = allRooms.length;
       document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
       document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
 
@@ -2782,11 +2809,10 @@
       setTip('tip-max', max);
 
       // 存储到 state 用于分页
-      state.allRankings = rankings;
-      state.noDataRooms = noDataRooms;
+      state.allRooms = allRooms;
 
       renderCurrentPage();
-      renderDistributionChart(rankings);
+      renderDistributionChart(dataRooms);
 
       // 切换日期后若楼层筛选仍激活，用新数据重新应用（保持筛选状态，避免展示旧日期的过滤结果）
       if (state.selectedFloors && state.floorStats) {
@@ -2797,35 +2823,44 @@
     // ==================== 从缓存显示 ====================
     function displayRankingFromCache(cacheKey) {
       const cached = consumptionCache.get(cacheKey);
-      if (cached) {
-        const rankings = cached.rankings || cached;
+      if (!cached) return;
+      let allRooms;
+      if (Array.isArray(cached.allRooms)) {
+        allRooms = cached.allRooms;
+      } else if (Array.isArray(cached)) {
+        allRooms = cached.map(r => ({ ...r, is_noRoom: false }));
+      } else {
+        const rankings = cached.rankings || [];
         const noDataRooms = cached.noDataRooms || [];
-        displayRanking(rankings, noDataRooms);
+        allRooms = [
+          ...rankings.map(r => ({ ...r, is_noRoom: false })),
+          ...noDataRooms.map(r => ({ ...r, room: r.roomName, consumption: null, balance: null, rank: null, is_noRoom: true }))
+        ];
       }
+      displayRanking(allRooms);
     }
 
     // ==================== 渲染当前页 ====================
     function renderCurrentPage() {
-      const allRankings = state.filteredRankings || state.allRankings || [];
-      const noDataRooms = state.filteredNoDataRooms || state.noDataRooms || [];
-
-      if (allRankings.length === 0 && noDataRooms.length === 0) return;
+      const allRooms = state.filteredRooms || state.allRooms || [];
+      if (allRooms.length === 0) return;
 
       const listEl = document.getElementById('ranking-list');
       listEl.innerHTML = '';
 
-      // 根据排序顺序处理有数据房间
-      const displayRankings = state.sortDesc ? allRankings : [...allRankings].reverse();
+      // 展示顺序：数据房间按消耗排序在前，暂无数据固定末尾
+      const displayOrder = FloorAnalytics.buildDisplayOrder(allRooms, state.sortDesc);
+      const dataCount = displayOrder.filter(r => !r.is_noRoom).length;
 
-      // 分页计算：数据房间独占前面的页，无数据房间独占后面的页
+      // 分页计算：数据房间独占前面的页，暂无数据房间独占后面的页
       const { pageRankings, pageNoDataRooms, totalPages } =
-        FloorAnalytics.computePageSlices(displayRankings, noDataRooms, state.currentPage, state.itemsPerPage);
+        FloorAnalytics.computePageSlices(displayOrder, state.currentPage, state.itemsPerPage);
       state.currentPage = Math.max(1, Math.min(state.currentPage, totalPages));
       state.totalPages = totalPages; // 同步更新，供 nextPage/goToPage 等导航函数使用
 
       // 渲染有数据房间
       pageRankings.forEach(item => {
-        const displayRank = state.sortDesc ? item.rank : (allRankings.length - item.rank + 1);
+        const displayRank = state.sortDesc ? item.rank : (dataCount - item.rank + 1);
         const rankClass = displayRank <= 3 ? `rank-${displayRank}` : 'rank-other';
         const isUserRoom = state.userConfig &&
           state.userConfig.campus === state.campus &&
@@ -2849,7 +2884,7 @@
         listEl.insertAdjacentHTML('beforeend', html);
       });
 
-      // 渲染无数据房间（排在末尾，样式淡化）
+      // 渲染暂无数据房间（排在末尾，样式淡化）
       pageNoDataRooms.forEach(item => {
         const html = `
           <div class="ranking-item no-data"
