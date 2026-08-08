@@ -280,7 +280,7 @@ const FloorView = {
       item.className = 'floor-drawer-item' + (floor === 'all' ? ' all' : '');
       item.dataset.floor = String(floor);
       const count = floor === 'all'
-        ? sortedFloors.filter(function(f) { return f !== 'unknown'; }).length
+        ? Object.values(floors).reduce(function(s, f) { return s + f.totalCount; }, 0)
         : stats.totalCount;
       var avg = null;
       if (floor !== 'all') avg = stats.avgConsumption;

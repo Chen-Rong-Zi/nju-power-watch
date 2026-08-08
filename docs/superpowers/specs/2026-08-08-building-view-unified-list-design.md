@@ -66,7 +66,8 @@
 
 ```js
 {
-  withDataCount,  // 该层有数据房间数 → 侧边栏/抽屉/图表 tooltip 的"N间"
+  withDataCount,  // 该层有数据房间数 → 楼层图表 tooltip 的"N间"
+  totalCount,     // 该层全部房间数 → 侧边栏/抽屉的"N间"
   totalCount,     // 该层全部房间数（含暂无数据）
   rooms,          // 该层全部房间名
   totalConsumption, avgConsumption, maxConsumption, minConsumption  // 仅基于数据房间
@@ -105,7 +106,7 @@ totalPages = max(1, dataPages + noDataPages)
 
 ## 页面接线 `building-view.html`
 
-改造以下函数，其余组件（侧边栏/抽屉/图表）仅把 `roomCount` 字段名改为 `withDataCount`：
+改造以下函数，其余组件（侧边栏/抽屉）把 `roomCount` 改为 `totalCount`，楼层图表 tooltip 改为 `withDataCount`：
 
 > **接线注意（实现时必须显式覆盖，避免漏改）**
 > - `displayRanking` 签名改为 `displayRanking(allRooms)` 后，**`loadRanking` 内部的 4 处调用点**（L2166 / L2248 / L2446 / L2488）必须同步改为传 `allRooms`（旧的 `(rankings, noDataRooms)` 双参数全部删除）。`loadRanking` 虽不在"7 个函数"改造名单里，但这 4 处是最大漏改风险。
@@ -178,7 +179,7 @@ state.totalPages = totalPages;
 - `displayRankingFromCache(cacheKey)`：读 `cached.allRooms`；旧 `{rankings, noDataRooms}` 合并兼容
 - `onCampusChange` / `onBuildingChange`：重置 `state.filteredRooms = null`（替代原两个 filtered 重置）
 - `toggleSortOrder`：无需额外改动，`renderCurrentPage` 内 `buildDisplayOrder` 已处理升降序
-- `FloorView`：`renderIndicator` / `_renderDrawerList` / `renderFloorChart` tooltip 的"N间"读 `floors[f].withDataCount`
+- `FloorView`：`renderIndicator` / `_renderDrawerList` 的"N间"读 `floors[f].totalCount`（总房间数）；`renderFloorChart` tooltip 的"房间 N 间"读 `floors[f].withDataCount`（有数据房间数）；抽屉"全部楼层"行显示全楼总房间数
 
 ## 缓存兼容 `data-service.js`
 
@@ -192,7 +193,7 @@ state.totalPages = totalPages;
 
 | 场景 | 行为 |
 |---|---|
-| 整层暂无数据 | 侧边栏 `0间`；选中该层 `stat-rooms` = 该层总间数，`stat-total/avg/max` 显示 `--` |
+| 整层暂无数据 | 侧边栏显示该层**总间数**（如 `5层 · 22间`）；选中该层 `stat-rooms` = 该层总间数，`stat-total/avg/max` 显示 `--` |
 | 全部暂无数据（限流事件） | `stat-rooms` = 总数，全部为暂无数据页 |
 | `unknown` 楼层 | 与其他层同口径；选中 `unknown` 时 `filterRoomsByFloors` 照旧支持 |
 | `filteredRooms` 为空 | 防呆：显示空态 |
@@ -209,7 +210,7 @@ state.totalPages = totalPages;
 
 ### 浏览器验证
 
-- 侧边栏每层"有数据 N间"与抽屉、楼层图表 tooltip 一致
+- 侧边栏/抽屉每层显示**总房间数**（`totalCount`），两者一致；楼层图表 tooltip 显示有数据房间数
 - 顶部"房间总数"：全部楼层 = 楼栋总房间数；选中楼层 = 选中楼层总和（含暂无数据）
 - 日期切换 + 楼层筛选：筛选保留且计数正确（回归 fix #3）
 - 分页：数据页无暂无数据混入，暂无数据只在尾页
@@ -221,6 +222,6 @@ state.totalPages = totalPages;
 |---|---|
 | `docs/js/floor-analytics.js` | 重构 4 个纯函数；删除 `getFilteredRankings` |
 | `docs/building-view.html` | 7 个函数接线改造 + `FloorView` 字段名 |
-| `docs/js/floor-view.js` | `roomCount` → `withDataCount`（3 处） |
+| `docs/js/floor-view.js` | 侧边栏/抽屉 `roomCount` → `totalCount`；图表 tooltip → `withDataCount` |
 | `tests/js/floor-analytics.test.js` | 恢复并重写（针对新纯函数） |
 | `docs/js/data-service.js` | 仅确认 `saveRankingCache` 签名不变，无需改动（如无必要） |

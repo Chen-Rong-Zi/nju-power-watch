@@ -2793,10 +2793,11 @@
       const avg = dataRooms.length > 0 ? totalConsumption / dataRooms.length : 0;
       const max = dataRooms.length > 0 ? Math.max(...dataRooms.map(r => r.consumption)) : 0;
 
-      document.getElementById('stat-total').textContent = totalConsumption.toFixed(1) + '度';
+      // 全暂无数据时消耗统计显示 '--'（与 onFloorSelectionChange 口径一致）；房间总数恒为全部房间数
+      document.getElementById('stat-total').textContent = dataRooms.length > 0 ? totalConsumption.toFixed(1) + '度' : '--';
       document.getElementById('stat-rooms').textContent = allRooms.length;
-      document.getElementById('stat-avg').textContent = avg.toFixed(1) + '度';
-      document.getElementById('stat-max').textContent = max.toFixed(1) + '度';
+      document.getElementById('stat-avg').textContent = dataRooms.length > 0 ? avg.toFixed(1) + '度' : '--';
+      document.getElementById('stat-max').textContent = dataRooms.length > 0 ? max.toFixed(1) + '度' : '--';
 
       function setTip(id, kwh) {
         const el = document.getElementById(id);
