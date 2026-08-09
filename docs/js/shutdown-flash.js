@@ -35,6 +35,47 @@
     return new Promise(function (resolve) { setTimeout(resolve, ms); });
   }
 
+  // ---- 灰烬氛围 ----
+  var ASH_COUNT = 25; // 中等密度 20-30
+  var ashContainer = null;
+
+  function createAshParticle() {
+    var p = document.createElement('div');
+    p.className = 'ash-particle';
+    var size = 2 + Math.random() * 4;          // 2-6px
+    var duration = 8 + Math.random() * 12;     // 8-20s
+    var delay = -(Math.random() * 20);         // 负延迟：立即处于动画中途，避免同帧齐下
+    var drift = (Math.random() * 60 - 30);     // -30 ~ 30px 水平漂移
+    var opacity = 0.3 + Math.random() * 0.2;   // 0.3-0.5
+    p.style.left = (Math.random() * 100) + '%';
+    p.style.animationDuration = duration + 's';
+    p.style.animationDelay = delay + 's';
+    p.style.setProperty('--ash-drift', drift.toFixed(1) + 'px');
+    p.style.setProperty('--ash-opacity', opacity.toFixed(2));
+    return p;
+  }
+
+  function startAsh() {
+    if (ashContainer || document.getElementById('ash-container')) return;
+    ashContainer = document.createElement('div');
+    ashContainer.id = 'ash-container';
+    ashContainer.setAttribute('aria-hidden', 'true');
+    for (var i = 0; i < ASH_COUNT; i++) {
+      ashContainer.appendChild(createAshParticle());
+    }
+    document.body.appendChild(ashContainer);
+
+    // 后台暂停
+    document.addEventListener('visibilitychange', function () {
+      if (!ashContainer) return;
+      if (document.hidden) {
+        ashContainer.classList.add('paused');
+      } else {
+        ashContainer.classList.remove('paused');
+      }
+    });
+  }
+
   // ---- 时间轴 ----
   // flash 0.36s → black 0.22s → reveal 0.5s（CSS flash forwards 保持黑色 + JS wait(220) 构成 black 阶段）
   function runTimeline(overlay) {
@@ -67,9 +108,16 @@
     var store;
     try { store = window.sessionStorage; } catch (e) { store = null; }
 
-    // session 已有标记 或 reduced-motion：跳过动画，直接灰度常驻
-    if ((store && !shouldPlay(store)) || prefersReduced) {
+    // reduced-motion：完全跳过动画与灰烬（尊重系统设置）
+    if (prefersReduced) {
       applyGrayscale();
+      return;
+    }
+
+    // session 已有标记：跳过动画，但保留常驻灰烬
+    if (store && !shouldPlay(store)) {
+      applyGrayscale();
+      startAsh();
       return;
     }
 
@@ -78,6 +126,7 @@
       runTimeline(overlay)
         .then(function () {
           markPlayed(store);
+          startAsh();
         })
         .catch(function () {
           finalizeFlash(store);
