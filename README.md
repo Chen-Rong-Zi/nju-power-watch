@@ -1,5 +1,14 @@
 # ⚡ NJU 宿舍电费监控系统
 
+> ## ⚠️ 项目已停止维护（2026-08）
+>
+> 因 epay 查询接口实施配额限制、数据采集无法继续，本项目于 2026 年 8 月停止维护并归档。
+> 对抗过程详见 [docs/about.md](docs/about.md)。
+>
+> - 🌐 在线站点将保留至域名到期（历史数据只读，供查看）；域名到期后请通过本仓库访问（源码 + 数据可 `git clone`）
+> - 📦 历史数据与源码保留在本仓库（已归档 · read-only），可 `git clone` 获取
+> - 🔄 如需继续查询电费，可试用 [nju_electric_monitor](https://github.com/Nanxzi/nju_electric_monitor)（单房间查询与可视化，需注册 GitHub 账号）
+
 > 帮助南京大学同学们轻松监控宿舍电费，避免突然停电的尴尬！
 
 **🌐 在线体验**: [njupower.top](https://njupower.top)
