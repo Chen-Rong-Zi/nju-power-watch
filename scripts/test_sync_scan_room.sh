@@ -58,12 +58,11 @@ build_origin; scan_advance; setup_wt
 OUT=$(run_sync)
 has "$OUT" "Pushed config" && ok "正常路径推送成功" || bad "正常路径推送成功 (out: $OUT)"
 has "$OUT" "cursor 5462" && ok "提交信息含 cursor 5462" || bad "提交信息含 cursor 5462"
-( cd "$ROOT/wt" \
-  && diff <(git show HEAD:config/room_ids.json) <(git show origin/scan-room:config/room_ids.json) >/dev/null \
-     && ok "master config == scan-room config" || bad "master config == scan-room config" \
-  && diff <(git show HEAD:scan_progress.json) <(git show origin/scan-room:scan_progress.json) >/dev/null \
-     && ok "master progress == scan-room progress" || bad "master progress == scan-room progress" \
-  && git log --oneline -1 | grep -q "scan: sync" && ok "提交为普通提交" || bad "提交为普通提交" )
+diff <(git -C "$ROOT/wt" show HEAD:config/room_ids.json) <(git -C "$ROOT/wt" show origin/scan-room:config/room_ids.json) >/dev/null \
+  && ok "master config == scan-room config" || bad "master config == scan-room config"
+diff <(git -C "$ROOT/wt" show HEAD:scan_progress.json) <(git -C "$ROOT/wt" show origin/scan-room:scan_progress.json) >/dev/null \
+  && ok "master progress == scan-room progress" || bad "master progress == scan-room progress"
+git -C "$ROOT/wt" log --oneline -1 | grep -q "scan: sync" && ok "提交为普通提交" || bad "提交为普通提交"
 
 echo "== 场景 2: scan-room 分支不存在 =="
 build_origin
@@ -71,7 +70,7 @@ git -C "$ORIGIN" branch -D scan-room >/dev/null
 setup_wt
 OUT=$(run_sync)
 has "$OUT" "Failed to fetch scan-room" && ok "跳过提示" || bad "跳过提示 (out: $OUT)"
-( cd "$ROOT/wt" && [ "$(git rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交" )
+[ "$(git -C "$ROOT/wt" rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交"
 
 echo "== 场景 3: scan_progress.json 在 scan-room 缺失 =="
 build_origin
@@ -82,7 +81,7 @@ build_origin
 setup_wt
 OUT=$(run_sync)
 has "$OUT" "missing on scan-room" && ok "预检跳过" || bad "预检跳过 (out: $OUT)"
-( cd "$ROOT/wt" && [ "$(git rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交" )
+[ "$(git -C "$ROOT/wt" rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交"
 
 echo "== 场景 4: 摘取内容为坏 JSON =="
 build_origin
@@ -93,14 +92,14 @@ build_origin
 setup_wt
 OUT=$(run_sync)
 has "$OUT" "Invalid JSON" && ok "JSON 校验跳过" || bad "JSON 校验跳过 (out: $OUT)"
-( cd "$ROOT/wt" && [ "$(git rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交" )
+[ "$(git -C "$ROOT/wt" rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交"
 
 echo "== 场景 5: 无变化（幂等）=="
 build_origin
 setup_wt
 OUT=$(run_sync)
 has "$OUT" "No changes" && ok "幂等跳过" || bad "幂等跳过 (out: $OUT)"
-( cd "$ROOT/wt" && [ "$(git rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交" )
+[ "$(git -C "$ROOT/wt" rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交"
 
 echo "== 场景 6: push 失败回滚 =="
 build_origin; scan_advance; setup_wt
@@ -111,9 +110,8 @@ build_origin; scan_advance; setup_wt
   && git push -q origin master )
 OUT=$(run_sync)
 has "$OUT" "Failed to push" && ok "push 失败被捕获" || bad "push 失败被捕获 (out: $OUT)"
-( cd "$ROOT/wt" \
-  && [ "$(git rev-list --count HEAD)" = 1 ] && ok "本地回滚到 pre-sync master" || bad "本地回滚 (HEAD: $(git log --oneline -1))" \
-  && [ -z "$(git status --porcelain)" ] && ok "工作树干净" || bad "工作树干净" )
+[ "$(git -C "$ROOT/wt" rev-list --count HEAD)" = 1 ] && ok "本地回滚到 pre-sync master" || bad "本地回滚 (HEAD: $(git -C "$ROOT/wt" log --oneline -1))"
+[ -z "$(git -C "$ROOT/wt" status --porcelain)" ] && ok "工作树干净" || bad "工作树干净"
 
 echo ""
 echo "结果: $PASS 通过, $FAIL 失败"
