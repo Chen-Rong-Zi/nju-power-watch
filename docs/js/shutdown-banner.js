@@ -1,5 +1,6 @@
-/* 功能页常驻关闭横幅：服务已停止提示，常驻不可关闭（D9）
- * 在 body 顶部（topnav 之前）注入一条横幅；不提供关闭按钮。
+/* 功能页常驻关闭横幅：服务已停止提示，常驻不可关闭（D9 / D15 改造）
+ * 注入到 .topnav 内部顶部：随现有 sticky 导航一起常驻视口顶部。
+ * 初始透明度 0，由 shutdown-flash.js 在色彩流失动画时置 1（淡入后常驻）。
  */
 (function () {
   'use strict';
@@ -8,9 +9,8 @@
     const banner = document.createElement('div');
     banner.id = 'shutdown-banner';
     banner.setAttribute('role', 'status');
-    banner.textContent = '⚠️ 本服务已停止维护 · 历史数据仅供查看 · 数据截至 2026-08-08';
+    banner.textContent = '⚡ 电量耗尽 · 本服务已停止维护 · 数据截至 2026-08-08';
     Object.assign(banner.style, {
-      position: 'relative',
       zIndex: '99',
       background: '#1a1a1a',
       color: '#e5e5e5',
@@ -19,9 +19,18 @@
       fontSize: '13px',
       fontWeight: '500',
       fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif',
-      letterSpacing: '0.02em'
+      letterSpacing: '0.02em',
+      opacity: '0',
+      transition: 'opacity 0.4s ease-out'
     });
-    document.body.insertBefore(banner, document.body.firstChild);
+
+    // 注入到 sticky 导航内部顶部：随导航常驻视口顶部，避免滚动时被 nav 遮挡
+    const nav = document.querySelector('nav.topnav');
+    if (nav) {
+      nav.insertBefore(banner, nav.firstChild);
+    } else {
+      document.body.insertBefore(banner, document.body.firstChild);
+    }
   }
 
   if (document.readyState === 'loading') {
