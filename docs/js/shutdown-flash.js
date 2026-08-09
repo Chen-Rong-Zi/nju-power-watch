@@ -48,6 +48,8 @@
     var drift = (Math.random() * 60 - 30);     // -30 ~ 30px 水平漂移
     var opacity = 0.3 + Math.random() * 0.2;   // 0.3-0.5
     p.style.left = (Math.random() * 100) + '%';
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
     p.style.animationDuration = duration + 's';
     p.style.animationDelay = delay + 's';
     p.style.setProperty('--ash-drift', drift.toFixed(1) + 'px');
