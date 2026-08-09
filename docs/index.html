@@ -472,7 +472,7 @@
         <span>服务已停止 · 2026.05 – 2026.08</span>
       </div>
       <h1 class="hero-title">南京大学电费监控系统</h1>
-      <p class="hero-subtitle">因 epay 查询接口实施配额限制、数据采集无法继续，本站于 2026 年 8 月停止更新。感谢三个月的陪伴。</p>
+      <p class="hero-subtitle">因 epay 查询接口实施配额限制、采集账号被封禁，大规模数据采集无法继续，本站于 2026 年 8 月停止更新。感谢三个月的陪伴。</p>
       <div class="hero-actions">
         <a href="#farewell" class="btn btn-primary">查看完整告别 ↓</a>
         <a href="room-view.html" class="btn btn-secondary">浏览历史数据</a>
@@ -547,9 +547,10 @@
       <!-- 讣告正文 -->
       <div class="farewell-card">
         <p>2026 年 5 月至 2026 年 8 月，这个小小的电费监控站陪同学们走过了三个月。</p>
-        <p>我们为每天 14:00 的全校电费采集努力过：从登录验证码、滑块，到查询接口一次次限流升级，都一一适配。但 epay 查询接口的配额限制最终让大规模采集无法继续——2026 年 8 月 8 日之后，数据停止了更新。</p>
-        <p>感谢每一位使用过 njupower.top、提过 issue、报过 bug、在比喻招募里贡献脑洞的同学。是你们让这个大作业，变成了一个真正被用起来的项目。</p>
-        <p>数据不会消失：历史数据仍可浏览至域名到期，也完整保留在 GitHub 归档仓库中。想继续查电费的同学，可以试试 <a href="https://github.com/Nanxzi/nju_electric_monitor">nju_electric_monitor</a>。</p>
+        <p>我们为每天 14:00 的全校电费采集努力过：从登录验证码、滑块，到查询接口一次次限流升级，都一一适配。但 epay 查询接口的配额限制最终导致采集账号被封禁，大规模采集无法继续——2026 年 8 月 8 日之后，数据停止了更新。</p>
+        <p>感谢第一位 PR 提交者 <a href="https://github.com/Mentat-Uran">Mentat-Uran</a> 和每一位提 issue、报 bug 的同学，你们的帮助让这个项目不断变得更好 💪</p>
+        <p>服务恰好止步于 2026 年暑假之末，未能等到 2026 级的同学们开学。</p>
+        <p>数据不会消失：历史数据仍可浏览至域名到期，也完整保留在 GitHub 归档仓库中。想继续查电费的同学，可以试试针对单个宿舍的 <a href="https://github.com/Nanxzi/nju_electric_monitor">nju_electric_monitor</a>（单房间查询与可视化，需注册 GitHub 账号）。</p>
         <p class="farewell-sign">再见，感谢陪伴。—— 荣子</p>
       </div>
 
@@ -560,7 +561,7 @@
           <li><b>2026.05</b> 项目启动 · 校园集市首次宣传，每日 14:00 自动采集全校电费</li>
           <li><b>2026.06</b> 数据可视化增强 · 趋势图表、余额预警、充值建议</li>
           <li><b>2026.07</b> 楼层分析上线 · 按楼层对比耗电差异</li>
-          <li><b>2026.08</b> 限流与谢幕 · epay 实施查询配额限制，数据采集停止（数据截至 08-08）</li>
+          <li><b>2026.08</b> 限流与谢幕 · epay 实施查询配额限制、采集账号被封禁，数据采集停止（数据截至 08-08）</li>
         </ul>
       </div>
 
@@ -568,17 +569,17 @@
       <div class="farewell-card">
         <h3>常见问题</h3>
         <details class="faq"><summary>数据还能看吗？</summary><p>可以。历史数据仍可在各视角页面浏览，直至域名到期。</p></details>
-        <details class="faq"><summary>为什么停止服务？</summary><p>epay 查询接口实施配额限制，单轮采集成功率低于 90%，大规模采集不可持续。</p></details>
+        <details class="faq"><summary>为什么停止服务？</summary><p>epay 查询接口实施配额限制，采集账号被封禁，大规模采集不可持续。</p></details>
         <details class="faq"><summary>怎么找我的房间？</summary><p>通过上方「我的房间」卡片配置房间号，即可查看该房间的历史数据。</p></details>
         <details class="faq"><summary>原始数据在哪里？</summary><p>完整历史数据保留在 <a href="https://github.com/Chen-Rong-Zi/nju-power-watch">GitHub 归档仓库</a>，可 <code>git clone</code> 获取（<code>database/summaries/</code> 及 <code>database/</code> 目录）。</p></details>
-        <details class="faq"><summary>想继续查电费怎么办？</summary><p>可试用 <a href="https://github.com/Nanxzi/nju_electric_monitor">nju_electric_monitor</a>（单房间查询与可视化，需注册 GitHub 账号）。</p></details>
+        <details class="faq"><summary>想继续查电费怎么办？</summary><p>可试用<a href="https://github.com/Nanxzi/nju_electric_monitor">nju_electric_monitor</a>（其他同学维护的针对单个宿舍的电费查询与可视化项目，需注册 GitHub 账号）。对熟悉 GitHub 的同学来说，只需配置好 Secrets 并部署 GitHub Pages，就能在公网查看自己宿舍的电费；但对小白来说，这套部署流程可能比较复杂，需要一定的动手能力。</p></details>
       </div>
 
       <!-- B1 数据指引 + B3 后继项目 -->
       <div class="farewell-card">
         <h3>数据与后继</h3>
         <p>历史数据仍可浏览至域名到期；<b>域名到期后</b>，请通过 <a href="https://github.com/Chen-Rong-Zi/nju-power-watch">GitHub 归档仓库</a> 获取源码与数据（可 <code>git clone</code>）。</p>
-        <p>如需继续查询电费，可试用 <a href="https://github.com/Nanxzi/nju_electric_monitor">nju_electric_monitor</a>（单房间查询与可视化，需注册 GitHub 账号）。</p>
+        <p>如需继续查询电费，可试用针对单个宿舍的 <a href="https://github.com/Nanxzi/nju_electric_monitor">nju_electric_monitor</a>（单房间查询与可视化，需注册 GitHub 账号）。</p>
       </div>
 
       <!-- C3 归档声明 + C2 数据冻结标注 -->

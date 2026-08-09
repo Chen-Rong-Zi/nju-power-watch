@@ -38,8 +38,9 @@
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i];
 
-      // Inline: bold, italic, link
+      // Inline: strikethrough, bold, italic, link
       line = line
+        .replace(/\~\~(.+?)\~\~/g, '<del>$1</del>')
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.+?)\*/g, '<em>$1</em>')
         .replace(/\[(.+?)\]\((.+?)\)/g, function (_, text, url) {
