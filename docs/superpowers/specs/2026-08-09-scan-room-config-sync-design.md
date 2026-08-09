@@ -36,25 +36,51 @@ fatal: There is no merge to abort (MERGE_HEAD missing).    ← 二次报错
 query 的 "Merge scan-room into master" 步骤改为 "Sync room mapping from scan-room"：
 
 ```bash
+# 本步骤为"附属同步"：任何失败都只降级（::error:: + exit 0），绝不中止 query（08-08 事故教训）
 git fetch origin scan-room --depth=200 || true
 if ! git branch -r | grep -q 'origin/scan-room'; then
   echo "scan-room branch does not exist, skipping sync"
   exit 0
 fi
 
+# 摘取前预检：任一文件缺失时 checkout 会整体原子失败并中止 job（bash -e），故先确认都存在
+for f in config/room_ids.json scan_progress.json; do
+  if ! git cat-file -e "origin/scan-room:$f" 2>/dev/null; then
+    echo "::error::$f missing on scan-room, skipping sync (retry next cycle)"
+    exit 0
+  fi
+done
+
 echo "Restoring config/room_ids.json + scan_progress.json from scan-room..."
-git checkout origin/scan-room -- config/room_ids.json scan_progress.json
+git checkout origin/scan-room -- config/room_ids.json scan_progress.json || {
+  echo "::error::Failed to restore files from scan-room, skipping sync"
+  git reset --hard HEAD
+  exit 0
+}
+
+# 摘取内容校验：坏 JSON 不入库
+if ! python3 -c "import json; json.load(open('config/room_ids.json'))" 2>/dev/null \
+  || ! python3 -c "import json; json.load(open('scan_progress.json'))" 2>/dev/null; then
+  echo "::error::Invalid JSON in synced files, skipping commit"
+  git reset --hard HEAD
+  exit 0
+fi
 
 if git diff --cached --quiet; then
   echo "No changes, nothing to commit"
   exit 0
 fi
 
+# 提交前显式配置 git 身份（根治 08-08 empty ident 事故根因）
 git config --local user.email "action@github.com"
 git config --local user.name "GitHub Action"
 CURSOR=$(git show origin/scan-room:scan_progress.json 2>/dev/null \
   | python3 -c "import sys,json; print(json.load(sys.stdin).get('cursor','?'))" || echo "?")
-git commit -m "scan: sync room mapping and progress (cursor ${CURSOR})"
+git commit -m "scan: sync room mapping and progress (cursor ${CURSOR})" || {
+  echo "::error::Commit failed, skipping push"
+  git reset --hard HEAD
+  exit 0
+}
 if git push origin master; then
   echo "✓ Pushed config/room_ids.json + scan_progress.json to master (cursor ${CURSOR})"
 else
@@ -64,14 +90,19 @@ fi
 ```
 
 要点：
-- `git checkout origin/scan-room -- <files>` 把文件从 scan-room 摘到工作树并暂存（覆盖 master 版），**不做任何合并**。
+- `git checkout origin/scan-room -- <files>` 把文件从 scan-room 摘到工作树并暂存（覆盖 master 版），**不做任何合并**、不移动 HEAD。
 - 提交前显式配置 git 身份（根治事故根因）。
 - 提交为普通提交（非 merge 提交）。
 - 幂等：config/progress 无变化时跳过提交（batch 2+ 自动跳过）。
+- **整体可降级**：预检失败 / checkout 失败 / JSON 校验失败 / commit 失败 → `::error::` + 跳过（exit 0）；push 失败 → `::error::` + 回滚 + 继续。任何路径都不会中止 query。
+- 删除了原 merge 步骤的 `git fetch origin master`：不需要（checkout 已提供 master HEAD；并发下 master 被推进由 push-reject → reset 兜底）。
+- `git commit` 前置了 diff 判空与 JSON 校验、仓库无 commit hook，失败风险极低，仍加防护。
 
 ### 决策二：master 不手动修改 `config/room_ids.json`（用户指定）
 
-约定：`config/room_ids.json` 在 master 上归 **scan 拥有**，禁止在 master 分支手动修改。因此 sync 摘取覆盖 master 版永远安全（`scan-room.config ⊇ master.config`），无需冲突检测或 3-way 合并。
+约定：`config/room_ids.json` 在 master 上归 **scan 拥有**，禁止在 master 分支手动修改。因此 sync 摘取覆盖 master 版永远安全，无需冲突检测或 3-way 合并。
+
+不变量精确表述：**房间键层面** `scan-room.config ⊇ master.config`（实测 master-only 房间 = 0，双方均 17349 间）；sync 是**替换**而非追加——scan-room 对已存在房间持有更新/更权威的 `room_id`（实测 1279 间 id 值不同，条目有 string/object 两种格式），master 条目值一律以 scan-room 为准。
 
 ### 决策三：`scan_progress.json` 一并摘取提交（用户追加要求）
 
@@ -84,6 +115,7 @@ scan 工作流（rebase scan-room 到 master → 扫描 → 提交 push scan-roo
 - 每次 scan run **先 rebase 再推进进度**，scan 提交的基线进度恒等于当时 master 的进度 → 三方合并 base==ours，永不冲突。
 - 第二轮模拟（推进到 8000 后再 rebase）验证 "HEAD is up to date"，干净通过。
 - master 进度保持最新（决策三）后，base==ours 关系依旧成立，rebase 依旧干净。
+- **已记录的 fallback 代价**：`room-id-scan.yml` 在 rebase 冲突时会 `git checkout -B scan-room origin/master` 重建分支，把 `scan_progress.json` 重置为 master 副本（进度回退）。正常流程 rebase 永不失败；唯一触发点是"master 被手动改动 config"（本 spec 禁止的操作）。本项目接受该后果；如需加固（fallback 保留 scan-room 进度）留待后续单独处理，不在本 spec 范围。
 
 ## 架构与数据流
 
@@ -100,21 +132,25 @@ scan 工作流（rebase scan-room 到 master → 扫描 → 提交 push scan-roo
 
 ## 不变量
 
-- `scan-room.config ⊇ master.config`（决策二保证）
+- 房间键层面 `scan-room.config ⊇ master.config`；sync 为**替换**，master 条目值以 scan-room 为准（决策二）
 - scan-room 永不删除、永不 merge；master 的进度副本保持最新（决策三）
 - sync 提交为普通提交，无 merge 提交
 - 机制不依赖 master 上的进度副本（scan 只从 scan-room 读）
+- **sync 步骤永不使 job 失败**：任何失败降级为 `::error::` + exit 0
 
 ## 错误处理与边界
 
 | 场景 | 行为 |
 |---|---|
 | `scan-room` 分支不存在 | 跳过 sync（exit 0），query 继续 |
-| 摘取后无变化 | 跳过提交（幂等） |
-| push 失败 | `::error::` 警告 + `git reset --hard HEAD` 回滚本地提交 + query 继续；下轮 cycle 重试 |
+| 两文件任一在 scan-room 缺失 | 摘取前 `git cat-file -e` 预检，缺失则 `::error::` + 跳过（exit 0），不中止 |
+| 摘取内容为坏 JSON | 提交前校验失败 → `::error::` + `git reset --hard HEAD` + 跳过（exit 0） |
+| 摘取后无变化 | 跳过提交（幂等，batch 2+ 自动跳过） |
+| checkout 失败 | `::error::` + `git reset --hard HEAD` + 跳过（exit 0） |
+| commit 失败 | `::error::` + `git reset --hard HEAD` + 跳过（exit 0） |
+| push 失败 | `::error::` + `git reset --hard HEAD~1` 丢弃 sync 提交 + query 用旧 master config 继续；下轮 cycle 重试 |
 | 本地 git 身份缺失 | 步骤内显式配置（根治本次事故） |
-| master 有手动 config 改动 | 约定禁止；若发生，下一次 sync 会覆盖（记录在案，不额外保护） |
-| `scan_progress.json` 在 scan-room 缺失 | `CURSOR` 取 `?`，提交仍成功 |
+| master 有手动 config 改动 | 约定禁止；若发生，下一次 sync 会覆盖（接受后果，不额外保护） |
 
 ## 测试与验证策略
 
@@ -123,6 +159,7 @@ scan 工作流（rebase scan-room 到 master → 扫描 → 提交 push scan-roo
 - 复现事故：强制空身份 merge → `empty ident name` + 无 MERGE_HEAD + exit 128（与线上日志逐字一致）→ 证明 merge 路径是根因。
 - 新路径：`git checkout origin/scan-room -- config/room_ids.json scan_progress.json` + 普通提交 → 干净生成普通提交，无 merge 机制参与。
 - scan rebase 稳定性：以当前远端真实分叉状态 rebase scan-room → master，干净成功；再推进一轮（cursor 8000）→ 仍干净。
+- 评审实测（subagent）：checkout 摘取恰好暂存两文件/不移动 HEAD/不 merge；`git diff --cached --quiet` 判空可靠；幂等跳过成立；push 失败 `reset --hard HEAD~1` 干净回滚；**文件缺失时 checkout 整体原子失败**（故脚本加 `git cat-file -e` 预检）；房间键不变量成立（master-only=0，17349 间，1279 间 id 值不同）。
 
 ### 上线后验证
 
