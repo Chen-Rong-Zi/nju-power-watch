@@ -16,6 +16,7 @@ git init --bare -q "$ORIGIN"
 # 构造 origin：master=base、scan-room=base（两分支同点，均含 config + progress）
 build_origin() {
   local d="$ROOT/seed"
+  rm -rf "$ORIGIN"; git init --bare -q "$ORIGIN"   # 每个场景从干净 origin 开始
   rm -rf "$d"; git clone -q "$ORIGIN" "$d"
   ( cd "$d" \
     && git config user.email t@t.com && git config user.name T \
