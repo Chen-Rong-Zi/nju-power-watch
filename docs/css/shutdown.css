@@ -1,38 +1,18 @@
 /* 整站黑白纪念：epay 配额限制致项目谢幕后，全站以黑白色调作为纪念基调。
- * 灰度由 shutdown-flash.js 在断电动画 reveal 阶段动态施加（html.grayscale）；
- * 无 JS 时由页面内的 <noscript> 静态兜底。
+ * 灰度由 shutdown-flash.js 动态施加（html.grayscale）；
+ * 首次访问经 html.draining 过渡（色彩流失 ~1.5s），无 JS 时由 <noscript> 静态兜底。
  */
+
+/* 色彩流失过渡起始态（由 shutdown-flash.js 临时施加，动画结束后移除以避免重载重播）。
+ * 注意：必须位于 html.grayscale 之前——两者并存时靠源码顺序让 .grayscale 的终点 filter 生效。 */
+html.draining {
+  filter: grayscale(0%) brightness(100%);
+  transition: filter 1.5s ease-out;
+}
+
+/* 整站黑白纪念态：流失动画终点与静态兜底共用（含轻微亮度下垂，模拟电量耗尽） */
 html.grayscale {
-  filter: grayscale(100%);
-}
-
-/* 断电瞬间全屏 overlay（由 shutdown-flash.js 注入） */
-#shutdown-flash {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: #000;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: all;
-}
-#shutdown-flash.flash {
-  visibility: visible;
-  animation: shutdown-flash-flicker 0.36s linear forwards;
-}
-#shutdown-flash.reveal {
-  visibility: visible;
-  transition: opacity 0.5s ease-out;
-  opacity: 0;
-}
-
-@keyframes shutdown-flash-flicker {
-  0%   { opacity: 0; }
-  25%  { opacity: 0.9; }
-  45%  { opacity: 0; }
-  65%  { opacity: 0.9; }
-  85%  { opacity: 0; }
-  100% { opacity: 1; }
+  filter: grayscale(100%) brightness(0.92);
 }
 
 /* 灰烬容器（由 shutdown-flash.js 注入） */
