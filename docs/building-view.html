@@ -1266,7 +1266,7 @@
       color: #fff;
       border: none;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+      box-shadow: 0 4px 16px rgba(55, 65, 81, 0.35);
       z-index: 50;
       font-size: 18px;
       display: none;
@@ -3620,34 +3620,34 @@
 
       const legendItems = {
         normal: [
-          { key: 'muLine', color: '#818cf8', label: 'μ (均值)' },
-          { key: 'sigma1', color: 'rgba(99, 102, 241, 0.15)', label: '±1σ (68.3%)' },
-          { key: 'sigma2', color: 'rgba(99, 102, 241, 0.08)', label: '±2σ (95.4%)' },
-          { key: 'sigma3', color: 'rgba(99, 102, 241, 0.04)', label: '±3σ (99.7%)' }
+          { key: 'muLine', color: '#4b5563', label: 'μ (均值)' },
+          { key: 'sigma1', color: 'rgba(107, 114, 128, 0.15)', label: '±1σ (68.3%)' },
+          { key: 'sigma2', color: 'rgba(107, 114, 128, 0.08)', label: '±2σ (95.4%)' },
+          { key: 'sigma3', color: 'rgba(107, 114, 128, 0.04)', label: '±3σ (99.7%)' }
         ],
         lognormal: [
-          { key: 'medianLine', color: '#818cf8', label: '中位数' },
-          { key: 'modeLine', color: '#f472b6', label: '众数' },
-          { key: 'iqr', color: 'rgba(99, 102, 241, 0.1)', label: 'IQR (Q1-Q3)' }
+          { key: 'medianLine', color: '#4b5563', label: '中位数' },
+          { key: 'modeLine', color: '#111827', label: '众数' },
+          { key: 'iqr', color: 'rgba(107, 114, 128, 0.1)', label: 'IQR (Q1-Q3)' }
         ],
         gamma: [
-          { key: 'meanLine', color: '#818cf8', label: '均值' },
-          { key: 'modeLine', color: '#f472b6', label: '众数' },
-          { key: 'medianLine', color: '#38bdf8', label: '中位数≈' },
-          { key: 'skewArea', color: 'rgba(99, 102, 241, 0.03)', label: '右偏区域' }
+          { key: 'meanLine', color: '#4b5563', label: '均值' },
+          { key: 'modeLine', color: '#111827', label: '众数' },
+          { key: 'medianLine', color: '#6b7280', label: '中位数≈' },
+          { key: 'skewArea', color: 'rgba(107, 114, 128, 0.03)', label: '右偏区域' }
         ],
         bimodal: [
-          { key: 'peak1Line', color: '#f472b6', label: 'μ₁ (峰1)' },
-          { key: 'peak2Line', color: '#818cf8', label: 'μ₂ (峰2)' },
-          { key: 'peak1Sigma', color: 'rgba(220, 100, 80, 0.08)', label: '峰1 ±1σ' },
-          { key: 'peak2Sigma', color: 'rgba(80, 100, 220, 0.08)', label: '峰2 ±1σ' }
+          { key: 'peak1Line', color: '#111827', label: 'μ₁ (峰1)' },
+          { key: 'peak2Line', color: '#4b5563', label: 'μ₂ (峰2)' },
+          { key: 'peak1Sigma', color: 'rgba(107, 114, 128, 0.08)', label: '峰1 ±1σ' },
+          { key: 'peak2Sigma', color: 'rgba(107, 114, 128, 0.08)', label: '峰2 ±1σ' }
         ]
       };
 
       const items = legendItems[bestFit.type] || [];
       legendEl.innerHTML = items.map(item => `
         <div class="dist-legend-item" data-key="${item.key}" onclick="toggleDistAnnotation('${item.key}')">
-          <div class="dist-legend-color" style="background: ${item.color}; border: 1px solid ${item.color.includes('rgba') ? 'rgba(99, 102, 241, 0.3)' : item.color};"></div>
+          <div class="dist-legend-color" style="background: ${item.color}; border: 1px solid ${item.color.includes('rgba') ? 'rgba(107, 114, 128, 0.3)' : item.color};"></div>
           <span>${item.label}</span>
         </div>
       `).join('');
@@ -3687,9 +3687,9 @@
       const ds = distChart.data.datasets[0];
 
       ds.backgroundColor = histogram.counts.map((_, i) =>
-        i === idx ? 'rgba(99, 102, 241, 0.8)' : 'rgba(99, 102, 241, 0.15)');
+        i === idx ? 'rgba(17, 24, 39, 0.8)' : 'rgba(107, 114, 128, 0.15)');
       ds.borderColor = histogram.counts.map((_, i) =>
-        i === idx ? 'rgba(99, 102, 241, 1)' : 'rgba(99, 102, 241, 0.3)');
+        i === idx ? 'rgba(17, 24, 39, 1)' : 'rgba(107, 114, 128, 0.3)');
 
       const low = histogram.edges[idx];
       const high = histogram.edges[idx + 1];
@@ -3702,7 +3702,7 @@
         type: 'line',
         xMin: idx - 0.5,
         xMax: idx - 0.5,
-        borderColor: 'rgba(99, 102, 241, 0.6)',
+        borderColor: 'rgba(17, 24, 39, 0.6)',
         borderWidth: 1.5,
         borderDash: [3, 3]
       };
@@ -3710,7 +3710,7 @@
         type: 'line',
         xMin: idx + 0.5,
         xMax: idx + 0.5,
-        borderColor: 'rgba(99, 102, 241, 0.6)',
+        borderColor: 'rgba(17, 24, 39, 0.6)',
         borderWidth: 1.5,
         borderDash: [3, 3]
       };
@@ -3836,8 +3836,8 @@
       distSelectedBin = -1;
       const ds = distChart.data.datasets[0];
 
-      ds.backgroundColor = distHistogram.counts.map(() => 'rgba(99, 102, 241, 0.35)');
-      ds.borderColor = distHistogram.counts.map(() => 'rgba(99, 102, 241, 0.7)');
+      ds.backgroundColor = distHistogram.counts.map(() => 'rgba(107, 114, 128, 0.35)');
+      ds.borderColor = distHistogram.counts.map(() => 'rgba(107, 114, 128, 0.7)');
 
       // 直接删除标注，避免spread导致的Proxy问题
       const annotations = distChart.options.plugins.annotation.annotations;
