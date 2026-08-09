@@ -323,6 +323,86 @@
       font-family: var(--font-mono);
     }
 
+    /* 完整告别区块 */
+    .farewell {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .farewell-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      line-height: 1.7;
+    }
+    .farewell-card h3 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 16px;
+    }
+    .farewell-card p {
+      margin: 0 0 12px;
+    }
+    .farewell-card a {
+      color: var(--fg);
+      text-decoration: underline;
+    }
+    .farewell-card code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: var(--border);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    .farewell-sign {
+      margin-top: 20px;
+      font-weight: 600;
+      text-align: right;
+      color: var(--fg);
+    }
+    .timeline {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .timeline li {
+      position: relative;
+      padding: 0 0 14px 24px;
+      border-left: 1px solid var(--border);
+      color: var(--fg);
+    }
+    .timeline li::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 6px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--fg);
+    }
+    .timeline li b {
+      margin-right: 8px;
+    }
+    details.faq {
+      border-top: 1px solid var(--border);
+      padding: 12px 0;
+    }
+    details.faq summary {
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--fg);
+    }
+    details.faq p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
     /* 页脚 */
     .pagefoot {
       max-width: 1200px;
@@ -362,6 +442,7 @@
       font-size: 14px;
     }
     </style>
+  <link rel="stylesheet" href="css/shutdown.css">
 </head>
 <body>
   <nav class="topnav">
@@ -384,16 +465,20 @@
   </div>
 
   <main>
-    <!-- Hero -->
+    <!-- 告别横幅（替换原 Hero） -->
     <section class="hero">
       <div class="hero-badge">
-        <span>●</span>
-        <span>每日更新</span>
+        <span>⚫</span>
+        <span>服务已停止 · 2026.05 – 2026.08</span>
       </div>
       <h1 class="hero-title">南京大学电费监控系统</h1>
-      <p class="hero-subtitle">追踪全校用电数据，覆盖 106 栋宿舍楼 · 16,644 个房间</p>
+      <p class="hero-subtitle">因 epay 查询接口实施配额限制、数据采集无法继续，本站于 2026 年 8 月停止更新。感谢三个月的陪伴。</p>
+      <div class="hero-actions">
+        <a href="#farewell" class="btn btn-primary">查看完整告别 ↓</a>
+        <a href="room-view.html" class="btn btn-secondary">浏览历史数据</a>
+      </div>
 
-      <!-- 用户状态卡片 -->
+      <!-- 用户状态卡片（保留：已配置房间的用户可直达历史数据） -->
       <div class="status-card" id="status-card">
         <div class="status-header">
           <div class="status-icon not-configured" id="status-icon">🏠</div>
@@ -452,6 +537,55 @@
           <p class="feature-desc">查看校区仪表盘总览，统计总耗电量，各楼栋对比分析</p>
           <span class="feature-link">进入校区视角</span>
         </a>
+      </div>
+    </section>
+
+    <!-- 完整告别区块 -->
+    <section class="farewell" id="farewell">
+      <h2 class="section-title">完整告别</h2>
+
+      <!-- 讣告正文 -->
+      <div class="farewell-card">
+        <p>2026 年 5 月至 2026 年 8 月，这个小小的电费监控站陪同学们走过了三个月。</p>
+        <p>我们为每天 14:00 的全校电费采集努力过：从登录验证码、滑块，到查询接口一次次限流升级，都一一适配。但 epay 查询接口的配额限制最终让大规模采集无法继续——2026 年 8 月 8 日之后，数据停止了更新。</p>
+        <p>感谢每一位使用过 njupower.top、提过 issue、报过 bug、在比喻招募里贡献脑洞的同学。是你们让这个大作业，变成了一个真正被用起来的项目。</p>
+        <p>数据不会消失：历史数据仍可浏览至域名到期，也完整保留在 GitHub 归档仓库中。想继续查电费的同学，可以试试 <a href="https://github.com/Nanxzi/nju_electric_monitor">nju_electric_monitor</a>。</p>
+        <p class="farewell-sign">再见，感谢陪伴。—— 荣子</p>
+      </div>
+
+      <!-- A4 项目时间线 -->
+      <div class="farewell-card">
+        <h3>项目时间线</h3>
+        <ul class="timeline">
+          <li><b>2026.05</b> 项目启动 · 校园集市首次宣传，每日 14:00 自动采集全校电费</li>
+          <li><b>2026.06</b> 数据可视化增强 · 趋势图表、余额预警、充值建议</li>
+          <li><b>2026.07</b> 楼层分析上线 · 按楼层对比耗电差异</li>
+          <li><b>2026.08</b> 限流与谢幕 · epay 实施查询配额限制，数据采集停止（数据截至 08-08）</li>
+        </ul>
+      </div>
+
+      <!-- B2 FAQ -->
+      <div class="farewell-card">
+        <h3>常见问题</h3>
+        <details class="faq"><summary>数据还能看吗？</summary><p>可以。历史数据仍可在各视角页面浏览，直至域名到期。</p></details>
+        <details class="faq"><summary>为什么停止服务？</summary><p>epay 查询接口实施配额限制，单轮采集成功率低于 90%，大规模采集不可持续。</p></details>
+        <details class="faq"><summary>怎么找我的房间？</summary><p>通过上方「我的房间」卡片配置房间号，即可查看该房间的历史数据。</p></details>
+        <details class="faq"><summary>原始数据在哪里？</summary><p>完整历史数据保留在 <a href="https://github.com/Chen-Rong-Zi/nju-power-watch">GitHub 归档仓库</a>，可 <code>git clone</code> 获取（<code>database/summaries/</code> 及 <code>database/</code> 目录）。</p></details>
+        <details class="faq"><summary>想继续查电费怎么办？</summary><p>可试用 <a href="https://github.com/Nanxzi/nju_electric_monitor">nju_electric_monitor</a>（单房间查询与可视化，需注册 GitHub 账号）。</p></details>
+      </div>
+
+      <!-- B1 数据指引 + B3 后继项目 -->
+      <div class="farewell-card">
+        <h3>数据与后继</h3>
+        <p>历史数据仍可浏览至域名到期；<b>域名到期后</b>，请通过 <a href="https://github.com/Chen-Rong-Zi/nju-power-watch">GitHub 归档仓库</a> 获取源码与数据（可 <code>git clone</code>）。</p>
+        <p>如需继续查询电费，可试用 <a href="https://github.com/Nanxzi/nju_electric_monitor">nju_electric_monitor</a>（单房间查询与可视化，需注册 GitHub 账号）。</p>
+      </div>
+
+      <!-- C3 归档声明 + C2 数据冻结标注 -->
+      <div class="farewell-card">
+        <h3>归档声明</h3>
+        <p>本项目源码已归档（read-only），仓库地址：<a href="https://github.com/Chen-Rong-Zi/nju-power-watch">Chen-Rong-Zi/nju-power-watch</a>。</p>
+        <p>数据截至 <b>2026-08-08</b>，之后不再更新。</p>
       </div>
     </section>
   </main>
