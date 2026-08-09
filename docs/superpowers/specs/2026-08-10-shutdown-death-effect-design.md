@@ -72,6 +72,7 @@
 ### 4.2 性能策略
 
 - **常驻飘落**：动画持续存在，但用 CSS 动画（GPU 合成，低性能开销）
+- **reduced-motion**：`prefers-reduced-motion` 时灰烬完全停用（见 §6.2 降级表），不播飘落动画
 - **后台暂停**：监听 `visibilitychange`，页面隐藏/切后台时暂停灰烬（`animation-play-state` 或移除/暂停），回前台恢复
 - **与断电动画的关系**：灰烬在 reveal 完成后才开始，不与动画冲突
 
