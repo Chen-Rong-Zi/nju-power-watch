@@ -1,4 +1,66 @@
-/* 整站黑白纪念：epay 配额限制致项目谢幕后，全站以黑白色调作为纪念基调 */
-html {
+/* 整站黑白纪念：epay 配额限制致项目谢幕后，全站以黑白色调作为纪念基调。
+ * 灰度由 shutdown-flash.js 在断电动画 reveal 阶段动态施加（html.grayscale）；
+ * 无 JS 时由页面内的 <noscript> 静态兜底。
+ */
+html.grayscale {
   filter: grayscale(100%);
+}
+
+/* 断电瞬间全屏 overlay（由 shutdown-flash.js 注入） */
+#shutdown-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: all;
+}
+#shutdown-flash.flash {
+  visibility: visible;
+  animation: shutdown-flash-flicker 0.36s linear forwards;
+}
+#shutdown-flash.reveal {
+  visibility: visible;
+  transition: opacity 0.5s ease-out;
+  opacity: 0;
+}
+
+@keyframes shutdown-flash-flicker {
+  0%   { opacity: 0; }
+  25%  { opacity: 0.9; }
+  45%  { opacity: 0; }
+  65%  { opacity: 0.9; }
+  85%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* 灰烬容器（由 shutdown-flash.js 注入） */
+#ash-container {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ash-particle {
+  position: absolute;
+  top: -10px;
+  border-radius: 50%;
+  background: #999;
+  opacity: 0.4;
+  animation-name: ash-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+#ash-container.paused .ash-particle {
+  animation-play-state: paused;
+}
+
+@keyframes ash-fall {
+  0%   { transform: translateY(-10px) translateX(0) rotate(0deg); opacity: 0; }
+  8%   { opacity: var(--ash-opacity, 0.4); }
+  50%  { transform: translateY(50vh) translateX(var(--ash-drift, 20px)) rotate(180deg); }
+  100% { transform: translateY(105vh) translateX(calc(var(--ash-drift, 20px) * -0.5)) rotate(360deg); opacity: 0; }
 }
