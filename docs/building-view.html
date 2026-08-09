@@ -2695,8 +2695,8 @@
       }
 
       const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-      gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
-      gradient.addColorStop(1, 'rgba(99, 102, 241, 0.01)');
+      gradient.addColorStop(0, 'rgba(55, 65, 81, 0.3)');
+      gradient.addColorStop(1, 'rgba(55, 65, 81, 0.01)');
 
       trendChart = new Chart(ctx, {
         type: 'line',
@@ -2705,12 +2705,12 @@
           datasets: [{
             label: '日耗电量 (度)',
             data: trendData.consumption,
-            borderColor: '#6366f1',
+            borderColor: '#374151',
             backgroundColor: gradient,
             fill: true,
             tension: 0.3,
             pointRadius: 3,
-            pointBackgroundColor: '#6366f1',
+            pointBackgroundColor: '#374151',
             pointHoverRadius: 5,
             borderWidth: 2
           }]
@@ -3360,14 +3360,14 @@
               type: 'line',
               xMin: valueToIndex(userConsumption),
               xMax: valueToIndex(userConsumption),
-              borderColor: '#f472b6',
+              borderColor: '#111827',
               borderWidth: 2,
               borderDash: [6, 3],
               label: {
                 display: true,
                 content: `我的宿舍: ${userConsumption.toFixed(2)}度`,
                 position: 'start',
-                backgroundColor: '#ec4899',
+                backgroundColor: '#1f2937',
                 color: '#fff',
                 font: { size: 12, weight: 'bold' },
                 padding: { top: 4, bottom: 4, left: 8, right: 8 },
@@ -3389,8 +3389,8 @@
             {
               label: '房间数',
               data: histogram.counts,
-              backgroundColor: histogram.counts.map(() => 'rgba(99, 102, 241, 0.35)'),
-              borderColor: histogram.counts.map(() => 'rgba(99, 102, 241, 0.7)'),
+              backgroundColor: histogram.counts.map(() => 'rgba(107, 114, 128, 0.35)'),
+              borderColor: histogram.counts.map(() => 'rgba(107, 114, 128, 0.7)'),
               borderWidth: 1,
               borderRadius: 3,
               barPercentage: 0.95,
@@ -3401,10 +3401,10 @@
               label: bestFit.typeName + '拟合',
               type: 'line',
               data: DistributionAnalyzer.fitCurveAtBinTops(bestFit, histogram),
-              borderColor: 'oklch(65% 0.18 25)',
+              borderColor: '#374151',
               borderWidth: 2.5,
               pointRadius: 3,
-              pointBackgroundColor: 'oklch(65% 0.18 25)',
+              pointBackgroundColor: '#374151',
               tension: 0.3,
               fill: false,
               order: 1
