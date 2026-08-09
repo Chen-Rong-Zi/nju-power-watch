@@ -12,6 +12,7 @@
     return store.getItem(STORAGE_KEY) !== '1';
   }
   function markPlayed(store) {
+    if (!store) return;
     try { store.setItem(STORAGE_KEY, '1'); } catch (e) { /* 隐私模式等，忽略 */ }
   }
   // 动画后常驻灰度：html.grayscale
@@ -101,6 +102,7 @@
     var overlay = document.getElementById('shutdown-flash');
     if (overlay) removeOverlay(overlay);
     markPlayed(store);
+    startAsh();
   }
 
   // ---- 主入口 ----
