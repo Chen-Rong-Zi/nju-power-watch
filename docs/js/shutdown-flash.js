@@ -36,25 +36,28 @@
   }
 
   // ---- 时间轴 ----
-  // flash 0.36s（CSS keyframes）→ black 0.22s → reveal 0.5s（CSS transition）
+  // flash 0.36s → black 0.22s → reveal 0.5s（CSS flash forwards 保持黑色 + JS wait(220) 构成 black 阶段）
   function runTimeline(overlay) {
     applyGrayscale();      // 提前施加灰度（动画窗口内页面被 overlay 遮住，不可见切换）
     overlay.className = 'flash';
-    return wait(360)
+    return wait(360)       // flash 回光×3（CSS keyframes，forwards 保持黑色）
+      .then(function () {
+        return wait(220);  // black 纯黑停留（overlay 保持 .flash，forwards 维持黑屏）
+      })
       .then(function () {
         overlay.className = 'reveal';
-        return wait(500);
+        return wait(500);  // reveal 淡出
       })
       .then(function () {
         removeOverlay(overlay);
       });
   }
 
-  function finalizeFlash() {
+  function finalizeFlash(store) {
     applyGrayscale();
     var overlay = document.getElementById('shutdown-flash');
     if (overlay) removeOverlay(overlay);
-    markPlayed(window.sessionStorage);
+    markPlayed(store);
   }
 
   // ---- 主入口 ----
@@ -74,11 +77,13 @@
       var overlay = createOverlay();
       runTimeline(overlay)
         .then(function () {
-          markPlayed(store || window.sessionStorage);
+          markPlayed(store);
         })
-        .catch(finalizeFlash);
+        .catch(function () {
+          finalizeFlash(store);
+        });
     } catch (e) {
-      finalizeFlash();
+      finalizeFlash(store);
     }
   }
 
