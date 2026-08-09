@@ -70,8 +70,8 @@ build_origin
 git -C "$ORIGIN" branch -D scan-room >/dev/null
 setup_wt
 OUT=$(run_sync)
-has "$OUT" "does not exist" && ok "跳过提示" || bad "跳过提示 (out: $OUT)"
-( cd "$ROOT/wt" && [ "$(git log --oneline | wc -l)" = 1 ] && ok "无新提交" || bad "无新提交" )
+has "$OUT" "Failed to fetch scan-room" && ok "跳过提示" || bad "跳过提示 (out: $OUT)"
+( cd "$ROOT/wt" && [ "$(git rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交" )
 
 echo "== 场景 3: scan_progress.json 在 scan-room 缺失 =="
 build_origin
@@ -82,7 +82,7 @@ build_origin
 setup_wt
 OUT=$(run_sync)
 has "$OUT" "missing on scan-room" && ok "预检跳过" || bad "预检跳过 (out: $OUT)"
-( cd "$ROOT/wt" && [ "$(git log --oneline | wc -l)" = 1 ] && ok "无新提交" || bad "无新提交" )
+( cd "$ROOT/wt" && [ "$(git rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交" )
 
 echo "== 场景 4: 摘取内容为坏 JSON =="
 build_origin
@@ -93,14 +93,14 @@ build_origin
 setup_wt
 OUT=$(run_sync)
 has "$OUT" "Invalid JSON" && ok "JSON 校验跳过" || bad "JSON 校验跳过 (out: $OUT)"
-( cd "$ROOT/wt" && [ "$(git log --oneline | wc -l)" = 1 ] && ok "无新提交" || bad "无新提交" )
+( cd "$ROOT/wt" && [ "$(git rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交" )
 
 echo "== 场景 5: 无变化（幂等）=="
 build_origin
 setup_wt
 OUT=$(run_sync)
 has "$OUT" "No changes" && ok "幂等跳过" || bad "幂等跳过 (out: $OUT)"
-( cd "$ROOT/wt" && [ "$(git log --oneline | wc -l)" = 1 ] && ok "无新提交" || bad "无新提交" )
+( cd "$ROOT/wt" && [ "$(git rev-list --count HEAD)" = 1 ] && ok "无新提交" || bad "无新提交" )
 
 echo "== 场景 6: push 失败回滚 =="
 build_origin; scan_advance; setup_wt
@@ -112,7 +112,7 @@ build_origin; scan_advance; setup_wt
 OUT=$(run_sync)
 has "$OUT" "Failed to push" && ok "push 失败被捕获" || bad "push 失败被捕获 (out: $OUT)"
 ( cd "$ROOT/wt" \
-  && [ "$(git log --oneline | wc -l)" = 1 ] && ok "本地回滚到 pre-sync master" || bad "本地回滚 (HEAD: $(git log --oneline -1))" \
+  && [ "$(git rev-list --count HEAD)" = 1 ] && ok "本地回滚到 pre-sync master" || bad "本地回滚 (HEAD: $(git log --oneline -1))" \
   && [ -z "$(git status --porcelain)" ] && ok "工作树干净" || bad "工作树干净" )
 
 echo ""
