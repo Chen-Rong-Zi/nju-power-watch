@@ -408,8 +408,11 @@ git commit -m "feat: transform homepage into farewell page (banner + full farewe
 - Modify: `docs/room-detail.html`
 - Modify: `docs/building-view.html`
 - Modify: `docs/campus-view.html`
+- Modify: `docs/js/distribution-analyzer.js`（分布图标注绘制颜色，与 building-view 图例一致）
 
 说明：全局滤镜已把所有图表压灰（主机制）。本任务把图表配色显式改为灰阶，保证**多系列**在黑白下仍可分辨（深灰线 + 浅灰填充 + 虚线区分），避免色相不同但亮度相近的系列在灰度下"糊成一团"。
+
+> **注（执行期修正）**：building-view 的分布图标注（μ/σ/中位数/众数/峰线及其填充）绘制在 `js/distribution-analyzer.js`，building-view.html 的图例色板必须与其一致，另有 hover 强调、选中标注、备用清空路径及 FAB box-shadow 含彩色。故在步骤 1-3 基础上补充步骤 1b：将 `distribution-analyzer.js` 中 `#818cf8→#4b5563`、`#6366f1→#374151`、`#f472b6→#111827`、`#ec4899→#1f2937`、`#38bdf8→#6b7280`、`rgba(99,102,241,α)→rgba(107,114,128,α)`、`rgba(220,100,80,α)/rgba(80,100,220,α)→rgba(107,114,128,α)`，并同步 building-view.html 图例/hover/标注/备用路径及 line 1269 box-shadow。
 
 - [ ] **Step 1: room-view.html 与 room-detail.html（单系列余额趋势）**
 
