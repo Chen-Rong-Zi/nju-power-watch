@@ -3,7 +3,8 @@
 # 附属同步：任何失败只降级（::error:: + exit 0），绝不中止调用它的 query 工作流。
 set -euo pipefail
 
-if ! git fetch origin scan-room --depth=200 2>/dev/null; then
+# 显式 refspec 确保生成 origin/scan-room 跟踪引用（不依赖 checkout 的远端配置）
+if ! git fetch origin +refs/heads/scan-room:refs/remotes/origin/scan-room --depth=200 2>/dev/null; then
   echo "::error::Failed to fetch scan-room, skipping sync (retry next cycle)"
   exit 0
 fi
@@ -41,9 +42,13 @@ if git diff --cached --quiet; then
   exit 0
 fi
 
-# 提交前显式配置 git 身份（根治 08-08 empty ident 事故根因）
-git config --local user.email "action@github.com"
-git config --local user.name "GitHub Action"
+# 提交前显式配置 git 身份（根治 08-08 empty ident 事故根因）；失败同样降级 exit 0
+if ! git config --local user.email "action@github.com" \
+  || ! git config --local user.name "GitHub Action"; then
+  echo "::error::Failed to configure Git identity, skipping sync"
+  git reset --hard HEAD
+  exit 0
+fi
 CURSOR=$(git show origin/scan-room:scan_progress.json 2>/dev/null \
   | python3 -c "import sys,json; print(json.load(sys.stdin).get('cursor','?'))" || echo "?")
 

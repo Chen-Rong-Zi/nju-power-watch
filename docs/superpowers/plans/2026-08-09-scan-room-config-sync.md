@@ -10,6 +10,8 @@
 
 **Spec:** `docs/superpowers/specs/2026-08-09-scan-room-config-sync-design.md`
 
+> **注（PR 决策）**：模拟测试脚本 `scripts/test_sync_scan_room.sh` 已按维护者决策从本 PR 移除（本 PR 不携带测试代码）。验证结论记录于最终整体评审：6 场景 16 断言全过，门禁验证真实回归会 exit 1。下方 Task 1/2/4 中创建/运行该脚本的步骤为历史记录。
+
 ---
 
 ### Task 1: 编写 sync 脚本的模拟测试（TDD 先失败）
@@ -166,7 +168,7 @@ git commit -m "test: simulation harness for sync_scan_room.sh (fails until scrip
 # 附属同步：任何失败只降级（::error:: + exit 0），绝不中止调用它的 query 工作流。
 set -euo pipefail
 
-if ! git fetch origin scan-room --depth=200 2>/dev/null; then
+if ! git fetch origin +refs/heads/scan-room:refs/remotes/origin/scan-room --depth=200 2>/dev/null; then
   echo "::error::Failed to fetch scan-room, skipping sync (retry next cycle)"
   exit 0
 fi
@@ -291,7 +293,7 @@ Expected: 6 场景全 PASS，0 失败。
 Run（只读，不 push）：
 
 ```bash
-git fetch origin scan-room master --depth=200
+git fetch origin +refs/heads/scan-room:refs/remotes/origin/scan-room master --depth=200
 WT=$(mktemp -d)
 git worktree add --detach "$WT" origin/master 2>/dev/null
 cd "$WT"

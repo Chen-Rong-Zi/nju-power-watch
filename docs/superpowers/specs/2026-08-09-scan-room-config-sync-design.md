@@ -37,7 +37,7 @@ query 的 "Merge scan-room into master" 步骤改为 "Sync room mapping from sca
 
 ```bash
 # 本步骤为"附属同步"：任何失败都只降级（::error:: + exit 0），绝不中止 query（08-08 事故教训）
-git fetch origin scan-room --depth=200 || true
+git fetch origin +refs/heads/scan-room:refs/remotes/origin/scan-room --depth=200 || true
 if ! git branch -r | grep -q 'origin/scan-room'; then
   echo "scan-room branch does not exist, skipping sync"
   exit 0
@@ -71,9 +71,13 @@ if git diff --cached --quiet; then
   exit 0
 fi
 
-# 提交前显式配置 git 身份（根治 08-08 empty ident 事故根因）
-git config --local user.email "action@github.com"
-git config --local user.name "GitHub Action"
+# 提交前显式配置 git 身份（根治 08-08 empty ident 事故根因）；失败同样降级 exit 0
+if ! git config --local user.email "action@github.com" \
+  || ! git config --local user.name "GitHub Action"; then
+  echo "::error::Failed to configure Git identity, skipping sync"
+  git reset --hard HEAD
+  exit 0
+fi
 CURSOR=$(git show origin/scan-room:scan_progress.json 2>/dev/null \
   | python3 -c "import sys,json; print(json.load(sys.stdin).get('cursor','?'))" || echo "?")
 git commit -m "scan: sync room mapping and progress (cursor ${CURSOR})" || {
