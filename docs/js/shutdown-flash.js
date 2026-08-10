@@ -34,7 +34,7 @@
   }
 
   // ---- 灰烬氛围 ----
-  var ASH_COUNT = 25; // 中等密度 20-30
+  var ASH_COUNT = 60; // 较高密度（2026-08-10 依用户反馈由 25 上调）
   var ashContainer = null;
 
   function createAshParticle() {
