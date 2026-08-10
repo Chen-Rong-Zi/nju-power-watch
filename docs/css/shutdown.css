@@ -1,0 +1,42 @@
+/* 整站黑白纪念：epay 配额限制致项目谢幕后，全站以黑白色调作为纪念基调。
+ * 灰度由 shutdown-flash.js 动态施加（html.grayscale）；
+ * 首次访问经 html.draining 过渡（色彩流失 ~1.5s），无 JS 时由 <noscript> 静态兜底。
+ */
+
+/* 色彩流失过渡起始态（由 shutdown-flash.js 临时施加，动画结束后移除以避免重载重播）。
+ * 注意：必须位于 html.grayscale 之前——两者并存时靠源码顺序让 .grayscale 的终点 filter 生效。 */
+html.draining {
+  filter: grayscale(0%) brightness(100%);
+  transition: filter 1.5s ease-out;
+}
+
+/* 整站黑白纪念态：流失动画终点与静态兜底共用（含轻微亮度下垂，模拟电量耗尽） */
+html.grayscale {
+  filter: grayscale(100%) brightness(0.92);
+}
+
+/* 灰烬容器（由 shutdown-flash.js 注入） */
+#ash-container {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ash-particle {
+  position: absolute;
+  top: -10px;
+  border-radius: 50%;
+  background: #999;
+  opacity: 0.4;
+  animation-name: ash-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+@keyframes ash-fall {
+  0%   { transform: translateY(-10px) translateX(0) rotate(0deg); opacity: 0; }
+  8%   { opacity: var(--ash-opacity, 0.4); }
+  50%  { transform: translateY(50vh) translateX(var(--ash-drift, 20px)) rotate(180deg); }
+  100% { transform: translateY(105vh) translateX(calc(var(--ash-drift, 20px) * -0.5)) rotate(360deg); opacity: 0; }
+}
