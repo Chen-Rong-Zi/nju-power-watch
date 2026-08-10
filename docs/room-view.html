@@ -665,6 +665,8 @@
       font-family: var(--font-mono);
     }
   </style>
+  <link rel="stylesheet" href="css/shutdown.css?v=20260810-v2">
+  <noscript><style>html { filter: grayscale(100%); }</style></noscript>
 </head>
 <body>
   <nav class="topnav">
@@ -1490,8 +1492,8 @@
           datasets: [{
             label: '电量余额',
             data: data.map(d => d.balance),
-            borderColor: '#10b981',
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderColor: '#374151',
+            backgroundColor: 'rgba(55, 65, 81, 0.1)',
             fill: true,
             tension: 0.4,
             pointRadius: 0,
@@ -1691,6 +1693,8 @@
       document.getElementById('config-overlay').classList.remove('show');
     }
   </script>
-  <script src="js/about-modal.js"></script>
+  <script src="js/about-modal.js?v=20260810-v1"></script>
+  <script src="js/shutdown-banner.js?v=20260810-v2"></script>
+  <script src="js/shutdown-flash.js?v=20260810-v6"></script>
 </body>
 </html>

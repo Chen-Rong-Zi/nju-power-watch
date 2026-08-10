@@ -1266,7 +1266,7 @@
       color: #fff;
       border: none;
       cursor: pointer;
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+      box-shadow: 0 4px 16px rgba(55, 65, 81, 0.35);
       z-index: 50;
       font-size: 18px;
       display: none;
@@ -1389,6 +1389,8 @@
     .floor-drawer-item-count { font-size: 12px; color: var(--muted); }
     .floor-drawer-item-sub { font-size: 12px; color: var(--muted); margin-left: 8px; }
   </style>
+  <link rel="stylesheet" href="css/shutdown.css?v=20260810-v2">
+  <noscript><style>html { filter: grayscale(100%); }</style></noscript>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 </head>
@@ -1604,7 +1606,7 @@
 
 <script src="js/indexeddb-service.js"></script>
 <script src="js/data-service.js?v=20260802-v1"></script>
-<script src="js/distribution-analyzer.js"></script>
+<script src="js/distribution-analyzer.js?v=20260810-v1"></script>
 <script src="js/floor-utils.js"></script>
 <script src="js/floor-analytics.js"></script>
 <script src="js/floor-view.js"></script>
@@ -2694,8 +2696,8 @@
       }
 
       const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-      gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
-      gradient.addColorStop(1, 'rgba(99, 102, 241, 0.01)');
+      gradient.addColorStop(0, 'rgba(55, 65, 81, 0.3)');
+      gradient.addColorStop(1, 'rgba(55, 65, 81, 0.01)');
 
       trendChart = new Chart(ctx, {
         type: 'line',
@@ -2704,12 +2706,12 @@
           datasets: [{
             label: '日耗电量 (度)',
             data: trendData.consumption,
-            borderColor: '#6366f1',
+            borderColor: '#374151',
             backgroundColor: gradient,
             fill: true,
             tension: 0.3,
             pointRadius: 3,
-            pointBackgroundColor: '#6366f1',
+            pointBackgroundColor: '#374151',
             pointHoverRadius: 5,
             borderWidth: 2
           }]
@@ -3359,14 +3361,14 @@
               type: 'line',
               xMin: valueToIndex(userConsumption),
               xMax: valueToIndex(userConsumption),
-              borderColor: '#f472b6',
+              borderColor: '#111827',
               borderWidth: 2,
               borderDash: [6, 3],
               label: {
                 display: true,
                 content: `我的宿舍: ${userConsumption.toFixed(2)}度`,
                 position: 'start',
-                backgroundColor: '#ec4899',
+                backgroundColor: '#1f2937',
                 color: '#fff',
                 font: { size: 12, weight: 'bold' },
                 padding: { top: 4, bottom: 4, left: 8, right: 8 },
@@ -3388,8 +3390,8 @@
             {
               label: '房间数',
               data: histogram.counts,
-              backgroundColor: histogram.counts.map(() => 'rgba(99, 102, 241, 0.35)'),
-              borderColor: histogram.counts.map(() => 'rgba(99, 102, 241, 0.7)'),
+              backgroundColor: histogram.counts.map(() => 'rgba(107, 114, 128, 0.35)'),
+              borderColor: histogram.counts.map(() => 'rgba(107, 114, 128, 0.7)'),
               borderWidth: 1,
               borderRadius: 3,
               barPercentage: 0.95,
@@ -3400,10 +3402,10 @@
               label: bestFit.typeName + '拟合',
               type: 'line',
               data: DistributionAnalyzer.fitCurveAtBinTops(bestFit, histogram),
-              borderColor: 'oklch(65% 0.18 25)',
+              borderColor: '#374151',
               borderWidth: 2.5,
               pointRadius: 3,
-              pointBackgroundColor: 'oklch(65% 0.18 25)',
+              pointBackgroundColor: '#374151',
               tension: 0.3,
               fill: false,
               order: 1
@@ -3619,34 +3621,34 @@
 
       const legendItems = {
         normal: [
-          { key: 'muLine', color: '#818cf8', label: 'μ (均值)' },
-          { key: 'sigma1', color: 'rgba(99, 102, 241, 0.15)', label: '±1σ (68.3%)' },
-          { key: 'sigma2', color: 'rgba(99, 102, 241, 0.08)', label: '±2σ (95.4%)' },
-          { key: 'sigma3', color: 'rgba(99, 102, 241, 0.04)', label: '±3σ (99.7%)' }
+          { key: 'muLine', color: '#4b5563', label: 'μ (均值)' },
+          { key: 'sigma1', color: 'rgba(107, 114, 128, 0.20)', label: '±1σ (68.3%)' },
+          { key: 'sigma2', color: 'rgba(107, 114, 128, 0.12)', label: '±2σ (95.4%)' },
+          { key: 'sigma3', color: 'rgba(107, 114, 128, 0.06)', label: '±3σ (99.7%)' }
         ],
         lognormal: [
-          { key: 'medianLine', color: '#818cf8', label: '中位数' },
-          { key: 'modeLine', color: '#f472b6', label: '众数' },
-          { key: 'iqr', color: 'rgba(99, 102, 241, 0.1)', label: 'IQR (Q1-Q3)' }
+          { key: 'medianLine', color: '#4b5563', label: '中位数' },
+          { key: 'modeLine', color: '#111827', label: '众数' },
+          { key: 'iqr', color: 'rgba(107, 114, 128, 0.15)', label: 'IQR (Q1-Q3)' }
         ],
         gamma: [
-          { key: 'meanLine', color: '#818cf8', label: '均值' },
-          { key: 'modeLine', color: '#f472b6', label: '众数' },
-          { key: 'medianLine', color: '#38bdf8', label: '中位数≈' },
-          { key: 'skewArea', color: 'rgba(99, 102, 241, 0.03)', label: '右偏区域' }
+          { key: 'meanLine', color: '#4b5563', label: '均值' },
+          { key: 'modeLine', color: '#111827', label: '众数' },
+          { key: 'medianLine', color: '#6b7280', label: '中位数≈' },
+          { key: 'skewArea', color: 'rgba(107, 114, 128, 0.05)', label: '右偏区域' }
         ],
         bimodal: [
-          { key: 'peak1Line', color: '#f472b6', label: 'μ₁ (峰1)' },
-          { key: 'peak2Line', color: '#818cf8', label: 'μ₂ (峰2)' },
-          { key: 'peak1Sigma', color: 'rgba(220, 100, 80, 0.08)', label: '峰1 ±1σ' },
-          { key: 'peak2Sigma', color: 'rgba(80, 100, 220, 0.08)', label: '峰2 ±1σ' }
+          { key: 'peak1Line', color: '#111827', label: 'μ₁ (峰1)' },
+          { key: 'peak2Line', color: '#4b5563', label: 'μ₂ (峰2)' },
+          { key: 'peak1Sigma', color: 'rgba(107, 114, 128, 0.12)', label: '峰1 ±1σ' },
+          { key: 'peak2Sigma', color: 'rgba(107, 114, 128, 0.12)', label: '峰2 ±1σ' }
         ]
       };
 
       const items = legendItems[bestFit.type] || [];
       legendEl.innerHTML = items.map(item => `
         <div class="dist-legend-item" data-key="${item.key}" onclick="toggleDistAnnotation('${item.key}')">
-          <div class="dist-legend-color" style="background: ${item.color}; border: 1px solid ${item.color.includes('rgba') ? 'rgba(99, 102, 241, 0.3)' : item.color};"></div>
+          <div class="dist-legend-color" style="background: ${item.color}; border: 1px solid ${item.color.includes('rgba') ? 'rgba(107, 114, 128, 0.3)' : item.color};"></div>
           <span>${item.label}</span>
         </div>
       `).join('');
@@ -3686,9 +3688,9 @@
       const ds = distChart.data.datasets[0];
 
       ds.backgroundColor = histogram.counts.map((_, i) =>
-        i === idx ? 'rgba(99, 102, 241, 0.8)' : 'rgba(99, 102, 241, 0.15)');
+        i === idx ? 'rgba(17, 24, 39, 0.8)' : 'rgba(107, 114, 128, 0.15)');
       ds.borderColor = histogram.counts.map((_, i) =>
-        i === idx ? 'rgba(99, 102, 241, 1)' : 'rgba(99, 102, 241, 0.3)');
+        i === idx ? 'rgba(17, 24, 39, 1)' : 'rgba(107, 114, 128, 0.3)');
 
       const low = histogram.edges[idx];
       const high = histogram.edges[idx + 1];
@@ -3701,7 +3703,7 @@
         type: 'line',
         xMin: idx - 0.5,
         xMax: idx - 0.5,
-        borderColor: 'rgba(99, 102, 241, 0.6)',
+        borderColor: 'rgba(17, 24, 39, 0.6)',
         borderWidth: 1.5,
         borderDash: [3, 3]
       };
@@ -3709,7 +3711,7 @@
         type: 'line',
         xMin: idx + 0.5,
         xMax: idx + 0.5,
-        borderColor: 'rgba(99, 102, 241, 0.6)',
+        borderColor: 'rgba(17, 24, 39, 0.6)',
         borderWidth: 1.5,
         borderDash: [3, 3]
       };
@@ -3835,8 +3837,8 @@
       distSelectedBin = -1;
       const ds = distChart.data.datasets[0];
 
-      ds.backgroundColor = distHistogram.counts.map(() => 'rgba(99, 102, 241, 0.35)');
-      ds.borderColor = distHistogram.counts.map(() => 'rgba(99, 102, 241, 0.7)');
+      ds.backgroundColor = distHistogram.counts.map(() => 'rgba(107, 114, 128, 0.35)');
+      ds.borderColor = distHistogram.counts.map(() => 'rgba(107, 114, 128, 0.7)');
 
       // 直接删除标注，避免spread导致的Proxy问题
       const annotations = distChart.options.plugins.annotation.annotations;
@@ -3856,6 +3858,8 @@
     // 直观感受 tooltip 通过 CSS .stat-card-hover + .consumption-tooltip 实现
     // 内容在 displayRanking() 中动态设置
   </script>
-  <script src="js/about-modal.js"></script>
+  <script src="js/about-modal.js?v=20260810-v1"></script>
+  <script src="js/shutdown-banner.js?v=20260810-v2"></script>
+  <script src="js/shutdown-flash.js?v=20260810-v6"></script>
 </body>
 </html>

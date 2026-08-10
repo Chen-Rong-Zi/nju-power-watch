@@ -9,7 +9,12 @@
   function injectStyles() {
     if (stylesInjected) return;
     const style = document.createElement('style');
-    style.textContent = '.about-modal-close:hover { color: var(--fg, #333) !important; }';
+    style.textContent =
+      '.about-modal-close:hover { color: var(--fg, #333) !important; }' +
+      '#about-modal-content blockquote { margin: 12px 0; padding: 10px 16px; ' +
+      'border-left: 3px solid var(--muted, #888); color: var(--muted, #666); ' +
+      'background: rgba(0,0,0,0.04); }' +
+      '#about-modal-content blockquote p { margin: 0; }';
     document.head.appendChild(style);
     stylesInjected = true;
   }
@@ -30,16 +35,21 @@
     const lines = text.split('\n');
     let html = '';
     let inList = false;
+    let inQuote = false;
 
     function closeList() {
       if (inList) { html += '</ul>'; inList = false; }
+    }
+    function closeQuote() {
+      if (inQuote) { html += '</blockquote>'; inQuote = false; }
     }
 
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i];
 
-      // Inline: bold, italic, link
+      // Inline: strikethrough, bold, italic, link
       line = line
+        .replace(/\~\~(.+?)\~\~/g, '<del>$1</del>')
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.+?)\*/g, '<em>$1</em>')
         .replace(/\[(.+?)\]\((.+?)\)/g, function (_, text, url) {
@@ -52,23 +62,30 @@
 
       // Headings
       if (line.startsWith('## ')) {
-        closeList(); html += '<h2>' + line.slice(3) + '</h2>';
+        closeList(); closeQuote(); html += '<h2>' + line.slice(3) + '</h2>';
       } else if (line.startsWith('### ')) {
-        closeList(); html += '<h3>' + line.slice(4) + '</h3>';
+        closeList(); closeQuote(); html += '<h3>' + line.slice(4) + '</h3>';
       } else if (line.startsWith('# ')) {
-        closeList(); html += '<h1>' + line.slice(2) + '</h1>';
+        closeList(); closeQuote(); html += '<h1>' + line.slice(2) + '</h1>';
       } else if (line.startsWith('- ')) {
+        closeQuote();
         if (!inList) { html += '<ul>'; inList = true; }
         html += '<li>' + line.slice(2) + '</li>';
-      } else if (line.startsWith('---')) {
-        closeList(); html += '<hr>';
-      } else if (line.trim() === '') {
+      } else if (line.startsWith('&gt; ')) {
+        // blockquote（escapeHtml 已将 `> ` 转义为 `&gt; `）
         closeList();
+        if (!inQuote) { html += '<blockquote>'; inQuote = true; }
+        html += '<p>' + line.slice(5) + '</p>';
+      } else if (line.startsWith('---')) {
+        closeList(); closeQuote(); html += '<hr>';
+      } else if (line.trim() === '') {
+        closeList(); closeQuote();
       } else {
-        closeList(); html += '<p>' + line + '</p>';
+        closeList(); closeQuote(); html += '<p>' + line + '</p>';
       }
     }
     if (inList) html += '</ul>';
+    if (inQuote) html += '</blockquote>';
 
     return html;
   }
@@ -139,7 +156,7 @@
     modalEl.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    fetch('about.md')
+    fetch('about.md?v=20260810-v1')
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.text();

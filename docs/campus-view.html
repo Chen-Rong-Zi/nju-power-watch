@@ -584,6 +584,8 @@
       font-size: 16px;
     }
   </style>
+  <link rel="stylesheet" href="css/shutdown.css?v=20260810-v2">
+  <noscript><style>html { filter: grayscale(100%); }</style></noscript>
 </head>
 <body>
   <nav class="topnav">
@@ -1151,8 +1153,8 @@
 
       // 生成半透明渐变色
       const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-      gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
-      gradient.addColorStop(1, 'rgba(99, 102, 241, 0.01)');
+      gradient.addColorStop(0, 'rgba(55, 65, 81, 0.3)');
+      gradient.addColorStop(1, 'rgba(55, 65, 81, 0.01)');
 
       trendChart = new Chart(ctx, {
         type: 'line',
@@ -1161,12 +1163,12 @@
           datasets: [{
             label: '日耗电量 (度)',
             data: trendData.consumption,
-            borderColor: '#6366f1',
+            borderColor: '#374151',
             backgroundColor: gradient,
             fill: true,
             tension: 0.3,
             pointRadius: 3,
-            pointBackgroundColor: '#6366f1',
+            pointBackgroundColor: '#374151',
             pointHoverRadius: 5,
             borderWidth: 2
           }]
@@ -1286,7 +1288,7 @@
           datasets: [{
             label: '耗电量',
             data: buildings.map(([_, b]) => b.consumption),
-            backgroundColor: buildings.map((_, i) => `rgba(16, 185, 129, ${1 - i * 0.08})`),
+            backgroundColor: buildings.map((_, i) => `rgba(55, 65, 81, ${1 - i * 0.08})`),
             borderRadius: 6
           }]
         },
@@ -1651,6 +1653,8 @@
     // 直观感受 tooltip 通过 CSS .stat-card-hover/.building-card:hover + .consumption-tooltip 实现
     // 内容在 updateDashboard() / renderBuildingGrid() 中动态设置
   </script>
-  <script src="js/about-modal.js"></script>
+  <script src="js/about-modal.js?v=20260810-v1"></script>
+  <script src="js/shutdown-banner.js?v=20260810-v2"></script>
+  <script src="js/shutdown-flash.js?v=20260810-v6"></script>
 </body>
 </html>
