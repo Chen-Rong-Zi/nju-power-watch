@@ -140,7 +140,7 @@
     modalEl.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
-    fetch('about.md')
+    fetch('about.md?v=20260810-v1')
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.text();
