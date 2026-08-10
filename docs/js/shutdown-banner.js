@@ -11,7 +11,6 @@
     banner.setAttribute('role', 'status');
     banner.textContent = '⚡ 电量耗尽 · 本服务已停止维护 · 数据截至 2026-08-08';
     Object.assign(banner.style, {
-      zIndex: '99',
       background: '#1a1a1a',
       color: '#e5e5e5',
       textAlign: 'center',
@@ -31,6 +30,12 @@
     } else {
       document.body.insertBefore(banner, document.body.firstChild);
     }
+
+    // 自愈兜底：若 shutdown-flash.js 未激活横幅（如 room-detail.html 无 flash.js、或脚本加载失败），
+    // ~2s 后自动显示，保证横幅永不因脚本缺失而不可见。幂等：已显示时置 1 无副作用。
+    setTimeout(function () {
+      banner.style.opacity = '1';
+    }, 2000);
   }
 
   if (document.readyState === 'loading') {
