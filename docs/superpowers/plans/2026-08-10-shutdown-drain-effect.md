@@ -13,7 +13,7 @@
 
 ---
 
-### Task 1: shutdown.css — 移除 flash 样式，添加色彩流失过渡
+## Task 1: shutdown.css — 移除 flash 样式，添加色彩流失过渡
 
 **Files:**
 - Modify: `docs/css/shutdown.css`
@@ -68,7 +68,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 
 ---
 
-### Task 2: shutdown-banner.js — 顶部常驻 + 淡入准备 + 文案
+## Task 2: shutdown-banner.js — 顶部常驻 + 淡入准备 + 文案
 
 **Files:**
 - Modify: `docs/js/shutdown-banner.js`
@@ -145,7 +145,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 
 ---
 
-### Task 3: shutdown-flash.js — 重写为色彩流失时间轴
+## Task 3: shutdown-flash.js — 重写为色彩流失时间轴
 
 **Files:**
 - Modify: `docs/js/shutdown-flash.js`（整体重写）
@@ -324,7 +324,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 
 ---
 
-### Task 4: 端到端验证（浏览器 E2E + pytest 回归）
+## Task 4: 端到端验证（浏览器 E2E + pytest 回归）
 
 **Files:** 无预期改动（发现缺陷才改）
 
@@ -340,7 +340,7 @@ cd docs && python3 -m http.server 8000
 - ~1.5s 内 `document.documentElement` 的 `filter` 从 `grayscale(0%)` 平滑过渡到 `grayscale(100%) brightness(0.92)`（可 evaluate 抓取多帧验证连续渐变，无瞬间跳变、无白闪、无黑屏）
 - 顶部横幅（`#shutdown-banner`，在 `nav.topnav` 内部）在流失开始 ~0.3s 后淡入，之后**不淡出**
 - 滚动页面：`#shutdown-banner` 的 `getBoundingClientRect().top` 恒为 0（常驻视口顶部），且不与 `.topnav` 重叠错位
-- 流失结束后灰烬（`#ash-container` 下 25 片 `.ash-particle`）存在
+- 流失结束后灰烬（`#ash-container` 下 180 片 `.ash-particle`）存在
 
 - [ ] **Step 2: 验证 session 去重（同 session 内跳页不再播动画）**
 

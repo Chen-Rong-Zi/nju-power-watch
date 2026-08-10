@@ -31,11 +31,11 @@
       document.body.insertBefore(banner, document.body.firstChild);
     }
 
-    // 自愈兜底：若 shutdown-flash.js 未激活横幅（如 room-detail.html 无 flash.js、或脚本加载失败），
-    // ~2s 后自动显示，保证横幅永不因脚本缺失而不可见。幂等：已显示时置 1 无副作用。
+    // 自愈兜底：若 shutdown-flash.js 未激活横幅（脚本加载失败等），
+    // ~350ms 后自动显示，保证横幅永不因脚本缺失而不可见。幂等：已显示时置 1 无副作用。
     setTimeout(function () {
       banner.style.opacity = '1';
-    }, 2000);
+    }, 350);
   }
 
   if (document.readyState === 'loading') {

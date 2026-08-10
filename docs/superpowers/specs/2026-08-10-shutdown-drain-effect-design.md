@@ -59,12 +59,13 @@ v1「断电闪断」动画上线后，用户反馈：
 
 ## 3. 常驻顶部横幅（改造 `#shutdown-banner`）
 
-- **注入方式不变**：`shutdown-banner.js` 在 body 顶部（topnav 之前）注入，`role="status"`
-- **定位**：`position: relative` → **`position: fixed; top: 0; left: 0; right: 0`**，钉在视口顶部，滚动时始终可见
-- **淡入**：初始 `opacity: 0` + `transition: opacity 0.4s`；流失动画开始 ~0.3s 后添加 `.visible` 类 → 淡入
+- **注入方式**：`shutdown-banner.js` 注入到 `nav.topnav` 内部顶部，`role="status"`
+- **定位**：随 `nav.topnav` 的 `position: sticky; top: 0` 常驻视口顶部，滚动时始终可见（实施以此取代 fixed + padding 方案，避免重叠与布局 hack）
+- **淡入**：初始 `opacity: 0` + `transition: opacity 0.4s`；流失动画开始 ~0.3s 后由 `shutdown-flash.js` 将 opacity 置 1 → 淡入
 - **淡入后不淡出**，常驻
-- **文案**：「⚡ 电量耗尽 · 本服务已停止维护 · 数据截至 2026-08-08」（微调可留到实施）
-- **布局补偿**：fixed 后脱离文档流，页面顶部（topnav/内容）需加等量 padding-top，避免被横幅遮挡
+- **自愈兜底**：若 `shutdown-flash.js` 未激活横幅（脚本加载失败等），~350ms 后自动置 1（幂等）
+- **文案**：「⚡ 电量耗尽 · 本服务已停止维护 · 数据截至 2026-08-08」
+- **布局补偿**：无需——横幅在 `nav.topnav` 内随 sticky 导航在文档流中常驻，不产生重叠
 - **其他场景**：再次访问 / reduced-motion / 兜底 → 横幅直接可见（不播淡入，或瞬时淡入）
 
 ## 4. 灰烬（保留 v1 现状）
@@ -96,9 +97,9 @@ v1「断电闪断」动画上线后，用户反馈：
 | 文件 | 动作 | 说明 |
 |------|------|------|
 | `docs/js/shutdown-flash.js` | **重写** | 删 overlay/flash/black 时间轴，改为 filter 过渡 + 横幅淡入控制 + 灰烬（保留 session 去重、降级、错误兜底） |
-| `docs/js/shutdown-banner.js` | **改造** | fixed 顶部定位、淡入支持（`.visible`）、文案加「⚡ 电量耗尽」 |
-| `docs/css/shutdown.css` | **改造** | 删 `#shutdown-flash`/flicker 样式；加 drain 过渡、fixed 横幅样式、页面顶部 padding 补偿 |
-| 4 个页面 HTML | 无改动 | 两个脚本已引入 |
+| `docs/js/shutdown-banner.js` | **改造** | 注入到 `nav.topnav` 内部顶部、淡入支持（opacity+transition）、自愈兜底、文案加「⚡ 电量耗尽」 |
+| `docs/css/shutdown.css` | **改造** | 删 `#shutdown-flash`/flicker 样式；加 drain 过渡（`.draining`/`.grayscale`） |
+| 页面 HTML | 微调 | 引入脚本、noscript 兜底、缓存破坏参数 |
 
 ## 8. 范围边界（YAGNI）
 

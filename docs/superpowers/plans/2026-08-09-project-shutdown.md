@@ -4,17 +4,17 @@
 
 **Goal:** 在 njupower.top 域名有效期内，把站点改造成"体面谢幕"形态：首页告别页 + 功能页常驻关闭横幅 + 整站黑白色调纪念 + README/about.md 关闭声明，并补全域名到期引导。
 
-**Architecture:** 黑白纪念走「全局 CSS 滤镜」路线（用户选定），新建 `docs/css/shutdown.css` 只含一行 `filter: grayscale(100%)`，5 个页面统一 `<link>` 引用，不改任何现有 CSS；功能页常驻横幅由新建 `docs/js/shutdown-banner.js` 注入（独立于黑白样式，因首页不需要横幅脚本但需要黑白样式）；首页告别页为静态 HTML 区块（时间线 + FAQ 折叠 `<details>` + 数据指引 + 归档声明），不引入框架。
+**Architecture:** 黑白纪念走「CSS 滤镜」路线（用户选定），`docs/css/shutdown.css` 以 `.draining`/`.grayscale` 类驱动整站黑白（灰度由 `docs/js/shutdown-flash.js` 动态施加，含色彩流失动画与灰烬，无 JS 时 `<noscript>` 兜底），5 个页面统一 `<link>` 引用，不改任何现有 CSS；功能页常驻横幅由 `docs/js/shutdown-banner.js` 注入 `nav.topnav`（独立于黑白样式）；首页告别页为静态 HTML 区块（时间线 + FAQ 折叠 `<details>` + 数据指引 + 归档声明），不引入框架。
 
 **Tech Stack:** 静态 HTML + vanilla JS（站点既有技术栈）+ GitHub Pages
 
 **Spec:** `docs/superpowers/specs/2026-08-09-project-shutdown-design.md`
 
 **关键决策（自 spec 提取）:**
-- D12 整站黑白色调：`html { filter: grayscale(100%); }`，覆盖首页 + 4 功能页（「关于」是首页 modal，随首页自动黑白）
+- D12 整站黑白色调：`html.grayscale { filter: grayscale(100%) brightness(0.92); }`，由 shutdown-flash.js 施加（色彩流失经 `html.draining` 过渡），覆盖首页 + 4 功能页（「关于」是首页 modal，随首页自动黑白）
 - D13 图表黑白：全局滤镜为主；多系列图表（building-view 分布图）额外配灰阶色板 + 线型区分，作"双重保障"
 - 首页布局：顶部关闭横幅 → 统计条（保留）→ 功能卡片（保留）→ 底部完整告别区块
-- 功能页横幅：常驻不可关闭；黑白样式独立成 `shutdown.css`（首页不加载 banner 脚本）
+- 功能页横幅：常驻不可关闭，注入 `nav.topnav`；黑白样式独立成 `shutdown.css`；首页亦已引入 banner 脚本（4 页一致）
 - 域名到期引导：告别页 + README 标注「到期后访问 GitHub 归档仓库」
 - push 纪律：所有 commit 仅本地；**push 前必须获得用户批准**
 
@@ -34,7 +34,7 @@
 
 ---
 
-### Task 1: 创建 `docs/css/shutdown.css`（整站黑白滤镜）
+## Task 1: 创建 `docs/css/shutdown.css`（整站黑白滤镜）
 
 **Files:**
 - Create: `docs/css/shutdown.css`
@@ -68,7 +68,7 @@ git commit -m "feat: add global black-white filter for shutdown memorial (D12)"
 
 ---
 
-### Task 2: 创建 `docs/js/shutdown-banner.js`（功能页常驻横幅）
+## Task 2: 创建 `docs/js/shutdown-banner.js`（功能页常驻横幅）
 
 **Files:**
 - Create: `docs/js/shutdown-banner.js`
@@ -126,7 +126,7 @@ git commit -m "feat: add persistent shutdown banner injection for functional pag
 
 ---
 
-### Task 3: 4 个功能页接入黑白样式 + 横幅脚本
+## Task 3: 4 个功能页接入黑白样式 + 横幅脚本
 
 **Files:**
 - Modify: `docs/room-view.html`
@@ -179,7 +179,7 @@ git commit -m "feat: wire shutdown.css and shutdown-banner.js into 4 functional 
 
 ---
 
-### Task 4: 首页告别页改造（docs/index.html）
+## Task 4: 首页告别页改造（docs/index.html）
 
 **Files:**
 - Modify: `docs/index.html`
@@ -383,7 +383,7 @@ grep -c '服务已停止' index.html
 grep -c 'nju_electric_monitor' index.html
 ```
 
-Expected: `1` / `1` / `1`（横幅文案）/ `2`（讣告 + 数据与后继各一处，另有 FAQ 一处→ `3`，见下方说明）。
+Expected: `1` / `1` / `1` / `3`（nju_electric_monitor 出现在讣告、FAQ 想继续查电费、数据与后继三处，见下方说明）。
 
 说明：`nju_electric_monitor` 出现在讣告（1）+ FAQ 想继续查电费（2）+ 数据与后继（3）三处，故预期 `3`。若为 `2`，检查 Step 3 是否漏了 FAQ 那处。
 
@@ -401,7 +401,7 @@ git commit -m "feat: transform homepage into farewell page (banner + full farewe
 
 ---
 
-### Task 5: 图表灰阶色板（D13 双重保障）
+## Task 5: 图表灰阶色板（D13 双重保障）
 
 **Files:**
 - Modify: `docs/room-view.html`
@@ -510,7 +510,7 @@ Run:
 
 ```bash
 cd /Users/macbook/Program/dorm_public/docs
-grep -rn "'#10b981'\|'#6366f1'\|'#f472b6'\|'#ec4899'\|'oklch(65% 0.18 25)\|rgba(16, 185, 129\|rgba(99, 102, 241" room-view.html building-view.html campus-view.html room-detail.html
+grep -rn "'#10b981'\|'#6366f1'\|'#f472b6'\|'#ec4899'\|'oklch(65% 0.18 25)\|rgba(16, 185, 129\|rgba(99, 102, 241" room-view.html building-view.html campus-view.html room-detail.html js/distribution-analyzer.js
 ```
 
 Expected: 无输出（或仅剩注释/非图表上下文中的说明性文本）。
@@ -518,13 +518,13 @@ Expected: 无输出（或仅剩注释/非图表上下文中的说明性文本）
 - [ ] **Step 5: Commit**
 
 ```bash
-git add docs/room-view.html docs/building-view.html docs/campus-view.html docs/room-detail.html
+git add docs/room-view.html docs/building-view.html docs/campus-view.html docs/room-detail.html docs/js/distribution-analyzer.js
 git commit -m "feat: grayscale chart palettes for black-white readability (D13)"
 ```
 
 ---
 
-### Task 6: README.md 顶部关闭声明
+## Task 6: README.md 顶部关闭声明
 
 **Files:**
 - Modify: `README.md`
@@ -558,7 +558,7 @@ git commit -m "docs: add shutdown notice to README top"
 
 ---
 
-### Task 7: docs/about.md 追加"项目谢幕"段落
+## Task 7: docs/about.md 追加"项目谢幕"段落
 
 **Files:**
 - Modify: `docs/about.md`
@@ -594,7 +594,7 @@ git commit -m "docs: add project farewell section with full epay arms-race histo
 
 ---
 
-### Task 8: 本地验证与汇报
+## Task 8: 本地验证与汇报
 
 **Files:**
 - Test: 全站（本地 HTTP 服务 + 浏览器）

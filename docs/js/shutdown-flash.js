@@ -65,6 +65,11 @@
     }
     document.body.appendChild(ashContainer);
 
+    // 页面加载时已在后台：初始即暂停（避免不可见时浪费动画）
+    if (document.hidden) {
+      ashContainer.classList.add('paused');
+    }
+
     // 后台暂停
     document.addEventListener('visibilitychange', function () {
       if (!ashContainer) return;

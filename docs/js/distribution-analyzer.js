@@ -441,7 +441,7 @@ const DistributionAnalyzer = {
           display: true,
           content: '±2σ (95.4%)',
           position: 'top',
-          color: '#3730a3',
+          color: '#4b5563',
           font: { size: 11 },
           padding: 2
         }
@@ -462,7 +462,7 @@ const DistributionAnalyzer = {
           display: true,
           content: '±1σ (68.3%)',
           position: 'top',
-          color: '#3730a3',
+          color: '#4b5563',
           font: { size: 12, weight: 'bold' },
           padding: { top: 4, bottom: 2, left: 6, right: 6 }
         }
@@ -539,7 +539,7 @@ const DistributionAnalyzer = {
           display: true,
           content: 'IQR (Q1-Q3)',
           position: 'top',
-          color: '#3730a3',
+          color: '#4b5563',
           font: { size: 11 },
           padding: 2
         }
@@ -618,7 +618,7 @@ const DistributionAnalyzer = {
           display: true,
           content: '中位数≈',
           position: 'end',
-          color: '#0c4a6e',
+          color: '#4b5563',
           font: { size: 10 },
           padding: 2
         }
@@ -637,7 +637,7 @@ const DistributionAnalyzer = {
           display: true,
           content: '右偏→',
           position: { x: 'end', y: 'end' },
-          color: 'rgba(100, 100, 120, 0.5)',
+          color: 'rgba(107, 114, 128, 0.5)',
           font: { size: 11 },
           padding: 4
         }
