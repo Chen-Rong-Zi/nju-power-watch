@@ -34,10 +34,6 @@ html.grayscale {
   animation-iteration-count: infinite;
   will-change: transform, opacity;
 }
-#ash-container.paused .ash-particle {
-  animation-play-state: paused;
-}
-
 @keyframes ash-fall {
   0%   { transform: translateY(-10px) translateX(0) rotate(0deg); opacity: 0; }
   8%   { opacity: var(--ash-opacity, 0.4); }

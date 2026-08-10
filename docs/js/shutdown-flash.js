@@ -1,7 +1,8 @@
 /* 色彩流失动画 + 灰烬氛围 + 常驻顶部横幅（D15）
  * 进入页面时：彩色 → ~1.5s 连续渐变到黑白（色彩流失，无闪白无黑屏），
  * 顶部横幅同步淡入并常驻；随后灰烬飘落。
- * session 内只播一次（sessionStorage 标记）；reduced-motion / JS 失败时兜底为静态黑白 + 横幅。
+ * session 内只播一次（sessionStorage 标记）；JS 失败时兜底为静态黑白 + 横幅。
+ * 不做 reduced-motion / 后台性能限制：效果对所有人统一显示。
  */
 (function () {
   'use strict';
@@ -64,21 +65,6 @@
       ashContainer.appendChild(createAshParticle());
     }
     document.body.appendChild(ashContainer);
-
-    // 页面加载时已在后台：初始即暂停（避免不可见时浪费动画）
-    if (document.hidden) {
-      ashContainer.classList.add('paused');
-    }
-
-    // 后台暂停
-    document.addEventListener('visibilitychange', function () {
-      if (!ashContainer) return;
-      if (document.hidden) {
-        ashContainer.classList.add('paused');
-      } else {
-        ashContainer.classList.remove('paused');
-      }
-    });
   }
 
   // ---- 色彩流失时间轴 ----
@@ -107,17 +93,8 @@
 
   // ---- 主入口 ----
   function initDeathEffect() {
-    var prefersReduced = window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var store;
     try { store = window.sessionStorage; } catch (e) { store = null; }
-
-    // reduced-motion：完全跳过动画与灰烬（尊重系统设置），横幅直接可见
-    if (prefersReduced) {
-      applyGrayscale();
-      showBanner();
-      return;
-    }
 
     // session 已有标记：跳过动画，保留横幅与灰烬
     if (store && !shouldPlay(store)) {
