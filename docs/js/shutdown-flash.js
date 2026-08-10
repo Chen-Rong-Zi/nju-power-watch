@@ -1,11 +1,14 @@
-/* 断电瞬间动画 + 灰烬氛围（D14）
- * 进入页面时播放"断电瞬间"：flash 回光×3 → 纯黑 → 亮起黑白页面；随后常驻灰烬飘落。
- * session 内只播一次（sessionStorage 标记）；reduced-motion / JS 失败时兜底为静态黑白。
+/* 色彩流失动画 + 灰烬氛围 + 常驻顶部横幅（D15）
+ * 进入页面时：彩色 → ~1.5s 连续渐变到黑白（色彩流失，无闪白无黑屏），
+ * 顶部横幅同步淡入并常驻；随后灰烬飘落。
+ * session 内只播一次（sessionStorage 标记）；reduced-motion / JS 失败时兜底为静态黑白 + 横幅。
  */
 (function () {
   'use strict';
 
   var STORAGE_KEY = 'shutdown_flash_played';
+  var DRAIN_MS = 1500;    // 与 shutdown.css 中 html.draining 的 transition 时长一致
+  var BANNER_DELAY = 300; // 流失开始后横幅淡入的延迟
 
   // ---- 可测的纯逻辑 ----
   function shouldPlay(store) {
@@ -15,21 +18,15 @@
     if (!store) return;
     try { store.setItem(STORAGE_KEY, '1'); } catch (e) { /* 隐私模式等，忽略 */ }
   }
-  // 动画后常驻灰度：html.grayscale
+  // 常驻灰度：html.grayscale（流失终点与静态兜底共用）
   function applyGrayscale() {
     document.documentElement.classList.add('grayscale');
   }
 
-  // ---- DOM 注入 ----
-  function createOverlay() {
-    var el = document.createElement('div');
-    el.id = 'shutdown-flash';
-    el.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(el);
-    return el;
-  }
-  function removeOverlay(el) {
-    if (el && el.parentNode) el.parentNode.removeChild(el);
+  // ---- 顶部横幅（由 shutdown-banner.js 注入）----
+  function showBanner() {
+    var banner = document.getElementById('shutdown-banner');
+    if (banner) banner.style.opacity = '1';
   }
 
   function wait(ms) {
@@ -79,29 +76,27 @@
     });
   }
 
-  // ---- 时间轴 ----
-  // flash 0.36s → black 0.22s → reveal 0.5s（CSS flash forwards 保持黑色 + JS wait(220) 构成 black 阶段）
-  function runTimeline(overlay) {
-    applyGrayscale();      // 提前施加灰度（动画窗口内页面被 overlay 遮住，不可见切换）
-    overlay.className = 'flash';
-    return wait(360)       // flash 回光×3（CSS keyframes，forwards 保持黑色）
+  // ---- 色彩流失时间轴 ----
+  // html.draining 设显式起始态 + transition；异步间隔后再加 html.grayscale 触发渐变。
+  // 结束移除 .draining：去掉 transition，保证 reload/再次访问瞬间切换、不重播动画。
+  function runDrain() {
+    var root = document.documentElement;
+    root.classList.add('draining');
+    return wait(BANNER_DELAY)
       .then(function () {
-        return wait(220);  // black 纯黑停留（overlay 保持 .flash，forwards 维持黑屏）
+        showBanner();                    // 横幅淡入（CSS transition 0.4s）
+        root.classList.add('grayscale'); // 触发 filter 1.5s 渐变
+        return wait(DRAIN_MS + 100);     // 等动画结束（+余量）
       })
       .then(function () {
-        overlay.className = 'reveal';
-        return wait(500);  // reveal 淡出
-      })
-      .then(function () {
-        removeOverlay(overlay);
+        root.classList.remove('draining');
       });
   }
 
-  function finalizeFlash(store) {
+  // ---- 兜底：瞬间黑白 + 横幅 + 灰烬 ----
+  function finalizeStatic() {
     applyGrayscale();
-    var overlay = document.getElementById('shutdown-flash');
-    if (overlay) removeOverlay(overlay);
-    markPlayed(store);
+    showBanner();
     startAsh();
   }
 
@@ -112,31 +107,32 @@
     var store;
     try { store = window.sessionStorage; } catch (e) { store = null; }
 
-    // reduced-motion：完全跳过动画与灰烬（尊重系统设置）
+    // reduced-motion：完全跳过动画与灰烬（尊重系统设置），横幅直接可见
     if (prefersReduced) {
       applyGrayscale();
+      showBanner();
       return;
     }
 
-    // session 已有标记：跳过动画，但保留常驻灰烬
+    // session 已有标记：跳过动画，保留横幅与灰烬
     if (store && !shouldPlay(store)) {
-      applyGrayscale();
-      startAsh();
+      finalizeStatic();
       return;
     }
 
     try {
-      var overlay = createOverlay();
-      runTimeline(overlay)
+      runDrain()
         .then(function () {
           markPlayed(store);
           startAsh();
         })
         .catch(function () {
-          finalizeFlash(store);
+          finalizeStatic();
+          markPlayed(store);
         });
     } catch (e) {
-      finalizeFlash(store);
+      finalizeStatic();
+      markPlayed(store);
     }
   }
 
